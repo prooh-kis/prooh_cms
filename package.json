@@ -1,0 +1,94 @@
+{
+  "name": "prooh_plan",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.3.1",
+    "@fontsource/open-sans": "^5.1.0",
+    "@lordicon/react": "^1.10.0",
+    "@mapbox/mapbox-gl-draw": "^1.4.3",
+    "@mapbox/mapbox-sdk": "^0.16.0",
+    "@reduxjs/toolkit": "^2.2.3",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@turf/turf": "^7.0.0",
+    "@types/date-fns": "^2.6.0",
+    "@types/geojson": "^7946.0.14",
+    "@types/jest": "^27.5.2",
+    "@types/mapbox-gl": "^3.1.0",
+    "@types/node": "^17.0.45",
+    "@types/react-big-calendar": "^1.8.12",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-highlight-words": "^0.20.0",
+    "antd": "^5.21.0",
+    "axios": "^1.7.7",
+    "chart.js": "^4.4.5",
+    "clsx": "^2.1.1",
+    "file-saver": "^2.0.5",
+    "geojson": "^0.5.0",
+    "geolib": "^3.3.4",
+    "html2canvas": "^1.4.1",
+    "install": "^0.13.0",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.3",
+    "lottie-web": "^5.12.2",
+    "mapbox-gl": "^3.6.0",
+    "moment": "^2.30.1",
+    "npm": "^10.8.3",
+    "pptxgenjs": "^3.12.0",
+    "react": "^18.3.1",
+    "react-big-calendar": "^1.15.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "react-map-gl": "^7.1.7",
+    "react-query": "^3.39.3",
+    "react-redux": "^9.1.2",
+    "react-router-dom": "^6.26.2",
+    "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.5",
+    "sheetjs-style": "^0.15.8",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/file-saver": "^2.0.7",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/mapbox__mapbox-gl-draw": "^1.4.8",
+    "@types/mapbox__mapbox-sdk": "^0.14.0",
+    "@types/moment": "^2.11.29",
+    "@types/react": "^18.3.1",
+    "@types/react-lottie": "^1.2.10",
+    "@types/react-map-gl": "^6.1.6",
+    "@types/react-redux": "^7.1.33",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.12"
+  }
+}

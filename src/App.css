@@ -1,0 +1,18 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  /* background: #f0f2f5; */
+}
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.mapboxgl-ctrl-attrib {
+  display: none !important; /* Hide the attribution control */
+}
+
+.mapboxgl-ctrl-logo {
+  display: none !important; /* Hides Mapbox logo */
+}
