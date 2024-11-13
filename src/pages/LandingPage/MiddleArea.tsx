@@ -1,3 +1,5 @@
+import { message } from "antd";
+import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,8 +15,10 @@ export const MiddleArea: React.FC = () => {
   const { userInfo } = auth;
 
   useEffect(() => {
-
-  },[dispatch]);
+    if (!userInfo?.isMaster) {
+      message.error("Not a screen owner!!!")
+    }
+  },[dispatch, userInfo]);
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
  
@@ -25,6 +29,10 @@ export const MiddleArea: React.FC = () => {
         <p className="text-md">
           Please contact support or create a new user with {"Campaign Manager"} role!!!
         </p>
+        <PrimaryButton
+          title="Create Campaign"
+          action={() => navigate("/create-campaign")}
+        />
       </div>
     </div>
   );

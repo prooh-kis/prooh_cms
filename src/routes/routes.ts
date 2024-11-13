@@ -4,6 +4,4 @@ export const FORGET_PASSWORD = "/forget-password";
 export const UPDATE_PASSWORD = "/update-password";
 
 export const HOME = "/";
-
-
-
+export const CREATE_CAMPAIGN = "/create-campaign/:id?"

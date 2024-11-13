@@ -4,6 +4,7 @@ import { HomePageLayout } from "../components";
 
 import {
   AuthPage,
+  CreateCampaignPage,
   ForgetPassword,
   LandingPage,
   PageNotFound,
@@ -12,7 +13,7 @@ import {
 } from "../pages";
 
 import { PrivateRoute } from "./PrivateRoute";
-import { AUTH, FORGET_PASSWORD, HOME, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
+import { AUTH, CREATE_CAMPAIGN, FORGET_PASSWORD, HOME, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
 
 const Routers: React.FC = () => {
   return (
@@ -55,6 +56,15 @@ const Routers: React.FC = () => {
           element={
             <PrivateRoute layout={HomePageLayout}>
               <LandingPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={CREATE_CAMPAIGN}
+          element={
+            <PrivateRoute layout={HomePageLayout}>
+              <CreateCampaignPage />
             </PrivateRoute>
           }
         />

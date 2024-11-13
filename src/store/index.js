@@ -11,6 +11,8 @@ import {
   userSignupReducer,
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
+import { createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
+import { getCreativesReducer, uploadCreativesReducer } from "../reducers/creativeReducers";
 
 const initialState = {
   userSignin: {
@@ -35,8 +37,14 @@ const store = configureStore({
     emailSendForConfirmation: emailSendForConfirmationReducer,
     emailSendForVendorConfirmation: emailSendForVendorConfirmationReducer,
 
-    //
-  
+    // campaign creation by screen owner
+    createCampaignCreationByScreenOwner: createCampaignCreationByScreenOwnerReducer,
+    getAllScreensForScreenOwnerCampaignCreation: getAllScreensForScreenOwnerCampaignCreationReducer,
+    screenDataUploadCreativeGet: screenDataUploadCreativeGetReducer,
+
+    // creative
+    creativesUpload: uploadCreativesReducer,
+    creativesList: getCreativesReducer,
   },
   // middleware: thunk
   // devTools: process.env.NODE_ENV !== 'production'
