@@ -129,6 +129,7 @@ export function CreativesListModal(props: any) {
     return () => {
       document.body.classList.remove("overflow-hidden");
     };
+    
   }, [props?.isOpen]);
 
   if (!props?.isOpen) {

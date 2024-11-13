@@ -66,7 +66,9 @@ export const UploadCreatives = ({
   
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [selectedScreens, setSelectedScreens] = useState<any>([]);
-  const [creativeUploadData, setCreativeUploadData] = useState<Data>({});
+  const [mediaFiles, setMediaFiles] = useState<any[]>([]);
+  const [requestBody, setRequestBody] = useState<any>([]);
+
 
   const screenDataUploadCreativeGet = useSelector((state: any) => state.screenDataUploadCreativeGet);
   const {
@@ -92,7 +94,36 @@ export const UploadCreatives = ({
   
 
   const closePopup = () => {
-    console.log(isPopupOpen);
+    const dataToUpload: any = [];
+    for (const data of screenDataUploadCreative?.cmsData) {
+      var objectData: any = {};
+      var screenIds: any = [];
+      var count = 0;
+      if (!objectData.resolution) {
+        objectData[data.resolution] = {};
+      }
+      if (!screenIds?.includes(data.id)) {
+        screenIds.push(data.id);
+      }
+      objectData[data.resolution] = {
+        screenResolution: data.resolution,
+        screenIds: screenIds,
+        count: count + 1,
+        creativeDuration: data.slotDuration,
+        standardDayTimeCreatives: mediaFiles?.map((f: any) => {
+          return {
+            url: f.videoURL,
+            size: f.fileSize,
+            type: f.extension
+          }
+        }),
+        standardNightTimeCreatives: [],
+        triggerCreatives: [],
+      }
+      dataToUpload.push(objectData[data.resolution]);
+    }
+    
+    setRequestBody(dataToUpload);
     setIsPopupOpen(false);
   };
 
@@ -104,16 +135,16 @@ export const UploadCreatives = ({
     }
   };
 
-  const saveCampaignDetails = useCallback(() => {
 
+  const saveCampaignDetails = useCallback(() => {
     dispatch(
       createCampaignCreationByScreenOwnerAction({
         pageName: "Uplaod Creatives Page",
         id: campaignId,
-        creatives: [],
+        creatives: requestBody,
       })
     );
-  }, [campaignId, dispatch]);
+  }, [campaignId, dispatch, requestBody]);
 
   const handleScreenSelection = (data: any) => {
     if (data.status) {
@@ -150,6 +181,8 @@ export const UploadCreatives = ({
         onClose={closePopup}
         screenOptions={screenOptions}
         selectedScreens={selectedScreens}
+        mediaFiles={mediaFiles}
+        setMediaFiles={setMediaFiles}
       />
       )}
 
@@ -256,13 +289,14 @@ export const UploadCreatives = ({
               screenData={screenDataUploadCreative?.cmsData}
               handleScreenSelection={handleScreenSelection}
               selectedScreens={selectedScreens}
+              requestBody={requestBody}
             />
           </div>
         </div>
       </div>
 
       <div className="flex py-4">
-        {!"loadingCampaignsCreations" && (
+        {/* {!"loadingCampaignsCreations" && ( */}
           <PrimaryButton
             rounded="rounded-[6px]"
             title="Continue"
@@ -272,7 +306,7 @@ export const UploadCreatives = ({
               }
             }}
           />
-        )}
+        {/* )} */}
       </div>
     </div>
   );

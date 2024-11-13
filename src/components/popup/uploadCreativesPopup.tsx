@@ -10,23 +10,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { CreativesListModal } from "../molecules/CreativeListModal";
 import { message, Select } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
+import { getCreatives } from "../../actions/creativeAction";
 
 interface UploadCreativesPopupProps {
   onClose?: any;
   screenOptions?: any;
   selectedScreens?: any;
+  mediaFiles?: any;
+  setMediaFiles?: any;
 }
 export function UploadCreativesPopup({
   onClose,
   screenOptions,
   selectedScreens,
+  mediaFiles,
+  setMediaFiles
 }: UploadCreativesPopupProps) {
   const dispatch = useDispatch<any>();
   const [campaignOption, setCampaignOption] = useState("Image/Video");
   const [url, setUrl] = useState<any>("");
   const [campaignDuration, setCampaignDuration] = useState<any>("");
   // console.log("end Date : ", endDate);
-  const [mediaFiles, setMediaFiles] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
 
@@ -46,6 +50,7 @@ export function UploadCreativesPopup({
   };
 
   useEffect(() => {
+    dispatch(getCreatives());
     if (isCreativeOpen) {
       document.body.classList.add("overflow-hidden");
     } else {
@@ -188,7 +193,6 @@ export function UploadCreativesPopup({
     setIsCreativeOpen(false);
   };
 
-  console.log(selectedScreens?.map((sc: any) => sc.resolution));
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
@@ -272,7 +276,7 @@ export function UploadCreativesPopup({
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
-                {mediaFiles.map((media, index) => (
+                {mediaFiles.map((media: any, index: any) => (
                   <ShowMediaFile
                     url={media.videoURL}
                     mediaType={media?.creativeType}

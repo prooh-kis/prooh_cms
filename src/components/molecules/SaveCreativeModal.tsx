@@ -98,7 +98,7 @@ export function SaveCreativeModel(props: any) {
       );
       setIsLoading(false);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
-      dispatch(getCreatives());
+      
       props?.onClose();
     }
   }, [dispatch, message, error]);
