@@ -15,7 +15,7 @@ export const MiddleArea: React.FC = () => {
   const { userInfo } = auth;
 
   useEffect(() => {
-    if (!userInfo?.isMaster) {
+    if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
     }
   },[dispatch, userInfo]);

@@ -13,6 +13,7 @@ import {
 } from "../reducers/userReducers";
 import { createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
 import { getCreativesReducer, uploadCreativesReducer } from "../reducers/creativeReducers";
+import { allScreensDataGetReducer } from "../reducers/screenReducers";
 
 const initialState = {
   userSignin: {
@@ -45,6 +46,9 @@ const store = configureStore({
     // creative
     creativesUpload: uploadCreativesReducer,
     creativesList: getCreativesReducer,
+
+    // Screens
+    allScreensDataGet: allScreensDataGetReducer,
   },
   // middleware: thunk
   // devTools: process.env.NODE_ENV !== 'production'

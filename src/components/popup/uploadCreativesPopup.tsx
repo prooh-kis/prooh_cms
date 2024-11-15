@@ -34,7 +34,7 @@ export function UploadCreativesPopup({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
 
-  const uniqueResolution = selectedScreens.slice() // Make a copy of the array to avoid mutating the original
+  const uniqueResolution = selectedScreens.slice()
   .sort()
   .filter((value: any, index: any, self: any) => index === 0 || self[index - 1] !== value);
   
@@ -193,6 +193,8 @@ export function UploadCreativesPopup({
     setIsCreativeOpen(false);
   };
 
+  console.log(selectedScreens);
+  console.log(uniqueResolution)
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
@@ -213,7 +215,7 @@ export function UploadCreativesPopup({
             <h1 className="text-[12px]">Choose Creatives</h1>
             <div className="flex justify-between">
               <h1 className="text-[12px]">Screen: {selectedScreens?.length}</h1>
-              <h1 className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""} text-[12px]`}>Resolution: {uniqueResolution.length > 1 ? `${uniqueResolution?.length} resolutions` : uniqueResolution}</h1>
+              <h1 className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""} text-[12px]`}>Resolution: {uniqueResolution?.length > 1 ? `${uniqueResolution?.length} resolutions` : uniqueResolution[0].resolution}</h1>
             </div>
             {uniqueResolution?.length > 1 && (
               <h1 className="text-[10px] text-red-500">Screens with different resolutions selected, please check and proceed again</h1>

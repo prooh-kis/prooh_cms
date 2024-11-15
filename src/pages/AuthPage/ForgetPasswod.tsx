@@ -75,7 +75,7 @@ export function ForgetPassword(props: any) {
           <div className="flex justify-center ">
             <button
               className="border border-solid px-4 py-2 bg-sky-500/75 rounded-md text-white w-96"
-              onClick={() => navigate("/signin")}
+              onClick={() => navigate("/auth")}
             >
               Sign In
             </button>

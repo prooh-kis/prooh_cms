@@ -137,13 +137,18 @@ export const UploadCreatives = ({
 
 
   const saveCampaignDetails = useCallback(() => {
-    dispatch(
-      createCampaignCreationByScreenOwnerAction({
-        pageName: "Uplaod Creatives Page",
-        id: campaignId,
-        creatives: requestBody,
-      })
-    );
+    if (requestBody.length > 0) {
+      dispatch(
+        createCampaignCreationByScreenOwnerAction({
+          pageName: "Uplaod Creatives Page",
+          id: campaignId,
+          creatives: requestBody,
+        })
+      );
+    } else {
+      message.error("No creative uploaded");
+    }
+
   }, [campaignId, dispatch, requestBody]);
 
   const handleScreenSelection = (data: any) => {
@@ -213,10 +218,15 @@ export const UploadCreatives = ({
               title="Live Now"
               rounded="rounded-full"
               reverse={true}
-              disabled={true}
+              disabled={false}
               height="h-8"
               width="w-30"
               textSize="text-[12px]"
+              action={() => {
+                if (validateForm()) {
+                  saveCampaignDetails();
+                }
+              }}
             />
           </div>
         </div>
@@ -293,20 +303,6 @@ export const UploadCreatives = ({
             />
           </div>
         </div>
-      </div>
-
-      <div className="flex py-4">
-        {/* {!"loadingCampaignsCreations" && ( */}
-          <PrimaryButton
-            rounded="rounded-[6px]"
-            title="Continue"
-            action={() => {
-              if (validateForm()) {
-                saveCampaignDetails();
-              }
-            }}
-          />
-        {/* )} */}
       </div>
     </div>
   );

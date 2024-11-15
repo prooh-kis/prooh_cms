@@ -31,6 +31,9 @@ export function MiddleArea(props: any) {
     if (email.lenght == 0) {
       alert("Enter your email");
       return false;
+    } else if (name === "") {
+      alert("Enter your name");
+      return false;
     } else if (!isValidEmail(email)) {
       alert("Please enter valid email");
       return false;
@@ -278,6 +281,7 @@ export function MiddleArea(props: any) {
                     type="radio"
                     id="html"
                     name="userType"
+                    disabled
                     onChange={() => setUserType(ALLY_USER_ROLE)}
                   />
                    <label htmlFor="html">Campaign Manager</label>
@@ -287,7 +291,6 @@ export function MiddleArea(props: any) {
                     type="radio"
                     id="css"
                     name="userType"
-                    disabled
                     onChange={() => setUserType(MASTER_USER_ROLE)}
                   />
                    <label htmlFor="css">Screen Manager</label>
