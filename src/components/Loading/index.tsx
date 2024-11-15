@@ -45,7 +45,7 @@ export const Loading = (props: any) => {
         width={props.width || 300}
         isStopped={loadingComplete} // Stop animation when loading completes
       /> */}
-      <Player ref={playerRef} icon={animationData} />
+      {/* <Player ref={playerRef} icon={animationData} />
       {props?.slider && (
         <div className="loading-slider">
           <div
@@ -53,10 +53,13 @@ export const Loading = (props: any) => {
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-      )}
+      )} */}
 
       {/* Optionally show progress text */}
       {/* <span className="loading-text">{progress}%</span> */}
+      <div className="animate-pulse relative flex w-full justify-center">
+        <div className="h-full bg-[#D7D7D7] w-full"></div>
+      </div>
     </div>
   );
 };

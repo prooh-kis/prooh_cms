@@ -5,3 +5,4 @@ export { LandingPage } from "./LandingPage";
 export { CreateCampaignPage } from "./CreateCampaignPage";
 
 export { ScreensPage } from "./ScreensPage";
+export { ScreenDetailsPage } from "./ScreenDetailsPage";
