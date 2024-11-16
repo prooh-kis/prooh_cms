@@ -11,7 +11,7 @@ import {
   userSignupReducer,
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
-import { createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
+import { allCampaignsDataGetReducer, campaignDetailsGetReducer, createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
 import { getCreativesReducer, uploadCreativesReducer } from "../reducers/creativeReducers";
 import { allScreensDataGetReducer, screenCampaignsDetailsGetReducer, screenDetailsGetReducer } from "../reducers/screenReducers";
 
@@ -42,6 +42,10 @@ const store = configureStore({
     createCampaignCreationByScreenOwner: createCampaignCreationByScreenOwnerReducer,
     getAllScreensForScreenOwnerCampaignCreation: getAllScreensForScreenOwnerCampaignCreationReducer,
     screenDataUploadCreativeGet: screenDataUploadCreativeGetReducer,
+
+    // Campaigns
+    allCampaignsDataGet: allCampaignsDataGetReducer,
+    campaignDetailsGet: campaignDetailsGetReducer,
 
     // creative
     creativesUpload: uploadCreativesReducer,

@@ -1,4 +1,4 @@
-import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER } from "../../constants/campaignConstants";
+import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER, CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
 import { EnterCampaignBasicDetails } from "../../components/Segment/EnterCampaignBasicDetails";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,6 +9,7 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { UploadCreatives } from "../../components/Segment/UplaodCreatives";
 import { createCampaignCreationByScreenOwnerAction } from "../../actions/campaignAction";
+import { message } from "antd";
 
 
 export const MiddleArea: React.FC = () => {
@@ -39,10 +40,21 @@ export const MiddleArea: React.FC = () => {
       setStep(2);
     }
 
+    if (successCampaignsCreations) {
+      dispatch({
+        type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+      })
+      message.success("Campaign initiated successfully");
+    }
+
     if (campaignId !== "create-campaign") {
       dispatch(
         createCampaignCreationByScreenOwnerAction({id: campaignId})
       );
+    } else {
+      // dispatch({
+      //   type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+      // });
     }
   },[dispatch, campaignId]);
   return (

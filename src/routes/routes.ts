@@ -8,3 +8,6 @@ export const CREATE_CAMPAIGN = "/create-campaign/:id?"
 
 export const SCREENS_LIST = "/screens-list";
 export const SCREENS_DETAILS = "/screens-details/:id?";
+
+export const CAMPAIGNS_LIST = "/campaigns-list";
+export const CAMPAIGNS_DETAILS = "/campaigns-details/:id?";

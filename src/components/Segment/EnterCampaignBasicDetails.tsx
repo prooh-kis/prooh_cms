@@ -229,14 +229,14 @@ export const EnterCampaignBasicDetails = ({
       message.error(errorCampaignsCreations);
     }
 
-    if (successCampaignsCreations) {
-      navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
-      dispatch({
-        type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
-      })
-      setStep(2)
-      message.success("Campaign initiated successfully");
-    }
+    // if (successCampaignsCreations) {
+    //   navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
+    //   dispatch({
+    //     type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+    //   });
+    //   setStep(2)
+    //   message.success("Campaign initiated successfully");
+    // }
     if (!allScreens && !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)) {
       dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
     }
@@ -484,6 +484,8 @@ export const EnterCampaignBasicDetails = ({
             action={() => {
               if (validateForm()) {
                 saveCampaignDetails();
+                setStep(2)
+                message.success("Campaign initiated successfully");
               }
             }}
           />

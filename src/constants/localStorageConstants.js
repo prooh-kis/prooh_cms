@@ -4,3 +4,4 @@ export const UPLOAD_CREATIVE_SCREEN_DATA = "uploadCreativeScreenData"
 
 
 export const ALL_SCREENS_LIST = "allScreensList";
+export const ALL_CAMPAIGNS_LIST = "allCampaignsList";

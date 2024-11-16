@@ -4,6 +4,8 @@ import { HomePageLayout } from "../components";
 
 import {
   AuthPage,
+  CampaignDetailsPage,
+  CampaignsPage,
   CreateCampaignPage,
   ForgetPassword,
   LandingPage,
@@ -15,7 +17,7 @@ import {
 } from "../pages";
 
 import { PrivateRoute } from "./PrivateRoute";
-import { AUTH, CREATE_CAMPAIGN, FORGET_PASSWORD, HOME, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
+import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, CREATE_CAMPAIGN, FORGET_PASSWORD, HOME, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
 
 const Routers: React.FC = () => {
   return (
@@ -79,12 +81,28 @@ const Routers: React.FC = () => {
             </PrivateRoute>
           }
         />
-
         <Route
           path={SCREENS_DETAILS}
           element={
             <PrivateRoute layout={HomePageLayout}>
               <ScreenDetailsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={CAMPAIGNS_LIST}
+          element={
+            <PrivateRoute layout={HomePageLayout}>
+              <CampaignsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={CAMPAIGNS_DETAILS}
+          element={
+            <PrivateRoute layout={HomePageLayout}>
+              <CampaignDetailsPage />
             </PrivateRoute>
           }
         />

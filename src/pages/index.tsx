@@ -6,3 +6,6 @@ export { CreateCampaignPage } from "./CreateCampaignPage";
 
 export { ScreensPage } from "./ScreensPage";
 export { ScreenDetailsPage } from "./ScreenDetailsPage";
+
+export { CampaignsPage } from "./CampaignsPage";
+export { CampaignDetailsPage } from "./CampaignDetailsPage";
