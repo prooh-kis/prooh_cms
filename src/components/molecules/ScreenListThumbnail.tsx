@@ -3,11 +3,11 @@ import clsx from "clsx";
 
 interface ScreenListThumbnailProps {
 
-  color: string;
+  color?: string;
   isSelected?: boolean;
-  handleCardClick: () => void;
+  handleCardClick?: () => void;
   navigate?: any;
-  data: any;
+  data?: any;
 }
 
 export const ScreenListThumbnail = ({navigate, data, color, isSelected, handleCardClick}: ScreenListThumbnailProps): JSX.Element => {

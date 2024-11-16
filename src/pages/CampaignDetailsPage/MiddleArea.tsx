@@ -12,7 +12,7 @@ import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
 import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
-import { getCampaignDetailsAction } from "../../actions/campaignAction";
+import { getCampaignCreatedScreensDetailsAction, getCampaignDetailsAction } from "../../actions/campaignAction";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
 
 const allTabs = [{
@@ -53,8 +53,7 @@ export const MiddleArea: React.FC = () => {
 
   const [currentTab, setCurrentTab] = useState<any>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
-  const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
-  const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
+  const [dropdownVisible, setDropdownVisible] = useState<any>({});
 
 
   const auth = useSelector((state: any) => state.auth);
@@ -66,24 +65,33 @@ export const MiddleArea: React.FC = () => {
   } = campaignDetailsGet;
 
   
+  const campaignCreatedScreensDetailsGet = useSelector((state: any) => state.campaignCreatedScreensDetailsGet);
+  const {
+    loading: loadingScreens, error: errorScreens, data: screens
+  } = campaignCreatedScreensDetailsGet;
+
+  useEffect(() => {
+    if (campaignCreated) {
+      dispatch(getCampaignCreatedScreensDetailsAction({
+        screenIds: campaignCreated.screens,
+      }));
+    }
+  },[campaignCreated, dispatch]);
+
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
     }
     dispatch(getCampaignDetailsAction({campaignId: campaignId}));
-    // dispatch(getScreenCampaignsDetailsAction({
-    //   screenId: screenId,
-    //   status: ["Active", "Pause"]
-    // }));
-  },[dispatch, userInfo]);
+  },[campaignId, dispatch, userInfo]);
 
-  const getScreenClassName = (campaign: any) => {
-    // if (screen?.screenCode) {
-    //   if (getTimeDifferenceInMin(screen?.lastActive) < 10)
-    //     return "border w-3 h-3 bg-green-500 rounded-full justify-end";
-    //   else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
-    // } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
+  const toggleDropdown = (screenId: string) => {
+    setDropdownVisible((prev: any) => ({
+      ...prev,
+      [screenId]: !prev[screenId],
+    }));
   };
+
 
   return (
     <div className="mt-6 w-full h-full py-2">
@@ -135,7 +143,71 @@ export const MiddleArea: React.FC = () => {
               <div className="px-4 pt-4 pb-2 flex justify-between">
                 <h1 className="text-[16px] font-semibold">Campaign Creatives</h1>
               </div>
-              
+              {campaignCreated?.creatives?.map((c: any, i: any) => (
+                <div key={i}>
+                  {c?.standardDayTimeCreatives?.length > 0 && (
+                    <div className="p-2">
+                      <h1 className="text-[12px] font-semibold p-2">Standard Day Creatives</h1>
+                      <div className="grid grid-cols-3 gap-2">
+                        {c?.standardDayTimeCreatives?.map((cs: any, j: any) => (
+                          <div className="col-span-1 p-2" key={j}>
+                            {cs.type === "video" ? (
+                              <video className="rounded" src={cs.url} />
+                            ) : cs.type === "image" ? (
+                              <img className="rounded" src={cs.url} alt={cs.type} />
+                            ) : (
+                              <iframe className="rounded" src={cs.url} />
+                            )}
+                            <h1></h1>
+                          </div>
+                        ))}
+                      </div>
+                      
+                    </div>
+                  )}
+                  {c?.standardNightTimeCreatives?.length > 0 && (
+                    <div className="p-2">
+                      <h1 className="text-[12px] font-semibold p-2">Standard Night Creatives</h1>
+                      <div className="grid grid-cols-3 gap-2">
+                        {c?.standardNightTimeCreatives?.map((cs: any, j: any) => (
+                          <div className="col-span-1 p-2" key={j}>
+                            {cs.type === "video" ? (
+                              <video className="rounded" src={cs.url} />
+                            ) : cs.type === "image" ? (
+                              <img className="rounded" src={cs.url} alt={cs.type} />
+                            ) : (
+                              <iframe className="rounded" src={cs.url} />
+                            )}
+                            <h1></h1>
+                          </div>
+                        ))}
+                      </div>
+                      
+                    </div>
+                  )}
+                  {c?.triggerCreatives?.length > 0 && (
+                    <div className="p-2">
+                      <h1 className="text-[12px] font-semibold p-2">Trigger Creatives</h1>
+                      <div className="grid grid-cols-3 gap-2">
+                        {c?.triggerCreatives?.map((cs: any, j: any) => (
+                          <div className="col-span-1 p-2" key={j}>
+                            {cs.type === "video" ? (
+                              <video className="rounded" src={cs.url} />
+                            ) : cs.type === "image" ? (
+                              <img className="rounded" src={cs.url} alt={cs.type} />
+                            ) : (
+                              <iframe className="rounded" src={cs.url} />
+                            )}
+                            <h1></h1>
+                          </div>
+                        ))}
+                      </div>
+                      
+                    </div>
+                  )}
+ 
+                </div>
+              ))}
 
             </div>
           </div>
@@ -147,7 +219,7 @@ export const MiddleArea: React.FC = () => {
         ) : (
           <div className="col-span-4 border rounded my-2">
             <div className="px-2 pt-2">
-              <h1 className="text-[14px] font-semibold">Playing on {campaignCreated.screens.length} screens</h1>
+              <h1 className="text-[14px] font-semibold">Playing on {campaignCreated?.screens?.length || 0} screens</h1>
             </div>
             <div className="flex items-center p-2">
               <PrimaryInput
@@ -158,6 +230,47 @@ export const MiddleArea: React.FC = () => {
                 action={setSearchQuery}
               />
             </div>
+            {loadingScreens ? (
+              <Loading />
+            ) : (
+              <div>
+                {screens?.map((screen: any, k: any) => (
+                  <div className="p-2" key={k}>
+                    <div className="flex gap-2">
+                      <img className="rounded h-16" src={screen.images[0]} alt={screen._id} />
+                      <div className="truncate">
+                        <h1 className="text-[14px] font-semibold truncate">
+                          {screen.screenName}
+                        </h1>
+                        <h1 className="text-[12px] truncate">
+                          {screen.location.address}, {screen.location.city}
+                        </h1>
+                      </div>
+                      <i
+                        className="fi fi-bs-menu-dots cursor-pointer"
+                        onClick={() => toggleDropdown(screen._id)}
+                      ></i>
+                    </div>
+                    {dropdownVisible[screen._id] && (
+                      <div className="relative inline-block top-0 right-[-100px] bg-white shadow-md w-32 z-10">
+                        <ul className="border rounded ">
+                          <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+                            View Details
+                          </li>
+                          <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+                            Edit
+                          </li>
+                          <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+                            Delete
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
           </div>
         )}
 
