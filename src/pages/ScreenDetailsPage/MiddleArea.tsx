@@ -11,6 +11,8 @@ import { Loading } from "../../components/Loading";
 import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
+import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
+import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
 
 const allTabs = [{
   id: "1",
@@ -51,6 +53,7 @@ export const MiddleArea: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<any>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
+  const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
 
 
   const auth = useSelector((state: any) => state.auth);
@@ -75,7 +78,7 @@ export const MiddleArea: React.FC = () => {
     dispatch(getScreenCampaignsDetailsAction({
       screenId: screenId,
       status: ["Active", "Pause"]
-    }))
+    }));
   },[dispatch, userInfo]);
 
   const getScreenClassName = (screen: any) => {
@@ -86,11 +89,18 @@ export const MiddleArea: React.FC = () => {
     } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
   };
 
+  const handleLoopSettingClick = () => {
+    setOpenLoopSetting(!openLoopSetting);
+  };
 
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
-
+        {openLoopSetting && loading ? (
+          <Loading />
+        ) : (
+          <LoopSettingPopup allTabs={allTabs} openLoopSetting={openLoopSetting} campaigns={campaigns}/>
+        )}
         {loading ? (
           <div className="">
             <Loading />
@@ -123,7 +133,7 @@ export const MiddleArea: React.FC = () => {
             <div className="border rounded my-2">
               <div className="px-4 pt-4 pb-2 flex justify-between">
                 <h1 className="text-[16px] font-semibold">Campaigns</h1>
-                <PrimaryButton title="Set Loop" rounded="rounded-full" textSize=""height="h-8" width="h-16" reverse={true}/>
+                <PrimaryButton action={handleLoopSettingClick} title="Set Loop" rounded="rounded-full" textSize=""height="h-8" width="h-16" reverse={true}/>
               </div>
               <div className="flex items-center px-4">
                 <TabWithoutIcon
@@ -147,28 +157,15 @@ export const MiddleArea: React.FC = () => {
               <div className="w-full">
                 {campaigns
                   && campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value]
-                  && Object.keys(campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value])?.map((campaign: any, index: any) => (
-                  <div key={index} className="px-2 group relative" onClick={() => setSelectedCampaign(campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][campaign][0].brandName)}>
-                    <div className="flex p-2 gap-4">
-                      <div className="rounded px-6 bg-gray-100">
-                        <h1 className="text-[40px] text-gray-400 font-black">{campaign.split("")[0]}</h1>
-                      </div>
-                      <div className="">
-                        <h1 className="text-[20px] font-semibold">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][campaign][0].name}</h1>
-                        <p className="text-[14px]">{campaign}</p>
-                      </div>
-                    </div>
-                    <div className="absolute px-2 top-1/2 right-4 transform -translate-y-1/2 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="text-gray-500 hover:text-blue-500">
-                        <i className="fi fi-sr-play-circle"></i>
-                      </div>
-                      <div className="text-gray-500 hover:text-green-500">
-                        <i className="fi fi-sr-trash"></i>
-                      </div>
-                      <div className="text-gray-500 hover:text-red-500">
-                        <i className="fi fi-sr-eye"></i>
-                      </div>
-                    </div>
+                  && Object.keys(campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value])?.map((brandName: any, index: any) => (
+                  <div key={index} className="px-2" onClick={() => setSelectedCampaign(brandName)}>
+                    <BrandCampaignScreenDetails
+                      brandName={brandName}
+                      campaigns={campaigns}
+                      allTabs={allTabs}
+                      currentTab={currentTab}
+                      showIcons={true}
+                    />
                   </div>
                 ))}
               </div> 
@@ -194,36 +191,31 @@ export const MiddleArea: React.FC = () => {
                 </div>
               </div>
               <div>
-                <h1 className="text-[14px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.[0]?.brandName}</h1>
-                <h1 className="text-[12px]">Ends in: {getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.[0]?.endDate) <= 0 ? "Already Ended" : `${getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.[0]?.endDate)} days`} </h1>
+                <h1 className="text-[14px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.brandName}</h1>
+                <h1 className="text-[12px]">Ends in: {getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.endDate) <= 0 ? "Already Ended" : `${getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.endDate)} days`} </h1>
               </div>
             </div>
             <div className="p-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
-              {campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.map((campaign: any, i: any) => (
-                <div key={i} className="py-2">
-                  {campaign.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
-                    <div key={j} className="p-1 relative">
-                      <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
-                        <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
-                          <div className="text-white hover:text-green-500">
-                            <i className="fi fi-sr-file-edit"></i>
-                          </div>
-                          <div className="text-white hover:text-green-500">
-                            <i className="fi fi-sr-trash"></i>
-                          </div>
+   
+                {campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
+                  <div key={j} className="p-1 relative">
+                    <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
+                      <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
+                        <div className="text-white hover:text-green-500">
+                          <i className="fi fi-sr-file-edit"></i>
+                        </div>
+                        <div className="text-white hover:text-green-500">
+                          <i className="fi fi-sr-trash"></i>
                         </div>
                       </div>
-
-                      <img className="rounded my-2" src={creative.url} alt="" />
-                      <h1 className="text-[14px]">{campaign?.name}</h1>
-                      <p className="text-[12px]">{campaign.creatives.creativeDuration} seconds, {creative.type}</p>
                     </div>
-                  ))}
-             
-                </div>
-              ))}
-              
+
+                    <img className="rounded my-2" src={creative.url} alt="" />
+                    <h1 className="text-[14px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.name}</h1>
+                    <p className="text-[12px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.creatives.creativeDuration} seconds, {creative.type}</p>
+                  </div>
+                ))}
             </div>
           </div>
         ): null}
