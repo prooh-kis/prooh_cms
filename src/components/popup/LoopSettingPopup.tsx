@@ -122,7 +122,7 @@ export function LoopSettingPopup({
             rounded="rounded-full"
           />
         </div>
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 h-[60vh]">
           {/* Left Section */}
           <div className="col-span-4 border-r p-2">
             <div className="pl-2">
@@ -134,7 +134,7 @@ export function LoopSettingPopup({
                 action={setCampaignName}
               />
             </div>
-            <div className="my-2 h-[60vh] overflow-scroll">
+            <div className="my-2 h-[58vh] overflow-scroll">
               {campaigns &&
                 getStandardCreativesWithCampaignNames(campaigns?.["Active"])?.map((camp: Campaign, i: number) => (
                   <div

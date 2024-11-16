@@ -21,8 +21,6 @@ export function generateColorFromAlphabet(letter, alpha = 1) {
   const toHex = (num) => num.toString(16).padStart(2, '0');
   const alphaHex = alpha === 0 ? 20 : Math.round(alpha * 255).toString(16).padStart(2, '0');
 
-
-  console.log(`${toHex(red)}${toHex(green)}${toHex(blue)}${alphaHex}`);
   // Return the color in hex format
   return `#${toHex(red)}${toHex(green)}${toHex(blue)}${alphaHex}`;
 }
