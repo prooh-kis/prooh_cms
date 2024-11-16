@@ -1,8 +1,10 @@
+import { generateColorFromAlphabet } from "../../utils/colorUtils";
+
 export function BrandCampaignScreenDetails({showIcons, brandName, campaigns, allTabs, currentTab}: any) {
   return (
     <div className="group relative">
       <div className="flex p-2 gap-4 hover:bg-gray-100 hover:rounded">
-        <div className="rounded px-6 bg-gray-100">
+        <div className={`rounded px-6 bg-[${generateColorFromAlphabet(brandName.split("")[0], 0)}]`}>
           <h1 className="text-[40px] text-gray-400 font-black">{brandName.split("")[0]}</h1>
         </div>
         <div className="truncate">
