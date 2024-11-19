@@ -112,7 +112,6 @@ export const MiddleArea: React.FC = () => {
               ))}
             </div>
           )}
-          
         </div>
         <div className="col-span-8 border rounded">
           {brandName && (
@@ -206,7 +205,7 @@ export const MiddleArea: React.FC = () => {
                                   </h1>
                                   <div className="flex gap-1 items-center truncate">
                                     <h1 className="text-[12px]">
-                                      {l.creativeType},
+                                      {l.extension?.split("/")[1]},
                                     </h1>
                                     <h1 className="text-[12px] truncate">
                                       {l.duration} seconds

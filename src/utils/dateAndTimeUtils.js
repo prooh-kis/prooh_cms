@@ -1,8 +1,6 @@
 export function getNumberOfDaysBetweenTwoDates(date1, date2) {
   date1 = new Date(date1);
   date2 = new Date(date2);
-  console.log(date1)
-  console.log(date2)
   //calculate time difference
   var time_difference = date2.getTime() - date1.getTime();
   //calculate days difference by dividing total milliseconds in a day

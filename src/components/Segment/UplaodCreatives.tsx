@@ -2,11 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { PrimaryInput } from "../atoms/PrimaryInput";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CalendarInput } from "../atoms/CalendarInput";
-import {
-  getEndDateFromStartDateANdDuration,
-  getNumberOfDaysBetweenTwoDates,
-} from "../../utils/dateAndTimeUtils";
 import {
   getDataFromLocalStorage,
   saveDataOnLocalStorage,
@@ -17,11 +12,12 @@ import { format } from "date-fns";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { createCampaignCreationByScreenOwnerAction, getAllScreensForScreenOwnerCampaignCreationAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
 import { DropdownInput } from "../atoms/DropdownInput";
-import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
 import { CheckboxInput } from "../../components/atoms/CheckboxInput";
 import { UploadCreativesTable } from "../../components/tables/UploadCreativesTable";
-import { UploadCreativesPopup } from "../../components/popup/uploadCreativesPopup";
 import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
+import { UploadCreativesFromBucketPopup } from "../../components/popup/UploadCreativesFromBucketPopup";
+import { Loading } from "../../components/Loading";
+import { getCreativesMediaAction } from "../../actions/creativeAction";
 
 interface UploadCreativesProps {
   userInfo?: any;
@@ -64,17 +60,20 @@ export const UploadCreatives = ({
   const dispatch = useDispatch<any>();
   const {pathname, state} = useLocation();
   
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [isBucketPopupOpen, setIsBucketPopupOpen] = useState<boolean>(false);
+
   const [selectedScreens, setSelectedScreens] = useState<any>([]);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
   const [requestBody, setRequestBody] = useState<any>([]);
+
+  const [brandName, setBrandName] = useState<any>(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
 
 
   const screenDataUploadCreativeGet = useSelector((state: any) => state.screenDataUploadCreativeGet);
   const {
     loading, error, data: screenDataUploadCreative
   } = screenDataUploadCreativeGet;
-  
+
   const validateForm = () => {
     if ("") {
       message.error("Please enter campaign name");
@@ -83,7 +82,6 @@ export const UploadCreatives = ({
       return true;
     }
   };
-
 
   const screenOptions = state?.screens?.map((screen: any) => {
     return {
@@ -124,17 +122,17 @@ export const UploadCreatives = ({
     }
     
     setRequestBody(dataToUpload);
-    setIsPopupOpen(false);
+    setIsBucketPopupOpen(false);
   };
 
-  const handleSetOpenModel = () => {
-    if (userInfo?.userRole == USER_ROLE_PRIMARY) {
-      setIsPopupOpen(true);
+
+  const handleSetOpenBucketModel = () => {
+    if (userInfo?.userRole === USER_ROLE_PRIMARY) {
+      setIsBucketPopupOpen(true); 
     } else {
       message.error("You have no access");
     }
-  };
-
+  }
 
   const saveCampaignDetails = useCallback(() => {
     if (requestBody.length > 0) {
@@ -173,23 +171,31 @@ export const UploadCreatives = ({
   }
   
   useEffect(() => {
-    dispatch(getScreenDataUploadCreativeAction({id: campaignId}))
+    if (campaignId !== "create-campaign") {
+      dispatch(getScreenDataUploadCreativeAction({id: campaignId}));
+      dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
+
+    }
   }, [
     dispatch,
-    campaignId
+    campaignId,
+    userInfo
   ]);
 
   return (
     <div className="w-full py-3">
-      {isPopupOpen && (
-      <UploadCreativesPopup
-        onClose={closePopup}
-        screenOptions={screenOptions}
-        selectedScreens={selectedScreens}
-        mediaFiles={mediaFiles}
-        setMediaFiles={setMediaFiles}
-      />
+      {isBucketPopupOpen && (
+        <UploadCreativesFromBucketPopup
+          onClose={closePopup}
+          screenOptions={screenOptions}
+          selectedScreens={selectedScreens}
+          mediaFiles={mediaFiles}
+          setMediaFiles={setMediaFiles}
+          brandName={brandName}
+          campaignId={campaignId}
+        />
       )}
+
 
       <div className="flex justify-between border rounded-[12px] py-4 px-2">
         <div className="flex gap-2 items-center">
@@ -283,24 +289,29 @@ export const UploadCreatives = ({
             </div>
             <div className="flex justify-end items-center gap-4 pb-1">
               <PrimaryButton
-                icon={<i className="fi fi-br-plus-small flex items-center"></i>}
-                title="Upload"
+                title="Bucket"
+                reverse={true}
                 rounded="rounded-full"
                 height="h-8"
-                width="w-32px"
+                width="w-32"
                 textSize="text-[12px]"
                 disabled={selectedScreens?.length > 0 ? false : true}
-                action={handleSetOpenModel}
+                action={handleSetOpenBucketModel}
               />
             </div>
           </div>
           <div className="py-2">
-            <UploadCreativesTable
-              screenData={screenDataUploadCreative?.cmsData}
-              handleScreenSelection={handleScreenSelection}
-              selectedScreens={selectedScreens}
-              requestBody={requestBody}
-            />
+            {loading ? (
+              <Loading />
+            ) : (
+              <UploadCreativesTable
+                screenData={screenDataUploadCreative?.cmsData}
+                handleScreenSelection={handleScreenSelection}
+                selectedScreens={selectedScreens}
+                requestBody={requestBody}
+              />
+            )}
+
           </div>
         </div>
       </div>

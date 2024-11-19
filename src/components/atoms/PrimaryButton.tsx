@@ -28,7 +28,7 @@ export const PrimaryButton = ({icon, reverse, textSize, disabled, width, height,
           ${reverse && !disabled ? 
               "bg-white border border-primaryButton text-primaryButton hover:bg-transparent hover:border-primaryButton hover:border-2 hover:text-primaryButton" :
               "bg-primaryButton font-semibold text-white hover:bg-transparent hover:border-primaryButton hover:border-2 hover:text-primaryButton"}
-          ${disabled ? "bg-gray-300" : ""}
+          ${disabled ? "bg-[#D7D7D7]" : ""}
           transition-colors duration-300
         `}
       >

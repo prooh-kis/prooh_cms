@@ -39,24 +39,23 @@ export const MiddleArea: React.FC = () => {
     if (campaignId && getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.currentPage === "Add Basic Details") {
       setStep(2);
     }
+    if (campaignId !== "create-campaign") {
+      dispatch(
+        createCampaignCreationByScreenOwnerAction({id: campaignId})
+      );
+    }
+  },[dispatch, campaignId]);
 
+  useEffect(() => {
     if (successCampaignsCreations) {
+      navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       })
       message.success("Campaign initiated successfully");
     }
+  },[dispatch, navigate, successCampaignsCreations, campaignsCreated]);
 
-    if (campaignId !== "create-campaign") {
-      dispatch(
-        createCampaignCreationByScreenOwnerAction({id: campaignId})
-      );
-    } else {
-      // dispatch({
-      //   type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
-      // });
-    }
-  },[dispatch, campaignId]);
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
       {step === 1 ? (
