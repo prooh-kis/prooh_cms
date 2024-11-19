@@ -31,7 +31,7 @@ export const MiddleArea: React.FC = () => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
     }
-    dispatch(getAllCampaignsDetailsAction({userId: userInfo._id}));
+    dispatch(getAllCampaignsDetailsAction({userId: userInfo?._id}));
   },[dispatch, userInfo]);
 
   // Handle card click, setting the clicked card's index
@@ -51,7 +51,7 @@ export const MiddleArea: React.FC = () => {
           <div className="flex gap-4 items-center flex-wrap">
             {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)?.list?.map((data: any, index: any) => (
                 <div key={index} className="">
-                  <CampaignListThumbnail isSelected={data._id === selectedCard} color={""} handleCardClick={() => handleCardClick(data._id)} navigate={() => navigate(`/campaigns-details/${data._id}`)} data={data}/>
+                  <CampaignListThumbnail isSelected={data?._id === selectedCard} color={""} handleCardClick={() => handleCardClick(data._id)} navigate={() => navigate(`/campaigns-details/${data._id}`)} data={data}/>
                 </div>
               ))}
           </div>

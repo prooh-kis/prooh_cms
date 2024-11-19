@@ -43,11 +43,9 @@ export const MiddleArea: React.FC = () => {
 
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
-      <div className="flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center">
         {loading ? (
-          <div className="w-full h-full">
-            <Loading />
-          </div>
+          <Loading />
         ) : (
           <div className="flex gap-4 items-center flex-wrap">
             {getDataFromLocalStorage(ALL_SCREENS_LIST)?.list?.map((data: any, index: any) => (

@@ -11,3 +11,5 @@ export const SCREENS_DETAILS = "/screens-details/:id?";
 
 export const CAMPAIGNS_LIST = "/campaigns-list";
 export const CAMPAIGNS_DETAILS = "/campaigns-details/:id?";
+
+export const MY_CREATIVES = "/my-creatives"

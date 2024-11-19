@@ -9,3 +9,5 @@ export { ScreenDetailsPage } from "./ScreenDetailsPage";
 
 export { CampaignsPage } from "./CampaignsPage";
 export { CampaignDetailsPage } from "./CampaignDetailsPage";
+
+export { MyCreativesPage } from "./MyCreativesPage";

@@ -1,65 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./index.css"; // Import CSS for styling
-import animationData from "../../assets/lottie/loading.json";
-import { Player } from "@lordicon/react";
-
-export const Loading = (props: any) => {
-  const playerRef = useRef<Player>(null);
-  const [progress, setProgress] = useState(0);
-  const [loadingComplete, setLoadingComplete] = useState(false);
-
-  // Lottie options configuration
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
+export const Loading = ({ grid = { cols: 3, rows: 4 }, height, width}: any) => {
+  const generateColumnWidths = (cols: number) => {
+    // Generate widths such that their sum equals 'w-full'
+    const availableWidths = [1 / 4, 1 / 2, 1 / 4]; // Tailwind width fractions
+    if (cols > availableWidths.length) {
+      throw new Error("Number of columns exceeds available distinct widths");
+    }
+  
+    // Shuffle the available widths to ensure randomness
+    const shuffledWidths = [...availableWidths].sort(() => Math.random() - 0.5);
+  
+    // Take the first `cols` widths
+    const selectedWidths = shuffledWidths.slice(0, cols);
+  
+    // Ensure the sum of selected widths equals 1 (w-full)
+    const total = selectedWidths.reduce((sum, width) => sum + width, 0);
+  
+    if (total !== 1) {
+      throw new Error("Widths do not sum to w-full");
+    }
+  
+    return selectedWidths.map((width) => `w-${Math.round(width * 4)}/4`);
   };
 
-  useEffect(() => {
-    playerRef.current?.playFromBeginning();
-
-    // Simulate loading progress
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setLoadingComplete(true); // Mark loading as complete
-          return 100;
-        }
-        return prev + 1; // Increment progress by 1%
-      });
-    }, 100);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className={`loading-container ${loadingComplete ? "collapse" : ""}`}>
-      {/* <Lottie
-        options={defaultOptions}
-        height={props.height || 300}
-        width={props.width || 300}
-        isStopped={loadingComplete} // Stop animation when loading completes
-      /> */}
-      {/* <Player ref={playerRef} icon={animationData} />
-      {props?.slider && (
-        <div className="loading-slider">
-          <div
-            className="loading-progress"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-      )} */}
+    <div className={`grid gap-4 w-full h-full p-4`}>
+      {Array.from({ length: grid.rows }).map((_, rowIndex) => {
+        const columnWidths = generateColumnWidths(grid.cols);
 
-      {/* Optionally show progress text */}
-      {/* <span className="loading-text">{progress}%</span> */}
-      <div className="animate-pulse relative flex w-full justify-center">
-        <div className="h-full bg-[#D7D7D7] w-full"></div>
-      </div>
+        return (
+          <div key={`row-${rowIndex}`} className={`grid grid-cols-${grid.cols} gap-4 w-full`}>
+            {Array.from({ length: grid.cols }).map((_, colIndex) => (
+              <div
+                key={`col-${colIndex}`}
+                className={`p-2 animate-pulse bg-[#D7D7D7] rounded h-20 ${columnWidths[colIndex]}`}
+              ></div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 };

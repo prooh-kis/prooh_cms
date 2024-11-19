@@ -3,7 +3,7 @@ import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signout } from "../../actions/userAction";
-import { AUTH } from "../../routes/routes";
+import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, MY_CREATIVES, SCREENS_LIST } from "../../routes/routes";
 
 export const Menu = (props: any) => {
   const { userInfo } = props;
@@ -20,7 +20,26 @@ export const Menu = (props: any) => {
       <i className="fi fi-ss-angle-down"></i>
       <div className="dropdown-content">
         <div
-          // onClick={() => navigate(MY_CREATIVES)}
+          onClick={() => navigate(SCREENS_LIST)}
+          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
+        >
+          <div>
+            {/* <MdOutlinePermMedia className="w-6 h-6" /> */}
+          </div>
+          <h1 className="text-black-1000">My Screens</h1>
+        </div>
+        <div
+          onClick={() => navigate(CAMPAIGNS_LIST)}
+
+          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
+        >
+          <div>
+            {/* <MdOutlinePermMedia className="w-6 h-6" /> */}
+          </div>
+          <h1 className="text-black-1000">My Campaigns</h1>
+        </div>
+        <div
+          onClick={() => navigate(MY_CREATIVES)}
           className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
         >
           <div>

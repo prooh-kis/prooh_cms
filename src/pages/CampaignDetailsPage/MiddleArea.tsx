@@ -124,8 +124,9 @@ export const MiddleArea: React.FC = () => {
                   </div>
                 </div>
                 <div className="px-4 flex h-auto gap-8">
-                  <i className="fi fi-br-refresh text-gray-500"></i>
-                  <i className="fi fi-sr-eye text-gray-500"></i>
+                  {campaignCreated?.status === "Active" ? "s" : ""}
+                  <i className="fi fi-sr-play-circle text-gray-500"></i>
+                  <i className="fi fi-sr-trash text-gray-500"></i>
                 </div>   
               </div>
               <div className="px-4 p-2">
