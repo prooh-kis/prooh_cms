@@ -66,9 +66,11 @@ export function UploadCreativesFromBucketPopup({
 
   useEffect(() => {
     if (creatives && brandName) {
+      console.log(creatives);
       setCreativesMedia(creatives[brandName]);
     }
   },[brandName, creatives]);
+console.log(creativesMedia);
 
   useEffect(() => {
    
@@ -253,10 +255,7 @@ export function UploadCreativesFromBucketPopup({
                 <Loading />
               ) : (
                 <div>
-                  <div>
-
-                  </div>
-                  {brandName && creatives && Object.keys(creativesMedia)?.filter((c: any) => c !== "network")?.map((f: any, k: any) => (
+                  {creativesMedia && Object.keys(creativesMedia)?.filter((c: any) => c !== "network")?.map((f: any, k: any) => (
                     <div className="p-2" key={k} onClick={() => {}}>
                       <h1 className="text-[12px] font-semibold border-b">{`${f}s`.toUpperCase()}</h1>
                       {Object.keys(creativesMedia[f])?.map((g: any, j: any) => (
