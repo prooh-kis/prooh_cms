@@ -12,7 +12,7 @@ import {
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
 import { allCampaignsDataGetReducer, campaignCreatedScreensDetailsGetReducer, campaignDetailsGetReducer, createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
-import { creativesMediaGetReducer, creativesMediaUploadReducer, getCreativesReducer, uploadCreativesReducer } from "../reducers/creativeReducers";
+import { creativesMediaGetReducer, creativesMediaUploadReducer } from "../reducers/creativeReducers";
 import { allScreensDataGetReducer, screenCampaignsDetailsGetReducer, screenDetailsGetReducer } from "../reducers/screenReducers";
 
 const initialState = {
@@ -49,8 +49,6 @@ const store = configureStore({
     campaignCreatedScreensDetailsGet: campaignCreatedScreensDetailsGetReducer,
 
     // creative
-    creativesUpload: uploadCreativesReducer,
-    creativesList: getCreativesReducer,
     creativesMediaUpload: creativesMediaUploadReducer,
     creativesMediaGet: creativesMediaGetReducer,
     

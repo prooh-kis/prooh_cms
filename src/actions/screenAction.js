@@ -4,6 +4,7 @@ import { GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREEN
 const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
 
 export const getAllScreensDetailsAction = ({userId}) => async (dispatch) => {
+  
   dispatch({
     type: GET_ALL_SCREENS_DATA_REQUEST,
     payload: userId,
@@ -27,6 +28,7 @@ export const getAllScreensDetailsAction = ({userId}) => async (dispatch) => {
 }
 
 export const getScreenDetailsAction = ({screenId}) => async (dispatch) => {
+  
   dispatch({
     type: GET_SCREEN_DATA_REQUEST,
     payload: screenId,
@@ -50,6 +52,7 @@ export const getScreenDetailsAction = ({screenId}) => async (dispatch) => {
 }
 
 export const getScreenCampaignsDetailsAction = ({screenId, status}) => async (dispatch) => {
+  
   dispatch({
     type: GET_SCREEN_CAMPAIGNS_DATA_REQUEST,
     payload: {screenId, status},

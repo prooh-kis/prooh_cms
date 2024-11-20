@@ -9,20 +9,6 @@ import {
   UPLOAD_CREATIVES_SUCCESS,
 } from "../constants/creativeConstants";
 
-export function uploadCreativesReducer(state = {}, action) {
-  switch (action.type) {
-    case UPLOAD_CREATIVES_REQUEST:
-      return { loading: true };
-    case UPLOAD_CREATIVES_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
-    case UPLOAD_CREATIVES_ERROR:
-      return { loading: false, error: action.payload };
-    case UPLOAD_CREATIVES_RESET:
-      return {};
-    default:
-      return state;
-  }
-}
 
 export function creativesMediaUploadReducer(state = {}, action) {
   switch (action.type) {
@@ -33,21 +19,6 @@ export function creativesMediaUploadReducer(state = {}, action) {
     case UPLOAD_CREATIVES_ERROR:
       return { loading: false, error: action.payload };
     case UPLOAD_CREATIVES_RESET:
-      return {};
-    default:
-      return state;
-  }
-}
-
-export function getCreativesReducer(state = {}, action) {
-  switch (action.type) {
-    case GET_CREATIVES_REQUEST:
-      return { loading: true };
-    case GET_CREATIVES_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
-    case GET_CREATIVES_ERROR:
-      return { loading: false, error: action.payload };
-    case GET_CREATIVES_RESET:
       return {};
     default:
       return state;

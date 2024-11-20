@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { PrimaryButton } from "../atoms/PrimaryButton";
-import { PrimaryInput } from "../atoms/PrimaryInput";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getDataFromLocalStorage,
@@ -9,21 +8,27 @@ import {
 import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
-import { createCampaignCreationByScreenOwnerAction, getAllScreensForScreenOwnerCampaignCreationAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
-import { DropdownInput } from "../atoms/DropdownInput";
-import { CheckboxInput } from "../../components/atoms/CheckboxInput";
-import { UploadCreativesTable } from "../../components/tables/UploadCreativesTable";
+import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { createCampaignCreationByScreenOwnerAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
+import { CheckboxInput } from "../atoms/CheckboxInput";
+import { UploadCreativesTable } from "../tables/UploadCreativesTable";
 import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
-import { UploadCreativesFromBucketPopup } from "../../components/popup/UploadCreativesFromBucketPopup";
-import { Loading } from "../../components/Loading";
+import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBucketPopup";
+import { Loading } from "../Loading";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
+import { ShowMediaPopup } from "../popup/ShowMediaPopup";
+import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
+import axios from "axios";
 
 interface UploadCreativesProps {
   userInfo?: any;
   step?: any;
   setStep?: any;
   campaignId?: any;
+  successCampaignsCreations?: any;
+  campaignsCreated?: any
+  loadingCampaignsCreations?: any;
+
 }
 
 interface SingleFile {
@@ -53,21 +58,23 @@ export const UploadCreatives = ({
   userInfo,
   step,
   setStep,
-  campaignId
-
+  campaignId,
+  successCampaignsCreations,
+  loadingCampaignsCreations
 }: UploadCreativesProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
   const {pathname, state} = useLocation();
   
   const [isBucketPopupOpen, setIsBucketPopupOpen] = useState<boolean>(false);
+  const [openShowMedia, setOpenShowMedia] = useState<any>(null);
 
   const [selectedScreens, setSelectedScreens] = useState<any>([]);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
-  const [requestBody, setRequestBody] = useState<any>([]);
 
   const [brandName, setBrandName] = useState<any>(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
 
+  const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
 
   const screenDataUploadCreativeGet = useSelector((state: any) => state.screenDataUploadCreativeGet);
   const {
@@ -92,37 +99,9 @@ export const UploadCreatives = ({
   
 
   const closePopup = () => {
-    const dataToUpload: any = [];
-    for (const data of screenDataUploadCreative?.cmsData) {
-      var objectData: any = {};
-      var screenIds: any = [];
-      var count = 0;
-      if (!objectData.resolution) {
-        objectData[data.resolution] = {};
-      }
-      if (!screenIds?.includes(data.id)) {
-        screenIds.push(data.id);
-      }
-      objectData[data.resolution] = {
-        screenResolution: data.resolution,
-        screenIds: screenIds,
-        count: count + 1,
-        creativeDuration: data.slotDuration,
-        standardDayTimeCreatives: mediaFiles?.map((f: any) => {
-          return {
-            url: f.videoURL,
-            size: f.fileSize,
-            type: f.extension
-          }
-        }),
-        standardNightTimeCreatives: [],
-        triggerCreatives: [],
-      }
-      dataToUpload.push(objectData[data.resolution]);
-    }
-    
-    setRequestBody(dataToUpload);
     setIsBucketPopupOpen(false);
+    setOpenShowMedia(null);
+
   };
 
 
@@ -134,20 +113,42 @@ export const UploadCreatives = ({
     }
   }
 
-  const saveCampaignDetails = useCallback(() => {
-    if (requestBody.length > 0) {
-      dispatch(
-        createCampaignCreationByScreenOwnerAction({
-          pageName: "Uplaod Creatives Page",
-          id: campaignId,
-          creatives: requestBody,
-        })
-      );
+  const saveCampaignCreativesDetails = async () => {
+
+    const creativesFromStorage = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives;
+    // if (getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives.length > 0) {
+    console.log("yes")
+
+    if (creativesFromStorage && creativesFromStorage.length > 0) {
+
+      const immutableCreatives = JSON.parse(JSON.stringify(creativesFromStorage));
+      const { data } = await axios.post(`${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns/createCampaignByScreenOwner`, {
+        pageName: "Upload Creatives",
+        id: campaignId,
+        creatives: immutableCreatives
+      });
+
+      if (data) {
+        message.success("Campaign Created Successfully!");
+      }
+      
+      console.log(immutableCreatives);
+      console.log("jdjsk")
+      
+      // dispatch(
+      //   createCampaignCreationByScreenOwnerAction({
+      //     pageName: "Upload Creatives",
+      //     id: campaignId,
+      //     creatives: []
+      //     // creatives: immutableCreatives,
+      //   })
+      // );
+     
     } else {
       message.error("No creative uploaded");
     }
 
-  }, [campaignId, dispatch, requestBody]);
+  };
 
   const handleScreenSelection = (data: any) => {
     if (data.status) {
@@ -171,16 +172,40 @@ export const UploadCreatives = ({
   }
   
   useEffect(() => {
-    if (campaignId !== "create-campaign") {
+    if (successCampaignsCreations) {
+      // navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
+      dispatch({
+        type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+      })
+      message.success("Campaign saved successfully");
+    }
+
+    if (campaignId !== "create-campaign" && step === 2 && !loadingCampaignsCreations) {
       dispatch(getScreenDataUploadCreativeAction({id: campaignId}));
       dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
-
     }
-  }, [
-    dispatch,
-    campaignId,
-    userInfo
-  ]);
+    
+  }, [dispatch, campaignId, userInfo, successCampaignsCreations, navigate, step, loadingCampaignsCreations]);
+
+  useEffect(() => {
+    if (screenDataUploadCreative) {
+      setScreenCreativeUpload(screenDataUploadCreative)
+    }
+  },[screenDataUploadCreative]);
+
+  const getUploadedScreensNumber = () => {
+    let screenIds: any = []
+    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId].creatives?.map((c: any) => {
+      c.screenIds?.map((screenId: any) => {
+        if (!screenIds.includes(screenId)) {
+          return screenIds.push(screenId);
+        }
+
+      })
+    });
+    
+    return screenIds.length;
+  }
 
   return (
     <div className="w-full py-3">
@@ -193,6 +218,8 @@ export const UploadCreatives = ({
           setMediaFiles={setMediaFiles}
           brandName={brandName}
           campaignId={campaignId}
+          handleScreenSelection={handleScreenSelection}
+          screenData={screenCreativeUpload}
         />
       )}
 
@@ -206,31 +233,38 @@ export const UploadCreatives = ({
           <h1 className="text text-[14px] font-semibold">Upload Creatives</h1>
         </div>
         <div className="flex gap-4">
-          <div className="flex items-center gap-4">
-            <h1 className="text text-[12px]">Uploaded</h1>
+          {screenCreativeUpload && (
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <i className={`fi fi-br-check flex items-center text-green-500 text-[12px]`}></i>
-                <h1 className="text text-[12px]">60</h1>
-              </div>
-              <div className="flex items-center gap-1">
-                <i className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}/>
-                <h1 className="text text-[12px]">40</h1>
+              <h1 className="text text-[12px]">Uploaded</h1>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1">
+                  <i className={`fi fi-br-check flex items-center text-green-500 text-[12px]`}></i>
+                  <h1 className="text text-[12px]">
+                    {getUploadedScreensNumber()}
+                  </h1>
+                </div>
+                <div className="flex items-center gap-1">
+                  <i className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}/>
+                  <h1 className="text text-[12px]">
+                    {Number(screenCreativeUpload?.flatMap((data: any) => data.screens).length || 0) - getUploadedScreensNumber()}
+                  </h1>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           <div className="p-1">
             <PrimaryButton 
               title="Live Now"
               rounded="rounded-full"
               reverse={true}
-              disabled={false}
+              disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
               height="h-8"
               width="w-30"
               textSize="text-[12px]"
               action={() => {
                 if (validateForm()) {
-                  saveCampaignDetails();
+                  saveCampaignCreativesDetails();
                 }
               }}
             />
@@ -288,6 +322,7 @@ export const UploadCreatives = ({
               <i className="fi fi-sr-angle-small-down text-[#7C8E9B] flex items-center"></i>
             </div>
             <div className="flex justify-end items-center gap-4 pb-1">
+              <h1 className="text-[12px] font-semibold">{selectedScreens.length} selected</h1>
               <PrimaryButton
                 title="Bucket"
                 reverse={true}
@@ -298,18 +333,41 @@ export const UploadCreatives = ({
                 disabled={selectedScreens?.length > 0 ? false : true}
                 action={handleSetOpenBucketModel}
               />
+              <i className="fi fi-br-disk flex items-center text-blue-500" onClick={() => {
+                  if (validateForm()) {
+                    saveCampaignCreativesDetails();
+                  }
+              }}></i>
             </div>
           </div>
           <div className="py-2">
             {loading ? (
               <Loading />
             ) : (
-              <UploadCreativesTable
-                screenData={screenDataUploadCreative?.cmsData}
-                handleScreenSelection={handleScreenSelection}
-                selectedScreens={selectedScreens}
-                requestBody={requestBody}
-              />
+              <div className={"grid grid-cols-4"}>
+                <div className={openShowMedia ? "col-span-3" : "col-span-4"}>
+                  <UploadCreativesTable
+                    onClose={closePopup}
+                    openShowMedia={openShowMedia}
+                    setOpenShowMedia={setOpenShowMedia}
+                    screenData={screenCreativeUpload}
+                    handleScreenSelection={handleScreenSelection}
+                    selectedScreens={selectedScreens}
+                    campaignId={campaignId}
+                  />
+                </div>
+                {openShowMedia && (
+                  <div className="col-span-1">
+                    <ShowMediaPopup
+                      onClose={closePopup}
+                      openShowMedia={openShowMedia}
+                      media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+                    />
+                  </div>
+                )}
+                
+              </div>
+
             )}
 
           </div>

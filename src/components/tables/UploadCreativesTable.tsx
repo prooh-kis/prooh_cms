@@ -1,37 +1,79 @@
+import { useEffect, useState } from "react";
 import { CheckboxInput } from "../../components/atoms/CheckboxInput";
 import Fraction from "fraction.js";
+import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
+import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { ShowMediaPopup } from "../../components/popup/ShowMediaPopup";
 
 interface UploadCreativesTableProps {
   userInfo?: any;
   step?: any;
   setStep?: any;
   screenData?: any;
-  handleScreenSelection?: any
-  selectedScreens?: any;
-  requestBody?: any;
+  handleScreenSelection?: (data: { screen: any; status: boolean }) => void;
+  selectedScreens?: any[];
+  campaignId?: any;
+  openShowMedia?: any;
+  setOpenShowMedia?: any;
+  onClose?: any;
 }
 
 export const UploadCreativesTable = ({
-  userInfo,
-  step,
-  setStep,
+
   screenData,
   handleScreenSelection,
-  selectedScreens,
-  requestBody,
-
+  selectedScreens = [],
+  campaignId,
+  openShowMedia,
+  setOpenShowMedia,
+  onClose,
 }: UploadCreativesTableProps) => {
+
+
+  const screens: any = screenData?.flatMap((data: any) => data.screens);
+
+  const isAllSelected = screens?.length > 0 && screens?.every((screen: any) =>
+    selectedScreens.some((selected) => selected.id === screen.id)
+  );
+
+  useEffect(() => {
+    if (screenData) {}
+  },[screenData]);
+
+  const handleHeaderCheckboxChange = (checked: boolean) => {
+    if (handleScreenSelection) {
+      if (checked) {
+        // Select all screens
+        screens.forEach((screen: any) => {
+          if (!selectedScreens.some((selected) => selected.id === screen.id)) {
+            handleScreenSelection({ screen, status: true });
+          }
+        });
+      } else {
+        // Deselect all screens
+        screens.forEach((screen: any) => {
+          if (selectedScreens.some((selected) => selected.id === screen.id)) {
+            handleScreenSelection({ screen, status: false });
+          }
+        });
+      }
+    }
+  };
+
   return (
     <div className="w-full">
+     
       <table className="w-full">
         <thead className="bg-[#EBF6FF]">
-          <tr className="">
+          <tr>
             <th className="py-2 px-1">
               <div className="flex items-center justify-center gap-1">
                 <CheckboxInput
-                  label={``}
+                  label=""
                   textSize="12px"
                   color="#129BFF"
+                  onChange={(e) => handleHeaderCheckboxChange(e)}
+                  checked={isAllSelected}
                 />
               </div>
             </th>
@@ -73,21 +115,22 @@ export const UploadCreativesTable = ({
           </tr>
         </thead>
         <tbody>
-          {screenData?.map((s: any, i: any) => (
+          {screens?.map((s: any, i: number) => (
             <tr key={i}>
               <td className="py-2 px-1">
                 <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                   <CheckboxInput
-                    label={``}
+                    label=""
                     textSize="12px"
                     color="#129BFF"
                     onChange={(e) => {
-                      handleScreenSelection({
-                        screen: s,
-                        status: e
-                      });
+                      if (handleScreenSelection) {
+                        handleScreenSelection({ screen: s, status: e })
+                      }
                     }}
-                    checked={selectedScreens?.map((sc: any) => sc.id)?.includes(s.id) ? true : false}
+                    checked={selectedScreens.map(
+                      (selected) => selected.id
+                    ).includes(s.id)}
                   />
                 </div>
               </td>
@@ -103,12 +146,25 @@ export const UploadCreativesTable = ({
               </td>
               <td className="py-2 px-1">
                 <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
-                  {s.ratio || `${new Fraction(Number(s?.resolution?.split("x")[0] / s?.resolution?.split("x")[1])).n}:${new Fraction(Number(s?.resolution?.split("x")[0] / s?.resolution?.split("x")[1]).toFixed(2).toString()).d}`}
+                  {s.ratio ||
+                    `${new Fraction(
+                      Number(
+                        s?.resolution?.split("x")[0] /
+                          s?.resolution?.split("x")[1]
+                      )
+                    ).n}:${new Fraction(
+                      Number(
+                        s?.resolution?.split("x")[0] /
+                          s?.resolution?.split("x")[1]
+                      )
+                        .toFixed(2)
+                        .toString()
+                    ).d}`}
                 </div>
               </td>
               <td className="py-2 px-1">
                 <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
-                  {s.resolution }
+                  {s.resolution}
                 </div>
               </td>
               <td className="py-2 px-1">
@@ -118,19 +174,31 @@ export const UploadCreativesTable = ({
               </td>
               <td className="py-2 px-1">
                 <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
-                  {requestBody.filter((rb: any) => rb.screenResolution === s.resolution)?.map((r: any) => r.standardDayTimeCreatives)[0]?.length > 1 ? "Multiple" : "Single"}
+                  {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
+                    .filter(
+                      (rb: any) => rb.screenResolution === s.resolution
+                    )
+                    ?.map((r: any) => r.standardDayTimeCreatives)[0]?.length > 1
+                    ? "Multiple"
+                    : "Single"}
                 </div>
               </td>
               <td className="py-2 px-1">
-                <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
-                  {requestBody.map((r: any) => r.screenResolution)?.includes(s.resolution) ? "uploaded" : "??"}
+                <div
+                  className="flex items-center justify-center gap-1 truncate text-[12px]"
+                  onClick={() => setOpenShowMedia(s)}
+                >
+                  {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
+                    .flatMap((r: any) => r.screenIds)
+                    ?.includes(s.id)
+                    ? "uploaded"
+                    : "??"}
                 </div>
               </td>
             </tr>
           ))}
-          
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};

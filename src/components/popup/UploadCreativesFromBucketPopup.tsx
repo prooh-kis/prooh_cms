@@ -3,16 +3,15 @@ import { ShowMediaFile } from "../molecules/ShowMediaFIle";
 import { isNumber } from "@turf/turf";
 import { isValidUrl } from "../../utils/valueValidate";
 // import { campaignsCreateByScreenOwner } from "../../actions/campaignAction";
-import { getNumberOfDaysBetweenTwoDates } from "../../utils/dateAndTimeUtils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-import { CreativesListModal } from "../molecules/CreativeListModal";
 import { message, Select } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
-import { getCreatives, getCreativesMediaAction } from "../../actions/creativeAction";
 import { Loading } from "../../components/Loading";
-import { createCampaignCreationByScreenOwnerAction } from "../../actions/campaignAction";
+import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
+import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+
 
 interface UploadCreativesFromBucketPopupProps {
   onClose?: any;
@@ -22,6 +21,8 @@ interface UploadCreativesFromBucketPopupProps {
   setMediaFiles?: any;
   brandName?: string;
   campaignId?: any;
+  handleScreenSelection?: any;
+  screenData?: any;
 }
 export function UploadCreativesFromBucketPopup({
   onClose,
@@ -30,7 +31,9 @@ export function UploadCreativesFromBucketPopup({
   mediaFiles,
   setMediaFiles,
   brandName,
-  campaignId
+  campaignId,
+  handleScreenSelection,
+  screenData,
 }: UploadCreativesFromBucketPopupProps) {
   const dispatch = useDispatch<any>();
   const [campaignOption, setCampaignOption] = useState("Image/Video");
@@ -42,9 +45,12 @@ export function UploadCreativesFromBucketPopup({
 
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
-  const uniqueResolution = selectedScreens.slice()
-  .sort()
-  .filter((value: any, index: any, self: any) => index === 0 || self[index - 1] !== value);
+  const uniqueResolution = selectedScreens.reduce((unique: any, screen: any) => {
+    if (!unique.includes(screen.resolution)) {
+        unique.push(screen.resolution);
+    }
+    return unique;
+}, []);
   
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -66,11 +72,9 @@ export function UploadCreativesFromBucketPopup({
 
   useEffect(() => {
     if (creatives && brandName) {
-      console.log(creatives);
       setCreativesMedia(creatives[brandName]);
     }
   },[brandName, creatives]);
-console.log(creativesMedia);
 
   useEffect(() => {
    
@@ -103,49 +107,83 @@ console.log(creativesMedia);
 
   const createCampaignFromMedia = async () => {
     setIsLoading(true);
-    const mediaData = mediaFiles.map((item: any) => ({
-      screenResolution: `${item.resolution.width}x${item.resolution.height}`,
-      count: 1,
-      creativeDuration: parseInt(item.duration, 10),
-      standardDayTimeCreatives: [
-        {
-          type: `image/${item.extension.split("/").pop()}`,
-          url: item.url,
-          size: item.fileSize,
-          _id: { $oid: item._id }
-        }
-      ],
-      standardNightTimeCreatives: [],
-      triggerCreatives: []
-    }))
+    
+    const selectedScreenIds = selectedScreens?.map((s: any) => s.id);
+    let dataToUpload: any = []
+    mediaFiles?.map((item: any) => {
+      const mediaData = {
+        resolution: `${item.resolution.width}x${item.resolution.height}`,
+        type: item.extension,
+        url: item.awsURL,
+        size: item.fileSize,
+        _id: { $oid: item._id }
+      }
+      dataToUpload.push(mediaData);
+    })
 
-    dispatch(
-      createCampaignCreationByScreenOwnerAction({
-        id: campaignId,
-        creatives: mediaData,
+    const creativeDataToUpload = []
+    for (const scr of screenData) {
+      selectedScreenIds?.map((s: any) => {
+        if (scr.screens?.map((sd: any) => sd.id).includes(s)) {
+          dataToUpload.map((data: any) => {
+            if (!scr.standardDayTimeCreatives?.map((f: any) => f.url).includes(data.url)) {
+              scr.standardDayTimeCreatives.push({
+                size: data.size,
+                type: data.type,
+                url: data.url,
+              });
+            }
+          })
+        }
       })
-    );
+      
+      creativeDataToUpload.push({
+        screenResolution: scr.screenResolution,
+        count: selectedScreenIds.length,
+        creativeDuration: parseInt(scr.creativeDuration, 10),
+        screenIds: selectedScreenIds,
+        standardDayTimeCreatives: scr.standardDayTimeCreatives,
+        standardNightTimeCreatives: [],
+        triggerCreatives: []
+      });
+    }
+
+    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+    for (const cd of creativeDataToUpload) {
+      if (cd.standardDayTimeCreatives.length > 0) {
+        campData.creatives.push(cd);
+      }
+    }
+    saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, {
+      [campaignId]: campData,
+    });
+
+    setIsLoading(false);
+    setIsCreativeOpen(false);
+    toast.success("Creative added successfully");
 
     setTimeout(() => {
       handelDiscard();
     }, 0);
+    return;
   };
 
   const createCampaignFromURL = () => {
     setIsLoading(true);
-    dispatch(
-      createCampaignCreationByScreenOwnerAction({
-        id: campaignId,
-        mediaData: [
-          {
-            awsURL: url,
-            fileType: "url",
-            videoDuration: Number(campaignDuration),
-            fileSize: 0,
-          },
-        ],
-      })
-    );
+    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+    // dispatch(
+    //   createCampaignCreationByScreenOwnerAction({
+    //     id: campaignId,
+    //     mediaData: [
+    //       {
+    //         awsURL: url,
+    //         fileType: "url",
+    //         videoDuration: Number(campaignDuration),
+    //         fileSize: 0,
+    //       },
+    //     ],
+    //   })
+    // );
     setTimeout(() => {
       handelDiscard();
     }, 0);
@@ -198,7 +236,6 @@ console.log(creativesMedia);
     }
   };
 
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
@@ -210,7 +247,7 @@ console.log(creativesMedia);
             <h1 className="text-[12px]">Choose Creatives</h1>
             <div className="flex justify-between">
               <h1 className="text-[12px]">Screen: {selectedScreens?.length}</h1>
-              <h1 className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""} text-[12px]`}>Resolution: {uniqueResolution?.length > 1 ? `${uniqueResolution?.length} resolutions` : uniqueResolution[0].resolution}</h1>
+              <h1 className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""} text-[12px]`}>Resolution: {uniqueResolution?.length > 1 ? `${uniqueResolution?.length} resolutions` : uniqueResolution}</h1>
             </div>
             {uniqueResolution?.length > 1 && (
               <h1 className="text-[10px] text-red-500">Screens with different resolutions selected, please check and proceed again</h1>

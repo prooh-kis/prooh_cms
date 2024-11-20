@@ -5,7 +5,7 @@ const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns`;
 const url2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
 
 
-export const createCampaignCreationByScreenOwnerAction = (input) => async (dispatch, getState) => {
+export const createCampaignCreationByScreenOwnerAction = (input) => async (dispatch) => {
   dispatch({
     type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_REQUEST,
     payload: input,
@@ -29,6 +29,7 @@ export const createCampaignCreationByScreenOwnerAction = (input) => async (dispa
 }
 
 export const getAllScreensForScreenOwnerCampaignCreationAction = () => async (dispatch, getState) => {
+  
   dispatch({
     type: GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_REQUEST,
   });
@@ -52,12 +53,13 @@ export const getAllScreensForScreenOwnerCampaignCreationAction = () => async (di
 }
 
 export const getScreenDataUploadCreativeAction = ({id}) => async (dispatch, getState) => {
+  
   dispatch({
     type: GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
     payload: {id}
   });
   try {
-    const { data } = await axios.post(`${url2}/screenDataUploadCreativePage`, {id});
+    const { data } = await axios.post(`${url2}/screenDataUploadCreativeForCms`, {id});
 
     dispatch({
       type: GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
@@ -76,6 +78,7 @@ export const getScreenDataUploadCreativeAction = ({id}) => async (dispatch, getS
 }
 
 export const getAllCampaignsDetailsAction = ({userId}) => async (dispatch) => {
+  
   dispatch({
     type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
     payload: userId,
@@ -99,6 +102,7 @@ export const getAllCampaignsDetailsAction = ({userId}) => async (dispatch) => {
 }
 
 export const getCampaignDetailsAction = ({campaignId}) => async (dispatch) => {
+  
   dispatch({
     type: GET_CAMPAIGN_DATA_REQUEST,
     payload: campaignId,
@@ -123,6 +127,7 @@ export const getCampaignDetailsAction = ({campaignId}) => async (dispatch) => {
 
 
 export const getCampaignCreatedScreensDetailsAction = ({screenIds}) => async (dispatch) => {
+ 
   dispatch({
     type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
     payload: {screenIds},

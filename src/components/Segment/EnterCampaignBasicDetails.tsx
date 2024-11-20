@@ -28,6 +28,7 @@ interface EnterCampaignBasicDetailsProps {
   errorCampaignsCreations?: any;
   campaignsCreated?: any;
   setStep?: any;
+  step?: any;
 }
 
 const allIndexs = Array.from({ length: 18 }, (_, i) => ({ label: (i + 1).toString(), value: i+1, status: false }));
@@ -41,6 +42,7 @@ export const EnterCampaignBasicDetails = ({
   errorCampaignsCreations,
   campaignsCreated,
   setStep,
+  step,
 }: EnterCampaignBasicDetailsProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
@@ -146,7 +148,6 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
-
     if (campaignId !== "create-campaign") {
       dispatch(
         createCampaignCreationByScreenOwnerAction({
@@ -214,9 +215,20 @@ export const EnterCampaignBasicDetails = ({
     userInfo?.primaryUserEmail,
   ]);
 
+
   useEffect(() => {
     if (errorCampaignsCreations) {
       message.error(errorCampaignsCreations);
+    }
+    if (successCampaignsCreations) {
+      navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
+      dispatch({
+        type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+      })
+      if (step === 1) {
+        setStep(2);
+      }
+      message.success("Campaign initiated successfully");
     }
 
     if (!allScreens && !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)) {
@@ -230,7 +242,8 @@ export const EnterCampaignBasicDetails = ({
     dispatch,
     campaignId,
     allScreens,
-    setStep
+    setStep,
+    step
   ]);
 
   const handleScreenSelection = (screen: any) => {
@@ -430,7 +443,7 @@ export const EnterCampaignBasicDetails = ({
                     `}
                     onClick={() => handleSettingAtIndex(index.value)}
                   >
-                    <h1>
+                    <h1 className="text-[12px]">
                       {index.value}
                     </h1>
                   </div>
@@ -441,12 +454,12 @@ export const EnterCampaignBasicDetails = ({
               <h1 className="p-1">Screens</h1>
               <div className="grid grid-cols-2 gap-2 justify-center px-1 py-1"> 
                 {getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)?.filter((s: any) => screenIds.includes(s._id))?.map((screen: any, i: any) => (
-                  <div key={i} className="border rounded-[8px] flex justify-center px-2 py-1">
-                    <h1 className="truncate">
+                  <div key={i} className="border rounded-[8px] flex justify-center gap-2 px-2 py-1">
+                    <h1 className="text-[12px] truncate">
                       {screen.screenName}
                     </h1>
                     <i
-                      className={`fi fi-br-cross flex items-center text-red-500 text-[12px]`}
+                      className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}
                       onClick={() => handleRemoveScreenIds(screen._id)}
                     ></i>
                   </div>

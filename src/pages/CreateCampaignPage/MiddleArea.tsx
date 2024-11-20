@@ -1,15 +1,12 @@
-import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER, CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
+import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER } from "../../constants/campaignConstants";
 import { EnterCampaignBasicDetails } from "../../components/Segment/EnterCampaignBasicDetails";
-import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
-import { UploadCreatives } from "../../components/Segment/UplaodCreatives";
-import { createCampaignCreationByScreenOwnerAction } from "../../actions/campaignAction";
-import { message } from "antd";
+import { UploadCreatives } from "../../components/Segment/UploadCreatives";
 
 
 export const MiddleArea: React.FC = () => {
@@ -34,27 +31,20 @@ export const MiddleArea: React.FC = () => {
     success: successCampaignsCreations,
     data: campaignsCreated,
   } = createCampaignCreationByScreenOwner;
+  console.log(campaignsCreated)
+
 
   useEffect(() => {
     if (campaignId && getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.currentPage === "Add Basic Details") {
       setStep(2);
     }
-    if (campaignId !== "create-campaign") {
-      dispatch(
-        createCampaignCreationByScreenOwnerAction({id: campaignId})
-      );
+    if (campaignId && campaignId !== "create-campaign" && !successCampaignsCreations) {
+      console.log(campaignId);
+      // dispatch(
+      //   createCampaignCreationByScreenOwnerAction({id: campaignId})
+      // );
     }
   },[dispatch, campaignId]);
-
-  useEffect(() => {
-    if (successCampaignsCreations) {
-      navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
-      dispatch({
-        type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
-      })
-      message.success("Campaign initiated successfully");
-    }
-  },[dispatch, navigate, successCampaignsCreations, campaignsCreated]);
 
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
@@ -68,6 +58,7 @@ export const MiddleArea: React.FC = () => {
           errorCampaignsCreations={errorCampaignsCreations}
           campaignsCreated={campaignsCreated}
           setStep={setStep}
+          step={step}
         />
       ) : step === 2 ? (
         <UploadCreatives
@@ -75,6 +66,9 @@ export const MiddleArea: React.FC = () => {
           step={step}
           setStep={setStep}
           campaignId={campaignId}
+          successCampaignsCreations={successCampaignsCreations}
+          campaignsCreated={campaignsCreated}
+          loadingCampaignsCreations={loadingCampaignsCreations}
         />
       ) : null}
 
