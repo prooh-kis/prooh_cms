@@ -117,31 +117,15 @@ export const UploadCreatives = ({
   const saveCampaignCreativesDetails = async () => {
 
     const creativesFromStorage = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives;
-    // if (getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives.length > 0) {
-    console.log("yes", screenDataUploadCreativeGet[0])
 
     if (creativesFromStorage && creativesFromStorage.length > 0) {
 
       const immutableCreatives = JSON.parse(JSON.stringify(creativesFromStorage));
-      // const { data } = await axios.post(`${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns/createCampaignByScreenOwner`, {
-      //   pageName: "Upload Creatives",
-      //   id: campaignId,
-      //   creatives: immutableCreatives
-      // });
-
-      // if (data) {
-      //   message.success("Campaign Created Successfully!");
-      // }
-
-      console.log(immutableCreatives);
-      console.log("jdjsk")
-    console.log("no", screenDataUploadCreativeGet[0]?.standardDayTimeCreatives[0])
-      
+    
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           pageName: "Upload Creatives",
           id: campaignId,
-          // creatives: []
           creatives: immutableCreatives,
         })
       );
@@ -175,11 +159,12 @@ export const UploadCreatives = ({
   
   useEffect(() => {
     if (successCampaignsCreations) {
-      // navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       })
       message.success("Campaign saved successfully");
+      // navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
+
     }
     
   }, [dispatch, successCampaignsCreations, navigate]);
@@ -233,6 +218,14 @@ export const UploadCreatives = ({
             onClick={() => setStep(1)}
           ></i>
           <h1 className="text text-[14px] font-semibold">Upload Creatives</h1>
+        </div>
+        <div className="flex gap-2 items-center">
+          <h1 className="text-[16px] font-semibold">
+            {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name}
+          </h1>
+          <h1 className="text-[12px]">
+            ({getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName})
+          </h1>
         </div>
         <div className="flex gap-4">
           {screenCreativeUpload && (

@@ -188,11 +188,18 @@ export const UploadCreativesTable = ({
                   className="flex items-center justify-center gap-1 truncate text-[12px]"
                   onClick={() => setOpenShowMedia(s)}
                 >
-                  {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
-                    .flatMap((r: any) => r.screenIds)
-                    ?.includes(s.id)
-                    ? "uploaded"
-                    : "??"}
+                  <h1 className={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
+                      .flatMap((r: any) => r.screenIds)
+                      ?.includes(s.id)
+                      ? "text-green-600 font-semibold"
+                      : "text-red-500"}>
+                    {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
+                      .flatMap((r: any) => r.screenIds)
+                      ?.includes(s.id)
+                      ? <i className="fi fi-sr-overview flex items-center"></i>
+                      : "??"}
+                  </h1>
+         
                 </div>
               </td>
             </tr>
