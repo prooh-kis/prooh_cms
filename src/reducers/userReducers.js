@@ -35,9 +35,9 @@ export function userSignupReducer(state = {}, action) {
     case USER_SIGNUP_REQUEST:
       return { loading: true };
     case USER_SIGNUP_SUCCESS:
-      return { loading: false, userInfo: action.payload, success: true };
+      return {...state, loading: false, userInfo: action.payload, success: true };
     case USER_SIGNUP_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case USER_SIGNUP_RESET:
       return {};
     default:
@@ -50,9 +50,9 @@ export function userSigninReducer(state = {}, action) {
     case USER_SIGNIN_REQUEST:
       return { loading: true };
     case USER_SIGNIN_SUCCESS:
-      return { loading: false, userInfo: action.payload, success: true };
+      return {...state, loading: false, userInfo: action.payload, success: true };
     case USER_SIGNIN_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case USER_SIGNOUT:
       return {};
     default:
@@ -66,9 +66,9 @@ export function userUpdatePasswordReducer(state = {}, action) {
     case USER_UPDATE_PASSWORD_REQUEST:
       return { loading: true };
     case USER_UPDATE_PASSWORD_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case USER_UPDATE_PASSWORD_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case USER_UPDATE_PASSWORD_RESET:
       return {};
     default:
@@ -83,9 +83,9 @@ export function userEmailVerificationReducer(state = {}, action) {
     case USER_EMAIL_VERIFICATION_REQUEST:
       return { loading: true };
     case USER_EMAIL_VERIFICATION_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case USER_EMAIL_VERIFICATION_ERROR:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case USER_EMAIL_VERIFICATION_RESET:
       return {};
     default:
@@ -98,9 +98,9 @@ export function userSendEmailToResetPasswordReducer(state = {}, action) {
     case SEND_EMAIL_TO_RESET_PASSWORD_REQUEST:
       return { loading: true };
     case SEND_EMAIL_TO_RESET_PASSWORD_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case SEND_EMAIL_TO_RESET_PASSWORD_ERROR:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case SEND_EMAIL_TO_RESET_PASSWORD_RESET:
       return {};
     default:
@@ -113,9 +113,9 @@ export function emailSendForConfirmationReducer(state = {}, action) {
     case SEND_EMAIL_FOR_CONFIRMATION_REQUEST:
       return { loading: true };
     case SEND_EMAIL_FOR_CONFIRMATION_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case SEND_EMAIL_FOR_CONFIRMATION_ERROR:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case SEND_EMAIL_FOR_CONFIRMATION_RESET:
       return {};
     default:
@@ -128,9 +128,9 @@ export function emailSendForVendorConfirmationReducer(state = {}, action) {
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_REQUEST:
       return { loading: true };
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET:
       return {};
     default:

@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { UploadCreatives } from "../../components/Segment/UploadCreatives";
+import { createCampaignCreationByScreenOwnerAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
+import { getCreativesMediaAction } from "../../actions/creativeAction";
 
 
 export const MiddleArea: React.FC = () => {
@@ -31,7 +33,6 @@ export const MiddleArea: React.FC = () => {
     success: successCampaignsCreations,
     data: campaignsCreated,
   } = createCampaignCreationByScreenOwner;
-  console.log(campaignsCreated)
 
 
   useEffect(() => {
@@ -39,10 +40,9 @@ export const MiddleArea: React.FC = () => {
       setStep(2);
     }
     if (campaignId && campaignId !== "create-campaign" && !successCampaignsCreations) {
-      console.log(campaignId);
-      // dispatch(
-      //   createCampaignCreationByScreenOwnerAction({id: campaignId})
-      // );
+      dispatch(
+        createCampaignCreationByScreenOwnerAction({id: campaignId})
+      );
     }
   },[dispatch, campaignId]);
 

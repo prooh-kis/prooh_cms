@@ -7,6 +7,7 @@ import {
   UPLOAD_CREATIVES_REQUEST,
   UPLOAD_CREATIVES_SUCCESS,
 } from "../constants/creativeConstants";
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const backendURL2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/creatives`;
 
@@ -70,4 +71,3 @@ export const getCreativesMediaAction = ({userId}) => async (dispatch, getState) 
     });
   }
 };
-

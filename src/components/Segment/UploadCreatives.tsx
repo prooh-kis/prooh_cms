@@ -15,10 +15,11 @@ import { UploadCreativesTable } from "../tables/UploadCreativesTable";
 import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
 import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBucketPopup";
 import { Loading } from "../Loading";
-import { getCreativesMediaAction } from "../../actions/creativeAction";
+// import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { ShowMediaPopup } from "../popup/ShowMediaPopup";
 import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
 import axios from "axios";
+import { getCreativesMediaAction } from "../../actions/creativeAction";
 
 interface UploadCreativesProps {
   userInfo?: any;
@@ -117,32 +118,33 @@ export const UploadCreatives = ({
 
     const creativesFromStorage = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives;
     // if (getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives.length > 0) {
-    console.log("yes")
+    console.log("yes", screenDataUploadCreativeGet[0])
 
     if (creativesFromStorage && creativesFromStorage.length > 0) {
 
       const immutableCreatives = JSON.parse(JSON.stringify(creativesFromStorage));
-      const { data } = await axios.post(`${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns/createCampaignByScreenOwner`, {
-        pageName: "Upload Creatives",
-        id: campaignId,
-        creatives: immutableCreatives
-      });
+      // const { data } = await axios.post(`${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns/createCampaignByScreenOwner`, {
+      //   pageName: "Upload Creatives",
+      //   id: campaignId,
+      //   creatives: immutableCreatives
+      // });
 
-      if (data) {
-        message.success("Campaign Created Successfully!");
-      }
-      
+      // if (data) {
+      //   message.success("Campaign Created Successfully!");
+      // }
+
       console.log(immutableCreatives);
       console.log("jdjsk")
+    console.log("no", screenDataUploadCreativeGet[0]?.standardDayTimeCreatives[0])
       
-      // dispatch(
-      //   createCampaignCreationByScreenOwnerAction({
-      //     pageName: "Upload Creatives",
-      //     id: campaignId,
-      //     creatives: []
-      //     // creatives: immutableCreatives,
-      //   })
-      // );
+      dispatch(
+        createCampaignCreationByScreenOwnerAction({
+          pageName: "Upload Creatives",
+          id: campaignId,
+          // creatives: []
+          creatives: immutableCreatives,
+        })
+      );
      
     } else {
       message.error("No creative uploaded");
@@ -179,19 +181,19 @@ export const UploadCreatives = ({
       })
       message.success("Campaign saved successfully");
     }
-
-    if (campaignId !== "create-campaign" && step === 2 && !loadingCampaignsCreations) {
-      dispatch(getScreenDataUploadCreativeAction({id: campaignId}));
-      dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
-    }
     
-  }, [dispatch, campaignId, userInfo, successCampaignsCreations, navigate, step, loadingCampaignsCreations]);
+  }, [dispatch, successCampaignsCreations, navigate]);
+
+  useEffect(() => {
+    dispatch(getScreenDataUploadCreativeAction({id: campaignId}));
+    dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
+  },[dispatch, userInfo, campaignId]);
 
   useEffect(() => {
     if (screenDataUploadCreative) {
       setScreenCreativeUpload(screenDataUploadCreative)
     }
-  },[screenDataUploadCreative]);
+  },[screenDataUploadCreative])
 
   const getUploadedScreensNumber = () => {
     let screenIds: any = []
@@ -246,7 +248,7 @@ export const UploadCreatives = ({
                 <div className="flex items-center gap-1">
                   <i className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}/>
                   <h1 className="text text-[12px]">
-                    {Number(screenCreativeUpload?.flatMap((data: any) => data.screens).length || 0) - getUploadedScreensNumber()}
+                    {/* {Number(screenCreativeUpload?.flatMap((data: any) => data.screens).length || 0) - getUploadedScreensNumber()} */}
                   </h1>
                 </div>
               </div>
@@ -258,7 +260,7 @@ export const UploadCreatives = ({
               title="Live Now"
               rounded="rounded-full"
               reverse={true}
-              disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
+              // disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
               height="h-8"
               width="w-30"
               textSize="text-[12px]"

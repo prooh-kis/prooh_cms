@@ -10,7 +10,7 @@ import { message, Select } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../../components/Loading";
 import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
-import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { CAMPAIGN_CREATIVES_TO_UPLOAD, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 
 
 interface UploadCreativesFromBucketPopupProps {
@@ -105,7 +105,7 @@ export function UploadCreativesFromBucketPopup({
     onClose();
   };
 
-  const createCampaignFromMedia = async () => {
+  const createCampaignFromMedia = () => {
     setIsLoading(true);
     
     const selectedScreenIds = selectedScreens?.map((s: any) => s.id);
@@ -121,46 +121,51 @@ export function UploadCreativesFromBucketPopup({
       dataToUpload.push(mediaData);
     })
 
-    const creativeDataToUpload = []
+    const creativeDataToUpload = [];
+
     for (const scr of screenData) {
-      selectedScreenIds?.map((s: any) => {
-        if (scr.screens?.map((sd: any) => sd.id).includes(s)) {
-          dataToUpload.map((data: any) => {
-            if (!scr.standardDayTimeCreatives?.map((f: any) => f.url).includes(data.url)) {
-              scr.standardDayTimeCreatives.push({
+      const standardDayTimeCreatives: any = [...(scr.standardDayTimeCreatives || [])]; // Clone the array
+    
+      selectedScreenIds?.forEach((s: any) => {
+        if (scr.screens?.some((sd: any) => sd.id === s)) {
+          dataToUpload.forEach((data: any) => {
+            if (!standardDayTimeCreatives.some((f: any) => f.url === data.url)) {
+              standardDayTimeCreatives.push({
                 size: data.size,
                 type: data.type,
                 url: data.url,
               });
             }
-          })
+          });
         }
-      })
-      
+      });
+    
       creativeDataToUpload.push({
         screenResolution: scr.screenResolution,
         count: selectedScreenIds.length,
         creativeDuration: parseInt(scr.creativeDuration, 10),
         screenIds: selectedScreenIds,
-        standardDayTimeCreatives: scr.standardDayTimeCreatives,
+        standardDayTimeCreatives: standardDayTimeCreatives,
         standardNightTimeCreatives: [],
-        triggerCreatives: []
+        triggerCreatives: [],
       });
     }
+    
 
-    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+    const campData = getDataFromLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD)?.[campaignId];
+    campData["creatives"] = [];
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives.length > 0) {
         campData.creatives.push(cd);
       }
     }
-    saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, {
+    saveDataOnLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD, {
       [campaignId]: campData,
     });
-
     setIsLoading(false);
     setIsCreativeOpen(false);
-    toast.success("Creative added successfully");
+
+    message.success("Creative added successfully");
 
     setTimeout(() => {
       handelDiscard();

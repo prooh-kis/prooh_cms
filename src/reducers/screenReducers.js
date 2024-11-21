@@ -13,9 +13,9 @@ export function allScreensDataGetReducer(state = {}, action) {
         list: action.payload
       }
       saveDataOnLocalStorage(ALL_SCREENS_LIST, d);
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case GET_ALL_SCREENS_DATA_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     default:
       return state;
   }
@@ -27,9 +27,9 @@ export function screenDetailsGetReducer(state = {}, action) {
     case GET_SCREEN_DATA_REQUEST:
       return { loading: true };
     case GET_SCREEN_DATA_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case GET_SCREEN_DATA_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     default:
       return state;
   }
@@ -40,9 +40,9 @@ export function screenCampaignsDetailsGetReducer(state = {}, action) {
     case GET_SCREEN_CAMPAIGNS_DATA_REQUEST:
       return { loading: true };
     case GET_SCREEN_CAMPAIGNS_DATA_SUCCESS:
-      return { loading: false, success: true, data: action.payload };
+      return {...state, loading: false, success: true, data: action.payload };
     case GET_SCREEN_CAMPAIGNS_DATA_FAIL:
-      return { loading: false, error: action.payload };
+      return {...state, loading: false, error: action.payload };
     default:
       return state;
   }

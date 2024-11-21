@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import { thunk } from "redux-thunk"
+import { thunk } from "redux-thunk"
 import authReducer from "./authSlice";
+
 
 import {
   emailSendForConfirmationReducer,
@@ -23,11 +24,11 @@ const initialState = {
   },
 };
 
+
 const store = configureStore({
   initialState,
   reducer: {
     
-
     // auth
     auth: authReducer,
     userSignin: userSigninReducer,
@@ -58,7 +59,9 @@ const store = configureStore({
     screenCampaignsDetailsGet: screenCampaignsDetailsGetReducer,
 
   },
-  // middleware: thunk
+  middleware: (() => process.env.NODE_ENV !== 'production' ?
+  [require('redux-immutable-state-invariant').default(), thunk] :
+  [thunk])
   // devTools: process.env.NODE_ENV !== 'production'
 });
 

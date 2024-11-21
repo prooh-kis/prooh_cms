@@ -54,7 +54,6 @@ export function LoopSettingPopup({
       const brandEntries = campaignData[brandName];
       const { standardDayTimeCreatives } = brandEntries.creatives;
       const { name: campaignName, campaignDuration, atIndex } = brandEntries;
-
       standardDayTimeCreatives.forEach((creative: any) => {
         result.push({
           campaignName,
