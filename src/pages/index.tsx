@@ -11,3 +11,5 @@ export { CampaignsPage } from "./CampaignsPage";
 export { CampaignDetailsPage } from "./CampaignDetailsPage";
 
 export { MyCreativesPage } from "./MyCreativesPage";
+
+export { MonitoringPage } from "./MonitoringPage";

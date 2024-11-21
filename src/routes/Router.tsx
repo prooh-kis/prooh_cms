@@ -9,6 +9,7 @@ import {
   CreateCampaignPage,
   ForgetPassword,
   LandingPage,
+  MonitoringPage,
   MyCreativesPage,
   PageNotFound,
   ScreenDetailsPage,
@@ -18,7 +19,7 @@ import {
 } from "../pages";
 
 import { PrivateRoute } from "./PrivateRoute";
-import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, CREATE_CAMPAIGN, FORGET_PASSWORD, HOME, MY_CREATIVES, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
+import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, CREATE_CAMPAIGN, FORGET_PASSWORD, HOME, MY_CREATIVES, SCREEN_CAMPAIGN_MONITORING, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
 
 const Routers: React.FC = () => {
   return (
@@ -112,6 +113,14 @@ const Routers: React.FC = () => {
           element={
             <PrivateRoute layout={HomePageLayout}>
               <MyCreativesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={SCREEN_CAMPAIGN_MONITORING}
+          element={
+            <PrivateRoute layout={HomePageLayout}>
+              <MonitoringPage />
             </PrivateRoute>
           }
         />
