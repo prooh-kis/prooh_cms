@@ -150,6 +150,7 @@ export function UploadCreativesFromBucketPopup({
         triggerCreatives: [],
       });
     }
+    console.log("media: ", mediaFiles)
     
 
     const campData = getDataFromLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD)?.[campaignId];
@@ -159,6 +160,7 @@ export function UploadCreativesFromBucketPopup({
         campData.creatives.push(cd);
       }
     }
+    console.log(campData);
     saveDataOnLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD, {
       [campaignId]: campData,
     });

@@ -33,7 +33,6 @@ export const MiddleArea: React.FC = () => {
           title="Create Campaign"
           action={() => navigate("/create-campaign")}
         />
-        <p>----------</p>
       </div>
     </div>
   );
