@@ -2,6 +2,8 @@ import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCamp
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import React, { useEffect, useState } from "react";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
+import { useDispatch } from "react-redux";
+import { setCampaignsLoopForScreenAction } from "../../actions/screenAction";
 
 interface Campaign {
   campaignName: string;
@@ -9,19 +11,26 @@ interface Campaign {
   atIndex: any;
   campaignDuration: string;
   creative: any;
+  
 }
 
 interface LoopSettingPopupProps {
   openLoopSetting?: boolean;
   campaigns?: { [key: string]: any };
   allTabs?: any;
+  onClose?: any;
+  screenId?: any;
 }
 
 export function LoopSettingPopup({
   openLoopSetting,
   campaigns,
   allTabs,
+  onClose,
+  screenId
 }: LoopSettingPopupProps) {
+  const dispatch = useDispatch<any>();
+  
   const [campaignName, setCampaignName] = useState<string>("");
   const [totalSlots] = useState<number[]>(Array.from({ length: 18 }, (_, index) => index + 1));
   const [slots, setSlots] = useState<Campaign[][]>(Array(18).fill([]));
@@ -108,18 +117,45 @@ export function LoopSettingPopup({
     return null;
   }
 
+  const handleLoopSetting = () => {
+  
+    const formattedData: any = slots
+      .flat() // Flatten the nested arrays
+      .filter((item: any) => item && item._id && item.atIndex) // Filter out empty or invalid entries
+      .map((item: any) => ({
+        campaignId: item._id,
+        atIndex: item.atIndex,
+      }));
+    
+    
+    dispatch(setCampaignsLoopForScreenAction({
+      screeId: screenId,
+      data: formattedData
+    }));
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div className="border bg-white rounded-[10px] h-3/4 w-3/4">
         <div className="flex justify-between p-4 border-b">
           <h1 className="text-[16px] font-bold">Loop Setting</h1>
-          <PrimaryButton
-            title="Auto Set"
-            height="h-8"
-            width="w-28"
-            textSize="text-[12px]"
-            rounded="rounded-full"
-          />
+          <div className="flex gap-2 items-center">
+            <PrimaryButton
+              title="Set Loop"
+              height="h-8"
+              width="w-28"
+              textSize="text-[12px]"
+              rounded="rounded-full"
+              action={handleLoopSetting}
+            />
+            <div
+              className="relative inset-0 flex items-center justify-end gap-4 p-3"
+              onClick={() => onClose(false)}
+            >
+              <i className="fi fi-br-circle-xmark"></i>
+            </div>
+          </div>
+          
         </div>
         <div className="grid grid-cols-12 h-[60vh]">
           {/* Left Section */}

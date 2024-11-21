@@ -13,6 +13,9 @@ import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
 import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
+import { changeCampaignStatusAction } from "../../actions/campaignAction";
+import { CAMPAIGN_STATUS_CHANGE_RESET } from "../../constants/campaignConstants";
+import { SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET } from "../../constants/screenConstants";
 
 const allTabs = [{
   id: "1",
@@ -55,6 +58,7 @@ export const MiddleArea: React.FC = () => {
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
 
+  const [campaignIds, setCampaignIds] = useState<any>([]);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -69,17 +73,47 @@ export const MiddleArea: React.FC = () => {
     loading: loadingCampaigns, error: errorCampaigns, data: campaigns
   } = screenCampaignsDetailsGet;
 
+  const campaignStatusChange = useSelector((state: any) => state.campaignStatusChange);
+  const {
+    loading: loadingStatusChange,
+    error: errorStatusChange,
+    success: successStatusChange
+  } = campaignStatusChange;
+
+  const setCampaignsLoopForScreen = useSelector((state: any) => state.setCampaignsLoopForScreen);
+  const {
+    loading: loadingLoopSetting,
+    error: errorLoopSetting,
+    success: successLoopSetting
+  } = setCampaignsLoopForScreen;
+
+
   
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
+    }
+
+    if (successStatusChange) {
+      message.success("Campaign Status Changed");
+      dispatch({
+        type: CAMPAIGN_STATUS_CHANGE_RESET
+      });
+    }
+
+    if (successLoopSetting) {
+      message.success("Loop Setting Successfull");
+      dispatch({
+        type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET
+      });
     }
     dispatch(getScreenDetailsAction({screenId: screenId}));
     dispatch(getScreenCampaignsDetailsAction({
       screenId: screenId,
       status: ["Active", "Pause"]
     }));
-  },[dispatch, userInfo]);
+
+  },[dispatch, userInfo, successStatusChange, successLoopSetting]);
 
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
@@ -93,13 +127,28 @@ export const MiddleArea: React.FC = () => {
     setOpenLoopSetting(!openLoopSetting);
   };
 
+  const changeCampaignStatusHandler = ({campaignIds, status}: any) => {
+    if(confirm(`${campaignIds.length} campaigns are being ${status}`)) {
+      dispatch(changeCampaignStatusAction({
+        campaignIds: campaignIds,
+        status: status
+      }))
+    }
+  }
+
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
         {openLoopSetting && loading ? (
           <Loading />
         ) : (
-          <LoopSettingPopup allTabs={allTabs} openLoopSetting={openLoopSetting} campaigns={campaigns}/>
+          <LoopSettingPopup
+            screenId={screenId}
+            allTabs={allTabs}
+            openLoopSetting={openLoopSetting}
+            campaigns={campaigns}
+            onClose={setOpenLoopSetting}
+          />
         )}
         {loading ? (
           <div className="">
@@ -133,14 +182,50 @@ export const MiddleArea: React.FC = () => {
             <div className="border rounded my-2">
               <div className="px-4 pt-4 pb-2 flex justify-between">
                 <h1 className="text-[16px] font-semibold">Campaigns</h1>
-                <PrimaryButton action={handleLoopSettingClick} title="Set Loop" rounded="rounded-full" textSize=""height="h-8" width="h-16" reverse={true}/>
+                <div className="flex gap-4 items-center">
+                  <PrimaryButton
+                    action={handleLoopSettingClick}
+                    title="Set Loop"
+                    rounded="rounded-full"
+                    height="h-8"
+                    width="w-32"
+                    textSize="text-[12px]"
+                    reverse={true}
+                  />
+                  {campaignIds.length > 0 && (
+                    <div className="flex items-center gap-4">
+                      <div className="text-gray-500 hover:text-blue-500"
+                        onClick={() => {
+                          changeCampaignStatusHandler({
+                            campaignIds: campaignIds,
+                            status: "Pause"
+                          })
+                        }}
+                      >
+                        <i className="fi fi-sr-play-circle"></i>
+                      </div>
+                      <div
+                        className="text-gray-500 hover:text-green-500"
+                        onClick={() => {
+                          changeCampaignStatusHandler({
+                            campaignIds: campaignIds,
+                            status: "Deleted"
+                          })
+                        }}
+                      >
+                        <i className="fi fi-sr-trash"></i>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex items-center px-4">
+              <div className="flex items-center justify-between px-4">
                 <TabWithoutIcon
                   currentTab={currentTab}
                   setCurrentTab={setCurrentTab}
                   tabData={allTabs}
                 />
+                
               </div>
               <div className="flex items-center p-4">
                 <PrimaryInput
@@ -158,8 +243,23 @@ export const MiddleArea: React.FC = () => {
                 {campaigns
                   && campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value]
                   && Object.keys(campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value])?.map((brandName: any, index: any) => (
-                  <div key={index} className="px-2" onClick={() => setSelectedCampaign(brandName)}>
+                  <div key={index}
+                    className={`px-2`}
+                    onClick={() => setSelectedCampaign(brandName)}
+                    onDoubleClick={() => {
+                      setCampaignIds((prev: any) => {
+                        const campaignId = campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][brandName]._id;
+                        if (campaignIds.includes(campaignId)) {
+                          return [...prev]
+                        } else {
+                          return [...prev, campaignId]
+                        }
+                      })
+                    }}
+                  >
                     <BrandCampaignScreenDetails
+                      setCampaignIds={setCampaignIds}
+                      campaignIds={campaignIds}
                       brandName={brandName}
                       campaigns={campaigns}
                       allTabs={allTabs}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS } from "../constants/screenConstants";
+import { GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS } from "../constants/screenConstants";
 
 const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
 
@@ -67,6 +67,32 @@ export const getScreenCampaignsDetailsAction = ({screenId, status}) => async (di
   } catch (error) {
     dispatch({
       type: GET_SCREEN_CAMPAIGNS_DATA_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+
+export const setCampaignsLoopForScreenAction = (input) => async (dispatch) => {
+  
+  dispatch({
+    type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST,
+    payload: input,
+  });
+  try {
+    const { data } = await axios.post(`${url}/changeLoopIndex`, input);
+    dispatch({
+      type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS,
+      payload: data,
+    });
+    
+  } catch (error) {
+    dispatch({
+      type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

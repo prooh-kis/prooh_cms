@@ -12,9 +12,9 @@ import {
   userSignupReducer,
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
-import { allCampaignsDataGetReducer, campaignCreatedScreensDetailsGetReducer, campaignDetailsGetReducer, createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
+import { allCampaignsDataGetReducer, campaignCreatedScreensDetailsGetReducer, campaignDetailsGetReducer, campaignStatusChangeReducer, createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
 import { creativesMediaGetReducer, creativesMediaUploadReducer } from "../reducers/creativeReducers";
-import { allScreensDataGetReducer, screenCampaignsDetailsGetReducer, screenDetailsGetReducer } from "../reducers/screenReducers";
+import { allScreensDataGetReducer, screenCampaignsDetailsGetReducer, screenDetailsGetReducer, setCampaignsLoopForScreenReducer } from "../reducers/screenReducers";
 
 const initialState = {
   userSignin: {
@@ -48,7 +48,9 @@ const store = configureStore({
     allCampaignsDataGet: allCampaignsDataGetReducer,
     campaignDetailsGet: campaignDetailsGetReducer,
     campaignCreatedScreensDetailsGet: campaignCreatedScreensDetailsGetReducer,
-
+    campaignStatusChange: campaignStatusChangeReducer,
+    setCampaignsLoopForScreen: setCampaignsLoopForScreenReducer,
+    
     // creative
     creativesMediaUpload: creativesMediaUploadReducer,
     creativesMediaGet: creativesMediaGetReducer,
