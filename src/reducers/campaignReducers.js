@@ -13,7 +13,7 @@ export function createCampaignCreationByScreenOwnerReducer(state = {}, action) {
       const saveData = {
         [campaign._id]: campaign
       };
-      saveDataOnLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD, {[campaign._id]: []})
+      saveDataOnLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD, {[campaign._id]: campaign.creatives.standardDayTimeCreatives})
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, saveData);
 
       return {...state, loading: false, success: true, data: cloneDeep(action.payload) };

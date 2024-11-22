@@ -53,7 +53,6 @@ export function EditCreativeEndDatePopup({
     data: creatives,
   } = creativesMediaGet;
 
-  console.log(creatives)
   const openErrorToast = (message: string) => {
     toast.error(message, {
       style: {
@@ -113,7 +112,7 @@ export function EditCreativeEndDatePopup({
       dataToUpload.push(mediaData);
     })
 
-    const creativeDataToUpload = [];
+    let creativeDataToUpload: any = {};
 
     for (const scr of screenData) {
       const standardDayTimeCreatives: any = [...(scr.standardDayTimeCreatives || [])]; // Clone the array
@@ -132,28 +131,21 @@ export function EditCreativeEndDatePopup({
         }
       });
     
-      creativeDataToUpload.push({
-        screenResolution: scr.screenResolution,
-        count: selectedScreenIds.length,
+      creativeDataToUpload = {
         creativeDuration: parseInt(scr.creativeDuration, 10),
-        screenIds: selectedScreenIds,
         standardDayTimeCreatives: standardDayTimeCreatives,
         standardNightTimeCreatives: [],
         triggerCreatives: [],
-      });
+      };
     }
-    // console.log("media: ", mediaFiles)
     
-
     const campData = getDataFromLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA)?.[campaign.campaignCreationId];
-    campData["creatives"] = [];
-    for (const cd of creativeDataToUpload) {
-      if (cd.standardDayTimeCreatives.length > 0) {
-        campData.creatives.push(cd);
-      }
+    campData["creatives"] = campData["creatives"] ? campData["creatives"] : [];
+    if (creativeDataToUpload.standardDayTimeCreatives.length > 0) {
+      campData.creatives = creativeDataToUpload;
     }
     saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-      [campaign.campaignCreationId]: campData,
+      [campaign.campaignCreationId]: campData.creatives,
     });
 
 
@@ -194,15 +186,8 @@ export function EditCreativeEndDatePopup({
     }, 0);
   };
 
-  const isImagePresent = () => {
-    return mediaFiles.some((data: any) => data.creativeType == "image");
-  };
-
   const validateForm = () => {
-    if (campaignOption === "Image/Video" && mediaFiles?.length == 0) {
-      message.error("Please Select Media First!");
-      return false;
-    } else if (campaignOption === "URL" && !isValidUrl(url)) {
+    if (campaignOption === "URL" && !isValidUrl(url)) {
       message.error("Please enter valid url");
       setUrl("");
       return false;
@@ -241,7 +226,6 @@ export function EditCreativeEndDatePopup({
     }
   };
 
-  console.log(endDate);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
@@ -327,6 +311,7 @@ export function EditCreativeEndDatePopup({
                                       return [...prev, l];
                                     }
                                   })
+                                  console.log("sad", mediaFiles,l )
                                 }}
                               >
                                 <div className="w-full">

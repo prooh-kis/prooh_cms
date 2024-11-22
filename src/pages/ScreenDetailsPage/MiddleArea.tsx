@@ -170,8 +170,14 @@ export const MiddleArea: React.FC = () => {
     }
   }
 
-  const handleCreativeEdit = ({campaignId, }: any) => {
-    
+  const handleCreativeEdit = () => {
+    if (confirm(`Are you sure you want to edit the campaign???`)) {
+      saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+        [campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId]: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0].creatives.standardDayTimeCreatives
+      });
+      dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId}));
+      setOpenCreativeEndDateChangePopup(true);
+    }
   }
 
   return (
@@ -183,7 +189,7 @@ export const MiddleArea: React.FC = () => {
             selectedScreens={[screen]}
             mediaFiles={mediaFiles}
             setMediaFiles={setMediaFiles}
-            campaign={campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaignBrand]}
+            campaign={campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]}
             screenData={screenCreativeUpload}
           />
         )}
@@ -341,34 +347,51 @@ export const MiddleArea: React.FC = () => {
             </div>
             <div className="p-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
-   
-                {campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
-                  <div key={j} className="p-1 relative">
-                    <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
-                      <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
-                        <div className="text-white hover:text-green-500" onClick={() => {
-                            if (confirm(`Are you sure you want to edit the campaign???`)) {
-                              saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-                                [campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId]: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]
-                              });
-                              dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId}));
-                              setOpenCreativeEndDateChangePopup(true);
-                            }
-                          }}
-                        >
-                          <i className="fi fi-sr-file-edit"></i>
-                        </div>
-                        <div className="text-white hover:text-green-500">
-                          <i className="fi fi-sr-trash"></i>
-                        </div>
+              {campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.standardDayTimeCreatives?.length === 0 && (
+                <div className="p-1 relative border rounded h-32">
+                  <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
+                    <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
+
+                      <div className="text-white hover:text-green-500" onClick={handleCreativeEdit}
+                      >
+                        <i className="fi fi-sr-file-edit"></i>
+                      </div>
+                      <div className="text-white hover:text-green-500">
+                        <i className="fi fi-sr-trash"></i>
                       </div>
                     </div>
-
-                    <img className="rounded my-2" src={creative.url} alt="" />
-                    <h1 className="text-[14px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.name}</h1>
-                    <p className="text-[12px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.creativeDuration} seconds, {creative.type}</p>
                   </div>
-                ))}
+                </div>
+              )}
+              {campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
+                <div key={j} className="p-1 relative">
+                  
+                  <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
+                    <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
+                      
+                      <div className="text-white hover:text-green-500" onClick={() => {
+                          if (confirm(`Are you sure you want to edit the campaign???`)) {
+                            saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+                              [campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId]: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0].creatives.standardDayTimeCreatives
+                            });
+                            dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId}));
+                            setOpenCreativeEndDateChangePopup(true);
+                          }
+                        }}
+                      >
+                        <i className="fi fi-sr-file-edit"></i>
+                      </div>
+                      <div className="text-white hover:text-green-500">
+                        <i className="fi fi-sr-trash"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <img className="rounded my-2" src={creative.url} alt="" />
+                  <h1 className="text-[14px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.name}</h1>
+                  <p className="text-[12px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.creativeDuration} seconds, {creative.type}</p>
+                </div>
+              ))}
             </div>
           </div>
         ): null}
