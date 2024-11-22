@@ -95,6 +95,21 @@ export function LoopSettingPopup({
     event.preventDefault(); // Allow drop
   };
 
+  const handleRemoveCampaign = (slotIndex: number, campaignIndex: number) => {
+    setSlots((prevSlots) => {
+      const updatedSlots = prevSlots.map((slot, index) => {
+        if (index === slotIndex) {
+          const updatedSlot = [...slot];
+          updatedSlot.splice(campaignIndex, 1); // Remove the campaign at the specific index
+          return updatedSlot;
+        }
+        return slot;
+      });
+      return updatedSlots;
+    });
+  };
+
+
   useEffect(() => {
     initializeSlots();
   }, [campaigns]);
@@ -202,7 +217,9 @@ export function LoopSettingPopup({
                 
                 <div className="w-full py-1">
                   {slots[j]?.map((camp, k) => (
-                    <div key={k} className="w-full">
+                    <div key={k} className="w-full" onDoubleClick={() => {
+                      handleRemoveCampaign(j,k)
+                    }}>
                       <BrandCampaignScreenDetails
                         campaignIds={[]}
                         brandName={camp?.brandName}
