@@ -58,7 +58,7 @@ export const MiddleArea: React.FC = () => {
 
   const [currentTab, setCurrentTab] = useState<any>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
-  const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
+  const [selectedCampaignBrand, setSelectedCampaignBrand] = useState<any>(null);
   const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
 
   const [campaignIds, setCampaignIds] = useState<any>([]);
@@ -126,7 +126,7 @@ export const MiddleArea: React.FC = () => {
         type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET
       });
     }
-    
+
     if (successChange) {
       message.success("Campaign Creative/End Date Changed");
       dispatch({
@@ -137,7 +137,7 @@ export const MiddleArea: React.FC = () => {
     dispatch(getScreenDetailsAction({screenId: screenId}));
     dispatch(getScreenCampaignsDetailsAction({
       screenId: screenId,
-      status: ["Active", "Pause"]
+      status: "Active"
     }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
 
@@ -174,17 +174,16 @@ export const MiddleArea: React.FC = () => {
     
   }
 
-
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
-        {openCreativeEndDateChangePopup && (
+        {openCreativeEndDateChangePopup && screen && (
           <EditCreativeEndDatePopup
             onClose={() => setOpenCreativeEndDateChangePopup(false)}
             selectedScreens={[screen]}
             mediaFiles={mediaFiles}
             setMediaFiles={setMediaFiles}
-            campaign={campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]}
+            campaign={campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaignBrand]}
             screenData={screenCreativeUpload}
           />
         )}
@@ -193,7 +192,6 @@ export const MiddleArea: React.FC = () => {
         ) : (
           <LoopSettingPopup
             screenId={screenId}
-            allTabs={allTabs}
             openLoopSetting={openLoopSetting}
             campaigns={campaigns}
             onClose={setOpenLoopSetting}
@@ -290,14 +288,13 @@ export const MiddleArea: React.FC = () => {
               ) : (
               <div className="w-full">
                 {campaigns
-                  && campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value]
-                  && Object.keys(campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value])?.map((brandName: any, index: any) => (
+                  && campaigns?.map((campaign: any, index: any) => (
                   <div key={index}
                     className={`px-2`}
-                    onClick={() => setSelectedCampaign(brandName)}
+                    onClick={() => setSelectedCampaignBrand(campaign.brandName)}
                     onDoubleClick={() => {
                       setCampaignIds((prev: any) => {
-                        const campaignId = campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][brandName]._id;
+                        const campaignId = campaign?._id;
                         if (campaignIds.includes(campaignId)) {
                           return prev.filter((id: any) => id !== campaignId)
                         } else {
@@ -307,12 +304,10 @@ export const MiddleArea: React.FC = () => {
                     }}
                   >
                     <BrandCampaignScreenDetails
-                      setCampaignIds={setCampaignIds}
                       campaignIds={campaignIds}
-                      brandName={brandName}
+                      brandName={campaign.brandName}
+                      campaign={campaign}
                       campaigns={campaigns}
-                      allTabs={allTabs}
-                      currentTab={currentTab}
                       showIcons={true}
                     />
                   </div>
@@ -325,11 +320,11 @@ export const MiddleArea: React.FC = () => {
         )}
         {loadingCampaigns ? (
           <Loading />
-        ) : campaigns && selectedCampaign ? (
+        ) : campaigns && selectedCampaignBrand ? (
           <div className="col-span-4 border rounded my-2">
             <div className="border-b p-2">
               <div className="flex justify-between items-center">
-                <h1 className="text-[16px] font-semibold">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.[0]?.name}</h1>
+                <h1 className="text-[16px] font-semibold">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.name}</h1>
                 <div className="flex gap-2">
                   <div className="text-gray-500 hover:text-green-500">
                     <i className="fi fi-sr-trash"></i>
@@ -340,23 +335,23 @@ export const MiddleArea: React.FC = () => {
                 </div>
               </div>
               <div>
-                <h1 className="text-[14px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.brandName}</h1>
-                <h1 className="text-[12px]">Ends in: {getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.endDate) <= 0 ? "Already Ended" : `${getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.endDate)} days`} </h1>
+                <h1 className="text-[14px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.brandName}</h1>
+                <h1 className="text-[12px]">Ends in: {getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.endDate) <= 0 ? "Already Ended" : `${getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.endDate)} days`} </h1>
               </div>
             </div>
             <div className="p-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
    
-                {campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
+                {campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
                   <div key={j} className="p-1 relative">
                     <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
                       <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
                         <div className="text-white hover:text-green-500" onClick={() => {
                             if (confirm(`Are you sure you want to edit the campaign???`)) {
                               saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-                                [campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId]: campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]
+                                [campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId]: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]
                               });
-                              dispatch(getScreenDataUploadCreativeAction({id: campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId}));
+                              dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.campaignCreationId}));
                               setOpenCreativeEndDateChangePopup(true);
                             }
                           }}
@@ -370,8 +365,8 @@ export const MiddleArea: React.FC = () => {
                     </div>
 
                     <img className="rounded my-2" src={creative.url} alt="" />
-                    <h1 className="text-[14px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.name}</h1>
-                    <p className="text-[12px]">{campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.creatives.creativeDuration} seconds, {creative.type}</p>
+                    <h1 className="text-[14px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.name}</h1>
+                    <p className="text-[12px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.creativeDuration} seconds, {creative.type}</p>
                   </div>
                 ))}
             </div>

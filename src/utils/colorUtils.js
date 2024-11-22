@@ -1,27 +1,34 @@
-export function generateColorFromAlphabet(letter, alpha = 1) {
-  // Ensure the letter is a single character
-  if (letter.length !== 1 || !/^[a-zA-Z]$/.test(letter)) {
-    throw new Error("Input must be a single alphabet letter.");
+export function generateColorFromAlphabet(input, alpha = 1) {
+  // Ensure alpha is a number between 0 and 1
+  if (typeof alpha !== "number" || alpha < 0 || alpha > 1) {
+    throw new Error("Alpha must be a number between 0 and 1.");
   }
 
-   // Ensure alpha is a number between 0 and 1
-   if (alpha < 0 || alpha > 1) {
-    throw new Error("Alpha must be between 0 and 1.");
+  // Normalize the input
+  let inputString;
+  if (typeof input === "number") {
+    inputString = input.toString();
+  } else if (typeof input === "string" && input.length > 0) {
+    inputString = input;
+  } else {
+    throw new Error("Input must be a non-empty string, number, or single character.");
   }
 
-  // Get the Unicode value of the letter (case insensitive)
-  const charCode = letter.toLowerCase().charCodeAt(0);
+  // Compute a numeric hash from the input string
+  let hash = 0;
+  for (let i = 0; i < inputString.length; i++) {
+    hash = inputString.charCodeAt(i) + ((hash << 5) - hash);
+  }
 
-  // Generate RGB values by using the charCode
-  const red = (charCode * 3) % 256;
-  const green = (charCode * 5) % 256;
-  const blue = (charCode * 7) % 256;
+  // Generate RGB values using the hash
+  const red = (hash >> 24) & 255;
+  const green = (hash >> 16) & 255;
+  const blue = (hash >> 8) & 255;
 
-  // Convert RGB values to hex format and ensure it's 2 characters long
+  // Convert RGB values to hex format
   const toHex = (num) => num.toString(16).padStart(2, '0');
-  const alphaHex = alpha === 0 ? 50 : Math.round(alpha * 255).toString(16).padStart(2, '0');
+  const alphaHex = alpha === 0 ? '00' : Math.round(alpha * 255).toString(16).padStart(2, '0');
 
   // Return the color in hex format
-  // console.log(`#${toHex(red)}${toHex(green)}${toHex(blue)}${alphaHex}`);
   return `#${toHex(red)}${toHex(green)}${toHex(blue)}${alphaHex}`;
 }

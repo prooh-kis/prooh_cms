@@ -100,7 +100,7 @@ export function EditCreativeEndDatePopup({
   const createCampaignFromMedia = () => {
     setIsLoading(true);
     
-    const selectedScreenIds = selectedScreens?.map((s: any) => s.id);
+    const selectedScreenIds = selectedScreens?.map((s: any) => s._id);
     let dataToUpload: any = []
     mediaFiles?.map((item: any) => {
       const mediaData = {
@@ -152,15 +152,15 @@ export function EditCreativeEndDatePopup({
         campData.creatives.push(cd);
       }
     }
-    // console.log(campData);
     saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
       [campaign.campaignCreationId]: campData,
     });
 
+
     dispatch(editCampaignCreativesEndDateAction({
       campaignId: campaign._id,
       endDate: new Date(endDate).toISOString(),
-      creatives: creatives,
+      creatives: creativeDataToUpload,
     }));
     setIsLoading(false);
     setIsCreativeOpen(false);

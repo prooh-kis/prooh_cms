@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setCampaignsLoopForScreenAction } from "../../actions/screenAction";
 
 interface Campaign {
-  campaignName: string;
+  name: string;
   brandName: string;
   atIndex: any;
   campaignDuration: string;
@@ -16,8 +16,7 @@ interface Campaign {
 
 interface LoopSettingPopupProps {
   openLoopSetting?: boolean;
-  campaigns?: { [key: string]: any };
-  allTabs?: any;
+  campaigns?: any;
   onClose?: any;
   screenId?: any;
 }
@@ -25,7 +24,6 @@ interface LoopSettingPopupProps {
 export function LoopSettingPopup({
   openLoopSetting,
   campaigns,
-  allTabs,
   onClose,
   screenId
 }: LoopSettingPopupProps) {
@@ -36,9 +34,9 @@ export function LoopSettingPopup({
   const [slots, setSlots] = useState<Campaign[][]>(Array(18).fill([]));
 
   const initializeSlots = () => {
-    if (!campaigns || !campaigns["Active"]) return;
+    if (!campaigns) return;
 
-    const campaignData: Campaign[] = Object.values(campaigns["Active"]);
+    const campaignData: Campaign[] = campaigns;
     const updatedSlots: Campaign[][] = Array(18).fill([]);
 
     campaignData.forEach((campaign) => {
@@ -59,14 +57,13 @@ export function LoopSettingPopup({
     const result: Campaign[] = [];
     if (!campaignData) return result;
 
-    for (const brandName in campaignData) {
-      const brandEntries = campaignData[brandName];
-      const { standardDayTimeCreatives } = brandEntries.creatives;
-      const { name: campaignName, campaignDuration, atIndex } = brandEntries;
+    for (const campaign of campaignData) {
+      const { standardDayTimeCreatives } = campaign.creatives;
+      const { name, campaignDuration, atIndex } = campaign;
       standardDayTimeCreatives.forEach((creative: any) => {
         result.push({
-          campaignName,
-          brandName,
+          name,
+          brandName: campaign.brandName,
           atIndex,
           campaignDuration,
           creative,
@@ -171,7 +168,7 @@ export function LoopSettingPopup({
             </div>
             <div className="my-2 h-[58vh] overflow-scroll">
               {campaigns &&
-                getStandardCreativesWithCampaignNames(campaigns?.["Active"])?.map((camp: Campaign, i: number) => (
+                getStandardCreativesWithCampaignNames(campaigns)?.map((camp: Campaign, i: number) => (
                   <div
                     key={i}
                     className="flex gap-2 p-2 cursor-pointer"
@@ -182,9 +179,7 @@ export function LoopSettingPopup({
                     <div>
                       <BrandCampaignScreenDetails
                         brandName={camp.brandName}
-                        campaigns={campaigns}
-                        allTabs={allTabs}
-                        currentTab={"1"}
+                        campaign={camp}
                         showIcons={false}
                       />
                     </div>
@@ -209,10 +204,9 @@ export function LoopSettingPopup({
                   {slots[j]?.map((camp, k) => (
                     <div key={k} className="w-full">
                       <BrandCampaignScreenDetails
+                        campaignIds={[]}
                         brandName={camp?.brandName}
-                        campaigns={campaigns}
-                        allTabs={allTabs}
-                        currentTab={"1"}
+                        campaign={camp}
                         showIcons={false}
                       />
                     </div>

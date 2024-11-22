@@ -10,8 +10,6 @@ import { Loading } from "../../components/Loading";
 import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
-import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
-import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
 import { getCampaignCreatedScreensDetailsAction, getCampaignDetailsAction } from "../../actions/campaignAction";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
 import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
