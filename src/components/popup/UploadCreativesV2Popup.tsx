@@ -20,8 +20,6 @@ import { UPLOAD_CREATIVES_RESET } from "../../constants/creativeConstants";
 
 interface UploadCreativesV2PopupProps {
   onClose?: any;
-  screenOptions?: any;
-  selectedScreens?: any;
   mediaFiles?: any;
   setMediaFiles?: any;
   isOpen?: any;
@@ -33,8 +31,7 @@ interface UploadCreativesV2PopupProps {
 }
 export function UploadCreativesV2Popup({
   onClose,
-  screenOptions,
-  selectedScreens,
+
   mediaFiles,
   setMediaFiles,
   isOpen,
@@ -80,7 +77,7 @@ export function UploadCreativesV2Popup({
       setMediaFiles([]);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
     }
-  },[successUpload]);
+  },[dispatch, successUpload]);
 
   useEffect(() => {
     if (isOpen) {
@@ -188,7 +185,6 @@ export function UploadCreativesV2Popup({
           data.url = aws?.url;
         }
       }
-      console.log(myData);
     
       dispatch(uploadCreativesMediaAction({
         id: creativeId,
@@ -284,13 +280,16 @@ export function UploadCreativesV2Popup({
         </div>
 
         <div className="p-2 w-full bottom-0">
-          <PrimaryButton
-            title="Upload"
-            rounded="rounded"
-            width="w-full"
-            action={handleCreateCreatives}
-            disabled={loadingUpload}
-          />
+          {!loadingUpload && (
+            <PrimaryButton
+              title="Upload"
+              rounded="rounded"
+              width="w-full"
+              action={handleCreateCreatives}
+              disabled={loadingUpload}
+            />
+          )}
+
 
         </div>
       </div>

@@ -199,13 +199,11 @@ export const UploadCreatives = ({
       {isBucketPopupOpen && (
         <UploadCreativesFromBucketPopup
           onClose={closePopup}
-          screenOptions={screenOptions}
           selectedScreens={selectedScreens}
           mediaFiles={mediaFiles}
           setMediaFiles={setMediaFiles}
           brandName={brandName}
           campaignId={campaignId}
-          handleScreenSelection={handleScreenSelection}
           screenData={screenCreativeUpload}
         />
       )}

@@ -8,45 +8,41 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import { message, Select } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
-import { Loading } from "../../components/Loading";
+import { Loading } from "../Loading";
 import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { CAMPAIGN_CREATIVES_TO_UPLOAD, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { CalendarInput } from "../../components/atoms/CalendarInput";
 
 
-interface UploadCreativesFromBucketPopupProps {
+interface EditCreativeEndDatePopupProps {
   onClose?: any;
   selectedScreens?: any;
   mediaFiles?: any;
   setMediaFiles?: any;
-  brandName?: string;
   campaignId?: any;
   screenData?: any;
+  brandName?: any;
 }
-export function UploadCreativesFromBucketPopup({
+export function EditCreativeEndDatePopup({
   onClose,
   selectedScreens,
   mediaFiles,
   setMediaFiles,
-  brandName,
   campaignId,
   screenData,
-}: UploadCreativesFromBucketPopupProps) {
+  brandName,
+
+}: EditCreativeEndDatePopupProps) {
   const dispatch = useDispatch<any>();
   const [campaignOption, setCampaignOption] = useState("Image/Video");
   const [url, setUrl] = useState<any>("");
-  const [campaignDuration, setCampaignDuration] = useState<any>("");
+  // const [campaignDuration, setCampaignDuration] = useState<any>("");
   // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
-
+  const [endDate, setEndDate] = useState<any>(null);
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
-  const uniqueResolution = selectedScreens.reduce((unique: any, screen: any) => {
-    if (!unique.includes(screen.resolution)) {
-        unique.push(screen.resolution);
-    }
-    return unique;
-}, []);
   
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -58,6 +54,7 @@ export function UploadCreativesFromBucketPopup({
     data: creatives,
   } = creativesMediaGet;
 
+  console.log(creatives)
   const openErrorToast = (message: string) => {
     toast.error(message, {
       style: {
@@ -204,23 +201,23 @@ export function UploadCreativesFromBucketPopup({
       message.error("Please enter valid url");
       setUrl("");
       return false;
-    } else if (isImagePresent() && !campaignDuration) {
-      message.error("Please enter duration for image campaign");
-      return false;
-    } else if (isImagePresent() && Number(campaignDuration) <= 0) {
-      message.error("Please enter duration > 0 for image campaign");
-      return false;
-    } else if (campaignOption === "URL" && !campaignDuration) {
-      message.error("Please set campaign duration in sec");
-      return false;
-    } else if (campaignOption === "URL" && !isNumber(campaignDuration)) {
-      message.error("Please Enter only number for campaign duration");
-      setCampaignDuration("");
-      return false;
-    } else if (campaignOption === "URL" && Number(campaignDuration) <= 0) {
-      message.error("Please Enter duration > 0 ");
-      setCampaignDuration("");
-      return false;
+    // } else if (isImagePresent() && !campaignDuration) {
+    //   message.error("Please enter duration for image campaign");
+    //   return false;
+    // } else if (isImagePresent() && Number(campaignDuration) <= 0) {
+    //   message.error("Please enter duration > 0 for image campaign");
+    //   return false;
+    // } else if (campaignOption === "URL" && !campaignDuration) {
+    //   message.error("Please set campaign duration in sec");
+    //   return false;
+    // } else if (campaignOption === "URL" && !isNumber(campaignDuration)) {
+    //   message.error("Please Enter only number for campaign duration");
+    //   setCampaignDuration("");
+    //   return false;
+    // } else if (campaignOption === "URL" && Number(campaignDuration) <= 0) {
+    //   message.error("Please Enter duration > 0 ");
+    //   setCampaignDuration("");
+    //   return false;
     } else if (selectedScreens?.length === 0) {
       message.error("Please Select at least one screen");
       return false;
@@ -250,11 +247,9 @@ export function UploadCreativesFromBucketPopup({
             <h1 className="text-[12px]">Choose Creatives</h1>
             <div className="flex justify-between">
               <h1 className="text-[12px]">Screen: {selectedScreens?.length}</h1>
-              <h1 className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""} text-[12px]`}>Resolution: {uniqueResolution?.length > 1 ? `${uniqueResolution?.length} resolutions` : uniqueResolution}</h1>
+              <h1 className={`text-[12px]`}>Resolution:</h1>
             </div>
-            {uniqueResolution?.length > 1 && (
-              <h1 className="text-[10px] text-red-500">Screens with different resolutions selected, please check and proceed again</h1>
-            )}
+
             {isLoading && (
               <h1 className="border border-1 bg-yellow-600 text-white text-lg px-8 py-2">
                 Wait for some time file is saving....
@@ -290,6 +285,20 @@ export function UploadCreativesFromBucketPopup({
             </div>
           ) : (
             <div>
+              <div className="flex flex-col py-2">
+                <h1 className="text-[12px]">
+                  Change End Date
+                </h1>
+                <CalendarInput
+                  placeholder={endDate}
+                  value={endDate}
+                  action={(e: any) => {
+                    setEndDate(e);
+                  }}
+                  minDate={new Date()}
+                  disabled={false}
+                />
+              </div>
               <h1 className="text-[14px] font-semibold">Select from creatives</h1>
               {loadingCreatives ? (
                 <Loading />
@@ -373,25 +382,6 @@ export function UploadCreativesFromBucketPopup({
                   />
                 ))}
               </div>
-            </div>
-          )}
-
-          {(campaignOption === "URL" || isImagePresent()) && (
-            <div className="flex flex-col">
-              {/* <h1 fontSize="md" color="#131D30" fontWeight="400" m="0">
-                Duration{" "}
-              </h1> */}
-              <div className="py-2 flex items-center gap-2">
-                <i className="fi fi-br-stopwatch"></i>
-                <h1 className="">(in seconds)</h1>
-              </div>
-              <input
-                placeholder="Enter duration in sec."
-                type="number"
-                className="border border-gray-300 rounded-sm w-full h-10 text text-sm text-black-600 p-2"
-                value={campaignDuration}
-                onChange={(e) => setCampaignDuration(e.target.value)}
-              />
             </div>
           )}
           

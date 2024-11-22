@@ -1,5 +1,5 @@
 import { saveDataOnLocalStorage } from "../utils/localStorageUtils";
-import { GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS } from "../constants/screenConstants";
+import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS } from "../constants/screenConstants";
 import { ALL_SCREENS_LIST } from "../constants/localStorageConstants";
 
 
@@ -58,6 +58,22 @@ export function setCampaignsLoopForScreenReducer(state = {}, action) {
     case SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL:
       return {...state, loading: false, error: action.payload };
     case SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+
+export function changeCampaignCreativeEndDateReducer(state = {}, action) {
+  switch (action.type) {
+    case EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST:
+      return { loading: true };
+    case EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS:
+      return {...state, loading: false, success: true, data: action.payload };
+    case EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL:
+      return {...state, loading: false, error: action.payload };
+    case EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET:
       return {};
     default:
       return state;

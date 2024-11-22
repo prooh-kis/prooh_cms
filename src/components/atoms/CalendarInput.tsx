@@ -28,7 +28,7 @@ export const CalendarInput = ({
         type="datetime-local"
         disabled={disabled}
         value={value}
-        onChange={(e) => action(e.target.value)}
+        onChange={(e) => action(new Date(e.target.value).toISOString())}
         className="h-[48px] w-full border rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
         min={getMinDateTime()}
       />
