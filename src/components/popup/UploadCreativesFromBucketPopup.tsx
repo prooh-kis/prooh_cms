@@ -153,7 +153,7 @@ export function UploadCreativesFromBucketPopup({
     console.log("media: ", mediaFiles)
     
 
-    const campData = getDataFromLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD)?.[campaignId];
+    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     campData["creatives"] = [];
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives.length > 0) {
@@ -161,7 +161,7 @@ export function UploadCreativesFromBucketPopup({
       }
     }
     console.log(campData);
-    saveDataOnLocalStorage(CAMPAIGN_CREATIVES_TO_UPLOAD, {
+    saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, {
       [campaignId]: campData,
     });
     setIsLoading(false);
