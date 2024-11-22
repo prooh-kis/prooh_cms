@@ -10,8 +10,9 @@ import { message, Select } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../Loading";
 import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
-import { CAMPAIGN_CREATIVES_TO_UPLOAD, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { CAMPAIGN_CREATIVES_TO_UPLOAD, FULL_CAMPAIGN_PLAN, UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { CalendarInput } from "../../components/atoms/CalendarInput";
+import { editCampaignCreativesEndDateAction } from "../../actions/screenAction";
 
 
 interface EditCreativeEndDatePopupProps {
@@ -19,18 +20,16 @@ interface EditCreativeEndDatePopupProps {
   selectedScreens?: any;
   mediaFiles?: any;
   setMediaFiles?: any;
-  campaignId?: any;
+  campaign?: any;
   screenData?: any;
-  brandName?: any;
 }
 export function EditCreativeEndDatePopup({
   onClose,
   selectedScreens,
   mediaFiles,
   setMediaFiles,
-  campaignId,
+  campaign,
   screenData,
-  brandName,
 
 }: EditCreativeEndDatePopupProps) {
   const dispatch = useDispatch<any>();
@@ -40,7 +39,7 @@ export function EditCreativeEndDatePopup({
   // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
-  const [endDate, setEndDate] = useState<any>(null);
+  const [endDate, setEndDate] = useState<any>(new Date(campaign.endDate).toISOString().split(".")[0]);
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
   
@@ -64,10 +63,10 @@ export function EditCreativeEndDatePopup({
   };
 
   useEffect(() => {
-    if (creatives && brandName) {
-      setCreativesMedia(creatives[brandName]);
+    if (creatives && campaign.brandName) {
+      setCreativesMedia(creatives[campaign.brandName]);
     }
-  },[brandName, creatives]);
+  },[campaign, creatives]);
 
   useEffect(() => {
    
@@ -146,7 +145,7 @@ export function EditCreativeEndDatePopup({
     // console.log("media: ", mediaFiles)
     
 
-    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+    const campData = getDataFromLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA)?.[campaign.campaignCreationId];
     campData["creatives"] = [];
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives.length > 0) {
@@ -154,9 +153,15 @@ export function EditCreativeEndDatePopup({
       }
     }
     // console.log(campData);
-    saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, {
-      [campaignId]: campData,
+    saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+      [campaign.campaignCreationId]: campData,
     });
+
+    dispatch(editCampaignCreativesEndDateAction({
+      campaignId: campaign._id,
+      endDate: endDate,
+      creatives: creatives,
+    }));
     setIsLoading(false);
     setIsCreativeOpen(false);
 
@@ -170,7 +175,7 @@ export function EditCreativeEndDatePopup({
 
   const createCampaignFromURL = () => {
     setIsLoading(true);
-    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+    const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaign.campaignCreationId];
     // dispatch(
     //   createCampaignCreationByScreenOwnerAction({
     //     id: campaignId,
@@ -236,6 +241,7 @@ export function EditCreativeEndDatePopup({
     }
   };
 
+  console.log(endDate);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div

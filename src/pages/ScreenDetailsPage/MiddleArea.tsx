@@ -14,9 +14,11 @@ import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
 import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
 import { changeCampaignStatusAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
 import { CAMPAIGN_STATUS_CHANGE_RESET } from "../../constants/campaignConstants";
-import { SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET } from "../../constants/screenConstants";
+import { EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET, SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET } from "../../constants/screenConstants";
 import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
+import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
+import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 
 const allTabs = [{
   id: "1",
@@ -98,6 +100,13 @@ export const MiddleArea: React.FC = () => {
     loading: loadingCreativeData, error: errorCreativeData, data: screenDataUploadCreative
   } = screenDataUploadCreativeGet;
 
+  const changeCampaignCreativeEndDate = useSelector((state: any) => state.changeCampaignCreativeEndDate);
+  const {
+    loading: loadingChange,
+    error: errorChange,
+    success: successChange
+  } = changeCampaignCreativeEndDate;
+
   
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
@@ -117,6 +126,14 @@ export const MiddleArea: React.FC = () => {
         type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET
       });
     }
+    
+    if (successChange) {
+      message.success("Campaign Creative/End Date Changed");
+      dispatch({
+        type: EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET
+      });
+    }
+
     dispatch(getScreenDetailsAction({screenId: screenId}));
     dispatch(getScreenCampaignsDetailsAction({
       screenId: screenId,
@@ -154,18 +171,7 @@ export const MiddleArea: React.FC = () => {
   }
 
   const handleCreativeEdit = ({campaignId, }: any) => {
-    if (confirm(`Are you sure you want to edit the campaign???`)) {
-      // dispatch(editCampaignCreativesEndDateAction({
-      //   campaignId: campaignId,
-      //   endDate: endDate,
-      //   creatives: creatives,
-      // }));
-      // console.log({
-      //   campaignId: campaignId,
-      //   // endDate: endDate,
-      //   creatives: mediaFiles
-      // })
-    }
+    
   }
 
 
@@ -178,8 +184,7 @@ export const MiddleArea: React.FC = () => {
             selectedScreens={[screen]}
             mediaFiles={mediaFiles}
             setMediaFiles={setMediaFiles}
-            campaignId={campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId}
-            brandName={campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.brandName}
+            campaign={campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]}
             screenData={screenCreativeUpload}
           />
         )}
@@ -347,9 +352,13 @@ export const MiddleArea: React.FC = () => {
                     <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
                       <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
                         <div className="text-white hover:text-green-500" onClick={() => {
-                            console.log(campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId);
-                            dispatch(getScreenDataUploadCreativeAction({id: campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId}));
-                            setOpenCreativeEndDateChangePopup(true);
+                            if (confirm(`Are you sure you want to edit the campaign???`)) {
+                              saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+                                [campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId]: campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]
+                              });
+                              dispatch(getScreenDataUploadCreativeAction({id: campaigns?.[allTabs?.filter((t: any) => t.id === currentTab)[0]?.value][selectedCampaign]?.campaignCreationId}));
+                              setOpenCreativeEndDateChangePopup(true);
+                            }
                           }}
                         >
                           <i className="fi fi-sr-file-edit"></i>
