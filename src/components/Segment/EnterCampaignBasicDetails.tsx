@@ -154,7 +154,7 @@ export const EnterCampaignBasicDetails = ({
           id: campaignId,
           pageName: "Add Basic Details",
           name: campaignName,
-          brandName: brandName,
+          brandName: brandName.toUpperCase(),
           campaignType: campaignType,
           clientName: clientName,
           industry: industry,
@@ -176,7 +176,7 @@ export const EnterCampaignBasicDetails = ({
         createCampaignCreationByScreenOwnerAction({
           pageName: "Add Basic Details",
           name: campaignName,
-          brandName: brandName,
+          brandName: brandName.toUpperCase(),
           campaignType: campaignType,
           clientName: clientName,
           industry: industry,

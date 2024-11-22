@@ -25,7 +25,7 @@ interface UploadCreativesV2PopupProps {
   mediaFiles?: any;
   setMediaFiles?: any;
   isOpen?: any;
-  brandName?: string;
+  brandName?: any;
   setBrandName?: any;
   network?: string;
   setNetwork?: any;
@@ -193,7 +193,7 @@ export function UploadCreativesV2Popup({
       dispatch(uploadCreativesMediaAction({
         id: creativeId,
         userId: userInfo?._id,
-        brand: brandName,
+        brand: brandName.toUpperCase(),
         network: network,
         creatives: myData
       }));
