@@ -208,7 +208,15 @@ export const UploadCreatives = ({
         />
       )}
 
-
+      {openShowMedia && (
+        <div className="col-span-1">
+          <ShowMediaPopup
+            onClose={closePopup}
+            openShowMedia={openShowMedia}
+            media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+          />
+        </div>
+      )}
       <div className="flex justify-between border rounded-[12px] py-4 px-2">
         <div className="flex gap-2 items-center">
           <i
@@ -349,20 +357,8 @@ export const UploadCreatives = ({
                     campaignId={campaignId}
                   />
                 </div>
-                {openShowMedia && (
-                  <div className="col-span-1">
-                    <ShowMediaPopup
-                      onClose={closePopup}
-                      openShowMedia={openShowMedia}
-                      media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
-                    />
-                  </div>
-                )}
-                
               </div>
-
             )}
-
           </div>
         </div>
       </div>

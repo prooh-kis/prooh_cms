@@ -8,7 +8,6 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { UploadCreatives } from "../../components/Segment/UploadCreatives";
 import { createCampaignCreationByScreenOwnerAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
-import { getCreativesMediaAction } from "../../actions/creativeAction";
 
 
 export const MiddleArea: React.FC = () => {
