@@ -19,6 +19,7 @@ import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEnd
 import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
+import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 
 const allTabs = [{
   id: "1",
@@ -386,8 +387,13 @@ export const MiddleArea: React.FC = () => {
                       </div>
                     </div>
                   </div>
-
-                  <img className="rounded my-2" src={creative.url} alt="" />
+                  <ShowMediaFile
+                    url={creative.url}
+                    mediaType={creative?.type}
+                    key={j}
+                    height="h-full"
+                    width="w-full"
+                  />
                   <h1 className="text-[14px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.name}</h1>
                   <p className="text-[12px]">{campaigns?.filter((c: any) => c.brandName === selectedCampaignBrand)[0]?.creatives.creativeDuration} seconds, {creative.type}</p>
                 </div>
