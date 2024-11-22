@@ -159,7 +159,7 @@ export function EditCreativeEndDatePopup({
 
     dispatch(editCampaignCreativesEndDateAction({
       campaignId: campaign._id,
-      endDate: endDate,
+      endDate: new Date(endDate).toISOString(),
       creatives: creatives,
     }));
     setIsLoading(false);
