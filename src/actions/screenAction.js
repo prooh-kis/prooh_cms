@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS } from "../constants/screenConstants";
+import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SCREEN_CAMPAIGN_MONITORING__FAIL, SCREEN_CAMPAIGN_MONITORING__SUCCESS, SCREEN_CAMPAIGN_MONITORING_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS } from "../constants/screenConstants";
 
 const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
 const url2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns`;
@@ -118,6 +118,30 @@ export const editCampaignCreativesEndDateAction = (input) => async (dispatch, ge
   } catch (error) {
     dispatch({
       type: EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+export const screenCampaignsMonitoringAction = (input) => async (dispatch, getState) => {
+  dispatch({
+    type: SCREEN_CAMPAIGN_MONITORING_REQUEST,
+    payload: input,
+  });
+  try {
+    const { data } = await axios.post(`${url2}/addCampaignMonitoringData`, input);
+    dispatch({
+      type: SCREEN_CAMPAIGN_MONITORING__SUCCESS,
+      payload: data,
+    });
+    
+  } catch (error) {
+    dispatch({
+      type: SCREEN_CAMPAIGN_MONITORING__FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

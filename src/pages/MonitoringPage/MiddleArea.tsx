@@ -5,16 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 
 import { useNavigate } from "react-router-dom";
-import { getAllScreensDetailsAction, getScreenCampaignsDetailsAction } from "../../actions/screenAction";
+import { getAllScreensDetailsAction, getScreenCampaignsDetailsAction, screenCampaignsMonitoringAction } from "../../actions/screenAction";
 import { ScreenListThumbnail } from "../../components/molecules/ScreenListThumbnail";
 import { Loading } from "../../components/Loading";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
-import { ALL_SCREENS_LIST } from "../../constants/localStorageConstants";
+import { ALL_SCREENS_LIST, SCREEN_CAMPAIGN_MONITORING_PICS } from "../../constants/localStorageConstants";
 import { convertDataTimeToLocale, getAllDatesBetween, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
 import { CampaignListMonitoringView } from "../../components/molecules/CampaignListMonitoringView";
 import { CalendarPopup } from "../../components/popup/CalendarPopup";
+import { MonitoringPictures } from "../../components/Segment/MonitoringPictures";
+import { UploadMonitoringPicturesPopup } from "../../components/popup/UploadMonitoringPicturesPopup";
+
+const time = ["day", "night", "misc"];
+const pictures = ["images", "video", "geoTag", "newspaper"];
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -26,8 +31,14 @@ export const MiddleArea: React.FC = () => {
   const [monitoringScreen, setMonitoringScreen] = useState<any>(null);
   const [monitoringCampaign, setMonitoringCampaign] = useState<any>(null);
   const [monitoringDate, setMonitoringDate] = useState<any>(new Date().toLocaleDateString());
+  const [monitoringTime, setMonitoringTime] = useState<any>(time[0]);
+  const [monitoringMedia, setMonitoringMedia] = useState<any>(pictures[0]);
+
+  const [monitoringData, setMonitoringData] = useState<any>(getDataFromLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS));
 
   const [openCalendarPopup, setOpenCalendarPopup] = useState<any>(false);
+  const [openUploadPopup, setOpenUploadPopup] = useState<any>(false);
+  const [mediaFiles, setMediaFiles] = useState<any>([]);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -43,6 +54,12 @@ export const MiddleArea: React.FC = () => {
   } = screenCampaignsDetailsGet;
 
 
+  const screenCampaignMonitoring = useSelector((state: any) => state.screenCampaignMonitoring);
+  const {
+    loading: loadingScreenCampaignMonitoringData,
+    error: errorScreenCampaignMonitoringData,
+    data: screenCampaignMonitoringData
+  } = screenCampaignMonitoring;
   
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
@@ -61,16 +78,36 @@ export const MiddleArea: React.FC = () => {
 
   const handleCampaignClick = ({campaign}: any) => {
     setMonitoringCampaign(campaign);
-    console.log(getAllDatesBetween(campaign.startDate, campaign.endDate))
     setAllDates(() => {
       return getAllDatesBetween(campaign.startDate, campaign.endDate)
     });
   }
 
-  console.log(allDates);
+  const handleUploadClick = () => {
+    setOpenUploadPopup(!openUploadPopup);
+  }
+
+  const monitoringPicturesSaveHandler = () => {
+    dispatch(screenCampaignsMonitoringAction(getDataFromLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS)));
+  }
   
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
+      <UploadMonitoringPicturesPopup
+        openUploadPopup={openUploadPopup}
+        mediaFiles={mediaFiles}
+        setMediaFiles={setMediaFiles}
+        onClose={() => {
+          setOpenUploadPopup(false);
+          setMediaFiles([]);
+        }}
+        monitoringScreenId={monitoringScreen?._id}
+        monitoringCampaignId={monitoringCampaign?._id}
+        monitoringDate={monitoringDate}
+        monitoringTime={monitoringTime}
+        monitoringMedia={monitoringMedia}
+        setMonitoringData={setMonitoringData}
+      />
       {openCalendarPopup && (
         <div className="p-1 overflow-scroll">
           <CalendarPopup
@@ -81,7 +118,6 @@ export const MiddleArea: React.FC = () => {
             openCalendarPopup={openCalendarPopup}
           />
         </div>
-
       )}
       <div className="w-full h-full py-1">
         <div className="border rounded p-4 w-full">
@@ -126,14 +162,13 @@ export const MiddleArea: React.FC = () => {
               <Loading />
             ) : (
               <div className="p-1 overflow-scroll h-[75vh]">
-                {campaigns && Object.keys(campaigns).length > 0 ? Object.keys(campaigns?.["Active"])?.map((brandName: any, index: any) => (
+                {campaigns ? campaigns?.map((campaign: any, index: any) => (
                   <div key={index} className="px-2" onClick={() => {
-                    console.log(campaigns?.["Active"]?.[brandName]);
-                    handleCampaignClick({campaign: campaigns?.["Active"]?.[brandName]})
+                    handleCampaignClick({campaign: campaign})
                     
                   }}>
                     <CampaignListMonitoringView
-                      campaign={campaigns?.["Active"]?.[brandName]}
+                      campaign={campaign}
                       noImages={true}
                     />
                   </div>
@@ -146,110 +181,50 @@ export const MiddleArea: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="col-span-6 border rounded">
-            <div className="flex justify-between items-center border-b">
-              <div className="p-4 flex items-end gap-1">
-                <h1 className="text-[12px]">{monitoringScreen ? monitoringScreen?.screenName : "Screen "}{">"}</h1>
-                <h1 className="text-[12px] font-semibold">{monitoringCampaign ? ` ${monitoringCampaign?.brandName}` : "Brand"}</h1>
-              </div>
-              <div className="flex gap-2 items-center p-4" onClick={() => setOpenCalendarPopup(true)}>
-                <i className="fi fi-sr-calendar-lines text-[12px] flex items-center"></i>
-                <h1 className="text-[12px]">{allDates.length} Days</h1>
-              </div>
-            </div>
-            <div className="border-b p-2 flex justify-between items-center">
-              <h1 className="text-[12px] font-semibold">{monitoringDate}</h1>
-              <PrimaryButton
-                title="Save"
-                height="h-8"
-                width="w-auto"
-                textSize="text-[12px]"
-                rounded="rounded-full"
-              />
-            </div>
-            <div className="h-auto">
-              <div className="p-2">
-                <h1 className="text-[12px] font-semibold">Upload Day Pictures</h1>
-                <div className="grid grid-cols-4 gap-4 my-2">
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Video</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Image</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Geotag</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Newpaper</h1>
-                  </div>
+          {monitoringScreen && monitoringCampaign && (
+            <div className="col-span-6 border rounded">
+              <div className="flex justify-between items-center border-b">
+                <div className="p-4 flex items-end gap-1">
+                  <h1 className="text-[12px]">{monitoringScreen ? monitoringScreen?.screenName : "Screen "}{">"}</h1>
+                  <h1 className="text-[12px] font-semibold">{monitoringCampaign ? ` ${monitoringCampaign?.brandName}` : "Brand"}</h1>
+                </div>
+                <div className="flex gap-2 items-center p-4" onClick={() => setOpenCalendarPopup(true)}>
+                  <i className="fi fi-sr-calendar-lines text-[12px] flex items-center"></i>
+                  <h1 className="text-[12px]">{allDates.length} Days</h1>
                 </div>
               </div>
-              <div className="p-2">
-                <h1 className="text-[12px] font-semibold">Upload Day Pictures</h1>
-                <div className="grid grid-cols-4 gap-4 my-2">
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Video</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Image</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Geotag</h1>
-                  </div>
-                </div>
+              <div className="border-b p-2 flex justify-between items-center">
+                <h1 className="text-[12px] font-semibold">{monitoringDate}</h1>
+                <PrimaryButton
+                  title="Save"
+                  height="h-8"
+                  width="w-auto"
+                  textSize="text-[12px]"
+                  rounded="rounded-full"
+                  action={monitoringPicturesSaveHandler}
+                />
               </div>
-              <div className="p-2">
-                <h1 className="text-[12px] font-semibold">Miscelleneous Pictures</h1>
-                <div className="grid grid-cols-4 gap-4 my-2">
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Video</h1>
+              
+              <div className="h-auto">
+                {time?.map((t: any, i: any) => (
+                  <div className="w-full" key={i}>
+                    <MonitoringPictures
+                      handleUploadClick={handleUploadClick}
+                      time={t}
+                      setMonitoringMedia={setMonitoringMedia}
+                      setMonitoringTime={setMonitoringTime}
+                      monitoringData={monitoringData}
+                      screenId={monitoringScreen?._id}
+                      campaignId={monitoringCampaign?._id}
+                    />
                   </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Image</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Geotag</h1>
-                  </div>
-                  <div className="col-span-1">
-                    <div className="border border-dotted bg-gray-100 rounded h-24">
-                    </div>
-                    <h1 className="text-[10px] text-gray-500 m-1">Newpaper</h1>
-                  </div>
-                </div>
+                  
+                ))}
               </div>
+              
             </div>
-            
-          </div>
+          )}
+
 
         </div>
         
