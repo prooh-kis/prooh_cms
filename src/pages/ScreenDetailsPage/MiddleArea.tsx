@@ -129,6 +129,7 @@ export const MiddleArea: React.FC = () => {
     }
 
     if (successChange) {
+      window.location.reload();
       message.success("Campaign Creative/End Date Changed");
       dispatch({
         type: EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET
@@ -142,7 +143,7 @@ export const MiddleArea: React.FC = () => {
     }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
 
-  },[dispatch, userInfo, successStatusChange, successLoopSetting]);
+  },[dispatch, userInfo, successStatusChange, successLoopSetting, successChange]);
 
   useEffect(() => {
     if (screenDataUploadCreative) {
@@ -348,25 +349,24 @@ export const MiddleArea: React.FC = () => {
             </div>
             <div className="p-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
-              
-              {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
-                <div key={j} className="p-1 relative">
-                  {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives.standardDayTimeCreatives?.length === 0 && (
-                    <div className="p-1 relative border rounded h-32 z-100">
-                      <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
-                        <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
+              {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives?.standardDayTimeCreatives?.length === 0 && (
+                <div className="p-1 relative border rounded h-32 z-100">
+                  <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
+                    <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
 
-                          <div className="text-white hover:text-green-500" onClick={handleCreativeEdit}
-                          >
-                            <i className="fi fi-sr-file-edit"></i>
-                          </div>
-                          <div className="text-white hover:text-green-500">
-                            <i className="fi fi-sr-trash"></i>
-                          </div>
-                        </div>
+                      <div className="text-white hover:text-green-500" onClick={handleCreativeEdit}
+                      >
+                        <i className="fi fi-sr-file-edit"></i>
+                      </div>
+                      <div className="text-white hover:text-green-500">
+                        <i className="fi fi-sr-trash"></i>
                       </div>
                     </div>
-                  )}
+                  </div>
+                </div>
+              )}
+              {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
+                <div key={j} className="p-1 relative">
                   <div className="absolute top-0 right-1 flex justify-end mt-[20px] z-10">
                     <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
                       

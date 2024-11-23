@@ -39,7 +39,7 @@ export function EditCreativeEndDatePopup({
   // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
-  const [endDate, setEndDate] = useState<any>(new Date(campaign.endDate).toISOString().split(".")[0]);
+  const [endDate, setEndDate] = useState<any>(null);
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
   
@@ -114,55 +114,39 @@ export function EditCreativeEndDatePopup({
 
     let creativeDataToUpload: any = {};
 
-    for (const scr of screenData) {
-      const standardDayTimeCreatives: any = [...(scr.standardDayTimeCreatives || [])]; // Clone the array
+    const scrData = screenData?.filter((scr: any) => scr.screens?.map((s: any) => s.id).includes(selectedScreenIds[0]))[0]    // for (const scr of screenData) {
+    const standardDayTimeCreatives: any = [...(scrData.standardDayTimeCreatives || [])]; // Clone the array
     
-      selectedScreenIds?.forEach((s: any) => {
-        if (scr.screens?.some((sd: any) => sd.id === s)) {
-          dataToUpload.forEach((data: any) => {
-            if (!standardDayTimeCreatives.some((f: any) => f.url === data.url)) {
-              standardDayTimeCreatives.push({
-                size: data.size,
-                type: data.type,
-                url: data.url,
-              });
-            }
-          });
-        }
-      });
-    
-      creativeDataToUpload = {
-        creativeDuration: parseInt(scr.creativeDuration, 10),
-        standardDayTimeCreatives: standardDayTimeCreatives,
-        standardNightTimeCreatives: [],
-        triggerCreatives: [],
-      };
-    }
-    
-    const campData = getDataFromLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA)?.[campaign.campaignCreationId];
-    campData["creatives"] = campData["creatives"] ? campData["creatives"] : [];
-    if (creativeDataToUpload.standardDayTimeCreatives.length > 0) {
-      campData.creatives = creativeDataToUpload;
-    }
-    saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-      [campaign.campaignCreationId]: campData.creatives,
+    dataToUpload.forEach((data: any) => {
+      if (!standardDayTimeCreatives.some((f: any) => f.url === data.url)) {
+        standardDayTimeCreatives.push({
+          size: data.size,
+          type: data.type,
+          url: data.url,
+        });
+      }
     });
 
+    creativeDataToUpload = {
+      creativeDuration: parseInt(scrData.creativeDuration, 10),
+      standardDayTimeCreatives: standardDayTimeCreatives,
+      standardNightTimeCreatives: [],
+      triggerCreatives: [],
+    };
 
     dispatch(editCampaignCreativesEndDateAction({
       campaignId: campaign._id,
-      endDate: new Date(endDate).toISOString(),
-      creatives: creativeDataToUpload,
+      endDate: endDate ? new Date(endDate).toISOString() : new Date(campaign.endDate).toISOString().split(".")[0],
+      // creatives: creativeDataToUpload,
+      creatives: creativeDataToUpload?.standardCreatives?.length > 0 ? creativeDataToUpload : null,
+
     }));
     setIsLoading(false);
     setIsCreativeOpen(false);
 
-    message.success("Creative added successfully");
+    message.success("Campaign creative/end date change initialized");
 
-    setTimeout(() => {
-      handelDiscard();
-    }, 0);
-    return;
+    handelDiscard();
   };
 
   const createCampaignFromURL = () => {
@@ -281,7 +265,7 @@ export function EditCreativeEndDatePopup({
                 </h1>
                 <CalendarInput
                   placeholder={endDate}
-                  value={endDate}
+                  value={endDate ? endDate : campaign.endDate}
                   action={(e: any) => {
                     setEndDate(e);
                   }}
@@ -311,7 +295,7 @@ export function EditCreativeEndDatePopup({
                                       return [...prev, l];
                                     }
                                   })
-                                  console.log("sad", mediaFiles,l )
+                                  // console.log("sad", mediaFiles,l )
                                 }}
                               >
                                 <div className="w-full">

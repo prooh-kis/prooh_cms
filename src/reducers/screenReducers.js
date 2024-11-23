@@ -70,9 +70,9 @@ export function changeCampaignCreativeEndDateReducer(state = {}, action) {
     case EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST:
       return { loading: true };
     case EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS:
-      return {...state, loading: false, success: true, data: action.payload };
+      return {loading: false, success: true, data: action.payload };
     case EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL:
-      return {...state, loading: false, error: action.payload };
+      return {loading: false, error: action.payload };
     case EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET:
       return {};
     default:
