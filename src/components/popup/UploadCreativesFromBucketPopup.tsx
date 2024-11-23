@@ -116,14 +116,30 @@ export function UploadCreativesFromBucketPopup({
       }
       dataToUpload.push(mediaData);
     })
-
     const creativeDataToUpload = [];
+    const screenDataToUpload = screenData?.map((item: any) => {
+      // Filter screens that match the screenIds array
+      const filteredScreens = item.screens.filter((screen: any) => selectedScreenIds.includes(screen.id));
+      if (filteredScreens.length > 0) {
+          // Return the updated object with filtered screens and updated count
+          return {
+              ...item,
+              count: filteredScreens.length,
+              screens: filteredScreens
+          };
+      }
 
-    for (const scr of screenData) {
+      // Return null if no screens match
+      return [null];
+    })
+    .filter((item: any) => item !== null); // Remove null items
+
+    for (const scr of screenDataToUpload) {
       const standardDayTimeCreatives: any = [...(scr.standardDayTimeCreatives || [])]; // Clone the array
-    
+
       selectedScreenIds?.forEach((s: any) => {
         if (scr.screens?.some((sd: any) => sd.id === s)) {
+
           dataToUpload.forEach((data: any) => {
             if (!standardDayTimeCreatives.some((f: any) => f.url === data.url)) {
               standardDayTimeCreatives.push({
@@ -148,7 +164,6 @@ export function UploadCreativesFromBucketPopup({
     }
     // console.log("media: ", mediaFiles)
     
-
     const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives.length > 0) {
@@ -160,7 +175,7 @@ export function UploadCreativesFromBucketPopup({
     });
     setIsLoading(false);
     setIsCreativeOpen(false);
-
+    setMediaFiles([]);
     message.success("Creative added successfully");
 
     setTimeout(() => {

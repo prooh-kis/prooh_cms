@@ -247,7 +247,7 @@ export const UploadCreatives = ({
                 <div className="flex items-center gap-1">
                   <i className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}/>
                   <h1 className="text text-[12px]">
-                    {/* {Number(screenCreativeUpload?.flatMap((data: any) => data.screens).length || 0) - getUploadedScreensNumber()} */}
+                    {Number(screenCreativeUpload?.flatMap((data: any) => data.screens).length || 0) - getUploadedScreensNumber()}
                   </h1>
                 </div>
               </div>
@@ -255,20 +255,24 @@ export const UploadCreatives = ({
           )}
 
           <div className="p-1">
-            <PrimaryButton 
-              title="Live Now"
-              rounded="rounded-full"
-              reverse={true}
-              // disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
-              height="h-8"
-              width="w-30"
-              textSize="text-[12px]"
-              action={() => {
-                if (validateForm()) {
-                  saveCampaignCreativesDetails();
-                }
-              }}
-            />
+            {!loading && (
+
+              <PrimaryButton 
+                title="Live Now"
+                rounded="rounded-full"
+                reverse={true}
+                // disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
+                height="h-8"
+                width="w-30"
+                textSize="text-[12px]"
+                action={() => {
+                  if (validateForm()) {
+                    saveCampaignCreativesDetails();
+                  }
+                }}
+              />
+            )}
+
           </div>
         </div>
       </div>

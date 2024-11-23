@@ -151,9 +151,9 @@ export const MiddleArea: React.FC = () => {
                       <div className="grid grid-cols-3 gap-2">
                         {c?.standardDayTimeCreatives?.map((cs: any, j: any) => (
                           <div className="col-span-1 p-2" key={j}>
-                            {cs.type === "video" ? (
+                            {cs.type.split("/")[0] === "video" ? (
                               <video className="rounded" src={cs.url} />
-                            ) : cs.type === "image" ? (
+                            ) : cs.type.split("/")[0] === "image" ? (
                               <img className="rounded" src={cs.url} alt={cs.type} />
                             ) : (
                               <iframe className="rounded" src={cs.url} />
