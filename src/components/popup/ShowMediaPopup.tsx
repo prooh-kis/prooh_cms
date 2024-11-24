@@ -6,12 +6,14 @@ interface ShowMediaPopupProps {
   openShowMedia?: boolean;
   media?: any
   onClose?: any;
+  // removeAddedCreativeFromCampaign?: any;
 }
 
 export function ShowMediaPopup({
   openShowMedia,
   media,
-  onClose
+  onClose,
+  // removeAddedCreativeFromCampaign
 }: ShowMediaPopupProps) {
 
   useEffect(() => {
@@ -42,7 +44,9 @@ export function ShowMediaPopup({
   
         <div className="grid grid-cols-2 flex p-2 justify-center gap-4 w-full h-full">
           {media?.map((l: any, index: any) => (
-            <div key={index} className="col-span-1 p-1 h-40 w-auto">
+            <div key={index} className="col-span-1 p-1 h-40 w-auto" 
+            // onClick={() => removeAddedCreativeFromCampaign(l)}
+            >
               <ShowMediaFile
                 url={l.url}
                 mediaType={l?.type?.split("/")[0]}

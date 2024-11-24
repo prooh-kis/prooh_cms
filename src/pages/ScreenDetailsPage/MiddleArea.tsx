@@ -280,6 +280,8 @@ export const MiddleArea: React.FC = () => {
                   setCurrentTab={setCurrentTab}
                   tabData={allTabs}
                 />
+
+                <h1 className="text-[10px] truncate">{campaigns?.length} campaigns</h1>
                 
               </div>
               <div className="flex items-center p-4">
@@ -294,7 +296,7 @@ export const MiddleArea: React.FC = () => {
               {loadingCampaigns ? (
                 <Loading />
               ) : (
-              <div className="w-full">
+              <div className="w-full h-[30vh] overflow-scroll mb-2">
                 {campaigns
                   && campaigns?.map((campaign: any, index: any) => (
                   <div key={index}
@@ -323,6 +325,15 @@ export const MiddleArea: React.FC = () => {
               </div> 
               )}
 
+            </div>
+            <div className="border rounded my-2">
+              <div className="px-4 pt-4 pb-2 flex justify-between">
+                <h1 className="text-[16px] font-semibold">Monitoring Proof</h1>
+                <div className="flex gap-4 items-center">
+
+
+                </div>
+              </div>
             </div>
           </div>
         )}

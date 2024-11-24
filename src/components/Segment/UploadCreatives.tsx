@@ -194,6 +194,10 @@ export const UploadCreatives = ({
     return screenIds.length;
   }
 
+  const removeAddedCreativeFromCampaign = (mediaToRemove: any) => {
+    // console.log(mediaToRemove);
+    // console.log(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives)
+  }
   return (
     <div className="w-full py-3">
       {isBucketPopupOpen && (
@@ -212,8 +216,10 @@ export const UploadCreatives = ({
         <div className="col-span-1">
           <ShowMediaPopup
             onClose={closePopup}
-            openShowMedia={openShowMedia}
-            media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+            openShowMedia={openShowMedia ? true : false}
+            media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.filter((f: any) => f.screenResolution === openShowMedia?.resolution && f.screenIds?.includes(openShowMedia?.id))?.flatMap((c: any) => c.standardDayTimeCreatives)}
+            // removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
+            // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
           />
         </div>
       )}
