@@ -14,7 +14,7 @@ import {
 } from "../reducers/userReducers";
 import { allCampaignsDataGetReducer, campaignCreatedScreensDetailsGetReducer, campaignDetailsGetReducer, campaignStatusChangeReducer, createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
 import { creativesMediaGetReducer, creativesMediaUploadReducer } from "../reducers/creativeReducers";
-import { allScreensDataGetReducer, changeCampaignCreativeEndDateReducer, screenCampaignMonitoringReducer, screenCampaignsDetailsGetReducer, screenDetailsGetReducer, setCampaignsLoopForScreenReducer } from "../reducers/screenReducers";
+import { allScreensDataGetReducer, changeCampaignCreativeEndDateReducer, screenCampaignMonitoringReducer, screenCampaignsDetailsGetReducer, screenCodeChangeReducer, screenDataUpdateRedisReducer, screenDetailsGetReducer, screenRefreshReducer, setCampaignsLoopForScreenReducer } from "../reducers/screenReducers";
 
 const initialState = {
   userSignin: {
@@ -61,6 +61,9 @@ const store = configureStore({
     setCampaignsLoopForScreen: setCampaignsLoopForScreenReducer,
     changeCampaignCreativeEndDate: changeCampaignCreativeEndDateReducer,
     screenCampaignMonitoring: screenCampaignMonitoringReducer,
+    screenCodeChange: screenCodeChangeReducer,
+    screenRefresh: screenRefreshReducer,
+    screenDataUpdateRedis: screenDataUpdateRedisReducer,
   },
   middleware: (() => process.env.NODE_ENV !== 'production' ?
   [require('redux-immutable-state-invariant').default(), thunk] :

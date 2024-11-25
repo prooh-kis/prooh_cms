@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { getScreenCampaignsDetailsAction, getScreenDetailsAction } from "../../actions/screenAction";
+import { getScreenCampaignsDetailsAction, getScreenDetailsAction, ScreenDataUpdateRedisAction, screenRefreshAction } from "../../actions/screenAction";
 import { Loading } from "../../components/Loading";
 import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
@@ -108,10 +108,31 @@ export const MiddleArea: React.FC = () => {
     success: successChange
   } = changeCampaignCreativeEndDate;
 
+  const screenRefresh = useSelector((state: any) => state.screenRefresh);
+  const {
+    loading: loadingScreenRefresh,
+    error: errorScreenRefresh,
+    success: successScreenRefresh
+  } = screenRefresh;
+
+  const screenDataUpdateRedis = useSelector((state: any) => state.screenDataUpdateRedis);
+  const {
+    loading: loadingScreenDataUpdateRedis,
+    error: errorScreenDataUpdateRedis,
+    success: successScreenDataUpdateRedis
+  } = screenDataUpdateRedis;
   
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
+    }
+
+    if (successScreenDataUpdateRedis) {
+      message.success("Screen DB updated successfully...");
+    }
+
+    if (successScreenRefresh) {
+      message.success("Screen refreshed...");
     }
 
     if (successStatusChange) {
@@ -143,7 +164,7 @@ export const MiddleArea: React.FC = () => {
     }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
 
-  },[dispatch, userInfo, successStatusChange, successLoopSetting, successChange]);
+  },[dispatch, userInfo, successStatusChange, successLoopSetting, successChange, successScreenRefresh, successScreenDataUpdateRedis]);
 
   useEffect(() => {
     if (screenDataUploadCreative) {
@@ -230,8 +251,16 @@ export const MiddleArea: React.FC = () => {
                 </div>
               </div>
               <div className="px-4 flex h-auto gap-8">
-                <i className="fi fi-br-refresh text-gray-500"></i>
-                <i className="fi fi-sr-eye text-gray-500"></i>
+                <div className="flex justify-center items-top" onClick={() => {
+                  dispatch(screenRefreshAction({id: screenId}));
+                }}>
+                  <i className="fi fi-br-refresh text-gray-500"></i>
+                </div>
+                <div className="flex justify-center items-top" onClick={() => {
+                  dispatch(ScreenDataUpdateRedisAction({ids: [screenId]}));
+                }}>
+                  <i className="fi fi-rr-back-up text-gray-500"></i>
+                </div>
               </div>        
             </div>
             <div className="border rounded my-2">

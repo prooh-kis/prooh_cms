@@ -4,12 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
+import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
+  const [openScreenCodePopup, setOpenScreenCodePopup] = useState<any>(false);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -21,6 +23,10 @@ export const MiddleArea: React.FC = () => {
   },[dispatch, userInfo]);
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
+      <ChangeScreenCodePopup
+        setOpenScreenCodePopup={setOpenScreenCodePopup}
+        openScreenCodePopup={openScreenCodePopup}
+      />
  
       <div className="pt-8 px-8">
         <h1 className="text-2xl font-bold">
@@ -29,10 +35,17 @@ export const MiddleArea: React.FC = () => {
         <p className="text-md">
           Please contact support or create a new user with {"Campaign Manager"} role!!!
         </p>
-        <PrimaryButton
-          title="Create Campaign"
-          action={() => navigate("/create-campaign")}
-        />
+        <div className="flex justify-center gap-2">
+          <PrimaryButton
+            title="Create Campaign"
+            action={() => navigate("/create-campaign")}
+          />
+          <PrimaryButton
+            title="Edit Screen Code"
+            action={() => setOpenScreenCodePopup(true)}
+          />
+        </div>
+
       </div>
     </div>
   );

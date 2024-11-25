@@ -117,6 +117,9 @@ export const EnterCampaignBasicDetails = ({
     } else if (endDate === "") {
       message.error("Please enter endData ");
       return false;
+    } else if (atIndex.length === 0) {
+      message.error("Please set loop for the campaign");
+      return false;
     } else if (screenIds.length === 0) {
       message.error("Please select atleast one screens");
       return false;
@@ -270,7 +273,6 @@ export const EnterCampaignBasicDetails = ({
   const handleSettingAtIndex = (index: any) => {
     if(index === 0) {
       if (atIndex.includes(index)) {
-        console.log(index);
         setAtIndex([]);
       } else {
         setAtIndex([0]);
@@ -278,7 +280,6 @@ export const EnterCampaignBasicDetails = ({
     } else {
       setAtIndex((pre: any) => {
         if (pre.find((a: any) => a === index)) {
-          console.log("sdasda")
           return pre.filter((s: any) => s !== index);
         } else {
           return [...pre, index];
@@ -286,7 +287,6 @@ export const EnterCampaignBasicDetails = ({
       });
     }
   }
-  console.log(atIndex)
   return (
     <div className="w-full py-3">
       <div className="">
@@ -479,7 +479,7 @@ export const EnterCampaignBasicDetails = ({
               </div>
           </div>
           <div className="border rounded-[12px]">
-              <h1 className="px-2 text-[14px]">Screens</h1>
+              <h1 className="my-2 px-2 text-[14px]">Screens</h1>
               <div className="grid grid-cols-2 gap-2 justify-center px-1 py-1"> 
                 {getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)?.filter((s: any) => screenIds.includes(s._id))?.map((screen: any, i: any) => (
                   <div key={i} className="border rounded-[8px] flex justify-center gap-2 px-2 py-1">

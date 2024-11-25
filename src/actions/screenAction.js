@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SCREEN_CAMPAIGN_MONITORING__FAIL, SCREEN_CAMPAIGN_MONITORING__SUCCESS, SCREEN_CAMPAIGN_MONITORING_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS } from "../constants/screenConstants";
+import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SCREEN_CAMPAIGN_MONITORING_FAIL, SCREEN_CAMPAIGN_MONITORING_SUCCESS, SCREEN_CAMPAIGN_MONITORING_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS, SCREEN_REFRESH_REQUEST, SCREEN_REFRESH_SUCCESS, SCREEN_REFRESH_FAIL, UPDATE_SCREENS_DATA_IN_REDIS_REQUEST, UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS, UPDATE_SCREENS_DATA_IN_REDIS_FAIL, SCREEN_CODE_CHANGE_REQUEST, SCREEN_CODE_CHANGE_SUCCESS, SCREEN_CODE_CHANGE_FAIL } from "../constants/screenConstants";
 
 const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
 const url2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns`;
@@ -135,13 +135,85 @@ export const screenCampaignsMonitoringAction = (input) => async (dispatch, getSt
   try {
     const { data } = await axios.post(`${url2}/addCampaignMonitoringData`, input);
     dispatch({
-      type: SCREEN_CAMPAIGN_MONITORING__SUCCESS,
+      type: SCREEN_CAMPAIGN_MONITORING_SUCCESS,
       payload: data,
     });
     
   } catch (error) {
     dispatch({
-      type: SCREEN_CAMPAIGN_MONITORING__FAIL,
+      type: SCREEN_CAMPAIGN_MONITORING_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+export const screenCodeChangeAction = (input) => async (dispatch, getState) => {
+  dispatch({
+    type: SCREEN_CODE_CHANGE_REQUEST,
+    payload: input,
+  });
+  try {
+    const { data } = await axios.post(`${url}/changeScreenCode`, input);
+    dispatch({
+      type: SCREEN_CODE_CHANGE_SUCCESS,
+      payload: data,
+    });
+    
+  } catch (error) {
+    dispatch({
+      type: SCREEN_CODE_CHANGE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+export const screenRefreshAction = (input) => async (dispatch, getState) => {
+  dispatch({
+    type: SCREEN_REFRESH_REQUEST,
+    payload: input,
+  });
+  try {
+    const { data } = await axios.post(`${url}/restartScreen`, input);
+    dispatch({
+      type: SCREEN_REFRESH_SUCCESS,
+      payload: data,
+    });
+    
+  } catch (error) {
+    dispatch({
+      type: SCREEN_REFRESH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+export const ScreenDataUpdateRedisAction = ({ids}) => async (dispatch, getState) => {
+  dispatch({
+    type: UPDATE_SCREENS_DATA_IN_REDIS_REQUEST,
+    payload: {ids},
+  });
+  try {
+    const { data } = await axios.post(`${url}/updateRedisData`, {ids});
+    dispatch({
+      type: UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS,
+      payload: data,
+    });
+    
+  } catch (error) {
+    dispatch({
+      type: UPDATE_SCREENS_DATA_IN_REDIS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
