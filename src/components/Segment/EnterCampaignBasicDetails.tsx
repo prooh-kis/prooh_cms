@@ -268,15 +268,25 @@ export const EnterCampaignBasicDetails = ({
   }
 
   const handleSettingAtIndex = (index: any) => {
-    setAtIndex((pre: any) => {
-      if (pre.find((a: any) => a === index)) {
-        return pre.filter((s: any) => s !== index);
+    if(index === 0) {
+      if (atIndex.includes(index)) {
+        console.log(index);
+        setAtIndex([]);
       } else {
-        return [...pre, index];
+        setAtIndex([0]);
       }
-    })
+    } else {
+      setAtIndex((pre: any) => {
+        if (pre.find((a: any) => a === index)) {
+          console.log("sdasda")
+          return pre.filter((s: any) => s !== index);
+        } else {
+          return [...pre, index];
+        }
+      });
+    }
   }
-  
+  console.log(atIndex)
   return (
     <div className="w-full py-3">
       <div className="">
@@ -308,7 +318,7 @@ export const EnterCampaignBasicDetails = ({
               <PrimaryInput
                 inputType="text"
                 placeholder="Brand Name"
-                value={brandName}
+                value={brandName.toUpperCase()}
                 action={setBrandName}
               />
             </div>
@@ -433,7 +443,19 @@ export const EnterCampaignBasicDetails = ({
         </div>
         <div className="col-span-4">
           <div className="border rounded-[12px] p-1 my-2">
-              <h1 className="p-1">Priority</h1>
+              <div className="flex justify-between items-center py-1">
+                <h1 className="px-2 text-[14px]">Priority</h1>
+                <input
+                  className="mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+                  type="checkbox"
+                  role="switch"
+                  title="Auto Priority"
+                  id="flexSwitchCheckDefault"
+                  onChange={() => {
+                    handleSettingAtIndex(0);
+                  }}
+                />
+              </div>
               <div className="grid grid-cols-6 gap-2 justify-center px-1"> 
                 {allIndexs?.map((index: any, i: any) => (
                   <div key={i}
@@ -441,7 +463,13 @@ export const EnterCampaignBasicDetails = ({
                       ${atIndex.includes(index.value) ? "bg-[#129BFF] text-white" : ""}
                       border rounded-[8px] w-[40px] flex justify-center py-1
                     `}
-                    onClick={() => handleSettingAtIndex(index.value)}
+                    onClick={() => {
+                      if (!atIndex.includes(0)) {
+                        handleSettingAtIndex(index.value);
+                      } else {
+                        message.info("Please deselect auto-set priority switch first...")
+                      }
+                    }}
                   >
                     <h1 className="text-[12px]">
                       {index.value}
@@ -451,7 +479,7 @@ export const EnterCampaignBasicDetails = ({
               </div>
           </div>
           <div className="border rounded-[12px]">
-              <h1 className="p-1">Screens</h1>
+              <h1 className="px-2 text-[14px]">Screens</h1>
               <div className="grid grid-cols-2 gap-2 justify-center px-1 py-1"> 
                 {getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)?.filter((s: any) => screenIds.includes(s._id))?.map((screen: any, i: any) => (
                   <div key={i} className="border rounded-[8px] flex justify-center gap-2 px-2 py-1">
