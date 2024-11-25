@@ -1,8 +1,10 @@
 import axios from "axios";
-import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SCREEN_CAMPAIGN_MONITORING_FAIL, SCREEN_CAMPAIGN_MONITORING_SUCCESS, SCREEN_CAMPAIGN_MONITORING_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS, SCREEN_REFRESH_REQUEST, SCREEN_REFRESH_SUCCESS, SCREEN_REFRESH_FAIL, UPDATE_SCREENS_DATA_IN_REDIS_REQUEST, UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS, UPDATE_SCREENS_DATA_IN_REDIS_FAIL, SCREEN_CODE_CHANGE_REQUEST, SCREEN_CODE_CHANGE_SUCCESS, SCREEN_CODE_CHANGE_FAIL } from "../constants/screenConstants";
+import { EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL, EDIT_CAMPAIGN_CREATIVE_END_DATE_REQUEST, EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS, GET_ALL_SCREENS_DATA_FAIL, GET_ALL_SCREENS_DATA_REQUEST, GET_ALL_SCREENS_DATA_SUCCESS, GET_SCREEN_CAMPAIGNS_DATA_FAIL, GET_SCREEN_CAMPAIGNS_DATA_REQUEST, GET_SCREEN_CAMPAIGNS_DATA_SUCCESS, GET_SCREEN_DATA_FAIL, GET_SCREEN_DATA_REQUEST, GET_SCREEN_DATA_SUCCESS, SCREEN_CAMPAIGN_MONITORING_FAIL, SCREEN_CAMPAIGN_MONITORING_SUCCESS, SCREEN_CAMPAIGN_MONITORING_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_FAIL, SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST, SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS, SCREEN_REFRESH_REQUEST, SCREEN_REFRESH_SUCCESS, SCREEN_REFRESH_FAIL, UPDATE_SCREENS_DATA_IN_REDIS_REQUEST, UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS, UPDATE_SCREENS_DATA_IN_REDIS_FAIL, SCREEN_CODE_CHANGE_REQUEST, SCREEN_CODE_CHANGE_SUCCESS, SCREEN_CODE_CHANGE_FAIL, GET_SCREEN_LOGS_REQUEST, GET_SCREEN_LOGS_SUCCESS, GET_SCREEN_LOGS_FAIL } from "../constants/screenConstants";
 
 const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
 const url2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns`;
+const url3 = `${process.env.REACT_APP_PROOH_SERVER}/api/v1/analytics`;
+
 
 
 export const getAllScreensDetailsAction = ({userId}) => async (dispatch) => {
@@ -199,7 +201,7 @@ export const screenRefreshAction = (input) => async (dispatch, getState) => {
 }
 
 
-export const ScreenDataUpdateRedisAction = ({ids}) => async (dispatch, getState) => {
+export const screenDataUpdateRedisAction = ({ids}) => async (dispatch, getState) => {
   dispatch({
     type: UPDATE_SCREENS_DATA_IN_REDIS_REQUEST,
     payload: {ids},
@@ -214,6 +216,30 @@ export const ScreenDataUpdateRedisAction = ({ids}) => async (dispatch, getState)
   } catch (error) {
     dispatch({
       type: UPDATE_SCREENS_DATA_IN_REDIS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+export const getScreenLogsAction = ({screenId, start, limit}) => async (dispatch, getState) => {
+  dispatch({
+    type: GET_SCREEN_LOGS_REQUEST,
+    payload: {screenId, start, limit},
+  });
+  try {
+    const { data } = await axios.get(`${url3}/getScreenlogs?screenId=${screenId}&start=${start}&limit=${limit}?`);
+    dispatch({
+      type: GET_SCREEN_LOGS_SUCCESS,
+      payload: data,
+    });
+    
+  } catch (error) {
+    dispatch({
+      type: GET_SCREEN_LOGS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

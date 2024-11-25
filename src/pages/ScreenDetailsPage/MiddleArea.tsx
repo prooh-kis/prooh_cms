@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { getScreenCampaignsDetailsAction, getScreenDetailsAction, ScreenDataUpdateRedisAction, screenRefreshAction } from "../../actions/screenAction";
+import { getScreenCampaignsDetailsAction, getScreenDetailsAction, getScreenLogsAction, screenDataUpdateRedisAction, screenRefreshAction } from "../../actions/screenAction";
 import { Loading } from "../../components/Loading";
 import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
@@ -20,6 +20,7 @@ import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
+import { ScreenLogReportPopup } from "../../components/popup/ScreenLogReportPopup";
 
 const allTabs = [{
   id: "1",
@@ -67,7 +68,8 @@ export const MiddleArea: React.FC = () => {
   const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] = useState<any>(false);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
   const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
-  const [selectedScreens, setSelectedScreens] = useState<any>([]);
+  
+  const [isScreenLogReportOpen, setIsScreenLogReportOpen] = useState<any>(false);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -122,6 +124,13 @@ export const MiddleArea: React.FC = () => {
     success: successScreenDataUpdateRedis
   } = screenDataUpdateRedis;
   
+  const screenLogsGet = useSelector((state: any) => state.screenLogsGet);
+  const {
+    loading: loadingScreenLogs,
+    error: errorScreenLogs,
+    data: screenLogs
+  } = screenLogsGet;
+
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
@@ -164,7 +173,7 @@ export const MiddleArea: React.FC = () => {
     }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
 
-  },[dispatch, userInfo, successStatusChange, successLoopSetting, successChange, successScreenRefresh, successScreenDataUpdateRedis]);
+  },[dispatch, userInfo, screenId, successStatusChange, successLoopSetting, successChange, successScreenRefresh, successScreenDataUpdateRedis]);
 
   useEffect(() => {
     if (screenDataUploadCreative) {
@@ -206,6 +215,17 @@ export const MiddleArea: React.FC = () => {
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
+        {isScreenLogReportOpen && (
+          <ScreenLogReportPopup
+            isOpen={isScreenLogReportOpen}
+            onClose={() => setIsScreenLogReportOpen(false)}
+            screenLogs={screenLogs}
+            screenName={screen?.screenName}
+            allCampaigns={campaigns}
+            loading={loadingScreenLogs}
+          />
+        )}
+
         {openCreativeEndDateChangePopup && screen && (
           <EditCreativeEndDatePopup
             onClose={() => setOpenCreativeEndDateChangePopup(false)}
@@ -250,16 +270,24 @@ export const MiddleArea: React.FC = () => {
                   <p className="text-[12px]">Last Active {getTimeDifferenceInMin(screen?.lastActive)} minutes ago</p>
                 </div>
               </div>
-              <div className="px-4 flex h-auto gap-8">
+              <div className="px-4 flex h-auto gap-4">
                 <div className="flex justify-center items-top" onClick={() => {
                   dispatch(screenRefreshAction({id: screenId}));
                 }}>
                   <i className="fi fi-br-refresh text-gray-500"></i>
                 </div>
                 <div className="flex justify-center items-top" onClick={() => {
-                  dispatch(ScreenDataUpdateRedisAction({ids: [screenId]}));
+                  dispatch(screenDataUpdateRedisAction({ids: [screenId]}));
                 }}>
                   <i className="fi fi-rr-back-up text-gray-500"></i>
+                </div>
+                <div className="flex justify-center items-top" onClick={() => {
+                  dispatch(
+                    getScreenLogsAction({ screenId: screenId, start: 0, limit: 240 })
+                  );
+                  setIsScreenLogReportOpen(true);
+                }}>
+                  <i className="fi fi-rr-file-medical-alt text-gray-500"></i>
                 </div>
               </div>        
             </div>
