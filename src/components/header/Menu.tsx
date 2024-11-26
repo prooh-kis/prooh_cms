@@ -17,7 +17,7 @@ export const Menu = (props: any) => {
 
   return (
     <div className="dropdown">
-      <i className="fi fi-ss-angle-down"></i>
+      <i className="fi fi-ss-angle-down flex items-center"></i>
       <div className="dropdown-content">
         <div
           onClick={() => navigate(SCREENS_LIST)}

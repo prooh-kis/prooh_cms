@@ -39,7 +39,7 @@ export function EditCreativeEndDatePopup({
   // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
-  const [endDate, setEndDate] = useState<any>(null);
+  const [endDate, setEndDate] = useState<any>(campaign.endDate?.split(".")[0]);
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
   
@@ -138,7 +138,7 @@ export function EditCreativeEndDatePopup({
       campaignId: campaign._id,
       endDate: endDate ? new Date(endDate).toISOString() : new Date(campaign.endDate).toISOString().split(".")[0],
       // creatives: creativeDataToUpload,
-      creatives: creativeDataToUpload?.standardCreatives?.length > 0 ? creativeDataToUpload : null,
+      creatives: creativeDataToUpload?.standardDayTimeCreatives?.length > 0 ? creativeDataToUpload : null,
 
     }));
     setIsLoading(false);

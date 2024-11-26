@@ -35,6 +35,9 @@ export const MiddleArea: React.FC = () => {
 
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate("/auth");
+    }
     if (campaignId && getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.currentPage === "Add Basic Details") {
       setStep(2);
     }

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { setCampaignsLoopForScreenAction } from "../../actions/screenAction";
 
 interface Campaign {
+  _id: string;
   name: string;
   brandName: string;
   atIndex: any;
@@ -59,9 +60,10 @@ export function LoopSettingPopup({
 
     for (const campaign of campaignData) {
       const { standardDayTimeCreatives } = campaign.creatives;
-      const { name, campaignDuration, atIndex } = campaign;
+      const { _id, name, campaignDuration, atIndex } = campaign;
       standardDayTimeCreatives.forEach((creative: any) => {
         result.push({
+          _id,
           name,
           brandName: campaign.brandName,
           atIndex,
@@ -82,12 +84,15 @@ export function LoopSettingPopup({
 
     const campaignData = event.dataTransfer.getData("campaign");
     const campaign = JSON.parse(campaignData) as Campaign;
+    campaign.atIndex = [slotIndex + 1]
 
     setSlots((prevSlots) => {
       const updatedSlots = prevSlots.map((slot, index) =>
         index === slotIndex ? [...slot, campaign] : slot
       );
+      
       return updatedSlots;
+
     });
   };
 
@@ -129,6 +134,8 @@ export function LoopSettingPopup({
     return null;
   }
 
+  // console.log(slots)
+
   const handleLoopSetting = () => {
   
     const formattedData: any = slots
@@ -138,8 +145,7 @@ export function LoopSettingPopup({
         campaignId: item._id,
         atIndex: item.atIndex,
       }));
-    
-    
+
     dispatch(setCampaignsLoopForScreenAction({
       screeId: screenId,
       data: formattedData

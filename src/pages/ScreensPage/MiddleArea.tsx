@@ -32,7 +32,11 @@ export const MiddleArea: React.FC = () => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!")
     }
-    dispatch(getAllScreensDetailsAction({userId: userInfo._id}));
+
+    if (!userInfo) {
+      navigate("/auth")
+    }
+    dispatch(getAllScreensDetailsAction({userId: userInfo?._id}));
   },[dispatch, userInfo]);
 
 

@@ -56,7 +56,9 @@ export function ChangeScreenCodePopup({
       message.success("Screen Code updated successfully...");
       setOpenScreenCodePopup(false);
     }
-    dispatch(getAllScreensDetailsAction({userId: userInfo._id}));
+    if (userInfo) {
+      dispatch(getAllScreensDetailsAction({userId: userInfo?._id}));
+    }
   }, [dispatch, userInfo, successChange, setOpenScreenCodePopup]);
 
   if (!openScreenCodePopup) {
