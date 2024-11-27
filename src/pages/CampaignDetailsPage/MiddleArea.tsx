@@ -91,7 +91,6 @@ export const MiddleArea: React.FC = () => {
     }));
   };
 
-
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">

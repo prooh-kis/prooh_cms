@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface PrimaryInputProps {
@@ -14,12 +15,29 @@ interface PrimaryInputProps {
 
 export const PrimaryInput = ({height, width, placeholder, rounded, prefix, suffix, value, action, inputType }: PrimaryInputProps) => {
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => e.preventDefault();
+
+    const inputElement = inputRef.current;
+    if (inputElement) {
+      inputElement.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (inputElement) {
+        inputElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, []);
 
   return (
     <div className="relative w-full">
       {prefix}
       <input
         title="input_box"
+        ref={inputRef}
         type={inputType}
         value={value}
         placeholder={placeholder || "Type to input"}

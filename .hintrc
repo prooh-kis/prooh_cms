@@ -8,6 +8,14 @@
       {
         "empty-table-header": "off"
       }
+    ],
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "-moz-appearance"
+        ]
+      }
     ]
   }
 }

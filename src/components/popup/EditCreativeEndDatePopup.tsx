@@ -13,6 +13,7 @@ import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/loc
 import { CAMPAIGN_CREATIVES_TO_UPLOAD, FULL_CAMPAIGN_PLAN, UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { CalendarInput } from "../../components/atoms/CalendarInput";
 import { editCampaignCreativesEndDateAction } from "../../actions/screenAction";
+import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 
 
 interface EditCreativeEndDatePopupProps {
@@ -39,7 +40,9 @@ export function EditCreativeEndDatePopup({
   // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
-  const [endDate, setEndDate] = useState<any>(campaign.endDate?.split(".")[0]);
+  const [endDate, setEndDate] = useState<any>(campaign?.endDate?.split(".")[0]);
+  const [duration, setDuration] = useState<any>(campaign?.campaignDuration);
+
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
   
@@ -138,6 +141,7 @@ export function EditCreativeEndDatePopup({
       campaignId: campaign._id,
       endDate: endDate ? new Date(endDate).toISOString() : new Date(campaign.endDate).toISOString().split(".")[0],
       // creatives: creativeDataToUpload,
+      duration: duration,
       creatives: creativeDataToUpload?.standardDayTimeCreatives?.length > 0 ? creativeDataToUpload : null,
 
     }));
@@ -175,23 +179,6 @@ export function EditCreativeEndDatePopup({
       message.error("Please enter valid url");
       setUrl("");
       return false;
-    // } else if (isImagePresent() && !campaignDuration) {
-    //   message.error("Please enter duration for image campaign");
-    //   return false;
-    // } else if (isImagePresent() && Number(campaignDuration) <= 0) {
-    //   message.error("Please enter duration > 0 for image campaign");
-    //   return false;
-    // } else if (campaignOption === "URL" && !campaignDuration) {
-    //   message.error("Please set campaign duration in sec");
-    //   return false;
-    // } else if (campaignOption === "URL" && !isNumber(campaignDuration)) {
-    //   message.error("Please Enter only number for campaign duration");
-    //   setCampaignDuration("");
-    //   return false;
-    // } else if (campaignOption === "URL" && Number(campaignDuration) <= 0) {
-    //   message.error("Please Enter duration > 0 ");
-    //   setCampaignDuration("");
-    //   return false;
     } else if (selectedScreens?.length === 0) {
       message.error("Please Select at least one screen");
       return false;
@@ -259,20 +246,34 @@ export function EditCreativeEndDatePopup({
             </div>
           ) : (
             <div>
-              <div className="flex flex-col py-2">
-                <h1 className="text-[12px]">
-                  Change End Date
-                </h1>
-                <CalendarInput
-                  placeholder={endDate}
-                  value={endDate ? endDate : campaign.endDate}
-                  action={(e: any) => {
-                    setEndDate(e);
-                  }}
-                  minDate={new Date()}
-                  disabled={false}
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div className="col-span-1 flex flex-col py-2">
+                  <h1 className="block text-secondaryText text-[12px]">
+                    Change End Date
+                  </h1>
+                  <CalendarInput
+                    placeholder={endDate}
+                    value={endDate ? endDate : campaign.endDate}
+                    action={(e: any) => {
+                      setEndDate(e);
+                    }}
+                    minDate={new Date()}
+                    disabled={false}
+                  />
+                </div>
+                <div className="col-span-1 flex flex-col py-2">
+                  <label className="block text-secondaryText text-[12px]">
+                    Duration
+                  </label>
+                  <PrimaryInput
+                    inputType="number"
+                    placeholder="10"
+                    value={duration}
+                    action={setDuration}
+                  />
+                </div>
               </div>
+
               <h1 className="text-[14px] font-semibold">Select from creatives</h1>
               {loadingCreatives ? (
                 <Loading />

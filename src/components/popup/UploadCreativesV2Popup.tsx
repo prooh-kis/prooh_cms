@@ -210,7 +210,7 @@ export function UploadCreativesV2Popup({
   };
  
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 p-1">
       <div className="pt-20">
         <ToastContainer position="top-center" />
       </div>
@@ -243,7 +243,7 @@ export function UploadCreativesV2Popup({
               />
             </div>
           </div>
-          <div className="px-2 relative overflow-auto max-h-auto">
+          <div className="px-2 relative overflow-auto h-full">
             {mediaFiles?.length === 0 && (
               <div className="py-2">
                 <MultipleFileUploader handleFilesUploader={handleFilesUploader} />
@@ -265,7 +265,7 @@ export function UploadCreativesV2Popup({
                     Reset
                   </button>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap justify-center overflow-scroll h-[35vh] gap-4">
                   {mediaFiles.map((media: any, index: any) => (
                     <ShowMediaFile
                       url={media.awsURL || media.url}

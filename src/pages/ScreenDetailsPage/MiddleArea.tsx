@@ -159,11 +159,11 @@ export const MiddleArea: React.FC = () => {
     }
 
     if (successChange) {
-      window.location.reload();
       message.success("Campaign Creative/End Date Changed");
       dispatch({
         type: EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET
       });
+      window.location.reload();
     }
 
     dispatch(getScreenDetailsAction({screenId: screenId}));
@@ -210,6 +210,16 @@ export const MiddleArea: React.FC = () => {
       dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.campaignCreationId}));
       setOpenCreativeEndDateChangePopup(true);
     }
+  }
+
+  const handleGetCampaignByStatus = (status: any) => {
+    setCampaignIds([]);
+    setSelectedCampaign(null);
+    setCurrentTab(status);
+    dispatch(getScreenCampaignsDetailsAction({
+      screenId: screenId,
+      status: allTabs.filter((tab: any) => tab.id === status)[0].value
+    }));
   }
 
   return (
@@ -272,20 +282,27 @@ export const MiddleArea: React.FC = () => {
               </div>
               <div className="px-4 flex h-auto gap-4">
                 <div className="flex justify-center items-top" onClick={() => {
-                  dispatch(screenRefreshAction({id: screenId}));
+                  if (confirm(`Do you want to refresh your screen???`)) {
+                    dispatch(screenRefreshAction({id: screenId}));
+                  }
                 }}>
                   <i className="fi fi-br-refresh text-gray-500"></i>
                 </div>
                 <div className="flex justify-center items-top" onClick={() => {
-                  dispatch(screenDataUpdateRedisAction({ids: [screenId]}));
+                  if (confirm(`Do you want to update screen playlist database???`)) {
+                    dispatch(screenDataUpdateRedisAction({ids: [screenId]}));
+                  }
                 }}>
                   <i className="fi fi-rr-back-up text-gray-500"></i>
                 </div>
                 <div className="flex justify-center items-top" onClick={() => {
-                  dispatch(
-                    getScreenLogsAction({ screenId: screenId, start: 0, limit: 240 })
-                  );
-                  setIsScreenLogReportOpen(true);
+                  // if (confirm(``)) {
+                    dispatch(
+                      getScreenLogsAction({ screenId: screenId, start: 0, limit: 240 })
+                    );
+                    setIsScreenLogReportOpen(true);
+                  // }
+
                 }}>
                   <i className="fi fi-rr-file-medical-alt text-gray-500"></i>
                 </div>
@@ -308,21 +325,29 @@ export const MiddleArea: React.FC = () => {
                     <div className="flex items-center gap-4">
                       <div className="text-gray-500 hover:text-blue-500"
                         onClick={() => {
-                          changeCampaignStatusHandler({
-                            campaignIds: campaignIds,
-                            status: "Pause"
-                          })
+                          if (confirm(`Are you sure you want ${campaignIds?.length} campaigns status to ${currentTab === "1" ? "Pause" : "Active"}???`)) {
+                            changeCampaignStatusHandler({
+                              campaignIds: campaignIds,
+                              status: currentTab === "1" ? "Pause" : "Active"
+                            });
+                          }
                         }}
                       >
-                        <i className="fi fi-sr-play-circle"></i>
+                        {currentTab === "1" ? (
+                          <i className="fi fi-sr-pause-circle"></i>
+                        ) : (
+                          <i className="fi fi-sr-play-circle"></i>
+                        )}
                       </div>
                       <div
                         className="text-gray-500 hover:text-green-500"
                         onClick={() => {
-                          changeCampaignStatusHandler({
-                            campaignIds: campaignIds,
-                            status: "Deleted"
-                          })
+                          if (confirm(`Are you sure you want ${campaignIds?.length} campaigns status to ${currentTab === "1" ? "Pause" : "Active"}???`)) {
+                            changeCampaignStatusHandler({
+                              campaignIds: campaignIds,
+                              status: "Deleted"
+                            });
+                          }
                         }}
                       >
                         <i className="fi fi-sr-trash"></i>
@@ -334,7 +359,7 @@ export const MiddleArea: React.FC = () => {
               <div className="flex items-center justify-between px-4">
                 <TabWithoutIcon
                   currentTab={currentTab}
-                  setCurrentTab={setCurrentTab}
+                  setCurrentTab={handleGetCampaignByStatus}
                   tabData={allTabs}
                 />
 
@@ -358,7 +383,9 @@ export const MiddleArea: React.FC = () => {
                   && campaigns?.map((campaign: any, index: any) => (
                   <div key={index}
                     className={`px-2`}
-                    onClick={() => setSelectedCampaign(campaign._id)}
+                    onClick={() => {
+                      setSelectedCampaign(campaign._id);
+                    }}
                     onDoubleClick={() => {
                       setCampaignIds((prev: any) => {
                         const campaignId = campaign?._id;
@@ -402,10 +429,19 @@ export const MiddleArea: React.FC = () => {
               <div className="flex justify-between items-center">
                 <h1 className="text-[16px] font-semibold">{campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.name}</h1>
                 <div className="flex gap-2">
-                  <div className="text-gray-500 hover:text-green-500">
+                  <div className="text-gray-500 hover:text-green-500" onClick={() => {
+                    if (confirm(`Are you sure you want delete the campaign???`)) {
+                      changeCampaignStatusHandler({
+                        campaignIds: campaignIds,
+                        status: "Deleted"
+                      });
+                    }
+                  }}>
                     <i className="fi fi-sr-trash"></i>
                   </div>
-                  <div className="text-gray-500 hover:text-red-500">
+                  <div className="text-gray-500 hover:text-red-500" onClick={() => {
+
+                  }}>
                     <i className="fi fi-sr-eye"></i>
                   </div>
                 </div>

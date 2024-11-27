@@ -12,7 +12,6 @@ interface ScreenListThumbnailProps {
 }
 
 export const CampaignListView = ({navigate, data, color, isSelected, handleCardClick}: ScreenListThumbnailProps): JSX.Element => {
-
   return (
     <div 
       onClick={handleCardClick}
