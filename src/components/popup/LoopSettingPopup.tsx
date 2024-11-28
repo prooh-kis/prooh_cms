@@ -144,7 +144,17 @@ export function LoopSettingPopup({
       .map((item: any) => ({
         campaignId: item._id,
         atIndex: item.atIndex,
-      }));
+      }))
+      .reduce((acc: any[], curr: any) => {
+        const existing = acc.find((item) => item.campaignId === curr.campaignId);
+        if (existing) {
+          existing.atIndex = [...existing.atIndex, ...curr.atIndex];
+        } else {
+          acc.push({ ...curr });
+        }
+        return acc;
+      }, []);
+
 
     dispatch(setCampaignsLoopForScreenAction({
       screeId: screenId,
