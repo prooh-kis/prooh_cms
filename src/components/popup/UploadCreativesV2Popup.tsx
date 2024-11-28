@@ -200,6 +200,7 @@ export function UploadCreativesV2Popup({
   };
 
   const handleCreateCreatives = () => {
+    console.log("asdasda");
     if (validateForm()) {
       createNewCreatives();
     }
@@ -222,7 +223,7 @@ export function UploadCreativesV2Popup({
         style={{ height: "70vh", width: "40vw" }}
       >
         <div className="">
-          <div className="flex p-2">
+          <div className="flex p-2" onClick={onClose}>
             <h1 className="text-[14px] font-semibold">Add Creatives</h1>
           </div>
           <div className="p-2">
@@ -243,7 +244,7 @@ export function UploadCreativesV2Popup({
               />
             </div>
           </div>
-          <div className="px-2 relative overflow-auto h-full">
+          <div className="px-2 relative overflow-auto h-auto">
             {mediaFiles?.length === 0 && (
               <div className="py-2">
                 <MultipleFileUploader handleFilesUploader={handleFilesUploader} />
@@ -252,7 +253,7 @@ export function UploadCreativesV2Popup({
             )}
 
             {mediaFiles?.length > 0 && (
-              <div>
+              <div className="h-[35vh]">
                 <div className="flex fle-row justify-between">
                   <p className="py-1">Uploaded media</p>
                   <button
@@ -265,7 +266,7 @@ export function UploadCreativesV2Popup({
                     Reset
                   </button>
                 </div>
-                <div className="flex flex-wrap justify-center overflow-scroll h-[35vh] gap-4">
+                <div className="flex flex-wrap justify-center overflow-scroll h-[30vh] gap-4">
                   {mediaFiles.map((media: any, index: any) => (
                     <ShowMediaFile
                       url={media.awsURL || media.url}
@@ -280,15 +281,15 @@ export function UploadCreativesV2Popup({
         </div>
 
         <div className="p-2 w-full bottom-0">
-          {!loadingUpload && (
+          {/* {!loadingUpload && ( */}
             <PrimaryButton
               title="Upload"
               rounded="rounded"
               width="w-full"
               action={handleCreateCreatives}
-              disabled={loadingUpload}
+              // disabled={loadingUpload}
             />
-          )}
+          {/* )} */}
 
 
         </div>
