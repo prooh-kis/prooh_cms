@@ -22,8 +22,7 @@ export const Header: React.FC = () => {
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="w-full h-16 bg-white border border-b flex items-center justify-between fixed z-50">
@@ -42,9 +41,7 @@ export const Header: React.FC = () => {
             <div className="h-10 flex items-center gap-2">
               <img src={userImage} alt="userImage" className="h-10" />
               <div className="justify-center w-30 truncate">
-                <h3 className="text-lg">
-                  {userInfo.name}
-                </h3>
+                <h3 className="text-lg">{userInfo.name}</h3>
                 <p className="text-xs font-semibold text-gray-700">
                   {userInfo.isBrand && "Campaign Planner"}
                 </p>
@@ -56,16 +53,14 @@ export const Header: React.FC = () => {
           </div>
         ) : (
           <div className="px-4">
-            <PrimaryButton 
-              title={"Get In"}
-              rounded={"rounded-md"}
-              width={"w-[80px]"}
-              height={"h-[32px]"}
-              action={() => navigate(AUTH)}
-            />
+            <button
+              onClick={() => navigate(AUTH)}
+              className="border border-2 px-6 py-2 rounded-md bg-[#00A0FA] font-bold text-[#FFFFFF] hover:text-[#00A0FA] hover:bg-white hover:border-[#00A0FA]"
+            >
+              Get In
+            </button>
           </div>
         )}
-        
       </div>
     </div>
   );
