@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
+import { AddDefaultMediaPopup } from "../../components/popup/AddDefaultMediaPopup";
 
 
 export const MiddleArea: React.FC = () => {
@@ -12,6 +13,7 @@ export const MiddleArea: React.FC = () => {
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
   const [openScreenCodePopup, setOpenScreenCodePopup] = useState<any>(false);
+  const [openAddDefaultMediaPopup, setOpenAddDefaultMediaPopup] = useState<any>(false);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -26,6 +28,12 @@ export const MiddleArea: React.FC = () => {
       <ChangeScreenCodePopup
         setOpenScreenCodePopup={setOpenScreenCodePopup}
         openScreenCodePopup={openScreenCodePopup}
+      />
+
+      <AddDefaultMediaPopup
+        setOpenAddDefaultMediaPopup={setOpenAddDefaultMediaPopup}
+        openAddDefaultMediaPopup={openAddDefaultMediaPopup}
+        userInfo={userInfo}
       />
  
       <div className="pt-8 px-8">
@@ -43,6 +51,10 @@ export const MiddleArea: React.FC = () => {
           <PrimaryButton
             title="Edit Screen Code"
             action={() => setOpenScreenCodePopup(true)}
+          />
+          <PrimaryButton
+            title="Add Default Media"
+            action={() => setOpenAddDefaultMediaPopup(true)}
           />
         </div>
 

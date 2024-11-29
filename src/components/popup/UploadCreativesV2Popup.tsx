@@ -281,17 +281,15 @@ export function UploadCreativesV2Popup({
         </div>
 
         <div className="p-2 w-full bottom-0">
-          {/* {!loadingUpload && ( */}
+          {!loadingUpload && (
             <PrimaryButton
               title="Upload"
               rounded="rounded"
               width="w-full"
               action={handleCreateCreatives}
-              // disabled={loadingUpload}
+              disabled={loadingUpload}
             />
-          {/* )} */}
-
-
+          )}
         </div>
       </div>
 

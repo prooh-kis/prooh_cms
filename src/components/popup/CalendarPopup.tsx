@@ -2,7 +2,7 @@ import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import React, { useEffect, useState } from "react";
 
 
-interface ShowMediaPopupProps {
+interface CalendarPopupProps {
   openCalendarPopup?: boolean;
   dates?: any
   onClose?: any;
@@ -16,7 +16,7 @@ export function CalendarPopup({
   monitoringDate,
   setMonitoringDate,
   onClose
-}: ShowMediaPopupProps) {
+}: CalendarPopupProps) {
 
   useEffect(() => {
     if (openCalendarPopup) {
