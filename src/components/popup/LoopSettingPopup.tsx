@@ -12,7 +12,7 @@ interface Campaign {
   atIndex: any;
   campaignDuration: string;
   creative: any;
-  
+  currentIndex: number;
 }
 
 interface LoopSettingPopupProps {
@@ -26,12 +26,14 @@ export function LoopSettingPopup({
   openLoopSetting,
   campaigns,
   onClose,
-  screenId
+  screenId,
 }: LoopSettingPopupProps) {
   const dispatch = useDispatch<any>();
-  
+
   const [campaignName, setCampaignName] = useState<string>("");
-  const [totalSlots] = useState<number[]>(Array.from({ length: 18 }, (_, index) => index + 1));
+  const [totalSlots] = useState<number[]>(
+    Array.from({ length: 18 }, (_, index) => index + 1)
+  );
   const [slots, setSlots] = useState<Campaign[][]>(Array(18).fill([]));
 
   const initializeSlots = () => {
@@ -45,7 +47,10 @@ export function LoopSettingPopup({
         campaign.atIndex.forEach((index) => {
           if (index > 0 && index <= 18) {
             // Subtract 1 because array indices start at 0
-            updatedSlots[index - 1] = [...updatedSlots[index - 1], campaign];
+            updatedSlots[index - 1] = [
+              ...updatedSlots[index - 1],
+              { ...campaign, currentIndex: index },
+            ];
           }
         });
       }
@@ -54,7 +59,9 @@ export function LoopSettingPopup({
     setSlots(updatedSlots);
   };
 
-  const getStandardCreativesWithCampaignNames = (campaignData: any): Campaign[] => {
+  const getStandardCreativesWithCampaignNames = (
+    campaignData: any
+  ): Campaign[] => {
     const result: Campaign[] = [];
     if (!campaignData) return result;
 
@@ -69,6 +76,7 @@ export function LoopSettingPopup({
           atIndex,
           campaignDuration,
           creative,
+          currentIndex: 0,
         });
       });
     }
@@ -84,15 +92,17 @@ export function LoopSettingPopup({
 
     const campaignData = event.dataTransfer.getData("campaign");
     const campaign = JSON.parse(campaignData) as Campaign;
-    campaign.atIndex = [slotIndex + 1]
+    campaign.atIndex = [slotIndex + 1];
 
-    setSlots((prevSlots) => {
-      const updatedSlots = prevSlots.map((slot, index) =>
-        index === slotIndex ? [...slot, campaign] : slot
-      );
-      
+    setSlots((prevSlots: any) => {
+      const updatedSlots = prevSlots.map((slot: any, index: any) => {
+        if (index === slotIndex) {
+          if (slot != undefined && slot?.length == 0) {
+            return [{ ...campaign, currentIndex: index + 1 }];
+          } else return slot;
+        } else return slot;
+      });
       return updatedSlots;
-
     });
   };
 
@@ -104,16 +114,16 @@ export function LoopSettingPopup({
     setSlots((prevSlots) => {
       const updatedSlots = prevSlots.map((slot, index) => {
         if (index === slotIndex) {
-          const updatedSlot = [...slot];
-          updatedSlot.splice(campaignIndex, 1); // Remove the campaign at the specific index
-          return updatedSlot;
+          // const updatedSlot = [...slot];
+          // updatedSlot.splice(campaignIndex, 1); // Remove the campaign at the specific index
+          // return updatedSlot;
+          return [];
         }
         return slot;
       });
       return updatedSlots;
     });
   };
-
 
   useEffect(() => {
     initializeSlots();
@@ -137,16 +147,17 @@ export function LoopSettingPopup({
   // console.log(slots)
 
   const handleLoopSetting = () => {
-  
     const formattedData: any = slots
       .flat() // Flatten the nested arrays
       .filter((item: any) => item && item._id && item.atIndex) // Filter out empty or invalid entries
       .map((item: any) => ({
         campaignId: item._id,
-        atIndex: item.atIndex,
+        atIndex: [item.currentIndex],
       }))
       .reduce((acc: any[], curr: any) => {
-        const existing = acc.find((item) => item.campaignId === curr.campaignId);
+        const existing = acc.find(
+          (item) => item.campaignId === curr.campaignId
+        );
         if (existing) {
           existing.atIndex = [...existing.atIndex, ...curr.atIndex];
         } else {
@@ -155,12 +166,13 @@ export function LoopSettingPopup({
         return acc;
       }, []);
 
-
-    dispatch(setCampaignsLoopForScreenAction({
-      screeId: screenId,
-      data: formattedData
-    }));
-  }
+    dispatch(
+      setCampaignsLoopForScreenAction({
+        screeId: screenId,
+        data: formattedData,
+      })
+    );
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
@@ -183,7 +195,6 @@ export function LoopSettingPopup({
               <i className="fi fi-br-circle-xmark"></i>
             </div>
           </div>
-          
         </div>
         <div className="grid grid-cols-12 h-[60vh]">
           {/* Left Section */}
@@ -199,23 +210,27 @@ export function LoopSettingPopup({
             </div>
             <div className="my-2 h-[58vh] overflow-scroll">
               {campaigns &&
-                getStandardCreativesWithCampaignNames(campaigns)?.map((camp: Campaign, i: number) => (
-                  <div
-                    key={i}
-                    className="flex gap-2 p-2 cursor-pointer"
-                    draggable
-                    onDragStart={handleDragStart(camp)}
-                  >
-                    <h1 className="text-[14px] font-semibold pt-2">{i + 1}.</h1>
-                    <div>
-                      <BrandCampaignScreenDetails
-                        brandName={camp.brandName}
-                        campaign={camp}
-                        showIcons={false}
-                      />
+                getStandardCreativesWithCampaignNames(campaigns)?.map(
+                  (camp: Campaign, i: number) => (
+                    <div
+                      key={i}
+                      className="flex gap-2 p-2 cursor-pointer"
+                      draggable
+                      onDragStart={handleDragStart(camp)}
+                    >
+                      <h1 className="text-[14px] font-semibold pt-2">
+                        {i + 1}.
+                      </h1>
+                      <div>
+                        <BrandCampaignScreenDetails
+                          brandName={camp.brandName}
+                          campaign={camp}
+                          showIcons={false}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                )}
             </div>
           </div>
 
@@ -229,13 +244,19 @@ export function LoopSettingPopup({
                 onDragOver={handleDragOver}
               >
                 <h1 className="text-[14px] font-semibold pt-2">{j + 1}.</h1>
-                {slots[j].length === 0 && <div className="w-full py-2 text-gray-500">Drop here</div>}
-                
+                {slots[j].length === 0 && (
+                  <div className="w-full py-2 text-gray-500">Drop here</div>
+                )}
+
                 <div className="w-full py-1">
                   {slots[j]?.map((camp, k) => (
-                    <div key={k} className="w-full" onDoubleClick={() => {
-                      handleRemoveCampaign(j,k)
-                    }}>
+                    <div
+                      key={k}
+                      className="w-full"
+                      onDoubleClick={() => {
+                        handleRemoveCampaign(j, k);
+                      }}
+                    >
                       <BrandCampaignScreenDetails
                         campaignIds={[]}
                         brandName={camp?.brandName}
@@ -253,4 +274,3 @@ export function LoopSettingPopup({
     </div>
   );
 }
-

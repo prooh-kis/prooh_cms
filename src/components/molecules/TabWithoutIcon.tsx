@@ -26,16 +26,48 @@ export function TabWithoutIcon({ tabData, currentTab, setCurrentTab }: any) {
               : "px-1 flex gap-2 items-center text-[14px] py-1 px-2 truncate"
           }
         >
-          <h1 className={currentTab === tab.id ? "text-blue-500 truncate" : "text-gray-500 truncate"}>{tab.label}</h1>
+          <h1
+            className={
+              currentTab === tab.id
+                ? "text-blue-500 truncate"
+                : "text-gray-500 truncate"
+            }
+          >
+            {tab.label}
+          </h1>
           {tab.params && (
             <div className="flex gap-2 items-center">
               <div className="flex gap-1 items-center">
-                <p className={currentTab === tab.id ? "text-green-500 text-[12px]" : "text-gray-500 text-[12px]"}>{tab.params[0]}</p>
-                <i className={`fi fi-br-check flex items-center ${currentTab === tab.id ? "text-green-500" : "text-gray-500"} text-[12px]`}></i>
+                <p
+                  className={
+                    currentTab === tab.id
+                      ? "text-green-500 text-[12px]"
+                      : "text-gray-500 text-[12px]"
+                  }
+                >
+                  {tab.params[0]}
+                </p>
+                <i
+                  className={`fi fi-br-check flex items-center ${
+                    currentTab === tab.id ? "text-green-500" : "text-gray-500"
+                  } text-[12px]`}
+                ></i>
               </div>
               <div className="flex gap-1 items-center">
-                <p className={currentTab === tab.id ? "text-red-500 text-[12px]" : "text-gray-500 text-[12px]"}>{tab.params[1]}</p>
-                <i className={`fi fi-br-cross flex items-center ${currentTab === tab.id ? "text-red-500" : "text-gray-500"} text-[10px]`}></i>
+                <p
+                  className={
+                    currentTab === tab.id
+                      ? "text-red-500 text-[12px]"
+                      : "text-gray-500 text-[12px]"
+                  }
+                >
+                  {tab.params[1]}
+                </p>
+                <i
+                  className={`fi fi-br-cross flex items-center ${
+                    currentTab === tab.id ? "text-red-500" : "text-gray-500"
+                  } text-[10px]`}
+                ></i>
               </div>
             </div>
           )}
