@@ -5,16 +5,32 @@ import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { getScreenCampaignsDetailsAction, getScreenDetailsAction, getScreenLogsAction, screenDataUpdateRedisAction, screenRefreshAction } from "../../actions/screenAction";
+import {
+  getScreenCampaignsDetailsAction,
+  getScreenDetailsAction,
+  getScreenLogsAction,
+  screenDataUpdateRedisAction,
+  screenRefreshAction,
+} from "../../actions/screenAction";
 import { Loading } from "../../components/Loading";
-import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
+import {
+  convertDataTimeToLocale,
+  getNumberOfDaysBetweenTwoDates,
+  getTimeDifferenceInMin,
+} from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
 import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
-import { changeCampaignStatusAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
+import {
+  changeCampaignStatusAction,
+  getScreenDataUploadCreativeAction,
+} from "../../actions/campaignAction";
 import { CAMPAIGN_STATUS_CHANGE_RESET } from "../../constants/campaignConstants";
-import { EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET, SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET } from "../../constants/screenConstants";
+import {
+  EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET,
+  SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET,
+} from "../../constants/screenConstants";
 import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
@@ -22,41 +38,43 @@ import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstan
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { ScreenLogReportPopup } from "../../components/popup/ScreenLogReportPopup";
 
-const allTabs = [{
-  id: "1",
-  label: "Active",
-  value: "Active"
-},{
-  id: "2",
-  label: "Upcoming",
-  value: "Pending"
-
-},{
-  id: "3",
-  label: "Paused",
-  value: "Pause"
-
-},{
-  id: "4",
-  label: "Completed",
-  value: "Completed"
-
-},{
-  id: "5",
-  label: "Deleted",
-  value: "Deleted"
-
-}];
-
+const allTabs = [
+  {
+    id: "1",
+    label: "Active",
+    value: "Active",
+  },
+  {
+    id: "2",
+    label: "Upcoming",
+    value: "Pending",
+  },
+  {
+    id: "3",
+    label: "Paused",
+    value: "Pause",
+  },
+  {
+    id: "4",
+    label: "Completed",
+    value: "Completed",
+  },
+  {
+    id: "5",
+    label: "Deleted",
+    value: "Deleted",
+  },
+];
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
-  const {pathname} = useLocation();
-  const screenId = pathname?.split("/")?.length > 2
-  ? pathname?.split("/")?.splice(2)[0]
-  : null;
+  const { pathname } = useLocation();
+  const screenId =
+    pathname?.split("/")?.length > 2
+      ? pathname?.split("/")?.splice(2)[0]
+      : null;
 
   const [currentTab, setCurrentTab] = useState<any>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
@@ -65,75 +83,91 @@ export const MiddleArea: React.FC = () => {
 
   const [campaignIds, setCampaignIds] = useState<any>([]);
 
-  const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] = useState<any>(false);
+  const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
+    useState<any>(false);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
   const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
-  
-  const [isScreenLogReportOpen, setIsScreenLogReportOpen] = useState<any>(false);
+
+  const [isScreenLogReportOpen, setIsScreenLogReportOpen] =
+    useState<any>(false);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
   const screenDetailsGet = useSelector((state: any) => state.screenDetailsGet);
-  const {
-    loading, error, data: screen
-  } = screenDetailsGet;
+  const { loading, error, data: screen } = screenDetailsGet;
 
-  const screenCampaignsDetailsGet = useSelector((state: any) => state.screenCampaignsDetailsGet);
+  const screenCampaignsDetailsGet = useSelector(
+    (state: any) => state.screenCampaignsDetailsGet
+  );
   const {
-    loading: loadingCampaigns, error: errorCampaigns, data: campaigns
+    loading: loadingCampaigns,
+    error: errorCampaigns,
+    data: campaigns,
   } = screenCampaignsDetailsGet;
 
-  const campaignStatusChange = useSelector((state: any) => state.campaignStatusChange);
+  const campaignStatusChange = useSelector(
+    (state: any) => state.campaignStatusChange
+  );
   const {
     loading: loadingStatusChange,
     error: errorStatusChange,
-    success: successStatusChange
+    success: successStatusChange,
   } = campaignStatusChange;
 
-  const setCampaignsLoopForScreen = useSelector((state: any) => state.setCampaignsLoopForScreen);
+  const setCampaignsLoopForScreen = useSelector(
+    (state: any) => state.setCampaignsLoopForScreen
+  );
   const {
     loading: loadingLoopSetting,
     error: errorLoopSetting,
-    success: successLoopSetting
+    success: successLoopSetting,
   } = setCampaignsLoopForScreen;
 
-  const screenDataUploadCreativeGet = useSelector((state: any) => state.screenDataUploadCreativeGet);
+  const screenDataUploadCreativeGet = useSelector(
+    (state: any) => state.screenDataUploadCreativeGet
+  );
   const {
-    loading: loadingCreativeData, error: errorCreativeData, data: screenDataUploadCreative
+    loading: loadingCreativeData,
+    error: errorCreativeData,
+    data: screenDataUploadCreative,
   } = screenDataUploadCreativeGet;
 
-  const changeCampaignCreativeEndDate = useSelector((state: any) => state.changeCampaignCreativeEndDate);
+  const changeCampaignCreativeEndDate = useSelector(
+    (state: any) => state.changeCampaignCreativeEndDate
+  );
   const {
     loading: loadingChange,
     error: errorChange,
-    success: successChange
+    success: successChange,
   } = changeCampaignCreativeEndDate;
 
   const screenRefresh = useSelector((state: any) => state.screenRefresh);
   const {
     loading: loadingScreenRefresh,
     error: errorScreenRefresh,
-    success: successScreenRefresh
+    success: successScreenRefresh,
   } = screenRefresh;
 
-  const screenDataUpdateRedis = useSelector((state: any) => state.screenDataUpdateRedis);
+  const screenDataUpdateRedis = useSelector(
+    (state: any) => state.screenDataUpdateRedis
+  );
   const {
     loading: loadingScreenDataUpdateRedis,
     error: errorScreenDataUpdateRedis,
-    success: successScreenDataUpdateRedis
+    success: successScreenDataUpdateRedis,
   } = screenDataUpdateRedis;
-  
+
   const screenLogsGet = useSelector((state: any) => state.screenLogsGet);
   const {
     loading: loadingScreenLogs,
     error: errorScreenLogs,
-    data: screenLogs
+    data: screenLogs,
   } = screenLogsGet;
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a screen owner!!!")
+      message.error("Not a screen owner!!!");
     }
 
     if (successScreenDataUpdateRedis) {
@@ -147,39 +181,49 @@ export const MiddleArea: React.FC = () => {
     if (successStatusChange) {
       message.success("Campaign Status Changed");
       dispatch({
-        type: CAMPAIGN_STATUS_CHANGE_RESET
+        type: CAMPAIGN_STATUS_CHANGE_RESET,
       });
     }
 
     if (successLoopSetting) {
       message.success("Loop Setting Successfull");
       dispatch({
-        type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET
+        type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET,
       });
     }
 
     if (successChange) {
       message.success("Campaign Creative/End Date Changed");
       dispatch({
-        type: EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET
+        type: EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET,
       });
       window.location.reload();
     }
 
-    dispatch(getScreenDetailsAction({screenId: screenId}));
-    dispatch(getScreenCampaignsDetailsAction({
-      screenId: screenId,
-      status: "Active"
-    }));
+    dispatch(getScreenDetailsAction({ screenId: screenId }));
+    dispatch(
+      getScreenCampaignsDetailsAction({
+        screenId: screenId,
+        status: "Active",
+      })
+    );
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
-
-  },[dispatch, userInfo, screenId, successStatusChange, successLoopSetting, successChange, successScreenRefresh, successScreenDataUpdateRedis]);
+  }, [
+    dispatch,
+    userInfo,
+    screenId,
+    successStatusChange,
+    successLoopSetting,
+    successChange,
+    successScreenRefresh,
+    successScreenDataUpdateRedis,
+  ]);
 
   useEffect(() => {
     if (screenDataUploadCreative) {
-      setScreenCreativeUpload(screenDataUploadCreative)
+      setScreenCreativeUpload(screenDataUploadCreative);
     }
-  },[screenDataUploadCreative])
+  }, [screenDataUploadCreative]);
 
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
@@ -193,34 +237,46 @@ export const MiddleArea: React.FC = () => {
     setOpenLoopSetting(!openLoopSetting);
   };
 
-  const changeCampaignStatusHandler = ({campaignIds, status}: any) => {
-    if(confirm(`${campaignIds.length} campaigns are being ${status}`)) {
-      dispatch(changeCampaignStatusAction({
-        campaignIds: campaignIds,
-        status: status
-      }))
+  const changeCampaignStatusHandler = ({ campaignIds, status }: any) => {
+    if (confirm(`${campaignIds.length} campaigns are being ${status}`)) {
+      dispatch(
+        changeCampaignStatusAction({
+          campaignIds: campaignIds,
+          status: status,
+        })
+      );
     }
-  }
+  };
 
   const handleCreativeEdit = () => {
     if (confirm(`Are you sure you want to edit the campaign???`)) {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-        [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.campaignCreationId]: campaigns?.filter((c: any) => c._id === selectedCampaign)[0].creatives.standardDayTimeCreatives
+        [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+          ?.campaignCreationId]: campaigns?.filter(
+          (c: any) => c._id === selectedCampaign
+        )[0].creatives.standardDayTimeCreatives,
       });
-      dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.campaignCreationId}));
+      dispatch(
+        getScreenDataUploadCreativeAction({
+          id: campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+            ?.campaignCreationId,
+        })
+      );
       setOpenCreativeEndDateChangePopup(true);
     }
-  }
+  };
 
   const handleGetCampaignByStatus = (status: any) => {
     setCampaignIds([]);
     setSelectedCampaign(null);
     setCurrentTab(status);
-    dispatch(getScreenCampaignsDetailsAction({
-      screenId: screenId,
-      status: allTabs.filter((tab: any) => tab.id === status)[0].value
-    }));
-  }
+    dispatch(
+      getScreenCampaignsDetailsAction({
+        screenId: screenId,
+        status: allTabs.filter((tab: any) => tab.id === status)[0].value,
+      })
+    );
+  };
 
   return (
     <div className="mt-6 w-full h-full py-2">
@@ -242,7 +298,9 @@ export const MiddleArea: React.FC = () => {
             selectedScreens={[screen]}
             mediaFiles={mediaFiles}
             setMediaFiles={setMediaFiles}
-            campaign={campaigns?.filter((c: any) => c._id === selectedCampaign)[0]}
+            campaign={
+              campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+            }
             screenData={screenCreativeUpload}
           />
         )}
@@ -269,44 +327,78 @@ export const MiddleArea: React.FC = () => {
                   onClick={() => navigate(-1)}
                 ></i>
                 <div className="flex justify-center items-center">
-                  <img className="h-16 rounded" src={screen?.images[0]} alt={screen?._id} />
+                  <img
+                    className="h-16 rounded"
+                    src={screen?.images[0]}
+                    alt={screen?._id}
+                  />
                   <div className="h-full flex justify-end items-end ml-[-8px]">
                     <div className={getScreenClassName(screen)} />
                   </div>
                 </div>
                 <div className="px-2 pb-1 flex flex-col justify-between">
-                  <h1 className="text-[14px] font-semibold">{screen?.screenName}</h1>
-                  <h2 className="text-[12px]">{screen?.location}, {screen?.city}</h2>
-                  <p className="text-[12px]">Last Active {getTimeDifferenceInMin(screen?.lastActive)} minutes ago</p>
+                  <h1 className="text-[14px] font-semibold">
+                    {screen?.screenName}
+                  </h1>
+                  <h2 className="text-[12px]">
+                    {screen?.location}, {screen?.city}
+                  </h2>
+                  <p className="text-[12px]">
+                    Last Active {getTimeDifferenceInMin(screen?.lastActive)}{" "}
+                    minutes ago
+                  </p>
                 </div>
               </div>
-              <div className="px-4 flex h-auto gap-4">
-                <div className="flex justify-center items-top" onClick={() => {
-                  if (confirm(`Do you want to refresh your screen???`)) {
-                    dispatch(screenRefreshAction({id: screenId}));
-                  }
-                }}>
-                  <i className="fi fi-br-refresh text-gray-500"></i>
+              <div>
+                <div className="px-4 flex h-auto gap-4">
+                  <div
+                    className="flex justify-center items-top"
+                    onClick={() => {
+                      if (confirm(`Do you want to refresh your screen???`)) {
+                        dispatch(screenRefreshAction({ id: screenId }));
+                      }
+                    }}
+                  >
+                    <i className="fi fi-br-refresh text-gray-500"></i>
+                  </div>
+                  <div
+                    className="flex justify-center items-top"
+                    onClick={() => {
+                      if (
+                        confirm(
+                          `Do you want to update screen playlist database???`
+                        )
+                      ) {
+                        dispatch(
+                          screenDataUpdateRedisAction({ ids: [screenId] })
+                        );
+                      }
+                    }}
+                  >
+                    <i className="fi fi-rr-back-up text-gray-500"></i>
+                  </div>
+                  <div
+                    className="flex justify-center items-top"
+                    onClick={() => {
+                      // if (confirm(``)) {
+                      dispatch(
+                        getScreenLogsAction({
+                          screenId: screenId,
+                          start: 0,
+                          limit: 240,
+                        })
+                      );
+                      setIsScreenLogReportOpen(true);
+                      // }
+                    }}
+                  >
+                    <i className="fi fi-rr-file-medical-alt text-gray-500"></i>
+                  </div>
                 </div>
-                <div className="flex justify-center items-top" onClick={() => {
-                  if (confirm(`Do you want to update screen playlist database???`)) {
-                    dispatch(screenDataUpdateRedisAction({ids: [screenId]}));
-                  }
-                }}>
-                  <i className="fi fi-rr-back-up text-gray-500"></i>
-                </div>
-                <div className="flex justify-center items-top" onClick={() => {
-                  // if (confirm(``)) {
-                    dispatch(
-                      getScreenLogsAction({ screenId: screenId, start: 0, limit: 240 })
-                    );
-                    setIsScreenLogReportOpen(true);
-                  // }
-
-                }}>
-                  <i className="fi fi-rr-file-medical-alt text-gray-500"></i>
-                </div>
-              </div>        
+                <h1 className="flex  justify-center items-bottom text-[12px] text-gray-500">
+                  {screen?.screenCode}
+                </h1>
+              </div>
             </div>
             <div className="border rounded my-2">
               <div className="px-4 pt-4 pb-2 flex justify-between">
@@ -323,12 +415,21 @@ export const MiddleArea: React.FC = () => {
                   />
                   {campaignIds.length > 0 && (
                     <div className="flex items-center gap-4">
-                      <div className="text-gray-500 hover:text-blue-500"
+                      <div
+                        className="text-gray-500 hover:text-blue-500"
                         onClick={() => {
-                          if (confirm(`Are you sure you want ${campaignIds?.length} campaigns status to ${currentTab === "1" ? "Pause" : "Active"}???`)) {
+                          if (
+                            confirm(
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" ? "Pause" : "Active"
+                              }???`
+                            )
+                          ) {
                             changeCampaignStatusHandler({
                               campaignIds: campaignIds,
-                              status: currentTab === "1" ? "Pause" : "Active"
+                              status: currentTab === "1" ? "Pause" : "Active",
                             });
                           }
                         }}
@@ -342,10 +443,18 @@ export const MiddleArea: React.FC = () => {
                       <div
                         className="text-gray-500 hover:text-green-500"
                         onClick={() => {
-                          if (confirm(`Are you sure you want ${campaignIds?.length} campaigns status to ${currentTab === "1" ? "Pause" : "Active"}???`)) {
+                          if (
+                            confirm(
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" ? "Pause" : "Active"
+                              }???`
+                            )
+                          ) {
                             changeCampaignStatusHandler({
                               campaignIds: campaignIds,
-                              status: "Deleted"
+                              status: "Deleted",
                             });
                           }
                         }}
@@ -363,8 +472,9 @@ export const MiddleArea: React.FC = () => {
                   tabData={allTabs}
                 />
 
-                <h1 className="text-[10px] truncate">{campaigns?.length} campaigns</h1>
-                
+                <h1 className="text-[10px] truncate">
+                  {campaigns?.length} campaigns
+                </h1>
               </div>
               <div className="flex items-center p-4">
                 <PrimaryInput
@@ -378,45 +488,44 @@ export const MiddleArea: React.FC = () => {
               {loadingCampaigns ? (
                 <Loading />
               ) : (
-              <div className="w-full h-[30vh] overflow-scroll mb-2">
-                {campaigns
-                  && campaigns?.map((campaign: any, index: any) => (
-                  <div key={index}
-                    className={`px-2`}
-                    onClick={() => {
-                      setSelectedCampaign(campaign._id);
-                    }}
-                    onDoubleClick={() => {
-                      setCampaignIds((prev: any) => {
-                        const campaignId = campaign?._id;
-                        if (campaignIds.includes(campaignId)) {
-                          return prev.filter((id: any) => id !== campaignId)
-                        } else {
-                          return [...prev, campaignId]
-                        }
-                      })
-                    }}
-                  >
-                    <BrandCampaignScreenDetails
-                      campaignIds={campaignIds}
-                      brandName={campaign.brandName}
-                      campaign={campaign}
-                      campaigns={campaigns}
-                      showIcons={true}
-                    />
-                  </div>
-                ))}
-              </div> 
+                <div className="w-full h-[30vh] overflow-scroll no-scrollbar mb-2">
+                  {campaigns &&
+                    campaigns?.map((campaign: any, index: any) => (
+                      <div
+                        key={index}
+                        className={`px-2`}
+                        onClick={() => {
+                          setSelectedCampaign(campaign._id);
+                        }}
+                        onDoubleClick={() => {
+                          setCampaignIds((prev: any) => {
+                            const campaignId = campaign?._id;
+                            if (campaignIds.includes(campaignId)) {
+                              return prev.filter(
+                                (id: any) => id !== campaignId
+                              );
+                            } else {
+                              return [...prev, campaignId];
+                            }
+                          });
+                        }}
+                      >
+                        <BrandCampaignScreenDetails
+                          campaignIds={campaignIds}
+                          brandName={campaign.brandName}
+                          campaign={campaign}
+                          campaigns={campaigns}
+                          showIcons={true}
+                        />
+                      </div>
+                    ))}
+                </div>
               )}
-
             </div>
             <div className="border rounded my-2">
               <div className="px-4 pt-4 pb-2 flex justify-between">
                 <h1 className="text-[16px] font-semibold">Monitoring Proof</h1>
-                <div className="flex gap-4 items-center">
-
-
-                </div>
+                <div className="flex gap-4 items-center"></div>
               </div>
             </div>
           </div>
@@ -427,38 +536,70 @@ export const MiddleArea: React.FC = () => {
           <div className="col-span-4 border rounded my-2">
             <div className="border-b p-2">
               <div className="flex justify-between items-center">
-                <h1 className="text-[16px] font-semibold">{campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.name}</h1>
+                <h1 className="text-[16px] font-semibold">
+                  {
+                    campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                      ?.name
+                  }
+                </h1>
                 <div className="flex gap-2">
-                  <div className="text-gray-500 hover:text-green-500" onClick={() => {
-                    if (confirm(`Are you sure you want delete the campaign???`)) {
-                      changeCampaignStatusHandler({
-                        campaignIds: campaignIds,
-                        status: "Deleted"
-                      });
-                    }
-                  }}>
+                  <div
+                    className="text-gray-500 hover:text-green-500"
+                    onClick={() => {
+                      if (
+                        confirm(`Are you sure you want delete the campaign???`)
+                      ) {
+                        changeCampaignStatusHandler({
+                          campaignIds: campaignIds,
+                          status: "Deleted",
+                        });
+                      }
+                    }}
+                  >
                     <i className="fi fi-sr-trash"></i>
                   </div>
-                  <div className="text-gray-500 hover:text-red-500" onClick={() => {
-
-                  }}>
+                  <div
+                    className="text-gray-500 hover:text-red-500"
+                    onClick={() => {}}
+                  >
                     <i className="fi fi-sr-eye"></i>
                   </div>
                 </div>
               </div>
               <div>
-                <h1 className="text-[14px]">{campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.brandName}</h1>
-                <h1 className="text-[12px]">Ends in: {getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.endDate) <= 0 ? "Already Ended" : `${getNumberOfDaysBetweenTwoDates(new Date(), campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.endDate)} days`} </h1>
+                <h1 className="text-[14px]">
+                  {
+                    campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                      ?.brandName
+                  }
+                </h1>
+                <h1 className="text-[12px]">
+                  Ends in:{" "}
+                  {getNumberOfDaysBetweenTwoDates(
+                    new Date(),
+                    campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                      ?.endDate
+                  ) <= 0
+                    ? "Already Ended"
+                    : `${getNumberOfDaysBetweenTwoDates(
+                        new Date(),
+                        campaigns?.filter(
+                          (c: any) => c._id === selectedCampaign
+                        )[0]?.endDate
+                      )} days`}{" "}
+                </h1>
               </div>
             </div>
             <div className="p-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
-              {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives?.standardDayTimeCreatives?.length === 0 && (
+              {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                ?.creatives?.standardDayTimeCreatives?.length === 0 && (
                 <div className="p-1 relative border rounded h-32 z-100">
                   <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
                     <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
-
-                      <div className="text-white hover:text-green-500" onClick={handleCreativeEdit}
+                      <div
+                        className="text-white hover:text-green-500"
+                        onClick={handleCreativeEdit}
                       >
                         <i className="fi fi-sr-file-edit"></i>
                       </div>
@@ -469,44 +610,79 @@ export const MiddleArea: React.FC = () => {
                   </div>
                 </div>
               )}
-              {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives.standardDayTimeCreatives?.map((creative: any, j: any) => (
-                <div key={j} className="p-1 relative">
-                  <div className="absolute top-0 right-1 flex justify-end mt-[20px] z-10">
-                    <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
-                      
-                      <div className="text-white hover:text-green-500" onClick={() => {
-                          if (confirm(`Are you sure you want to edit the campaign???`)) {
-                            saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-                              [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.campaignCreationId]: campaigns?.filter((c: any) => c._id === selectedCampaign)[0].creatives.standardDayTimeCreatives
-                            });
-                            dispatch(getScreenDataUploadCreativeAction({id: campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.campaignCreationId}));
-                            setOpenCreativeEndDateChangePopup(true);
-                          }
-                        }}
-                      >
-                        <i className="fi fi-sr-file-edit"></i>
+              {campaigns
+                ?.filter((c: any) => c._id === selectedCampaign)[0]
+                ?.creatives.standardDayTimeCreatives?.map(
+                  (creative: any, j: any) => (
+                    <div key={j} className="p-1 relative">
+                      <div className="absolute top-0 right-1 flex justify-end mt-[20px] z-10">
+                        <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
+                          <div
+                            className="text-white hover:text-green-500"
+                            onClick={() => {
+                              if (
+                                confirm(
+                                  `Are you sure you want to edit the campaign???`
+                                )
+                              ) {
+                                saveDataOnLocalStorage(
+                                  UPLOAD_CREATIVE_SCREEN_DATA,
+                                  {
+                                    [campaigns?.filter(
+                                      (c: any) => c._id === selectedCampaign
+                                    )[0]?.campaignCreationId]:
+                                      campaigns?.filter(
+                                        (c: any) => c._id === selectedCampaign
+                                      )[0].creatives.standardDayTimeCreatives,
+                                  }
+                                );
+                                dispatch(
+                                  getScreenDataUploadCreativeAction({
+                                    id: campaigns?.filter(
+                                      (c: any) => c._id === selectedCampaign
+                                    )[0]?.campaignCreationId,
+                                  })
+                                );
+                                setOpenCreativeEndDateChangePopup(true);
+                              }
+                            }}
+                          >
+                            <i className="fi fi-sr-file-edit"></i>
+                          </div>
+                          <div className="text-white hover:text-green-500">
+                            <i className="fi fi-sr-trash"></i>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-white hover:text-green-500">
-                        <i className="fi fi-sr-trash"></i>
-                      </div>
+                      <ShowMediaFile
+                        url={creative.url}
+                        mediaType={creative?.type.split("/")[0]}
+                        key={j}
+                        height="h-full"
+                        width="w-full"
+                      />
+                      <h1 className="text-[14px]">
+                        {
+                          campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.name
+                        }
+                      </h1>
+                      <p className="text-[12px]">
+                        {
+                          campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.creatives.creativeDuration
+                        }{" "}
+                        seconds, {creative.type}
+                      </p>
                     </div>
-                  </div>
-                  <ShowMediaFile
-                    url={creative.url}
-                    mediaType={creative?.type.split("/")[0]}
-                    key={j}
-                    height="h-full"
-                    width="w-full"
-                  />
-                  <h1 className="text-[14px]">{campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.name}</h1>
-                  <p className="text-[12px]">{campaigns?.filter((c: any) => c._id === selectedCampaign)[0]?.creatives.creativeDuration} seconds, {creative.type}</p>
-                </div>
-              ))}
+                  )
+                )}
             </div>
           </div>
-        ): null}
+        ) : null}
       </div>
-
     </div>
   );
 };

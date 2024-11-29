@@ -42,13 +42,15 @@ export function UploadCreativesV2Popup({
   userInfo,
 }: UploadCreativesV2PopupProps) {
   const dispatch = useDispatch<any>();
-  const {pathname} = useLocation();
-  const creativeId = pathname?.split("/")?.length > 2
-  ? pathname?.split("/")?.splice(2)[0]
-  : null;
+  const { pathname } = useLocation();
+  const creativeId =
+    pathname?.split("/")?.length > 2
+      ? pathname?.split("/")?.splice(2)[0]
+      : null;
 
-
-  const creativesMediaUpload = useSelector((state: any) => state.creativesMediaUpload);
+  const creativesMediaUpload = useSelector(
+    (state: any) => state.creativesMediaUpload
+  );
   const {
     loading: loadingUpload,
     error: errorUpload,
@@ -77,7 +79,7 @@ export function UploadCreativesV2Popup({
       setMediaFiles([]);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
     }
-  },[dispatch, successUpload]);
+  }, [dispatch, successUpload]);
 
   useEffect(() => {
     if (isOpen) {
@@ -141,7 +143,6 @@ export function UploadCreativesV2Popup({
           file.type.startsWith("video/") ||
           file.type.startsWith("audio/")
         ) {
-
           const url = URL.createObjectURL(file);
           let duration: any = 10;
           let resolution: any = {};
@@ -173,27 +174,30 @@ export function UploadCreativesV2Popup({
     }
   };
 
-
   const createNewCreatives = async () => {
     let myData = mediaFiles;
     try {
       for (let data of myData) {
         if (data.awsURL === "") {
-          const aws = await getAWSUrlToUploadFile({ contentType: data.extension, name: data.creativeName});
+          const aws = await getAWSUrlToUploadFile({
+            contentType: data.extension,
+            name: data.creativeName,
+          });
           const successAWSUploadFile = await saveFileOnAWS(aws?.url, data.file);
           data.awsURL = aws?.awsURL;
           data.url = aws?.url;
         }
       }
-    
-      dispatch(uploadCreativesMediaAction({
-        id: creativeId,
-        userId: userInfo?._id,
-        brand: brandName.toUpperCase(),
-        network: network,
-        creatives: myData
-      }));
-      
+
+      dispatch(
+        uploadCreativesMediaAction({
+          id: creativeId,
+          userId: userInfo?._id,
+          brand: brandName.toUpperCase(),
+          network: network,
+          creatives: myData,
+        })
+      );
     } catch (error) {
       console.log("createNewCreatives Error : ", error);
     }
@@ -204,12 +208,12 @@ export function UploadCreativesV2Popup({
     if (validateForm()) {
       createNewCreatives();
     }
-  }
+  };
 
   const handleDelete = (index: any) => {
     setMediaFiles(mediaFiles.filter((_: any, i: any) => i != index));
   };
- 
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 p-1">
       <div className="pt-20">
@@ -247,7 +251,9 @@ export function UploadCreativesV2Popup({
           <div className="px-2 relative overflow-auto h-auto">
             {mediaFiles?.length === 0 && (
               <div className="py-2">
-                <MultipleFileUploader handleFilesUploader={handleFilesUploader} />
+                <MultipleFileUploader
+                  handleFilesUploader={handleFilesUploader}
+                />
                 <h1 className="text-[10px] text-red-700">{`Max file size less then 50 MB`}</h1>
               </div>
             )}
@@ -266,7 +272,7 @@ export function UploadCreativesV2Popup({
                     Reset
                   </button>
                 </div>
-                <div className="flex flex-wrap justify-center overflow-scroll h-[30vh] gap-4">
+                <div className="flex flex-wrap justify-center overflow-scroll no-scrollbar h-[30vh] gap-4">
                   {mediaFiles.map((media: any, index: any) => (
                     <ShowMediaFile
                       url={media.awsURL || media.url}
@@ -292,7 +298,6 @@ export function UploadCreativesV2Popup({
           )}
         </div>
       </div>
-
     </div>
   );
 }

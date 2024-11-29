@@ -12,33 +12,33 @@ import { getAllCampaignsDetailsAction } from "../../actions/campaignAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 
-
-const allTabs = [{
-  id: "1",
-  label: "Active",
-  value: "Active"
-},{
-  id: "2",
-  label: "Upcoming",
-  value: "Pending"
-
-},{
-  id: "3",
-  label: "Paused",
-  value: "Pause"
-
-},{
-  id: "4",
-  label: "Completed",
-  value: "Completed"
-
-},{
-  id: "5",
-  label: "Deleted",
-  value: "Deleted"
-
-}];
-
+const allTabs = [
+  {
+    id: "1",
+    label: "Active",
+    value: "Active",
+  },
+  {
+    id: "2",
+    label: "Upcoming",
+    value: "Pending",
+  },
+  {
+    id: "3",
+    label: "Paused",
+    value: "Pause",
+  },
+  {
+    id: "4",
+    label: "Completed",
+    value: "Completed",
+  },
+  {
+    id: "5",
+    label: "Deleted",
+    value: "Deleted",
+  },
+];
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -48,21 +48,21 @@ export const MiddleArea: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<any>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [selectedCard, setSelectedCard] = useState<any>(null);
-  
+
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  const allCampaignsDataGet = useSelector((state: any) => state.allCampaignsDataGet);
-  const {
-    loading, error, data: allCampaigns
-  } = allCampaignsDataGet;
+  const allCampaignsDataGet = useSelector(
+    (state: any) => state.allCampaignsDataGet
+  );
+  const { loading, error, data: allCampaigns } = allCampaignsDataGet;
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a screen owner!!!")
+      message.error("Not a screen owner!!!");
     }
-    dispatch(getAllCampaignsDetailsAction({userId: userInfo?._id}));
-  },[dispatch, userInfo]);
+    dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id }));
+  }, [dispatch, userInfo]);
 
   // Handle card click, setting the clicked card's index
   const handleCardClick = (id: any) => {
@@ -88,7 +88,7 @@ export const MiddleArea: React.FC = () => {
           </div>
         ) : (
           <div className="h-[80vh]">
-             <div className="flex items-center pt-1">
+            <div className="flex items-center pt-1">
               <PrimaryInput
                 inputType="text"
                 placeholder="Search"
@@ -98,11 +98,22 @@ export const MiddleArea: React.FC = () => {
                 action={setSearchQuery}
               />
             </div>
-            {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)?.list?.map((data: any, index: any) => (
-                <div key={index} className="overflow-scroll h-auto">
-                  <CampaignListView isSelected={data?._id === selectedCard} color={""} handleCardClick={() => handleCardClick(data._id)} navigate={() => navigate(`/campaigns-details/${data._id}`)} data={data}/>
+            {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)?.list?.map(
+              (data: any, index: any) => (
+                <div
+                  key={index}
+                  className="overflow-scroll no-scrollbar h-auto"
+                >
+                  <CampaignListView
+                    isSelected={data?._id === selectedCard}
+                    color={""}
+                    handleCardClick={() => handleCardClick(data._id)}
+                    navigate={() => navigate(`/campaigns-details/${data._id}`)}
+                    data={data}
+                  />
                 </div>
-              ))}
+              )
+            )}
           </div>
         )}
       </div>

@@ -208,7 +208,7 @@ export function LoopSettingPopup({
                 action={setCampaignName}
               />
             </div>
-            <div className="my-2 h-[58vh] overflow-scroll">
+            <div className="my-2 h-[58vh] overflow-scroll no-scrollbar">
               {campaigns &&
                 getStandardCreativesWithCampaignNames(campaigns)?.map(
                   (camp: Campaign, i: number) => (
@@ -235,7 +235,7 @@ export function LoopSettingPopup({
           </div>
 
           {/* Right Section */}
-          <div className="col-span-8 px-8 mt-8 h-[60vh] overflow-scroll">
+          <div className="col-span-8 px-8 mt-8 h-[60vh] overflow-scroll no-scrollbar">
             {totalSlots.map((_, j) => (
               <div
                 key={j}

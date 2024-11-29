@@ -60,10 +60,9 @@ export function getAllDatesBetween(startDate, endDate) {
   const dates = [];
 
   while (start <= end) {
-      dates.push(new Date(start).toLocaleDateString().split('T')[0]); // Format as YYYY-MM-DD
-      start.setDate(start.getDate() + 1);
+    dates.push(new Date(start)); // Format as YYYY-MM-DD
+    start.setDate(start.getDate() + 1);
   }
 
   return dates;
 }
-

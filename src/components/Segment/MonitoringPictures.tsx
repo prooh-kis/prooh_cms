@@ -36,10 +36,10 @@ export const MonitoringPictures = ({
               handleUploadClick();
             }}
           >
-            {monitoringData?.timeWiseMonitoringData?.[time]["video"]?.length > 0 ? (
+            {monitoringData?.timeWiseMonitoringData?.[time]?.["video"]?.length > 0 ? (
               <video
                 className="w-full h-full"
-                src={monitoringData?.timeWiseMonitoringData?.[time]["video"][0]}
+                src={monitoringData?.timeWiseMonitoringData?.[time]?.["video"][0]}
               />
             ) : (
               <i className="fi fi-sr-square-plus flex items-center text-[20px] text-gray-300"></i>

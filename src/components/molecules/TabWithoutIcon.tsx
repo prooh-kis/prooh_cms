@@ -13,7 +13,7 @@ interface Props {
 
 export function TabWithoutIcon({ tabData, currentTab, setCurrentTab }: any) {
   return (
-    <div className="flex items-center gap-2 overflow-scroll">
+    <div className="flex items-center gap-2 overflow-scroll no-scrollbar">
       {tabData?.map((tab: TabInterface, index: any) => (
         <div
           key={index}

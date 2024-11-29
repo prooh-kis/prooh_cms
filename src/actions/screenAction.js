@@ -135,6 +135,7 @@ export const screenCampaignsMonitoringAction = (input) => async (dispatch, getSt
     payload: input,
   });
   try {
+    console.log("input : ", input);
     const { data } = await axios.post(`${url2}/addCampaignMonitoringData`, input);
     dispatch({
       type: SCREEN_CAMPAIGN_MONITORING_SUCCESS,
