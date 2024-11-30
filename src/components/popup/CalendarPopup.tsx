@@ -1,5 +1,4 @@
-import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 interface CalendarPopupProps {
   openCalendarPopup?: boolean;
@@ -48,7 +47,10 @@ export function CalendarPopup({
                 className={`border ${
                   monitoringDate === date ? "border-blue-500" : ""
                 } truncate rounded p-2 w-40 flex justify-center items-center`}
-                onClick={() => setMonitoringDate(date)}
+                onClick={() => {
+                  setMonitoringDate(date);
+                  onClose();
+                }}
               >
                 {new Date(date).toDateString()}
               </div>

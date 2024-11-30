@@ -1,8 +1,6 @@
 import { message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import clsx from "clsx";
-
 import { useNavigate } from "react-router-dom";
 import { CampaignListView } from "../../components/molecules/CampaignListView";
 import { Loading } from "../../components/Loading";
@@ -10,35 +8,8 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_CAMPAIGNS_LIST } from "../../constants/localStorageConstants";
 import { getAllCampaignsDetailsAction } from "../../actions/campaignAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
-import { PrimaryInput } from "../../components/atoms/PrimaryInput";
-
-const allTabs = [
-  {
-    id: "1",
-    label: "Active",
-    value: "Active",
-  },
-  {
-    id: "2",
-    label: "Upcoming",
-    value: "Pending",
-  },
-  {
-    id: "3",
-    label: "Paused",
-    value: "Pause",
-  },
-  {
-    id: "4",
-    label: "Completed",
-    value: "Completed",
-  },
-  {
-    id: "5",
-    label: "Deleted",
-    value: "Deleted",
-  },
-];
+import { SearchInputField } from "../../components/index";
+import { campaignTypeTabs } from "../../constants/tabDataConstant";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -79,7 +50,7 @@ export const MiddleArea: React.FC = () => {
           <TabWithoutIcon
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}
-            tabData={allTabs}
+            tabData={campaignTypeTabs}
           />
         </div>
         {loading ? (
@@ -89,17 +60,19 @@ export const MiddleArea: React.FC = () => {
         ) : (
           <div className="h-[80vh]">
             <div className="flex items-center pt-1">
-              <PrimaryInput
-                inputType="text"
-                placeholder="Search"
-                rounded="rounded"
-                height="h-8"
+              <SearchInputField
                 value={searchQuery}
-                action={setSearchQuery}
+                onChange={setSearchQuery}
+                placeholder="Search Campaign by campaign name or brand"
               />
             </div>
-            {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)?.list?.map(
-              (data: any, index: any) => (
+            {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)
+              ?.list?.filter(
+                (campaign: any) =>
+                  campaign?.name?.toLowerCase().includes(searchQuery) ||
+                  campaign?.brandName?.toLowerCase().includes(searchQuery)
+              )
+              ?.map((data: any, index: any) => (
                 <div
                   key={index}
                   className="overflow-scroll no-scrollbar h-auto"
@@ -112,8 +85,7 @@ export const MiddleArea: React.FC = () => {
                     data={data}
                   />
                 </div>
-              )
-            )}
+              ))}
           </div>
         )}
       </div>

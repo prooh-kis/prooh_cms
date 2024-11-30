@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { thunk } from "redux-thunk"
+import { thunk } from "redux-thunk";
 import authReducer from "./authSlice";
-
 
 import {
   emailSendForConfirmationReducer,
@@ -12,9 +11,33 @@ import {
   userSignupReducer,
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
-import { allCampaignsDataGetReducer, campaignCreatedScreensDetailsGetReducer, campaignDetailsGetReducer, campaignStatusChangeReducer, createCampaignCreationByScreenOwnerReducer, getAllScreensForScreenOwnerCampaignCreationReducer, screenDataUploadCreativeGetReducer } from "../reducers/campaignReducers";
-import { creativesMediaGetReducer, creativesMediaUploadReducer } from "../reducers/creativeReducers";
-import { allScreensDataGetReducer, changeCampaignCreativeEndDateReducer, screenCampaignMonitoringReducer, screenCampaignsDetailsGetReducer, screenCodeChangeReducer, screenDataUpdateRedisReducer, screenDefaultMediaChangeReducer, screenDetailsGetReducer, screenLogsGetReducer, screenRefreshReducer, setCampaignsLoopForScreenReducer } from "../reducers/screenReducers";
+import {
+  allCampaignsDataGetReducer,
+  campaignCreatedScreensDetailsGetReducer,
+  campaignDetailsGetReducer,
+  campaignStatusChangeReducer,
+  createCampaignCreationByScreenOwnerReducer,
+  getAllScreensForScreenOwnerCampaignCreationReducer,
+  screenDataUploadCreativeGetReducer,
+} from "../reducers/campaignReducers";
+import {
+  creativesMediaGetReducer,
+  creativesMediaUploadReducer,
+} from "../reducers/creativeReducers";
+import {
+  allScreensDataGetReducer,
+  changeCampaignCreativeEndDateReducer,
+  getScreenCampaignMonitoringReducer,
+  screenCampaignMonitoringReducer,
+  screenCampaignsDetailsGetReducer,
+  screenCodeChangeReducer,
+  screenDataUpdateRedisReducer,
+  screenDefaultMediaChangeReducer,
+  screenDetailsGetReducer,
+  screenLogsGetReducer,
+  screenRefreshReducer,
+  setCampaignsLoopForScreenReducer,
+} from "../reducers/screenReducers";
 
 const initialState = {
   userSignin: {
@@ -24,11 +47,9 @@ const initialState = {
   },
 };
 
-
 const store = configureStore({
   initialState,
   reducer: {
-    
     // auth
     auth: authReducer,
     userSignin: userSigninReducer,
@@ -40,8 +61,10 @@ const store = configureStore({
     emailSendForVendorConfirmation: emailSendForVendorConfirmationReducer,
 
     // campaign creation by screen owner
-    createCampaignCreationByScreenOwner: createCampaignCreationByScreenOwnerReducer,
-    getAllScreensForScreenOwnerCampaignCreation: getAllScreensForScreenOwnerCampaignCreationReducer,
+    createCampaignCreationByScreenOwner:
+      createCampaignCreationByScreenOwnerReducer,
+    getAllScreensForScreenOwnerCampaignCreation:
+      getAllScreensForScreenOwnerCampaignCreationReducer,
     screenDataUploadCreativeGet: screenDataUploadCreativeGetReducer,
 
     // Campaigns
@@ -52,7 +75,7 @@ const store = configureStore({
     // creative
     creativesMediaUpload: creativesMediaUploadReducer,
     creativesMediaGet: creativesMediaGetReducer,
-    
+
     // Screens
     allScreensDataGet: allScreensDataGetReducer,
     screenDetailsGet: screenDetailsGetReducer,
@@ -61,15 +84,17 @@ const store = configureStore({
     setCampaignsLoopForScreen: setCampaignsLoopForScreenReducer,
     changeCampaignCreativeEndDate: changeCampaignCreativeEndDateReducer,
     screenCampaignMonitoring: screenCampaignMonitoringReducer,
+    getScreenCampaignMonitoring: getScreenCampaignMonitoringReducer,
     screenCodeChange: screenCodeChangeReducer,
     screenRefresh: screenRefreshReducer,
     screenDataUpdateRedis: screenDataUpdateRedisReducer,
     screenLogsGet: screenLogsGetReducer,
     screenDefaultMediaChange: screenDefaultMediaChangeReducer,
   },
-  middleware: (() => process.env.NODE_ENV !== 'production' ?
-  [require('redux-immutable-state-invariant').default(), thunk] :
-  [thunk])
+  middleware: () =>
+    process.env.NODE_ENV !== "production"
+      ? [require("redux-immutable-state-invariant").default(), thunk]
+      : [thunk],
   // devTools: process.env.NODE_ENV !== 'production'
 });
 

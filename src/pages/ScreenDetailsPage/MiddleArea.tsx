@@ -14,12 +14,10 @@ import {
 } from "../../actions/screenAction";
 import { Loading } from "../../components/Loading";
 import {
-  convertDataTimeToLocale,
   getNumberOfDaysBetweenTwoDates,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
-import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
 import { BrandCampaignScreenDetails } from "../../components/molecules/BrandCampaignScreenDetails";
 import {
@@ -37,34 +35,9 @@ import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { ScreenLogReportPopup } from "../../components/popup/ScreenLogReportPopup";
-
-const allTabs = [
-  {
-    id: "1",
-    label: "Active",
-    value: "Active",
-  },
-  {
-    id: "2",
-    label: "Upcoming",
-    value: "Pending",
-  },
-  {
-    id: "3",
-    label: "Paused",
-    value: "Pause",
-  },
-  {
-    id: "4",
-    label: "Completed",
-    value: "Completed",
-  },
-  {
-    id: "5",
-    label: "Deleted",
-    value: "Deleted",
-  },
-];
+import SearchInputField from "../../components/molecules/SearchInputField";
+import { CampaignMonitoring } from "../../components/index";
+import { campaignTypeTabs } from "../../constants/tabDataConstant";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -79,6 +52,7 @@ export const MiddleArea: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<any>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
+  const [currentCampaign, setCurrentCampaign] = useState<any>(null);
   const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
 
   const [campaignIds, setCampaignIds] = useState<any>([]);
@@ -186,7 +160,7 @@ export const MiddleArea: React.FC = () => {
     }
 
     if (successLoopSetting) {
-      message.success("Loop Setting Successfull");
+      message.success("Loop Setting Successfully");
       dispatch({
         type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET,
       });
@@ -273,7 +247,8 @@ export const MiddleArea: React.FC = () => {
     dispatch(
       getScreenCampaignsDetailsAction({
         screenId: screenId,
-        status: allTabs.filter((tab: any) => tab.id === status)[0].value,
+        status: campaignTypeTabs.filter((tab: any) => tab.id === status)[0]
+          .value,
       })
     );
   };
@@ -469,7 +444,7 @@ export const MiddleArea: React.FC = () => {
                 <TabWithoutIcon
                   currentTab={currentTab}
                   setCurrentTab={handleGetCampaignByStatus}
-                  tabData={allTabs}
+                  tabData={campaignTypeTabs}
                 />
 
                 <h1 className="text-[10px] truncate">
@@ -477,12 +452,10 @@ export const MiddleArea: React.FC = () => {
                 </h1>
               </div>
               <div className="flex items-center p-4">
-                <PrimaryInput
-                  inputType="text"
-                  placeholder="Search"
-                  height="h-8"
+                <SearchInputField
                   value={searchQuery}
-                  action={setSearchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Search by campaign name or brand"
                 />
               </div>
               {loadingCampaigns ? (
@@ -490,43 +463,54 @@ export const MiddleArea: React.FC = () => {
               ) : (
                 <div className="w-full h-[30vh] overflow-scroll no-scrollbar mb-2">
                   {campaigns &&
-                    campaigns?.map((campaign: any, index: any) => (
-                      <div
-                        key={index}
-                        className={`px-2`}
-                        onClick={() => {
-                          setSelectedCampaign(campaign._id);
-                        }}
-                        onDoubleClick={() => {
-                          setCampaignIds((prev: any) => {
-                            const campaignId = campaign?._id;
-                            if (campaignIds.includes(campaignId)) {
-                              return prev.filter(
-                                (id: any) => id !== campaignId
-                              );
-                            } else {
-                              return [...prev, campaignId];
-                            }
-                          });
-                        }}
-                      >
-                        <BrandCampaignScreenDetails
-                          campaignIds={campaignIds}
-                          brandName={campaign.brandName}
-                          campaign={campaign}
-                          campaigns={campaigns}
-                          showIcons={true}
-                        />
-                      </div>
-                    ))}
+                    campaigns
+                      ?.filter(
+                        (campaign: any) =>
+                          campaign?.name
+                            .toLowerCase()
+                            .includes(searchQuery?.toLowerCase()) ||
+                          campaign?.brandName
+                            .toLowerCase()
+                            .includes(searchQuery?.toLowerCase())
+                      )
+                      ?.map((campaign: any, index: any) => (
+                        <div
+                          key={index}
+                          className={`px-2`}
+                          onClick={() => {
+                            setSelectedCampaign(campaign._id);
+                            setCurrentCampaign(campaign);
+                          }}
+                          onDoubleClick={() => {
+                            setCampaignIds((prev: any) => {
+                              const campaignId = campaign?._id;
+                              if (campaignIds.includes(campaignId)) {
+                                return prev.filter(
+                                  (id: any) => id !== campaignId
+                                );
+                              } else {
+                                return [...prev, campaignId];
+                              }
+                            });
+                          }}
+                        >
+                          <BrandCampaignScreenDetails
+                            campaignIds={campaignIds}
+                            brandName={campaign.brandName}
+                            campaign={campaign}
+                            campaigns={campaigns}
+                            showIcons={true}
+                          />
+                        </div>
+                      ))}
                 </div>
               )}
             </div>
             <div className="border rounded my-2">
-              <div className="px-4 pt-4 pb-2 flex justify-between">
-                <h1 className="text-[16px] font-semibold">Monitoring Proof</h1>
-                <div className="flex gap-4 items-center"></div>
-              </div>
+              <CampaignMonitoring
+                campaign={currentCampaign}
+                screenId={screenId}
+              />
             </div>
           </div>
         )}

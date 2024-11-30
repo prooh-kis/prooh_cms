@@ -2,27 +2,20 @@ import { message } from "antd";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import clsx from "clsx";
 import moment from "moment";
-
 import { useNavigate } from "react-router-dom";
 import {
   getAllScreensDetailsAction,
   getScreenCampaignsDetailsAction,
   screenCampaignsMonitoringAction,
 } from "../../actions/screenAction";
-import { ScreenListThumbnail } from "../../components/molecules/ScreenListThumbnail";
 import { Loading } from "../../components/Loading";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import {
   ALL_SCREENS_LIST,
   SCREEN_CAMPAIGN_MONITORING_PICS,
 } from "../../constants/localStorageConstants";
-import {
-  convertDataTimeToLocale,
-  getAllDatesBetween,
-  getTimeDifferenceInMin,
-} from "../../utils/dateAndTimeUtils";
+import { getAllDatesBetween } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
 import { CampaignListMonitoringView } from "../../components/molecules/CampaignListMonitoringView";
@@ -249,7 +242,7 @@ export const MiddleArea: React.FC = () => {
               </div>
               <div className="border-b p-2 flex justify-between items-center">
                 <h1 className="text-[12px] font-semibold">
-                  {moment(monitoringDate).format("MMM Do YY")}
+                  {moment(monitoringDate).format("MMM DD YY")}
                 </h1>
                 <PrimaryButton
                   title="Save"
@@ -265,6 +258,7 @@ export const MiddleArea: React.FC = () => {
                 {time?.map((t: any, i: any) => (
                   <div className="w-full" key={i}>
                     <MonitoringPictures
+                      isUsedForShow={false}
                       handleUploadClick={handleUploadClick}
                       time={t}
                       setMonitoringMedia={setMonitoringMedia}
