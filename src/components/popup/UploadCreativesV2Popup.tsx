@@ -226,8 +226,14 @@ export function UploadCreativesV2Popup({
         "
         style={{ height: "70vh", width: "40vw" }}
       >
+        <div
+          className="relative inset-0 flex items-center justify-end gap-4 p-3"
+          onClick={() => onClose()}
+        >
+          <i className="fi fi-br-circle-xmark"></i>
+        </div>
         <div className="">
-          <div className="flex p-2" onClick={onClose}>
+          <div className="flex p-2">
             <h1 className="text-[14px] font-semibold">Add Creatives</h1>
           </div>
           <div className="p-2">

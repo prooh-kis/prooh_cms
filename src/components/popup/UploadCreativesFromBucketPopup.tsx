@@ -269,15 +269,33 @@ export function UploadCreativesFromBucketPopup({
         className="bg-white p-4 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
         style={{ height: "70vh", width: "40vw" }}
       >
+        <div
+          className="relative inset-0 flex items-center justify-end gap-4 p-3"
+          onClick={() => onClose()}
+        >
+          <i className="fi fi-br-circle-xmark"></i>
+        </div>
         <div>
           <div className="flex flex-col justify-center">
             <h1 className="text-[12px]">Choose Creatives</h1>
             <div className="flex justify-between">
               <h1 className="text-[12px]">Screen: {selectedScreens?.length}</h1>
-              <h1 className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""} text-[12px]`}>Resolution: {uniqueResolution?.length > 1 ? `${uniqueResolution?.length} resolutions` : uniqueResolution}</h1>
+              <h1
+                className={`${
+                  uniqueResolution?.length > 1 ? "text-red-500" : ""
+                } text-[12px]`}
+              >
+                Resolution:{" "}
+                {uniqueResolution?.length > 1
+                  ? `${uniqueResolution?.length} resolutions`
+                  : uniqueResolution}
+              </h1>
             </div>
             {uniqueResolution?.length > 1 && (
-              <h1 className="text-[10px] text-red-500">Screens with different resolutions selected, please check and proceed again</h1>
+              <h1 className="text-[10px] text-red-500">
+                Screens with different resolutions selected, please check and
+                proceed again
+              </h1>
             )}
             {isLoading && (
               <h1 className="border border-1 bg-yellow-600 text-white text-lg px-8 py-2">
@@ -314,70 +332,86 @@ export function UploadCreativesFromBucketPopup({
             </div>
           ) : (
             <div>
-              <h1 className="text-[14px] font-semibold">Select from creatives</h1>
+              <h1 className="text-[14px] font-semibold">
+                Select from creatives
+              </h1>
               {loadingCreatives ? (
                 <Loading />
               ) : (
                 <div>
-                  {creativesMedia && creativesMedia?.map((f: any, k: any) => (
-                    <div className="p-2" key={k} onClick={() => {}}>
-                      {Object.keys(f).filter((c: any) => c !== "network")?.map((m: any, i: any) => (
-                        <div key={i}>
-                          <h1 className="text-[12px] font-semibold border-b">{`${f}s`.toUpperCase()}</h1>
+                  {creativesMedia &&
+                    creativesMedia?.map((f: any, k: any) => (
+                      <div className="p-2" key={k} onClick={() => {}}>
+                        {Object.keys(f)
+                          .filter((c: any) => c !== "network")
+                          ?.map((m: any, i: any) => (
+                            <div key={i}>
+                              <h1 className="text-[12px] font-semibold border-b">
+                                {`${f}s`.toUpperCase()}
+                              </h1>
 
-                          {Object.keys(f[m]).filter((c: any) => c !== "network")?.map((g: any, j: any) => (
-                            <div key={j} className="py-2">
-                              <h1 className="text-[10px] py-1">Resolution: {g}</h1>
-                              <div className="grid grid-cols-3 gap-2">
-                                {f?.[m]?.[g]?.map((l: any, y: any) => (
-                                  <div key={y} className="w-full border rounded"
-                                    onClick={() => {
-                                      setMediaFiles((prev: any) => {
-                                        if (mediaFiles?.map((file: any) => file._id).includes(l._id)) {
-                                          return mediaFiles?.filter((file: any) => file._id !== l._id);
-                                        } else {
-                                          return [...prev, l];
-                                        }
-                                      })
-                                    }}
-                                  >
-                                    <div className="w-full">
-                                      <ShowMediaFile
-                                        url={l?.awsURL}
-                                        mediaType={l?.creativeType}
-                                        key={y}
-                                        height="h-full"
-                                        width="w-full"
-                                      />
+                              {Object.keys(f[m])
+                                .filter((c: any) => c !== "network")
+                                ?.map((g: any, j: any) => (
+                                  <div key={j} className="py-2">
+                                    <h1 className="text-[10px] py-1">
+                                      Resolution: {g}
+                                    </h1>
+                                    <div className="grid grid-cols-3 gap-2">
+                                      {f?.[m]?.[g]?.map((l: any, y: any) => (
+                                        <div
+                                          key={y}
+                                          className="w-full border rounded"
+                                          onClick={() => {
+                                            setMediaFiles((prev: any) => {
+                                              if (
+                                                mediaFiles
+                                                  ?.map((file: any) => file._id)
+                                                  .includes(l._id)
+                                              ) {
+                                                return mediaFiles?.filter(
+                                                  (file: any) =>
+                                                    file._id !== l._id
+                                                );
+                                              } else {
+                                                return [...prev, l];
+                                              }
+                                            });
+                                          }}
+                                        >
+                                          <div className="w-full">
+                                            <ShowMediaFile
+                                              url={l?.awsURL}
+                                              mediaType={l?.creativeType}
+                                              key={y}
+                                              height="h-full"
+                                              width="w-full"
+                                            />
+                                          </div>
+                                          <div className="p-1">
+                                            <h1 className="text-[12px] truncate">
+                                              {l?.creativeName?.toUpperCase()}
+                                            </h1>
+                                            <div className="flex gap-1 items-center truncate">
+                                              <h1 className="text-[12px]">
+                                                {l?.extension?.split("/")[1]},
+                                              </h1>
+                                              <h1 className="text-[12px] truncate">
+                                                {l?.duration} seconds
+                                              </h1>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
                                     </div>
-                                    <div className="p-1">
-                                      <h1 className="text-[12px] truncate">
-                                        {l?.creativeName?.toUpperCase()}
-                                      </h1>
-                                      <div className="flex gap-1 items-center truncate">
-                                        <h1 className="text-[12px]">
-                                          {l?.extension?.split("/")[1]},
-                                        </h1>
-                                        <h1 className="text-[12px] truncate">
-                                          {l?.duration} seconds
-                                        </h1>
-                                      </div>
-                                    </div>
-
                                   </div>
                                 ))}
-                              </div>
-
                             </div>
                           ))}
-                        </div>
-                        
-                      ))}
-                    </div>
-                  ))}
+                      </div>
+                    ))}
                 </div>
               )}
-
             </div>
           )}
           {campaignOption !== "URL" && mediaFiles?.length > 0 && (
@@ -424,7 +458,6 @@ export function UploadCreativesFromBucketPopup({
               />
             </div>
           )}
-          
         </div>
         <div className="flex justify-between pt-2 gap-2">
           <PrimaryButton

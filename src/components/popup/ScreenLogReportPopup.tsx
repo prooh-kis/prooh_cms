@@ -4,7 +4,7 @@ import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
 import { Skeleton } from "antd";
 
 export const ScreenLogReportPopup = React.memo(function ScreenLogReport(props: any) {
-  const { screenLogs, screenName, loading } = props;
+  const { screenLogs, screenName, loading, onClose } = props;
 
   useEffect(() => {}, [props?.isOpen]);
 
@@ -18,17 +18,11 @@ export const ScreenLogReportPopup = React.memo(function ScreenLogReport(props: a
         className="bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full relative overflow-auto max-h-auto no-scrollbar"
         style={{ height: "70vh", width: "70vw" }}
       >
-        <div className="flex flex-row justify-between items-center">
-          <button
-            type="submit"
-            title="close"
-            className="text-gray-500 hover:text-gray-700 absolute top-3 right-3"
-            onClick={() => {
-              props?.onClose();
-            }}
-          >
-            &times;
-          </button>
+        <div
+          className="relative inset-0 flex items-center justify-end gap-4 p-3"
+          onClick={() => onClose(false)}
+        >
+          <i className="fi fi-br-circle-xmark"></i>
         </div>
         <h1 className="py-4 text-lg font-bold">Screen logs report</h1>
         {loading ? (
