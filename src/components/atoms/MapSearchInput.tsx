@@ -106,7 +106,7 @@ export function MapSearchInput(props: any) {
 
       const mapBoxSuggestions = response.body.features;
 
-      const filteredCustomSuggestions = customSuggestions.filter((suggestion) =>
+      const filteredCustomSuggestions = customSuggestions?.filter((suggestion) =>
         suggestion.place_name.toLowerCase().includes(value.toLowerCase())
       );
 
@@ -119,7 +119,7 @@ export function MapSearchInput(props: any) {
 
   const renderSuggestions = () => (
     <ul className="absolute z-10 w-full max-h-40 overflow-y-auto bg-white rounded-lg shadow-lg">
-    {suggestions.map((suggestion: any, index: number) => (
+    {suggestions?.map((suggestion: any, index: number) => (
       <li
         key={suggestion.id} 
         onClick={() => {

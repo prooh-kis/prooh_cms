@@ -263,7 +263,7 @@ export const EnterCampaignBasicDetails = ({
     setScreenIds((pre: any) => {
       if (pre.find((s: any) => s === screen)) {
 
-        return pre.filter((s: any) => s !== screen);
+        return pre?.filter((s: any) => s !== screen);
       } else {
         return pre;
       }
@@ -280,7 +280,7 @@ export const EnterCampaignBasicDetails = ({
     } else {
       setAtIndex((pre: any) => {
         if (pre.find((a: any) => a === index)) {
-          return pre.filter((s: any) => s !== index);
+          return pre?.filter((s: any) => s !== index);
         } else {
           return [...pre, index];
         }

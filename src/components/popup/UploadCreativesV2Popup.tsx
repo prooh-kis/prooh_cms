@@ -211,7 +211,7 @@ export function UploadCreativesV2Popup({
   };
 
   const handleDelete = (index: any) => {
-    setMediaFiles(mediaFiles.filter((_: any, i: any) => i != index));
+    setMediaFiles(mediaFiles?.filter((_: any, i: any) => i != index));
   };
 
   return (
@@ -273,7 +273,7 @@ export function UploadCreativesV2Popup({
                   </button>
                 </div>
                 <div className="flex flex-wrap justify-center overflow-scroll no-scrollbar h-[30vh] gap-4">
-                  {mediaFiles.map((media: any, index: any) => (
+                  {mediaFiles?.map((media: any, index: any) => (
                     <ShowMediaFile
                       url={media.awsURL || media.url}
                       mediaType={media?.creativeType}

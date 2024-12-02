@@ -95,7 +95,7 @@ export function LoopSettingPopup({
     campaign.atIndex = [slotIndex + 1];
 
     setSlots((prevSlots: any) => {
-      const updatedSlots = prevSlots.map((slot: any, index: any) => {
+      const updatedSlots = prevSlots?.map((slot: any, index: any) => {
         if (index === slotIndex) {
           if (slot != undefined && slot?.length == 0) {
             return [{ ...campaign, currentIndex: index + 1 }];
@@ -112,7 +112,7 @@ export function LoopSettingPopup({
 
   const handleRemoveCampaign = (slotIndex: number, campaignIndex: number) => {
     setSlots((prevSlots) => {
-      const updatedSlots = prevSlots.map((slot, index) => {
+      const updatedSlots = prevSlots?.map((slot, index) => {
         if (index === slotIndex) {
           // const updatedSlot = [...slot];
           // updatedSlot.splice(campaignIndex, 1); // Remove the campaign at the specific index
@@ -148,13 +148,13 @@ export function LoopSettingPopup({
 
   const handleLoopSetting = () => {
     const formattedData: any = slots
-      .flat() // Flatten the nested arrays
-      .filter((item: any) => item && item._id && item.atIndex) // Filter out empty or invalid entries
-      .map((item: any) => ({
+      ?.flat() // Flatten the nested arrays
+      ?.filter((item: any) => item && item._id && item.atIndex) // Filter out empty or invalid entries
+      ?.map((item: any) => ({
         campaignId: item._id,
         atIndex: [item.currentIndex],
       }))
-      .reduce((acc: any[], curr: any) => {
+      ?.reduce((acc: any[], curr: any) => {
         const existing = acc.find(
           (item) => item.campaignId === curr.campaignId
         );

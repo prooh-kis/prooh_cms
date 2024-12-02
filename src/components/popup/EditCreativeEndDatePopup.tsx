@@ -286,12 +286,12 @@ export function EditCreativeEndDatePopup({
                         <div key={j} className="py-2">
                           <h1 className="text-[10px] py-1">Resolution: {g}</h1>
                           <div className="grid grid-cols-3 gap-2">
-                            {creativesMedia[f][g]?.map((l: any, y: any) => (
+                            {creativesMedia?.[f]?.[g]?.map((l: any, y: any) => (
                               <div key={y} className="w-full border rounded"
                                 onClick={() => {
                                   setMediaFiles((prev: any) => {
                                     if (mediaFiles?.map((file: any) => file._id).includes(l._id)) {
-                                      return mediaFiles.filter((file: any) => file._id !== l._id);
+                                      return mediaFiles?.filter((file: any) => file._id !== l._id);
                                     } else {
                                       return [...prev, l];
                                     }
@@ -350,7 +350,7 @@ export function EditCreativeEndDatePopup({
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
-                {mediaFiles.map((media: any, index: any) => (
+                {mediaFiles?.map((media: any, index: any) => (
                   <ShowMediaFile
                     url={media.awsURL}
                     mediaType={media?.creativeType}

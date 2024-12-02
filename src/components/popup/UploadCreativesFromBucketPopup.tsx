@@ -119,7 +119,7 @@ export function UploadCreativesFromBucketPopup({
     const creativeDataToUpload = [];
     const screenDataToUpload = screenData?.map((item: any) => {
       // Filter screens that match the screenIds array
-      const filteredScreens = item.screens.filter((screen: any) => selectedScreenIds.includes(screen.id));
+      const filteredScreens = item?.screens?.filter((screen: any) => selectedScreenIds.includes(screen.id));
       if (filteredScreens.length > 0) {
           // Return the updated object with filtered screens and updated count
           return {
@@ -311,16 +311,16 @@ export function UploadCreativesFromBucketPopup({
                   {creativesMedia && Object.keys(creativesMedia)?.filter((c: any) => c !== "network")?.map((f: any, k: any) => (
                     <div className="p-2" key={k} onClick={() => {}}>
                       <h1 className="text-[12px] font-semibold border-b">{`${f}s`.toUpperCase()}</h1>
-                      {Object.keys(creativesMedia[f])?.map((g: any, j: any) => (
+                      {Object.keys(creativesMedia?.[f])?.map((g: any, j: any) => (
                         <div key={j} className="py-2">
                           <h1 className="text-[10px] py-1">Resolution: {g}</h1>
                           <div className="grid grid-cols-3 gap-2">
-                            {creativesMedia[f][g]?.map((l: any, y: any) => (
+                            {creativesMedia?.[f]?.[g]?.map((l: any, y: any) => (
                               <div key={y} className="w-full border rounded"
                                 onClick={() => {
                                   setMediaFiles((prev: any) => {
                                     if (mediaFiles?.map((file: any) => file._id).includes(l._id)) {
-                                      return mediaFiles.filter((file: any) => file._id !== l._id);
+                                      return mediaFiles?.filter((file: any) => file._id !== l._id);
                                     } else {
                                       return [...prev, l];
                                     }
@@ -378,7 +378,7 @@ export function UploadCreativesFromBucketPopup({
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
-                {mediaFiles.map((media: any, index: any) => (
+                {mediaFiles?.map((media: any, index: any) => (
                   <ShowMediaFile
                     url={media.awsURL}
                     mediaType={media?.creativeType}

@@ -127,7 +127,7 @@ export function AddDefaultMediaPopup({
                       </button>
                     </div>
                     <div className="flex flex-wrap justify-center overflow-scroll no-scrollbar h-[30vh] gap-4">
-                      {mediaFiles.map((media: any, index: any) => (
+                      {mediaFiles?.map((media: any, index: any) => (
                         <ShowMediaFile
                           url={media.awsURL || media.url}
                           mediaType={media?.creativeType}
@@ -199,7 +199,7 @@ export function AddDefaultMediaPopup({
                                               ?.map((file: any) => file._id)
                                               .includes(l._id)
                                           ) {
-                                            return mediaFiles.filter(
+                                            return mediaFiles?.filter(
                                               (file: any) => file._id !== l._id
                                             );
                                           } else {

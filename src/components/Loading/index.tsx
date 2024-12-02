@@ -25,12 +25,12 @@ export const Loading = ({ grid = { cols: 3, rows: 4 }, height, width}: any) => {
 
   return (
     <div className={`grid gap-4 w-full h-full p-4`}>
-      {Array.from({ length: grid.rows }).map((_, rowIndex) => {
+      {Array.from({ length: grid.rows })?.map((_, rowIndex) => {
         const columnWidths = generateColumnWidths(grid.cols);
 
         return (
           <div key={`row-${rowIndex}`} className={`grid grid-cols-${grid.cols} gap-4 w-full`}>
-            {Array.from({ length: grid.cols }).map((_, colIndex) => (
+            {Array.from({ length: grid.cols })?.map((_, colIndex) => (
               <div
                 key={`col-${colIndex}`}
                 className={`p-2 animate-pulse bg-[#D7D7D7] rounded h-20 ${columnWidths[colIndex]}`}
