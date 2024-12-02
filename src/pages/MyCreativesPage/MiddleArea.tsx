@@ -56,7 +56,6 @@ export const MiddleArea: React.FC = () => {
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   },[dispatch, userInfo]);
 
-
   return (
     <div className="mt-6 w-full h-full pb-5">
       <UploadCreativesV2Popup
@@ -192,7 +191,7 @@ export const MiddleArea: React.FC = () => {
                               <div key={y} className="w-full border rounded">
                                 <div className="w-full">
                                   <ShowMediaFile
-                                    url={l.awsURL}
+                                    url={l?.awsURL}
                                     mediaType={l?.creativeType}
                                     key={y}
                                     height="h-full"
@@ -201,14 +200,14 @@ export const MiddleArea: React.FC = () => {
                                 </div>
                                 <div className="p-1">
                                   <h1 className="text-[12px] truncate">
-                                    {l.creativeName.toUpperCase()}
+                                    {l?.creativeName?.toUpperCase()}
                                   </h1>
                                   <div className="flex gap-1 items-center truncate">
                                     <h1 className="text-[12px]">
-                                      {l.extension?.split("/")[1]},
+                                      {l?.extension?.split("/")[1]},
                                     </h1>
                                     <h1 className="text-[12px] truncate">
-                                      {l.duration} seconds
+                                      {l?.duration} seconds
                                     </h1>
                                   </div>
                                 </div>

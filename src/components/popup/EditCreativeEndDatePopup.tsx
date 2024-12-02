@@ -279,54 +279,59 @@ export function EditCreativeEndDatePopup({
                 <Loading />
               ) : (
                 <div>
-                  {creativesMedia && Object.keys(creativesMedia)?.filter((c: any) => c !== "network")?.map((f: any, k: any) => (
+                  {creativesMedia && creativesMedia?.map((f: any, k: any) => (
                     <div className="p-2" key={k} onClick={() => {}}>
-                      <h1 className="text-[12px] font-semibold border-b">{`${f}s`.toUpperCase()}</h1>
-                      {Object.keys(creativesMedia[f])?.map((g: any, j: any) => (
-                        <div key={j} className="py-2">
-                          <h1 className="text-[10px] py-1">Resolution: {g}</h1>
-                          <div className="grid grid-cols-3 gap-2">
-                            {creativesMedia?.[f]?.[g]?.map((l: any, y: any) => (
-                              <div key={y} className="w-full border rounded"
-                                onClick={() => {
-                                  setMediaFiles((prev: any) => {
-                                    if (mediaFiles?.map((file: any) => file._id).includes(l._id)) {
-                                      return mediaFiles?.filter((file: any) => file._id !== l._id);
-                                    } else {
-                                      return [...prev, l];
-                                    }
-                                  })
-                                  // console.log("sad", mediaFiles,l )
-                                }}
-                              >
-                                <div className="w-full">
-                                  <ShowMediaFile
-                                    url={l.awsURL}
-                                    mediaType={l?.creativeType}
-                                    key={y}
-                                    height="h-full"
-                                    width="w-full"
-                                  />
-                                </div>
-                                <div className="p-1">
-                                  <h1 className="text-[12px] truncate">
-                                    {l.creativeName.toUpperCase()}
-                                  </h1>
-                                  <div className="flex gap-1 items-center truncate">
-                                    <h1 className="text-[12px]">
-                                      {l.extension?.split("/")[1]},
-                                    </h1>
-                                    <h1 className="text-[12px] truncate">
-                                      {l.duration} seconds
-                                    </h1>
+                      {Object.keys(f).filter((c: any) => c !== "network")?.map((m: any, i: any) => (
+                        <div key={i}>
+                          <h1 className="text-[12px] font-semibold border-b">{`${m}s`.toUpperCase()}</h1>
+
+                          {Object.keys(f[m]).filter((c: any) => c !== "network")?.map((g: any, j: any) => (
+                            <div key={j} className="py-2">
+                              <h1 className="text-[10px] py-1">Resolution: {g}</h1>
+                              <div className="grid grid-cols-3 gap-2">
+                                {f?.[m]?.[g]?.map((l: any, y: any) => (
+                                  <div key={y} className="w-full border rounded"
+                                    onClick={() => {
+                                      setMediaFiles((prev: any) => {
+                                        if (mediaFiles?.map((file: any) => file._id).includes(l._id)) {
+                                          return mediaFiles?.filter((file: any) => file._id !== l._id);
+                                        } else {
+                                          return [...prev, l];
+                                        }
+                                      })
+                                    }}
+                                  >
+                                    <div className="w-full">
+                                      <ShowMediaFile
+                                        url={l?.awsURL}
+                                        mediaType={l?.creativeType}
+                                        key={y}
+                                        height="h-full"
+                                        width="w-full"
+                                      />
+                                    </div>
+                                    <div className="p-1">
+                                      <h1 className="text-[12px] truncate">
+                                        {l?.creativeName?.toUpperCase()}
+                                      </h1>
+                                      <div className="flex gap-1 items-center truncate">
+                                        <h1 className="text-[12px]">
+                                          {l?.extension?.split("/")[1]},
+                                        </h1>
+                                        <h1 className="text-[12px] truncate">
+                                          {l?.duration} seconds
+                                        </h1>
+                                      </div>
+                                    </div>
+
                                   </div>
-                                </div>
-
+                                ))}
                               </div>
-                            ))}
-                          </div>
 
+                            </div>
+                          ))}
                         </div>
+                        
                       ))}
                     </div>
                   ))}
