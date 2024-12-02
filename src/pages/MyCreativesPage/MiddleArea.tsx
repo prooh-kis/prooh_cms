@@ -102,8 +102,8 @@ export const MiddleArea: React.FC = () => {
                   key={i}
                   onClick={() => {
                     setBrandName(cr);
-                    setNetwork(creatives[cr].network);
-                    setCreativesMedia(creatives[cr]);
+                    setNetwork(creatives[cr][0].network);
+                    setCreativesMedia(creatives[cr][0]);
                   }}
                 >
                   <i className="fi fi-sr-folder-open flex items-center text-[#D7D7D7]"></i>
