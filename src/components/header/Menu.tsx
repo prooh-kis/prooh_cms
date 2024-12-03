@@ -30,7 +30,6 @@ export const Menu = (props: any) => {
       label: "Campaigns",
       path: "/campaigns-list",
     },
-
     {
       label: "Monitoring",
       path: "/screen-campaign-monitoring",
@@ -48,7 +47,10 @@ export const Menu = (props: any) => {
         onClick={toggleDropdown}
       ></i>
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 font-bold text-lg text-black-1000">
+        <div
+          onMouseLeave={() => setIsOpen(false)} // Close dropdown on mouse leave
+          className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 font-bold text-lg text-black-1000"
+        >
           {arr.map((data: any, index: any) => (
             <div
               key={index}
