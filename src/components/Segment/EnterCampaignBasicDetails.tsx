@@ -57,7 +57,7 @@ export const EnterCampaignBasicDetails = ({
 }: EnterCampaignBasicDetailsProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-  const [isEnabled, setIsEnable] = useState(true);
+  const [isEnabled, setIsEnable] = useState(false);
 
   const [campaignName, setCampaignName] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name || ""
@@ -433,7 +433,11 @@ export const EnterCampaignBasicDetails = ({
                 isEnabled={isEnabled}
                 onToggle={() => {
                   setIsEnable((pre) => !pre);
-                  setAtIndex([0]);
+                  if (!isEnabled) {
+                    setAtIndex([]);
+                  } else {
+                    setAtIndex([0]);
+                  }
                 }}
                 onColor="bg-green-500"
                 offColor="bg-red-500"

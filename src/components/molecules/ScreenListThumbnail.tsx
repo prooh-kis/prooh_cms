@@ -21,7 +21,7 @@ export const ScreenListThumbnail = ({navigate, data, color, isSelected, handleCa
   return (
     <div 
       onClick={handleCardClick}
-      onDoubleClick={navigate}
+      // onDoubleClick={navigate}
       className={clsx(
         "border rounded-[12px] w-[240px] h-[260px] p-2 flex justify-center items-center transition-colors cursor-pointer",
         {

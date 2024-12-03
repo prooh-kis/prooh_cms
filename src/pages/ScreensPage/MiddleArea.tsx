@@ -43,6 +43,7 @@ export const MiddleArea: React.FC = () => {
   // Handle card click, setting the clicked card's index
   const handleCardClick = (id: any) => {
     setSelectedCard(id);
+    navigate(`/screens-details/${id}`);
   };
 
   return (
