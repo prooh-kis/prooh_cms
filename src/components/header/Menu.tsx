@@ -1,71 +1,74 @@
-import "./index.css";
-// import userImage from "../../assets/userImage.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signout } from "../../actions/userAction";
-import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, MY_CREATIVES, SCREEN_CAMPAIGN_MONITORING, SCREENS_LIST } from "../../routes/routes";
+import { AUTH, MY_CREATIVES } from "../../routes/routes";
+import { useState } from "react";
 
 export const Menu = (props: any) => {
   const { userInfo } = props;
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const signOutHandler = () => {
-    dispatch(signout());
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const signOutHandler = () => {
+    toggleDropdown();
+    dispatch(signout());
     navigate(AUTH);
   };
 
-  return (
-    <div className="dropdown">
-      <i className="fi fi-ss-angle-down flex items-center"></i>
-      <div className="dropdown-content">
-        <div
-          onClick={() => navigate(SCREENS_LIST)}
-          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
-        >
-          <div>
-            {/* <MdOutlinePermMedia className="w-6 h-6" /> */}
-          </div>
-          <h1 className="text-black-1000">Screens</h1>
-        </div>
-        <div
-          onClick={() => navigate(CAMPAIGNS_LIST)}
+  const arr = [
+    {
+      label: "Screens",
+      path: "/screens-list",
+    },
+    {
+      label: "Campaigns",
+      path: "/campaigns-list",
+    },
 
-          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
-        >
-          <div>
-            {/* <MdOutlinePermMedia className="w-6 h-6" /> */}
+    {
+      label: "Monitoring",
+      path: "/screen-campaign-monitoring",
+    },
+    {
+      label: "Creatives",
+      path: MY_CREATIVES,
+    },
+  ];
+
+  return (
+    <div className="relative inline-block text-left">
+      <i
+        className="fi fi-ss-angle-down flex items-center cursor-pointer"
+        onClick={toggleDropdown}
+      ></i>
+      {isOpen && (
+        <div className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 font-bold text-lg text-black-1000">
+          {arr.map((data: any, index: any) => (
+            <div
+              key={index}
+              onClick={() => {
+                toggleDropdown();
+                navigate(data.path);
+              }}
+              className="px-4 py-2  text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+            >
+              {data?.label}
+            </div>
+          ))}
+          <div
+            onClick={signOutHandler}
+            className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+          >
+            Log out
           </div>
-          <h1 className="text-black-1000">Campaigns</h1>
         </div>
-        <div
-          onClick={() => navigate(MY_CREATIVES)}
-          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
-        >
-          <div>
-            {/* <MdOutlinePermMedia className="w-6 h-6" /> */}
-          </div>
-          <h1 className="text-black-1000">Creatives</h1>
-        </div>
-        <div
-          onClick={() => navigate(SCREEN_CAMPAIGN_MONITORING)}
-          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
-        >
-          <div>
-            {/* <MdOutlinePermMedia className="w-6 h-6" /> */}
-          </div>
-          <h1 className="text-black-1000">Monitoring</h1>
-        </div>
-        <div
-          onClick={signOutHandler}
-          className="flex flex-row gap-4 items-center py-2 px-2 hover:bg-sky-600 hover:text-white"
-        >
-          <div>
-            {/* <IoMdPower className="w-6 h-6" /> */}
-          </div>
-          <h1 className="text-black-1000">Log out</h1>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

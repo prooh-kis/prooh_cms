@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ShowMediaFile } from "../molecules/ShowMediaFIle";
-// import { campaignsCreateByScreenOwner } from "../../actions/campaignAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-import { message, Select } from "antd";
+import { message } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { uploadCreativesMediaAction } from "../../actions/creativeAction";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
@@ -31,7 +30,6 @@ interface UploadCreativesV2PopupProps {
 }
 export function UploadCreativesV2Popup({
   onClose,
-
   mediaFiles,
   setMediaFiles,
   isOpen,
@@ -216,25 +214,14 @@ export function UploadCreativesV2Popup({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 p-1">
-      <div className="pt-20">
-        <ToastContainer position="top-center" />
-      </div>
       <div
-        className="
-        bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full
-        h-full flex flex-col justify-between
-        "
+        className="bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full h-full flex flex-col justify-between"
         style={{ height: "70vh", width: "40vw" }}
       >
-        <div
-          className="relative inset-0 flex items-center justify-end gap-4 p-3"
-          onClick={() => onClose()}
-        >
-          <i className="fi fi-br-circle-xmark"></i>
-        </div>
         <div className="">
-          <div className="flex p-2">
+          <div className="flex p-2 justify-between">
             <h1 className="text-[14px] font-semibold">Add Creatives</h1>
+            <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
           </div>
           <div className="p-2">
             <div className="py-1">
@@ -303,6 +290,9 @@ export function UploadCreativesV2Popup({
             />
           )}
         </div>
+      </div>
+      <div className="pt-20">
+        <ToastContainer position="top-center" />
       </div>
     </div>
   );
