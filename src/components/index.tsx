@@ -5,6 +5,10 @@ export { MainContentContainer } from "./containers/MainContentContainer";
 export { Header } from "./header";
 export { Footer } from "./footer";
 
+// atom
+export { MultiSelectInput } from "./atoms/MultiSelectInput";
+export { SwitchInput } from "./atoms/SwitchInput";
+
 // molecules
 export { CampaignMonitoring } from "./molecules/CampaignMonitoring";
 export { SearchInputField } from "./molecules/SearchInputField";
