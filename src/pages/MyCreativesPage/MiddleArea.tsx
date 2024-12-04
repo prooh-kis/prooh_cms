@@ -1,20 +1,19 @@
 import { message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { UploadCreativesV2Popup } from "../../components/popup/UploadCreativesV2Popup";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { DropdownInput } from "../../components/atoms/DropdownInput";
+import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
 
   const [creativeName, setCreativeName] = useState<any>("");
-  const [networkChoice, setNetworkChoice] = useState<any>("");
+  const [networkChoice, setNetworkChoice] = useState<any>(0);
 
   const [resolution, setResolution] = useState<any>("");
 
@@ -25,7 +24,7 @@ export const MiddleArea: React.FC = () => {
 
   const [brandName, setBrandName] = useState<any>("");
   const [network, setNetwork] = useState<any>("");
-  const [creativesMedia, setCreativesMedia] = useState<any>([]);
+  const [creativesMedia, setCreativesMedia] = useState<any>({});
 
   const [mediaFiles, setMediaFiles] = useState<any>([]);
 
@@ -40,6 +39,53 @@ export const MiddleArea: React.FC = () => {
     error: errorCreatives,
     data: creatives,
   } = creativesMediaGet;
+
+  const getJSXValue = (contentType: string) => {
+    if (Object.keys(creativesMedia || {})?.length > 0) {
+      if (Object.keys(creativesMedia).includes(contentType)) {
+        return (
+          Object.keys(creativesMedia?.[contentType])?.length > 0 &&
+          Object.keys(creativesMedia?.[contentType])?.map(
+            (resolution: any, j: any) => (
+              <div key={j} className="py-2">
+                <h1 className="text-[10px] py-1">Resolution: {resolution}</h1>
+                <div className="grid grid-cols-3 gap-2">
+                  {creativesMedia?.[contentType]?.[resolution]?.map(
+                    (l: any, y: any) => (
+                      <div key={y} className="w-full border rounded">
+                        <div className="w-full">
+                          <ShowMediaFile
+                            url={l?.awsURL}
+                            mediaType={l?.creativeType}
+                            key={y}
+                            height="h-full"
+                            width="w-full"
+                          />
+                        </div>
+                        <div className="p-1">
+                          <h1 className="text-[12px] truncate">
+                            {l?.creativeName?.toUpperCase()}
+                          </h1>
+                          <div className="flex gap-1 items-center truncate">
+                            <h1 className="text-[12px]">
+                              {l?.extension?.split("/")[1]},
+                            </h1>
+                            <h1 className="text-[12px] truncate">
+                              {l?.duration} seconds
+                            </h1>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            )
+          )
+        );
+      } else return <h1 className="text-red-500">No Data</h1>;
+    }
+  };
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
@@ -96,7 +142,11 @@ export const MiddleArea: React.FC = () => {
                   )
                   ?.map((brand: any, i: any) => (
                     <div
-                      className="flex gap-4 items-center p-2 border-b"
+                      className={
+                        brand === brandName
+                          ? "flex gap-4 items-center p-2 border-b text-blue-400"
+                          : "flex gap-4 items-center p-2 border-b"
+                      }
                       key={i}
                       onClick={() => {
                         setBrandName(brand);
@@ -151,14 +201,19 @@ export const MiddleArea: React.FC = () => {
                     inputType="text"
                     placeHolder="Select Network"
                     height="h-8"
-                    options={creatives?.[brandName]?.map((data: any) => {
-                      return {
-                        label: data?.network,
-                        value: data?.network,
-                      };
-                    })}
+                    options={creatives?.[brandName]?.map(
+                      (data: any, index: number) => {
+                        return {
+                          label: data?.network,
+                          value: index,
+                        };
+                      }
+                    )}
                     selectedOption={networkChoice}
-                    setSelectedOption={setNetworkChoice}
+                    setSelectedOption={(value: number) => {
+                      setCreativesMedia(creatives?.[brandName][value]);
+                      setNetworkChoice(value);
+                    }}
                   />
                 </div>
                 <div className="col-span-1 py-1">
@@ -175,75 +230,24 @@ export const MiddleArea: React.FC = () => {
                 </div>
               </div>
               <div>
-                <div className="flex gap-2 items-center justify-start">
-                  {Object.keys(creativesMedia)
-                    ?.filter((c: any) => c !== "network")
-                    ?.map((cs: any, z: any) => {
-                      return {
-                        id: `${z + 1}`,
-                        label: cs,
-                      };
-                    })
-                    ?.map((f: any, k: any) => (
-                      <div className="p-2" key={k}>
-                        {f.label.toUpperCase()}
-                      </div>
-                    ))}
+                <div className="flex gap-2 items-center justify-start py-2">
+                  <TabWithoutIcon
+                    currentTab={currentTab}
+                    setCurrentTab={setCurrentTab}
+                    tabData={[
+                      {
+                        id: "1",
+                        label: "Videos",
+                      },
+                      {
+                        id: "2",
+                        label: "Images",
+                      },
+                    ]}
+                  />
                 </div>
-                <div>
-                  {Object.keys(creativesMedia)
-                    ?.filter((c: any) => c !== "network")
-                    ?.map((f: any, k: any) => (
-                      <div
-                        className="p-2"
-                        key={k}
-                        onClick={() => console.log(creativesMedia[f])}
-                      >
-                        <h1 className="text-[12px] font-semibold border-b">
-                          {`${f}s`.toUpperCase()}
-                        </h1>
-                        {Object.keys(creativesMedia[f])?.map(
-                          (g: any, j: any) => (
-                            <div key={j} className="py-2">
-                              <h1 className="text-[10px] py-1">
-                                Resolution: {g}
-                              </h1>
-                              <div className="grid grid-cols-3 gap-2">
-                                {creativesMedia[f][g]?.map((l: any, y: any) => (
-                                  <div
-                                    key={y}
-                                    className="w-full border rounded"
-                                  >
-                                    <div className="w-full">
-                                      <ShowMediaFile
-                                        url={l?.awsURL}
-                                        mediaType={l?.creativeType}
-                                        key={y}
-                                        height="h-full"
-                                        width="w-full"
-                                      />
-                                    </div>
-                                    <div className="p-1">
-                                      <h1 className="text-[12px] truncate">
-                                        {l?.creativeName?.toUpperCase()}
-                                      </h1>
-                                      <div className="flex gap-1 items-center truncate">
-                                        <h1 className="text-[12px]">
-                                          {l?.extension?.split("/")[1]},
-                                        </h1>
-                                        <h1 className="text-[12px] truncate">
-                                          {l?.duration} seconds
-                                        </h1>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    ))}
+                <div className="pt-1">
+                  {getJSXValue(currentTab == "1" ? "video" : "image")}
                 </div>
               </div>
             </div>
