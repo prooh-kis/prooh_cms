@@ -75,7 +75,7 @@ export const EnterCampaignBasicDetails = ({
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds || []
   );
   const [atIndex, setAtIndex] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex || []
+    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex || [0]
   );
 
   const [startDate, setStartDate] = useState<any>(

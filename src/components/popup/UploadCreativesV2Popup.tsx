@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ShowMediaFile } from "../molecules/ShowMediaFIle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,6 +41,7 @@ export function UploadCreativesV2Popup({
 }: UploadCreativesV2PopupProps) {
   const dispatch = useDispatch<any>();
   const { pathname } = useLocation();
+  const [loading, setLoading] = useState<boolean>(false);
   const creativeId =
     pathname?.split("/")?.length > 2
       ? pathname?.split("/")?.splice(2)[0]
@@ -72,12 +73,19 @@ export function UploadCreativesV2Popup({
   };
 
   useEffect(() => {
+    if (errorUpload) {
+      setLoading(false);
+      dispatch({ type: UPLOAD_CREATIVES_RESET });
+    }
     if (successUpload) {
       openSuccessToast("Creative uploaded successfully!");
       setMediaFiles([]);
+      setBrandName("");
+      setNetwork("");
+      setLoading(false);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
     }
-  }, [dispatch, successUpload]);
+  }, [dispatch, successUpload, errorUpload]);
 
   useEffect(() => {
     if (isOpen) {
@@ -204,6 +212,7 @@ export function UploadCreativesV2Popup({
   const handleCreateCreatives = () => {
     console.log("asdasda");
     if (validateForm()) {
+      setLoading(true);
       createNewCreatives();
     }
   };
@@ -280,17 +289,15 @@ export function UploadCreativesV2Popup({
         </div>
 
         <div className="p-2 w-full bottom-0">
-          {!loadingUpload && (
-            <PrimaryButton
-              title="Upload"
-              rounded="rounded"
-              width="w-full"
-              action={handleCreateCreatives}
-              disabled={loadingUpload}
-              loading={loadingUpload}
-              loadingText="updating..."
-            />
-          )}
+          <PrimaryButton
+            title="Upload"
+            rounded="rounded"
+            width="w-full"
+            action={handleCreateCreatives}
+            disabled={loading || loadingUpload}
+            loading={loading || loadingUpload}
+            loadingText="updating..."
+          />
         </div>
       </div>
       <div className="pt-20">
