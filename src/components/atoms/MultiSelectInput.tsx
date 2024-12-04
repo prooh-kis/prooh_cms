@@ -16,12 +16,12 @@ export const MultiSelectInput: React.FC<{
 
   const toggleOption = (value: string) => {
     const newValue = selectedOptions?.includes(value)
-      ? selectedOptions.filter((option: string) => option !== value)
+      ? selectedOptions?.filter((option: string) => option !== value)
       : [...selectedOptions, value];
     setSelectedOptions(newValue);
   };
 
-  const filteredOptions = options.filter((option) =>
+  const filteredOptions = options?.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

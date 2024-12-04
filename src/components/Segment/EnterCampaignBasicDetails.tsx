@@ -461,9 +461,10 @@ export const EnterCampaignBasicDetails = ({
                         atIndex?.filter((data: any) => data != index.value)
                       );
                     } else {
-                      message.info(
-                        "Please deselect auto-set priority switch first..."
-                      );
+                      handleSettingAtIndex([...atIndex, index.value]);
+                      // message.info(
+                      //   "Please deselect auto-set priority switch first..."
+                      // );
                     }
                   }}
                 >
