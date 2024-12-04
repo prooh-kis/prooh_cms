@@ -10,16 +10,18 @@ interface PrimaryButtonProps {
   textSize?: any;
   reverse?: any;
   icon?: any;
+  loading: boolean;
+  loadingText: string;
 }
 
-export const PrimaryButton = ({icon, reverse, textSize, disabled, width, height, title, action, rounded}: PrimaryButtonProps) => {
+export const PrimaryButton = ({icon, reverse, textSize, disabled, width, height, title, action, rounded , loading, loadingText = "Loading..."}: PrimaryButtonProps) => {
   return (
     <div className="flex justify-center items-center">
       <button
         title="plan_campaign"
         type="submit"
         onClick={action}
-        disabled={disabled}
+        disabled={disabled || loading}
         className={`
           px-4 py-2
           ${width ? width : "w-[180px]"} flex items-center justify-center
@@ -32,7 +34,7 @@ export const PrimaryButton = ({icon, reverse, textSize, disabled, width, height,
           transition-colors duration-300
         `}
       >
-        {icon} {title}
+        {icon} {loading ? loadingText :title}
       </button>
     </div>
   )

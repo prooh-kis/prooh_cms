@@ -9,9 +9,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { message, Select } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../../components/Loading";
-import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
-import { CAMPAIGN_CREATIVES_TO_UPLOAD, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
-
+import {
+  getDataFromLocalStorage,
+  saveDataOnLocalStorage,
+} from "../../utils/localStorageUtils";
+import {
+  CAMPAIGN_CREATIVES_TO_UPLOAD,
+  FULL_CAMPAIGN_PLAN,
+} from "../../constants/localStorageConstants";
 
 interface UploadCreativesFromBucketPopupProps {
   onClose?: any;
@@ -41,17 +46,22 @@ export function UploadCreativesFromBucketPopup({
 
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
-  const uniqueResolution = selectedScreens.reduce((unique: any, screen: any) => {
-    if (!unique.includes(screen.resolution)) {
+  const uniqueResolution = selectedScreens.reduce(
+    (unique: any, screen: any) => {
+      if (!unique.includes(screen.resolution)) {
         unique.push(screen.resolution);
-    }
-    return unique;
-}, []);
-  
+      }
+      return unique;
+    },
+    []
+  );
+
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  const creativesMediaGet = useSelector((state: any) => state.creativesMediaGet);
+  const creativesMediaGet = useSelector(
+    (state: any) => state.creativesMediaGet
+  );
   const {
     loading: loadingCreatives,
     error: errorCreatives,
@@ -70,10 +80,9 @@ export function UploadCreativesFromBucketPopup({
     if (creatives && brandName) {
       setCreativesMedia(creatives[brandName]);
     }
-  },[brandName, creatives]);
+  }, [brandName, creatives]);
 
   useEffect(() => {
-   
     if (isCreativeOpen) {
       document.body.classList.add("overflow-hidden");
     } else {
@@ -95,7 +104,7 @@ export function UploadCreativesFromBucketPopup({
 
   const handelDiscard = () => {
     setMediaFiles([]);
-    
+
     setUrl("");
     setIsLoading(false);
     onClose();
@@ -103,45 +112,51 @@ export function UploadCreativesFromBucketPopup({
 
   const createCampaignFromMedia = () => {
     setIsLoading(true);
-    
+
     const selectedScreenIds = selectedScreens?.map((s: any) => s.id);
-    let dataToUpload: any = []
+    let dataToUpload: any = [];
     mediaFiles?.map((item: any) => {
       const mediaData = {
         resolution: `${item.resolution.width}x${item.resolution.height}`,
         type: item.extension,
         url: item.awsURL,
         size: item.fileSize,
-        _id: { $oid: item._id }
-      }
+        _id: { $oid: item._id },
+      };
       dataToUpload.push(mediaData);
-    })
+    });
     const creativeDataToUpload = [];
-    const screenDataToUpload = screenData?.map((item: any) => {
-      // Filter screens that match the screenIds array
-      const filteredScreens = item?.screens?.filter((screen: any) => selectedScreenIds.includes(screen.id));
-      if (filteredScreens.length > 0) {
+    const screenDataToUpload = screenData
+      ?.map((item: any) => {
+        // Filter screens that match the screenIds array
+        const filteredScreens = item?.screens?.filter((screen: any) =>
+          selectedScreenIds.includes(screen.id)
+        );
+        if (filteredScreens.length > 0) {
           // Return the updated object with filtered screens and updated count
           return {
-              ...item,
-              count: filteredScreens.length,
-              screens: filteredScreens
+            ...item,
+            count: filteredScreens.length,
+            screens: filteredScreens,
           };
-      }
+        }
 
-      // Return null if no screens match
-      return [null];
-    })
-    .filter((item: any) => item !== null); // Remove null items
+        // Return null if no screens match
+        return [null];
+      })
+      .filter((item: any) => item !== null); // Remove null items
 
     for (const scr of screenDataToUpload) {
-      const standardDayTimeCreatives: any = [...(scr.standardDayTimeCreatives || [])]; // Clone the array
+      const standardDayTimeCreatives: any = [
+        ...(scr.standardDayTimeCreatives || []),
+      ]; // Clone the array
 
       selectedScreenIds?.forEach((s: any) => {
         if (scr.screens?.some((sd: any) => sd.id === s)) {
-
           dataToUpload.forEach((data: any) => {
-            if (!standardDayTimeCreatives.some((f: any) => f.url === data.url)) {
+            if (
+              !standardDayTimeCreatives.some((f: any) => f.url === data.url)
+            ) {
               standardDayTimeCreatives.push({
                 size: data.size,
                 type: data.type,
@@ -151,7 +166,7 @@ export function UploadCreativesFromBucketPopup({
           });
         }
       });
-    
+
       creativeDataToUpload.push({
         screenResolution: scr.screenResolution,
         count: selectedScreenIds.length,
@@ -163,7 +178,7 @@ export function UploadCreativesFromBucketPopup({
       });
     }
     // console.log("media: ", mediaFiles)
-    
+
     const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives.length > 0) {
@@ -256,12 +271,13 @@ export function UploadCreativesFromBucketPopup({
     console.log(creativesMedia);
     creativesMedia?.map((f: any, k: any) => {
       console.log(f);
-      Object.keys(f).filter((c: any) => c !== "network")?.map((g: any) => {
-        console.log(f[g]);
-      })
-    })
+      Object.keys(f)
+        .filter((c: any) => c !== "network")
+        ?.map((g: any) => {
+          console.log(f[g]);
+        });
+    });
   }
-
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
@@ -465,12 +481,16 @@ export function UploadCreativesFromBucketPopup({
             rounded="rounded-[12px]"
             action={handleNext}
             disabled={isLoading}
+            loading={isLoading}
+            loadingText="uploading..."
           />
           <PrimaryButton
             title="Cancel"
             rounded="rounded-[12px]"
             reverse={true}
             action={handelDiscard}
+            loading={false}
+            loadingText="uploading..."
           />
         </div>
       </div>

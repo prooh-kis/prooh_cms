@@ -252,6 +252,8 @@ export function AddDefaultMediaPopup({
             width="w-full"
             action={createCampaignFromMedia}
             disabled={isLoading}
+            loading={isLoading}
+            loadingText="Updating..."
           />
           {/* )} */}
         </div>

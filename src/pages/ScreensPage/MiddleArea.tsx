@@ -1,8 +1,6 @@
 import { message } from "antd";
-import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import clsx from "clsx";
 
 import { useNavigate } from "react-router-dom";
 import { getAllScreensDetailsAction } from "../../actions/screenAction";

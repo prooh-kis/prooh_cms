@@ -8,12 +8,14 @@ import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { UploadCreativesV2Popup } from "../../components/popup/UploadCreativesV2Popup";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
+import { DropdownInput } from "../../components/atoms/DropdownInput";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
 
   const [creativeName, setCreativeName] = useState<any>("");
   const [networkChoice, setNetworkChoice] = useState<any>("");
+
   const [resolution, setResolution] = useState<any>("");
 
   const [searchQuery, setSearchQuery] = useState<any>("");
@@ -88,20 +90,24 @@ export const MiddleArea: React.FC = () => {
           ) : (
             <div className="p-2">
               {creatives &&
-                Object.keys(creatives)?.map((cr: any, i: any) => (
-                  <div
-                    className="flex gap-4 items-center p-2 border-b"
-                    key={i}
-                    onClick={() => {
-                      setBrandName(cr);
-                      setNetwork(creatives[cr][0].network);
-                      setCreativesMedia(creatives[cr][0]);
-                    }}
-                  >
-                    <i className="fi fi-sr-folder-open flex items-center text-[#D7D7D7]"></i>
-                    <h1 className="text-[12px] font-semibold">{cr}</h1>
-                  </div>
-                ))}
+                Object.keys(creatives)
+                  ?.filter((brand: string) =>
+                    brand.toLowerCase()?.includes(searchQuery?.toLowerCase())
+                  )
+                  ?.map((brand: any, i: any) => (
+                    <div
+                      className="flex gap-4 items-center p-2 border-b"
+                      key={i}
+                      onClick={() => {
+                        setBrandName(brand);
+                        setNetwork(creatives[brand][0].network);
+                        setCreativesMedia(creatives[brand][0]);
+                      }}
+                    >
+                      <i className="fi fi-sr-folder-open flex items-center text-[#D7D7D7]"></i>
+                      <h1 className="text-[12px] font-semibold">{brand}</h1>
+                    </div>
+                  ))}
             </div>
           )}
         </div>
@@ -141,12 +147,18 @@ export const MiddleArea: React.FC = () => {
                   <label className="block text-secondaryText text-[12px] mb-2">
                     Network
                   </label>
-                  <PrimaryInput
+                  <DropdownInput
                     inputType="text"
+                    placeHolder="Select Network"
                     height="h-8"
-                    placeholder="Enter Network"
-                    value={networkChoice}
-                    action={setNetworkChoice}
+                    options={creatives?.[brandName]?.map((data: any) => {
+                      return {
+                        label: data?.network,
+                        value: data?.network,
+                      };
+                    })}
+                    selectedOption={networkChoice}
+                    setSelectedOption={setNetworkChoice}
                   />
                 </div>
                 <div className="col-span-1 py-1">

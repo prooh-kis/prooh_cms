@@ -412,12 +412,16 @@ export function EditCreativeEndDatePopup({
             rounded="rounded-[12px]"
             action={handleNext}
             disabled={isLoading}
+            loading={isLoading}
+            loadingText="Updating..."
           />
           <PrimaryButton
             title="Cancel"
             rounded="rounded-[12px]"
             reverse={true}
             action={handelDiscard}
+            loading={isLoading}
+            loadingText="Updating..."
           />
         </div>
       </div>

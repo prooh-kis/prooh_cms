@@ -172,6 +172,7 @@ export function LoopSettingPopup({
         data: formattedData,
       })
     );
+    onClose();
   };
 
   return (
@@ -187,6 +188,8 @@ export function LoopSettingPopup({
               textSize="text-[12px]"
               rounded="rounded-full"
               action={handleLoopSetting}
+              loading={false}
+              loadingText="setting lop..."
             />
             <div
               className="relative inset-0 flex items-center justify-end gap-4 p-3"

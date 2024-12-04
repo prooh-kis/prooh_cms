@@ -502,6 +502,8 @@ export const EnterCampaignBasicDetails = ({
       <div className="flex py-4">
         {!loadingCampaignsCreations && (
           <PrimaryButton
+            loading={loadingCampaignsCreations}
+            loadingText="Creating campaign..."
             rounded="rounded-[6px]"
             title="Continue"
             action={() => {

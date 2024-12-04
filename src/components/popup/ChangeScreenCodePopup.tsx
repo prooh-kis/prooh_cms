@@ -122,6 +122,8 @@ export function ChangeScreenCodePopup({
             width="w-full"
             title="Update Code"
             disabled-={loadingChange}
+            loading={loadingChange}
+            loadingText="Updating..."
             action={() =>
               dispatch(
                 screenCodeChangeAction({

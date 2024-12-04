@@ -287,6 +287,8 @@ export function UploadCreativesV2Popup({
               width="w-full"
               action={handleCreateCreatives}
               disabled={loadingUpload}
+              loading={loadingUpload}
+              loadingText="updating..."
             />
           )}
         </div>

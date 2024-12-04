@@ -12,7 +12,6 @@ import {
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 
 export function MiddleArea(props: any) {
-
   const [option, setOption] = useState<string>("signin");
   const navigate = useNavigate();
   const [signInText, setSignInText] = useState<string>("Sign In");
@@ -90,13 +89,14 @@ export function MiddleArea(props: any) {
   // auth
   const userSignin = useSelector((state: any) => state.userSignin);
   const {
+    loading: loadingSignIn,
     error: errorSignIn,
     success: successSignin,
     userInfo: userInfo1,
   } = userSignin;
 
   const userSignup = useSelector((state: any) => state.userSignup);
-  const { error, success, userInfo } = userSignup;
+  const { loading, error, success, userInfo } = userSignup;
 
   const reset = () => {
     setName("");
@@ -218,6 +218,8 @@ export function MiddleArea(props: any) {
                 width="w-[320px]"
                 title={signInText}
                 action={handleSignIn}
+                loading={loadingSignIn}
+                loadingText="Signin..."
               />
             </div>
           </div>
@@ -306,6 +308,8 @@ export function MiddleArea(props: any) {
                 rounded="rounded-md"
                 width="w-[320px]"
                 action={handleSignUp}
+                loading={loading}
+                loadingText="Signup..."
               />
             </div>
           </div>
@@ -313,4 +317,4 @@ export function MiddleArea(props: any) {
       </div>
     </div>
   );
-};
+}

@@ -297,6 +297,8 @@ export function UploadMonitoringPicturesPopup({
             rounded="rounded"
             width="w-full"
             action={handleMonitoringPicturesUpload}
+            loading={false}
+            loadingText="updating..."
             // disabled={loadingUpload}
           />
         </div>

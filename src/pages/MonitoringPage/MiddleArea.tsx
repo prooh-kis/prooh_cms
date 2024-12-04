@@ -250,6 +250,8 @@ export const MiddleArea: React.FC = () => {
                   width="w-auto"
                   textSize="text-[12px]"
                   rounded="rounded-full"
+                  loading={loadingScreenCampaignMonitoringData}
+                  loadingText="Saving..."
                   action={monitoringPicturesSaveHandler}
                 />
               </div>
