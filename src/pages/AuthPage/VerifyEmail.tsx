@@ -16,7 +16,6 @@ export const VerifyEmail = (props: any) => {
 
   useEffect(() => {
     if (success && data) {
-      console.log("Email verified success");
       alert("Thank you for joining with us....");
       if (data.isMaster) {
         navigate("/screens");
@@ -25,11 +24,9 @@ export const VerifyEmail = (props: any) => {
       }
     }
     if (error) {
-      console.log("Email verification error : ", error);
       dispatch({ type: USER_EMAIL_VERIFICATION_RESET });
     }
   }, [error, success, data, navigate, dispatch]);
-  console.log("token : ", searchParams.get("token"));
 
   const verifyUser = useCallback( async(token: string) => {
     dispatch(userEmailVerification(token));

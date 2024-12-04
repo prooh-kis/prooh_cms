@@ -116,7 +116,6 @@ export function MiddleArea(props: any) {
 
   useEffect(() => {
     if (error) {
-      console.log("Error in signup : ", error);
       alert(error);
       dispatch({ type: USER_SIGNUP_RESET });
     }
@@ -130,12 +129,9 @@ export function MiddleArea(props: any) {
   useEffect(() => {
     if (errorSignIn) {
       alert(errorSignIn);
-
-      console.log("errorSignIn in signup : ", errorSignIn);
       dispatch({ type: USER_SIGNOUT });
     }
     if (userInfo1) {
-      console.log("signin success");
       reset();
       navigate("/");
     }

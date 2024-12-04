@@ -170,7 +170,6 @@ export const screenCampaignsMonitoringAction =
       payload: input,
     });
     try {
-      console.log("screenCampaignsMonitoringAction : ", input);
       const { data } = await axios.post(
         `${url2}/addCampaignMonitoringData`,
         input
@@ -197,7 +196,6 @@ export const getScreenCampaignsMonitoringAction =
       payload: input,
     });
     try {
-      console.log("getScreenCampaignsMonitoringAction : ", input);
       const { data } = await axios.get(
         `${url2}/getCampaignMonitoringData?screenId=${input?.screenId}&campaignId=${input?.campaignId}&date=${input?.date}`
       );

@@ -7,12 +7,20 @@ import { Loading } from "../../components/Loading";
 import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import {
+  changeCampaignStatusAction,
   getCampaignCreatedScreensDetailsAction,
   getCampaignDetailsAction,
 } from "../../actions/campaignAction";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
 import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
 import { CampaignMonitoring } from "../../components/index";
+import { confirmData } from "../../utils/champaignStatusUtils";
+import {
+  CAMPAIGN_STATUS_ACTIVE,
+  CAMPAIGN_STATUS_DELETED,
+  CAMPAIGN_STATUS_PAUSE,
+  CAMPAIGN_STATUS_CHANGE_RESET,
+} from "../../constants/campaignConstants";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -45,6 +53,15 @@ export const MiddleArea: React.FC = () => {
     data: screens,
   } = campaignCreatedScreensDetailsGet;
 
+  const campaignStatusChange = useSelector(
+    (state: any) => state.campaignStatusChange
+  );
+  const {
+    loading: loadingStatusChange,
+    error: errorStatusChange,
+    success: successStatusChange,
+  } = campaignStatusChange;
+
   useEffect(() => {
     if (campaignCreated) {
       dispatch(
@@ -54,6 +71,22 @@ export const MiddleArea: React.FC = () => {
       );
     }
   }, [campaignCreated, dispatch]);
+
+  useEffect(() => {
+    if (successStatusChange) {
+      message.success("Campaign Status Changed");
+      dispatch({
+        type: CAMPAIGN_STATUS_CHANGE_RESET,
+      });
+      dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
+    }
+    if (errorStatusChange) {
+      message.error(errorStatusChange);
+      dispatch({
+        type: CAMPAIGN_STATUS_CHANGE_RESET,
+      });
+    }
+  }, [successStatusChange, errorStatusChange]);
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
@@ -74,6 +107,26 @@ export const MiddleArea: React.FC = () => {
       (data: any) => data?.screenId == screenId
     );
     setCampaign(data);
+  };
+
+  const getCampaignIdsToChangeStatus = () => {
+    return campaignCreated?.campaigns?.map((campaign: any) => campaign._id);
+  };
+
+  const handleChangeStatusAll = (status: string) => {
+    if (confirm(confirmData[status])) {
+      let data = getCampaignIdsToChangeStatus();
+      if (data?.length > 0) {
+        dispatch(
+          changeCampaignStatusAction({
+            campaignIds: data,
+            status: status,
+          })
+        );
+      } else {
+        message.error("No Campaign found!, to change status");
+      }
+    }
   };
 
   return (
@@ -118,11 +171,25 @@ export const MiddleArea: React.FC = () => {
                     </h2>
                   </div>
                 </div>
-                <div className="px-4 flex h-auto gap-8">
-                  {campaignCreated?.status === "Active" ? "s" : ""}
-                  <i className="fi fi-sr-play-circle text-gray-500"></i>
-                  <i className="fi fi-sr-trash text-gray-500"></i>
-                </div>
+                {!loadingStatusChange && (
+                  <div className="px-4 flex h-auto gap-8">
+                    <i
+                      className="fi fi-ss-pause-circle text-gray-500"
+                      title="Pause all"
+                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)}
+                    ></i>
+                    <i
+                      className="fi fi-sr-play-circle text-gray-500"
+                      title="Active all"
+                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)}
+                    ></i>
+                    <i
+                      className="fi fi-sr-trash text-gray-500"
+                      title="Delete All"
+                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)}
+                    ></i>
+                  </div>
+                )}
               </div>
               <div className="px-4 p-2">
                 <div className="grid grid-cols-8 gap-4">

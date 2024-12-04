@@ -155,11 +155,9 @@ export function UploadCreativesV2Popup({
           if (file.type.split("/")[0] != "image") {
             duration = await getVideoDurationFromVideoURL(url);
             resolution = await getVideoResolution(url);
-            console.log("resolution video", resolution);
           } else {
             duration = 10;
             resolution = await getImageResolution(url);
-            console.log("resolution image", resolution);
           }
           if (validateSelectedFile(file))
             mediaFilesArray.push({
@@ -205,12 +203,12 @@ export function UploadCreativesV2Popup({
         })
       );
     } catch (error) {
-      console.log("createNewCreatives Error : ", error);
+      setLoading(false);
+      message.error(`createNewCreatives Error , ${error}`);
     }
   };
 
   const handleCreateCreatives = () => {
-    console.log("asdasda");
     if (validateForm()) {
       setLoading(true);
       createNewCreatives();

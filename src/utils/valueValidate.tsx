@@ -21,7 +21,6 @@ export const isValidUrl = (userInput: string) => {
 
 export const convertNumberToIndianRs = (number: any) => {
   const value = Number(number);
-  // console.log("convertNumberToIndianRs : ", number);
   if (value)
     return value.toLocaleString("en-IN", {
       maximumFractionDigits: 2,

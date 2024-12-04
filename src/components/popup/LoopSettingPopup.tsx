@@ -144,8 +144,6 @@ export function LoopSettingPopup({
     return null;
   }
 
-  // console.log(slots)
-
   const handleLoopSetting = () => {
     const formattedData: any = slots
       ?.flat() // Flatten the nested arrays

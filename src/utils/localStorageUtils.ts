@@ -20,7 +20,6 @@ export const getAllLocalStorageData = () => {
 export const getDataFromLocalStorage = (key: string) => {
   const data = window.localStorage.getItem(key);
   if (data !== undefined || data !== null || JSON.stringify(data) !== JSON.stringify("undefined")) {
-    // console.log(key, data);
     return data !== null ? JSON.parse(data) : null;
 
   } else {

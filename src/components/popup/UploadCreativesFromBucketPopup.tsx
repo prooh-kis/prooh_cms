@@ -40,7 +40,6 @@ export function UploadCreativesFromBucketPopup({
   const [campaignOption, setCampaignOption] = useState("Image/Video");
   const [url, setUrl] = useState<any>("");
   const [campaignDuration, setCampaignDuration] = useState<any>("");
-  // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
 
@@ -177,7 +176,6 @@ export function UploadCreativesFromBucketPopup({
         triggerCreatives: [],
       });
     }
-    // console.log("media: ", mediaFiles)
 
     const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     for (const cd of creativeDataToUpload) {
@@ -258,7 +256,6 @@ export function UploadCreativesFromBucketPopup({
   };
   const handleNext = (e: any) => {
     if (validateForm()) {
-      // console.log("form validated");
       if (url?.length > 0 && campaignOption === "URL") {
         createCampaignFromURL();
       } else {
@@ -266,18 +263,6 @@ export function UploadCreativesFromBucketPopup({
       }
     }
   };
-
-  if (creativesMedia) {
-    console.log(creativesMedia);
-    creativesMedia?.map((f: any, k: any) => {
-      console.log(f);
-      Object.keys(f)
-        .filter((c: any) => c !== "network")
-        ?.map((g: any) => {
-          console.log(f[g]);
-        });
-    });
-  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">

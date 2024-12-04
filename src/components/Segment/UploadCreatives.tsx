@@ -196,10 +196,6 @@ export const UploadCreatives = ({
     return screenIds.length;
   };
 
-  const removeAddedCreativeFromCampaign = (mediaToRemove: any) => {
-    // console.log(mediaToRemove);
-    // console.log(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives)
-  };
   return (
     <div className="w-full py-3">
       {isBucketPopupOpen && (

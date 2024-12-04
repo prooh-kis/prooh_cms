@@ -5,7 +5,6 @@ export const getVideoDurationFromVideoURL = (url: string) => {
     video.src = url;
     video.addEventListener("loadedmetadata", function () {
       let duration = video.duration;
-      // console.log("getVideoDurationFronVideoURL : ", duration);
       resolve(duration);
     });
   });

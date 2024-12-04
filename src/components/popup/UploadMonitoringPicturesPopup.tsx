@@ -220,7 +220,7 @@ export function UploadMonitoringPicturesPopup({
         setMonitoringData(picturesData);
         onClose();
       } catch (error) {
-        console.log("createNewCreatives Error : ", error);
+        message.error(`createNewCreatives Error, ${error}`);
       }
     }
   };

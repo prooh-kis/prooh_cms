@@ -60,7 +60,6 @@ export function AddDefaultMediaPopup({
     // const selectedScreenIds = selectedScreens?.map((s: any) => s._id);
     let dataToUpload: any = [];
     mediaFiles?.map((item: any) => {
-      console.log(item);
       const mediaData = {
         resolution: `${item.resolution.width}x${item.resolution.height}`,
         type: item.extension,
@@ -161,8 +160,6 @@ export function AddDefaultMediaPopup({
                     })}
                   selectedOption={brand}
                   setSelectedOption={(e: any) => {
-                    console.log(e);
-                    console.log(creatives?.[e]);
                     setBrand(e);
                   }}
                 />

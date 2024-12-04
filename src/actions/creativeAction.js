@@ -51,7 +51,6 @@ export const getCreativesMediaAction = ({userId}) => async (dispatch, getState) 
     const {
       auth: { userInfo },
     } = getState();
-    // console.log(userInfo)
     const { data } = await axios.post(`${backendURL2}/getCreatives`, {userId}, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });

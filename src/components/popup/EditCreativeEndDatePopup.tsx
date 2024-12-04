@@ -41,8 +41,6 @@ export function EditCreativeEndDatePopup({
   const dispatch = useDispatch<any>();
   const [campaignOption, setCampaignOption] = useState("Image/Video");
   const [url, setUrl] = useState<any>("");
-  // const [campaignDuration, setCampaignDuration] = useState<any>("");
-  // console.log("end Date : ", endDate);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<any>(campaign?.endDate?.split(".")[0]);
@@ -206,7 +204,6 @@ export function EditCreativeEndDatePopup({
   };
   const handleNext = (e: any) => {
     if (validateForm()) {
-      // console.log("form validated");
       if (url?.length > 0 && campaignOption === "URL") {
         createCampaignFromURL();
       } else {
