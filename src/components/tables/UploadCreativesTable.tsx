@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { CheckboxInput } from "../../components/atoms/CheckboxInput";
 import Fraction from "fraction.js";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
-import { ShowMediaPopup } from "../../components/popup/ShowMediaPopup";
 
 interface UploadCreativesTableProps {
   userInfo?: any;
@@ -19,7 +18,6 @@ interface UploadCreativesTableProps {
 }
 
 export const UploadCreativesTable = ({
-
   screenData,
   handleScreenSelection,
   selectedScreens = [],
@@ -28,17 +26,18 @@ export const UploadCreativesTable = ({
   setOpenShowMedia,
   onClose,
 }: UploadCreativesTableProps) => {
-
-
   const screens: any = screenData?.flatMap((data: any) => data.screens);
 
-  const isAllSelected = screens?.length > 0 && screens?.every((screen: any) =>
-    selectedScreens.some((selected) => selected.id === screen.id)
-  );
+  const isAllSelected =
+    screens?.length > 0 &&
+    screens?.every((screen: any) =>
+      selectedScreens.some((selected) => selected.id === screen.id)
+    );
 
   useEffect(() => {
-    if (screenData) {}
-  },[screenData]);
+    if (screenData) {
+    }
+  }, [screenData]);
 
   const handleHeaderCheckboxChange = (checked: boolean) => {
     if (handleScreenSelection) {
@@ -62,7 +61,6 @@ export const UploadCreativesTable = ({
 
   return (
     <div className="w-full">
-     
       <table className="w-full">
         <thead className="bg-[#EBF6FF]">
           <tr>
@@ -125,12 +123,12 @@ export const UploadCreativesTable = ({
                     color="#129BFF"
                     onChange={(e) => {
                       if (handleScreenSelection) {
-                        handleScreenSelection({ screen: s, status: e })
+                        handleScreenSelection({ screen: s, status: e });
                       }
                     }}
-                    checked={selectedScreens?.map(
-                      (selected) => selected.id
-                    ).includes(s.id)}
+                    checked={selectedScreens
+                      ?.map((selected) => selected.id)
+                      .includes(s.id)}
                   />
                 </div>
               </td>
@@ -147,19 +145,23 @@ export const UploadCreativesTable = ({
               <td className="py-2 px-1">
                 <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
                   {s.ratio ||
-                    `${new Fraction(
-                      Number(
-                        s?.resolution?.split("x")[0] /
-                          s?.resolution?.split("x")[1]
-                      )
-                    ).n}:${new Fraction(
-                      Number(
-                        s?.resolution?.split("x")[0] /
-                          s?.resolution?.split("x")[1]
-                      )
-                        .toFixed(2)
-                        .toString()
-                    ).d}`}
+                    `${
+                      new Fraction(
+                        Number(
+                          s?.resolution?.split("x")[0] /
+                            s?.resolution?.split("x")[1]
+                        )
+                      ).n
+                    }:${
+                      new Fraction(
+                        Number(
+                          s?.resolution?.split("x")[0] /
+                            s?.resolution?.split("x")[1]
+                        )
+                          .toFixed(2)
+                          .toString()
+                      ).d
+                    }`}
                 </div>
               </td>
               <td className="py-2 px-1">
@@ -174,8 +176,8 @@ export const UploadCreativesTable = ({
               </td>
               <td className="py-2 px-1">
                 <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
-                  {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
-                    ?.filter(
+                  {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
+                    ?.[campaignId]?.creatives?.filter(
                       (rb: any) => rb.screenResolution === s.resolution
                     )
                     ?.map((r: any) => r.standardDayTimeCreatives)[0]?.length > 1
@@ -188,18 +190,25 @@ export const UploadCreativesTable = ({
                   className="flex items-center justify-center gap-1 truncate text-[12px]"
                   onClick={() => setOpenShowMedia(s)}
                 >
-                  <h1 className={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
-                      .flatMap((r: any) => r.screenIds)
-                      ?.includes(s.id)
-                      ? "text-green-600 font-semibold"
-                      : "text-red-500"}>
-                    {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives
-                      .flatMap((r: any) => r.screenIds)
-                      ?.includes(s.id)
-                      ? <i className="fi fi-sr-overview flex items-center"></i>
-                      : "??"}
+                  <h1
+                    className={
+                      getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
+                        ?.[campaignId]?.creatives.flatMap(
+                          (r: any) => r.screenIds
+                        )
+                        ?.includes(s.id)
+                        ? "text-green-600 font-semibold"
+                        : "text-red-500"
+                    }
+                  >
+                    {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
+                      ?.[campaignId]?.creatives.flatMap((r: any) => r.screenIds)
+                      ?.includes(s.id) ? (
+                      <i className="fi fi-sr-overview flex items-center"></i>
+                    ) : (
+                      "??"
+                    )}
                   </h1>
-         
                 </div>
               </td>
             </tr>

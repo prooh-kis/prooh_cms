@@ -2,21 +2,18 @@ import { useEffect, useState } from "react";
 import { ShowMediaFile } from "../molecules/ShowMediaFIle";
 import { isNumber } from "@turf/turf";
 import { isValidUrl } from "../../utils/valueValidate";
-// import { campaignsCreateByScreenOwner } from "../../actions/campaignAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-import { message, Select } from "antd";
+import { message } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../../components/Loading";
 import {
   getDataFromLocalStorage,
   saveDataOnLocalStorage,
 } from "../../utils/localStorageUtils";
-import {
-  CAMPAIGN_CREATIVES_TO_UPLOAD,
-  FULL_CAMPAIGN_PLAN,
-} from "../../constants/localStorageConstants";
+import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 
 interface UploadCreativesFromBucketPopupProps {
   onClose?: any;
@@ -443,19 +440,15 @@ export function UploadCreativesFromBucketPopup({
 
           {(campaignOption === "URL" || isImagePresent()) && (
             <div className="flex flex-col">
-              {/* <h1 fontSize="md" color="#131D30" fontWeight="400" m="0">
-                Duration{" "}
-              </h1> */}
               <div className="py-2 flex items-center gap-2">
                 <i className="fi fi-br-stopwatch"></i>
                 <h1 className="">(in seconds)</h1>
               </div>
-              <input
-                placeholder="Enter duration in sec."
-                type="number"
-                className="border border-gray-300 rounded-sm w-full h-10 text text-sm text-black-600 p-2"
+              <PrimaryInput
+                inputType="number"
+                placeholder="10"
                 value={campaignDuration}
-                onChange={(e) => setCampaignDuration(e.target.value)}
+                action={setCampaignDuration}
               />
             </div>
           )}
