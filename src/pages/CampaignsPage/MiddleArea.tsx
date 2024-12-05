@@ -32,7 +32,11 @@ export const MiddleArea: React.FC = () => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
     }
-    dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id }));
+    if (getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)?.list?.length > 0) {
+      console.log("No need to call again and again");
+    } else {
+      dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id }));
+    }
   }, [dispatch, userInfo]);
 
   // Handle card click, setting the clicked card's index

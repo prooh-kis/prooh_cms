@@ -12,6 +12,7 @@ export { SwitchInput } from "./atoms/SwitchInput";
 // molecules
 export { CampaignMonitoring } from "./molecules/CampaignMonitoring";
 export { SearchInputField } from "./molecules/SearchInputField";
+export { ScreenView } from "./molecules/ScreenView";
 
 // popup
 export { CalendarPopup } from "./popup/CalendarPopup";
