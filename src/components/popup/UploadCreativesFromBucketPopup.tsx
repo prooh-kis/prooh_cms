@@ -5,7 +5,7 @@ import { isValidUrl } from "../../utils/valueValidate";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../../components/Loading";
 import {
@@ -359,7 +359,7 @@ export function UploadCreativesFromBucketPopup({
                                       {f?.[m]?.[g]?.map((l: any, y: any) => (
                                         <div
                                           key={y}
-                                          className="w-full border rounded"
+                                          className="col-span-1 w-full border rounded"
                                           onClick={() => {
                                             setMediaFiles((prev: any) => {
                                               if (
@@ -387,11 +387,17 @@ export function UploadCreativesFromBucketPopup({
                                             />
                                           </div>
                                           <div className="p-1">
-                                            <h1 className="text-[12px] truncate">
-                                              {l?.creativeName?.toUpperCase()}
-                                            </h1>
+                                            
+                                            <Tooltip title={`${l?.creativeName?.toUpperCase()}`}>
+                                              <h1
+                                                className="text-[10px] truncate"
+                                              >
+                                                {l?.creativeName?.toUpperCase()}
+                                              
+                                              </h1>
+                                            </Tooltip>
                                             <div className="flex gap-1 items-center truncate">
-                                              <h1 className="text-[12px]">
+                                              <h1 className="text-[12px">
                                                 {l?.extension?.split("/")[1]},
                                               </h1>
                                               <h1 className="text-[12px] truncate">
@@ -399,6 +405,7 @@ export function UploadCreativesFromBucketPopup({
                                               </h1>
                                             </div>
                                           </div>
+
                                         </div>
                                       ))}
                                     </div>
