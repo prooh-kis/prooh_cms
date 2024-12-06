@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
+import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
+import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
+import { useDispatch } from "react-redux";
+import { getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
 
-export function ScreenListMonitoringView({screen, noImages}: any) {
-  
+export function ScreenListMonitoringView({
+  screen,
+  noImages,
+  setOpenCreativeEndDateChangePopup,
+  campaignCreated,
+}: any) {
+  const dispatch = useDispatch<any>();
   const [dropdownVisible, setDropdownVisible] = useState<any>({});
   
-
+  console.log(campaignCreated);
+  console.log(screen);
   const toggleDropdown = (screenId: string) => {
     setDropdownVisible((prev: any) => ({
       ...prev,
@@ -37,13 +47,38 @@ export function ScreenListMonitoringView({screen, noImages}: any) {
       )}
 
     </div>
-    {dropdownVisible[screen._id] && (
+    {campaignCreated && dropdownVisible[screen._id] && (
       <div className="relative inline-block top-0 right-[-100px] bg-white shadow-md w-32 z-10">
         <ul className="border rounded ">
           <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">
             View Details
           </li>
-          <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+          <li
+            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+            onClick={() => {
+              if (
+                confirm(
+                  `Are you sure you want to edit the campaign???`
+                )
+              ) {
+                saveDataOnLocalStorage(
+                  UPLOAD_CREATIVE_SCREEN_DATA,
+                  {
+                    [`${campaignCreated?._id}`]:
+                    campaignCreated?.campaigns?.filter(
+                        (c: any) => c.screenId === screen._id
+                      )[0].creatives.standardDayTimeCreatives,
+                  }
+                );
+                dispatch(
+                  getScreenDataUploadCreativeAction({
+                    id: campaignCreated?._id,
+                  })
+                );
+                setOpenCreativeEndDateChangePopup(true);
+              }
+            }}
+          >
             Edit
           </li>
           <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">

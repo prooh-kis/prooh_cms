@@ -20,11 +20,12 @@ import {
   CAMPAIGN_STATUS_PAUSE,
   CAMPAIGN_STATUS_CHANGE_RESET,
 } from "../../constants/campaignConstants";
+import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
+import { getCreativesMediaAction } from "../../actions/creativeAction";
+import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
-  const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
-    useState<boolean>(false);
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
@@ -36,6 +37,11 @@ export const MiddleArea: React.FC = () => {
   const [campaign, setCampaign] = useState<any>();
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [dropdownVisible, setDropdownVisible] = useState<any>({});
+
+  const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
+  useState<any>(false);
+  const [mediaFiles, setMediaFiles] = useState<any[]>([]);
+  const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -94,6 +100,8 @@ export const MiddleArea: React.FC = () => {
       message.error("Not a screen owner!!!");
     }
     dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
+    dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
+
   }, [campaignId, dispatch, userInfo]);
 
   const toggleDropdown = (screenId: string) => {
@@ -163,6 +171,18 @@ export const MiddleArea: React.FC = () => {
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
+      {openCreativeEndDateChangePopup && screen && (
+          <EditCreativeEndDatePopup
+            onClose={() => setOpenCreativeEndDateChangePopup(false)}
+            selectedScreens={[screen]}
+            mediaFiles={mediaFiles}
+            setMediaFiles={setMediaFiles}
+            campaign={
+              campaign
+            }
+            screenData={screenCreativeUpload}
+          />
+        )}
         {loading ? (
           <div className="col-span-8">
             <Loading />
@@ -373,7 +393,9 @@ export const MiddleArea: React.FC = () => {
                       className="p-0 m-0"
                       onClick={() => handelSelectScreen(screen?._id)}
                     >
-                      <ScreenView
+                      <ScreenListMonitoringView
+                        campaignCreated={campaignCreated}
+                        setOpenCreativeEndDateChangePopup={setOpenCreativeEndDateChangePopup}
                         screen={screen}
                         noImages={false}
                         campaignStatus={getStatusByScreenId(screen?._id)}
