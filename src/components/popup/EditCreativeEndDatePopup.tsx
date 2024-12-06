@@ -6,7 +6,7 @@ import { isValidUrl } from "../../utils/valueValidate";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-import { message, Select } from "antd";
+import { message, Select, Tooltip } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../Loading";
 import {
@@ -69,8 +69,8 @@ export function EditCreativeEndDatePopup({
   };
 
   useEffect(() => {
-    if (creatives && campaign.brandName) {
-      setCreativesMedia(creatives[campaign.brandName]);
+    if (creatives && campaign?.brandName) {
+      setCreativesMedia(creatives[campaign?.brandName]);
     }
   }, [campaign, creatives]);
 
@@ -212,6 +212,9 @@ export function EditCreativeEndDatePopup({
     }
   };
 
+  console.log(creatives)
+  console.log(campaign);
+  console.log(creativesMedia);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
@@ -274,7 +277,7 @@ export function EditCreativeEndDatePopup({
                   </h1>
                   <CalendarInput
                     placeholder={endDate}
-                    value={endDate ? endDate : campaign.endDate}
+                    value={endDate ? endDate : campaign?.endDate}
                     action={(e: any) => {
                       setEndDate(e);
                     }}
@@ -352,9 +355,13 @@ export function EditCreativeEndDatePopup({
                                             />
                                           </div>
                                           <div className="p-1">
-                                            <h1 className="text-[12px] truncate">
-                                              {l?.creativeName?.toUpperCase()}
-                                            </h1>
+                                            <Tooltip
+                                                title={`${l?.creativeName?.toUpperCase()}`}
+                                              >
+                                                <h1 className="text-[10px] truncate">
+                                                  {l?.creativeName?.toUpperCase()}
+                                                </h1>
+                                            </Tooltip>
                                             <div className="flex gap-1 items-center truncate">
                                               <h1 className="text-[12px]">
                                                 {l?.extension?.split("/")[1]},

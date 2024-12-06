@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
-import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
+import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import {
   changeCampaignStatusAction,
@@ -34,7 +34,7 @@ export const MiddleArea: React.FC = () => {
       ? pathname?.split("/")?.splice(2)[0]
       : null;
 
-  const [campaign, setCampaign] = useState<any>();
+  const [campaign, setCampaign] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [dropdownVisible, setDropdownVisible] = useState<any>({});
 
@@ -69,6 +69,15 @@ export const MiddleArea: React.FC = () => {
     success: successStatusChange,
   } = campaignStatusChange;
 
+  const screenDataUploadCreativeGet = useSelector(
+    (state: any) => state.screenDataUploadCreativeGet
+  );
+  const {
+    loading: loadingCreativeData,
+    error: errorCreativeData,
+    data: screenDataUploadCreative,
+  } = screenDataUploadCreativeGet;
+
   useEffect(() => {
     if (campaignCreated) {
       dispatch(
@@ -77,7 +86,10 @@ export const MiddleArea: React.FC = () => {
         })
       );
     }
-  }, [campaignCreated, dispatch]);
+    if (screenDataUploadCreative) {
+      setScreenCreativeUpload(screenDataUploadCreative);
+    }
+  }, [campaignCreated, dispatch, screenDataUploadCreative]);
 
   useEffect(() => {
     if (successStatusChange) {
@@ -115,6 +127,7 @@ export const MiddleArea: React.FC = () => {
     const data = campaignCreated?.campaigns?.find(
       (data: any) => data?.screenId == screenId
     );
+    console.log(data);
     setCampaign(data);
   };
 
@@ -138,13 +151,34 @@ export const MiddleArea: React.FC = () => {
     }
   };
 
+  const handleChangeCampaignStatus = (status: string, screenId: string) => {
+    if (confirm(confirmData[status])) {
+      let data = campaignCreated?.campaigns
+        ?.filter((campaign: any) => campaign.screenId == screenId)
+        .map((campaign: any) => campaign._id);
+      if (data?.length > 0) {
+        dispatch(
+          changeCampaignStatusAction({
+            campaignIds: data,
+            status: status,
+          })
+        );
+      } else {
+        message.error("No Campaign found!, to change status");
+      }
+    }
+  };
+
+
+  console.log(getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate));
+
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
-      {openCreativeEndDateChangePopup && screen && (
+        {openCreativeEndDateChangePopup && (
           <EditCreativeEndDatePopup
             onClose={() => setOpenCreativeEndDateChangePopup(false)}
-            selectedScreens={[screen]}
+            selectedScreens={screens}
             mediaFiles={mediaFiles}
             setMediaFiles={setMediaFiles}
             campaign={
@@ -188,20 +222,26 @@ export const MiddleArea: React.FC = () => {
                     </h1>
                     <h2 className="text-[12px]">
                       {campaignCreated?.brandName}, {campaignCreated?.duration}{" "}
-                      secs
+                      days
                     </h2>
                   </div>
                 </div>
-                {!loadingStatusChange && (
-                  <div className="px-4 flex h-auto gap-8">
+                {!loadingStatusChange
+                && getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate) >= 0
+                ? (
+                  <div className="px-4 flex h-auto gap-4">
+                    <i className="fi fi-sr-file-edit text-gray-500"
+                      title="Edit All"
+                      onClick={() => setOpenCreativeEndDateChangePopup(!openCreativeEndDateChangePopup)}
+                    ></i>
                     <i
                       className="fi fi-ss-pause-circle text-gray-500"
-                      title="Pause all"
+                      title="Pause All"
                       onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)}
                     ></i>
                     <i
                       className="fi fi-sr-play-circle text-gray-500"
-                      title="Active all"
+                      title="Active All"
                       onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)}
                     ></i>
                     <i
@@ -209,6 +249,10 @@ export const MiddleArea: React.FC = () => {
                       title="Delete All"
                       onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)}
                     ></i>
+                  </div>
+                ) : (
+                  <div>
+                    <h1 className="text-[12px] text-red-400">Campaign already ended</h1>
                   </div>
                 )}
               </div>
@@ -359,6 +403,7 @@ export const MiddleArea: React.FC = () => {
                       onClick={() => handelSelectScreen(screen?._id)}
                     >
                       <ScreenListMonitoringView
+                        handleChangeCampaignStatus={handleChangeCampaignStatus}
                         campaignCreated={campaignCreated}
                         setOpenCreativeEndDateChangePopup={setOpenCreativeEndDateChangePopup}
                         screen={screen}

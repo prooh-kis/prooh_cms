@@ -227,80 +227,85 @@ export const UploadCreatives = ({
           />
         </div>
       )}
-      <div className="flex justify-between border rounded-[12px] py-4 px-2">
-        <div className="flex gap-2 items-center">
-          <i
-            className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
-            onClick={() => setStep(1)}
-          ></i>
-          <h1 className="text text-[14px] font-semibold">Upload Creatives</h1>
-        </div>
-        <div className="flex gap-2 items-center">
-          <h1 className="text-[16px] font-semibold">
-            {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name}
-          </h1>
-          <h1 className="text-[12px]">
-            (
-            {
-              getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
-                ?.brandName
-            }
-            )
-          </h1>
-        </div>
-        <div className="flex gap-4">
-          {screenCreativeUpload && (
-            <div className="flex items-center gap-4">
-              <h1 className="text text-[12px]">Uploaded</h1>
+      <div className="border rounded-[12px] py-4 px-2">
+        <div className="w-full flex justify-between ">
+          <div className="flex gap-2 items-center">
+            <i
+              className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
+              onClick={() => setStep(1)}
+            ></i>
+            <h1 className="text text-[14px] font-semibold">Upload Creatives</h1>
+          </div>
+          <div className="flex gap-2 items-center">
+            <h1 className="text-[16px] font-semibold">
+              {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name}
+            </h1>
+            <h1 className="text-[12px]">
+              (
+              {
+                getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
+                  ?.brandName
+              }
+              )
+            </h1>
+          </div>
+          <div className="flex gap-4">
+            {screenCreativeUpload && (
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <i
-                    className={`fi fi-br-check flex items-center text-green-500 text-[12px]`}
-                  ></i>
-                  <h1 className="text text-[12px]">
-                    {getUploadedScreensNumber()}
-                  </h1>
-                </div>
-                <div className="flex items-center gap-1">
-                  <i
-                    className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}
-                  />
-                  <h1 className="text text-[12px]">
-                    {Number(
-                      screenCreativeUpload?.flatMap((data: any) => data.screens)
-                        .length || 0
-                    ) - getUploadedScreensNumber()}
-                  </h1>
+                <h1 className="text text-[12px]">Uploaded</h1>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1">
+                    <i
+                      className={`fi fi-br-check flex items-center text-green-500 text-[12px]`}
+                    ></i>
+                    <h1 className="text text-[12px]">
+                      {getUploadedScreensNumber()}
+                    </h1>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <i
+                      className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}
+                    />
+                    <h1 className="text text-[12px]">
+                      {Number(
+                        screenCreativeUpload?.flatMap((data: any) => data.screens)
+                          .length || 0
+                      ) - getUploadedScreensNumber()}
+                    </h1>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-
-          <div className="p-1">
-            {!loading && (
-              <PrimaryButton
-                title="Live Now"
-                rounded="rounded-full"
-                reverse={true}
-                // disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
-                height="h-8"
-                width="w-30"
-                textSize="text-[12px]"
-                loading={loadingCampaignsCreations}
-                loadingText="Creating campaign..."
-                action={() => {
-                  if (validateForm()) {
-                    saveCampaignCreativesDetails();
-                  }
-                }}
-              />
             )}
+
+            <div className="p-1">
+              {!loading && (
+                <PrimaryButton
+                  title="Live Now"
+                  rounded="rounded-full"
+                  reverse={true}
+                  // disabled={getUploadedScreensNumber() === screenCreativeUpload?.flatMap((data: any) => data.screens).length ? false : true}
+                  height="h-8"
+                  width="w-30"
+                  textSize="text-[12px]"
+                  loading={loadingCampaignsCreations}
+                  loadingText="Creating campaign..."
+                  action={() => {
+                    if (validateForm()) {
+                      saveCampaignCreativesDetails();
+                    }
+                  }}
+                />
+              )}
+            </div>
           </div>
+        </div>
+        <div className="w-full p-1">
+          <h1 className="text-[10px] text-red-500">Please deselect the checkbox, once you upload the creatives on any screen and see a green icon in the creatives column, before selecting other screens for uploading...</h1>
         </div>
       </div>
 
       <div className="grid grid-cols-12 gap-2 py-4">
-        <div className="col-span-2 border rounded-[12px] p-2">
+        {/* <div className="col-span-2 border rounded-[12px] p-2">
           <div className="flex justify-between items-center border-b py-1">
             <h1 className="text text-[12px] font-semibold">Filter</h1>
             <p className="text text-[10px] text-[#7C8E9B]">Clear All</p>
@@ -332,12 +337,12 @@ export const UploadCreatives = ({
               <CheckboxInput label={`1280 x 768 (23)`} textSize="12px" />
             </div>
           </div>
-        </div>
-        <div className="col-span-10 border rounded-[12px] py-2 px-4">
+        </div> */}
+        <div className="col-span-12 border rounded-[12px] py-2 px-4">
           <div className="flex justify-between items-center border-b py-1">
             <div className="flex justify-start gap-2">
-              <h1 className="text text-[12px] font-semibold">All Network</h1>
-              <i className="fi fi-sr-angle-small-down text-[#7C8E9B] flex items-center"></i>
+              {/* <h1 className="text text-[12px] font-semibold">All Network</h1>
+              <i className="fi fi-sr-angle-small-down text-[#7C8E9B] flex items-center"></i> */}
             </div>
             <div className="flex justify-end items-center gap-4 pb-1">
               <h1 className="text-[12px] font-semibold">
@@ -352,7 +357,7 @@ export const UploadCreatives = ({
                 textSize="text-[12px]"
                 disabled={selectedScreens?.length > 0 ? false : true}
                 loading={selectedScreens?.length > 0 ? false : true}
-                loadingText="Creating campaign..."
+                loadingText="+ Campaign"
                 action={handleSetOpenBucketModel}
               />
               <i

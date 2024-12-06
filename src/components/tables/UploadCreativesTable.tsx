@@ -26,6 +26,7 @@ export const UploadCreativesTable = ({
   setOpenShowMedia,
   onClose,
 }: UploadCreativesTableProps) => {
+  
   const screens: any = screenData?.flatMap((data: any) => data.screens);
 
   const isAllSelected =
