@@ -45,13 +45,21 @@ export const MiddleArea: React.FC = () => {
       if (Object.keys(creativesMedia).includes(contentType)) {
         return (
           Object.keys(creativesMedia?.[contentType])?.length > 0 &&
-          Object.keys(creativesMedia?.[contentType])?.map(
-            (resolution: any, j: any) => (
+          Object.keys(creativesMedia?.[contentType])
+            ?.filter((dimension: any) =>
+              dimension?.toLowerCase().includes(resolution.toLowerCase())
+            )
+            ?.map((resolution: any, j: any) => (
               <div key={j} className="py-2">
                 <h1 className="text-[10px] py-1">Resolution: {resolution}</h1>
                 <div className="grid grid-cols-3 gap-2">
-                  {creativesMedia?.[contentType]?.[resolution]?.map(
-                    (l: any, y: any) => (
+                  {creativesMedia?.[contentType]?.[resolution]
+                    ?.filter((l: any) =>
+                      l?.creativeName
+                        ?.toLowerCase()
+                        .includes(creativeName.toLowerCase())
+                    )
+                    ?.map((l: any, y: any) => (
                       <div key={y} className="w-full border rounded">
                         <div className="w-full">
                           <ShowMediaFile
@@ -76,12 +84,10 @@ export const MiddleArea: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                    )
-                  )}
+                    ))}
                 </div>
               </div>
-            )
-          )
+            ))
         );
       } else return <h1 className="text-red-500">No Data</h1>;
     }
