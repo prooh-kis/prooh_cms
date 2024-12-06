@@ -12,7 +12,8 @@ import {
   getCampaignDetailsAction,
 } from "../../actions/campaignAction";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
-import { CampaignMonitoring, ScreenView } from "../../components";
+import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
+import { CampaignMonitoring } from "../../components/index";
 import { confirmData } from "../../utils/champaignStatusUtils";
 import {
   CAMPAIGN_STATUS_ACTIVE,
@@ -22,7 +23,6 @@ import {
 } from "../../constants/campaignConstants";
 import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
-import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -122,12 +122,6 @@ export const MiddleArea: React.FC = () => {
     return campaignCreated?.campaigns?.map((campaign: any) => campaign._id);
   };
 
-  const getStatusByScreenId = (screenId: string) => {
-    return campaignCreated?.campaigns?.find(
-      (data: any) => data?.screenId == screenId
-    )?.status;
-  };
-
   const handleChangeStatusAll = (status: string) => {
     if (confirm(confirmData[status])) {
       let data = getCampaignIdsToChangeStatus();
@@ -141,30 +135,6 @@ export const MiddleArea: React.FC = () => {
       } else {
         message.error("No Campaign found!, to change status");
       }
-    }
-  };
-
-  const handleChangeCampaignStatus = (status: string, screenId: string) => {
-    if (confirm(confirmData[status])) {
-      let data = campaignCreated?.campaigns
-        ?.filter((campaign: any) => campaign.screenId == screenId)
-        .map((campaign: any) => campaign._id);
-      if (data?.length > 0) {
-        dispatch(
-          changeCampaignStatusAction({
-            campaignIds: data,
-            status: status,
-          })
-        );
-      } else {
-        message.error("No Campaign found!, to change status");
-      }
-    }
-  };
-
-  const handleEditCampaign = (screenId: string) => {
-    if (confirm(`Are you sure you want to edit the campaign???`)) {
-      setOpenCreativeEndDateChangePopup(true);
     }
   };
 
@@ -227,23 +197,17 @@ export const MiddleArea: React.FC = () => {
                     <i
                       className="fi fi-ss-pause-circle text-gray-500"
                       title="Pause all"
-                      onClick={() =>
-                        handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)
-                      }
+                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)}
                     ></i>
                     <i
                       className="fi fi-sr-play-circle text-gray-500"
                       title="Active all"
-                      onClick={() =>
-                        handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)
-                      }
+                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)}
                     ></i>
                     <i
                       className="fi fi-sr-trash text-gray-500"
                       title="Delete All"
-                      onClick={() =>
-                        handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)
-                      }
+                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)}
                     ></i>
                   </div>
                 )}
@@ -391,6 +355,7 @@ export const MiddleArea: React.FC = () => {
                     <div
                       key={k}
                       className="p-0 m-0"
+                      title="Click to select screen to view monitoring data"
                       onClick={() => handelSelectScreen(screen?._id)}
                     >
                       <ScreenListMonitoringView
@@ -398,9 +363,6 @@ export const MiddleArea: React.FC = () => {
                         setOpenCreativeEndDateChangePopup={setOpenCreativeEndDateChangePopup}
                         screen={screen}
                         noImages={false}
-                        campaignStatus={getStatusByScreenId(screen?._id)}
-                        handleChangeCampaignStatus={handleChangeCampaignStatus}
-                        handleEditCampaign={handleEditCampaign}
                       />
                     </div>
                   ))}
