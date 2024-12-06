@@ -6,11 +6,18 @@ interface CheckboxProps {
   textSize?: string;
   color?: string;
   onChange?: (checked: boolean) => void;
-  disabled?: boolean;  // Added disabled prop to be more specific
+  disabled?: boolean; // Added disabled prop to be more specific
 }
 
-export const CheckboxInput: React.FC<CheckboxProps> = ({ disabled, color, textSize, label, checked, onChange }) => {
-  const [isChecked, setIsChecked] = useState(checked);
+export const CheckboxInput: React.FC<CheckboxProps> = ({
+  disabled,
+  color,
+  textSize,
+  label,
+  checked = false,
+  onChange,
+}) => {
+  const [isChecked, setIsChecked] = useState<any>(checked);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
@@ -25,13 +32,17 @@ export const CheckboxInput: React.FC<CheckboxProps> = ({ disabled, color, textSi
       <input
         type="checkbox"
         className="form-checkbox h-4 w-4 text-[#52A2FF]"
-        checked={isChecked !== undefined ? isChecked : false}
+        checked={checked}
         disabled={disabled}
         onChange={handleCheckboxChange}
       />
-      <span className={`text-[${color ? color : "#21394F"}] text-[${textSize ? textSize : "14px"}] truncate`}>
+      <span
+        className={`text-[${color ? color : "#21394F"}] text-[${
+          textSize ? textSize : "14px"
+        }] truncate`}
+      >
         {label}
-        </span>
+      </span>
     </label>
   );
 };

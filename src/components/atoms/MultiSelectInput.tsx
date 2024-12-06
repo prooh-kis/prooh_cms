@@ -32,10 +32,7 @@ export const MultiSelectInput: React.FC<{
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-4 py-2 text-left bg-white border rounded-lg  focus:outline-none focus:ring focus:ring-indigo-300"
       >
-        {/* {selectedOptions.length > 0
-          ? `${selectedOptions?.length} options selected`
-          : placeHolder}
-        {placeHolder} */}
+        {placeHolder}
         <i className="fi fi-rs-angle-small-down float-right"></i>
       </button>
 

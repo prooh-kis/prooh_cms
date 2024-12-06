@@ -101,7 +101,10 @@ export const MiddleArea: React.FC = () => {
   }, [dispatch, userInfo]);
 
   return (
-    <div className="mt-6 w-full h-full pb-5">
+    <div className="mt-8 w-full h-full pb-5">
+      <div className="my-1 border rounded p-4">
+        <h1 className="text-[16px] font-semibold">Creative Bucket</h1>
+      </div>
       <UploadCreativesV2Popup
         isOpen={openCreateCreativePopup}
         mediaFiles={mediaFiles}
@@ -113,9 +116,7 @@ export const MiddleArea: React.FC = () => {
         userInfo={userInfo}
         onClose={() => setOpenCreateCreativePopup(false)}
       />
-      <div className="w-full flex justify-between items-center p-2 border rounded">
-        <h1 className="text-[14px] font-bold">Creative Bucket</h1>
-      </div>
+
       <div className="grid grid-cols-12 gap-2 py-2">
         <div className="col-span-4 border rounded">
           <div className="flex justify-between items-center p-2">

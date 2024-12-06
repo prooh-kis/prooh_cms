@@ -126,9 +126,12 @@ export const UploadCreativesTable = ({
                         handleScreenSelection({ screen: s, status: e });
                       }
                     }}
-                    checked={selectedScreens
-                      ?.map((selected) => selected.id)
-                      .includes(s.id)}
+                    checked={
+                      selectedScreens?.filter((selected) => selected.id == s.id)
+                        ?.length > 0
+                        ? true
+                        : false
+                    }
                   />
                 </div>
               </td>
