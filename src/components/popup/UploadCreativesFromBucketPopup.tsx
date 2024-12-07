@@ -427,6 +427,7 @@ export function UploadCreativesFromBucketPopup({
               <div className="flex flex-col gap-2 p-2 h-[45vh] relative overflow-auto">
                 {mediaFiles?.map((media: any, index: any) => (
                   <div
+                    title="Click to remove from Selected"
                     key={index}
                     className="relative p"
                     onClick={() => {
@@ -475,25 +476,15 @@ export function UploadCreativesFromBucketPopup({
             </div>
           )}
         </div>
-
-        <div className="flex justify-between gap-2 place-content-end">
-          <PrimaryButton
-            title="Upload"
-            rounded="rounded-[12px]"
-            action={handleNext}
-            disabled={isLoading}
-            loading={isLoading}
-            loadingText="uploading..."
-          />
-          <PrimaryButton
-            title="Cancel"
-            rounded="rounded-[12px]"
-            reverse={true}
-            action={handelDiscard}
-            loading={false}
-            loadingText="uploading..."
-          />
-        </div>
+        <PrimaryButton
+          title="Upload"
+          rounded="rounded-[12px]"
+          action={handleNext}
+          disabled={isLoading}
+          loading={isLoading}
+          loadingText="uploading..."
+          width="w-[100vw]"
+        />
       </div>
     </div>
   );
