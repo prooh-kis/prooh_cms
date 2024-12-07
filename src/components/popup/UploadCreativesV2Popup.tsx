@@ -253,6 +253,7 @@ export function UploadCreativesV2Popup({
               <div className="py-2">
                 <MultipleFileUploader
                   handleFilesUploader={handleFilesUploader}
+                  fileType="all"
                 />
                 <h1 className="text-[10px] text-red-700">{`Max file size less then 50 MB`}</h1>
               </div>

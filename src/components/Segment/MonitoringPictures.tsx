@@ -7,6 +7,7 @@ interface MonitoringPicturesProps {
   screenId?: any;
   campaignId?: any;
   isUsedForShow: boolean;
+  setFileType: any;
 }
 
 export const MonitoringPictures = ({
@@ -18,6 +19,7 @@ export const MonitoringPictures = ({
   screenId,
   campaignId,
   isUsedForShow = false,
+  setFileType,
 }: MonitoringPicturesProps) => {
   return (
     <div className="w-full p-2">
@@ -29,6 +31,7 @@ export const MonitoringPictures = ({
           <div
             className="border border-dotted bg-gray-100 rounded h-24 flex items-center justify-center"
             onClick={() => {
+              setFileType("video");
               setMonitoringMedia("video");
               setMonitoringTime(time);
               handleUploadClick();
@@ -54,6 +57,7 @@ export const MonitoringPictures = ({
           <div
             className="border border-dotted bg-gray-100 rounded h-24 flex items-center justify-center"
             onClick={() => {
+              setFileType("image");
               setMonitoringMedia("images");
               setMonitoringTime(time);
               handleUploadClick();
@@ -80,6 +84,7 @@ export const MonitoringPictures = ({
           <div
             className="border border-dotted bg-gray-100 rounded h-24 flex items-center justify-center"
             onClick={() => {
+              setFileType("image");
               setMonitoringMedia("geoTag");
               setMonitoringTime(time);
               handleUploadClick();
@@ -107,6 +112,7 @@ export const MonitoringPictures = ({
             <div
               className="border border-dotted bg-gray-100 rounded h-24 flex items-center justify-center"
               onClick={() => {
+                setFileType("image");
                 setMonitoringMedia("newspaper");
                 setMonitoringTime(time);
                 handleUploadClick();

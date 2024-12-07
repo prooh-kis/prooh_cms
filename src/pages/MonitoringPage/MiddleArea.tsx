@@ -40,6 +40,7 @@ export const MiddleArea: React.FC = () => {
   const [monitoringDate, setMonitoringDate] = useState<any>(new Date());
   const [monitoringTime, setMonitoringTime] = useState<any>(time[0]);
   const [monitoringMedia, setMonitoringMedia] = useState<any>(pictures[0]);
+  const [fileType, setFileType] = useState<string>("any");
 
   const [monitoringData, setMonitoringData] = useState<any>(
     getDataFromLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS)
@@ -127,6 +128,7 @@ export const MiddleArea: React.FC = () => {
         monitoringTime={monitoringTime}
         monitoringMedia={monitoringMedia}
         setMonitoringData={setMonitoringData}
+        fileType={fileType}
       />
       {openCalendarPopup && (
         <div className="p-1 overflow-scroll no-scrollbar">
@@ -268,6 +270,7 @@ export const MiddleArea: React.FC = () => {
                       monitoringData={monitoringData}
                       screenId={monitoringScreen?._id}
                       campaignId={monitoringCampaign?._id}
+                      setFileType={setFileType}
                     />
                   </div>
                 ))}

@@ -155,6 +155,7 @@ export const CampaignMonitoring = (props: any) => {
                     monitoringData={screenCampaignMonitoring}
                     screenId={screenCampaignMonitoring?.screenId}
                     campaignId={screenCampaignMonitoring?.campaignId}
+                    setFileType={() => {}}
                   />
                 </div>
               </div>

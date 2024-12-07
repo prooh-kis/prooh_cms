@@ -256,7 +256,7 @@ export function UploadCreativesFromBucketPopup({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
         className="bg-white p-4 rounded-lg shadow-lg w-full max-w-full  "
-        style={{ height: "80vh", width: "80vw" }}
+        style={{ height: "80vh", width: "70vw" }}
       >
         <div className="flex justify-between">
           <h1 className="text-[20px] text-[#092A41] font-bold">

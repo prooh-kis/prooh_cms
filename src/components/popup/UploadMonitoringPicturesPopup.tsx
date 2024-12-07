@@ -34,6 +34,7 @@ interface UploadMonitoringPicturesPopupProps {
   monitoringTime?: any;
   monitoringMedia?: any;
   setMonitoringData?: any;
+  fileType: string;
 }
 export function UploadMonitoringPicturesPopup({
   onClose,
@@ -46,6 +47,7 @@ export function UploadMonitoringPicturesPopup({
   monitoringTime,
   monitoringMedia,
   setMonitoringData,
+  fileType,
 }: UploadMonitoringPicturesPopupProps) {
   const dispatch = useDispatch<any>();
   const { pathname } = useLocation();
@@ -257,6 +259,7 @@ export function UploadMonitoringPicturesPopup({
               <div className="py-2">
                 <MultipleFileUploader
                   handleFilesUploader={handleFilesUploader}
+                  fileType={fileType}
                 />
                 <h1 className="text-[10px] text-red-700">{`Max file size less then 50 MB`}</h1>
               </div>
