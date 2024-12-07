@@ -213,6 +213,7 @@ export const MiddleArea: React.FC = () => {
 
   const changeCampaignStatusHandler = ({ campaignIds, status }: any) => {
     if (confirm(`${campaignIds.length} campaigns are being ${status}`)) {
+      // console.log(campaignIds)
       dispatch(
         changeCampaignStatusAction({
           campaignIds: campaignIds,
@@ -546,7 +547,8 @@ export const MiddleArea: React.FC = () => {
                   </div>
                   <div
                     className="text-gray-500 hover:text-red-500"
-                    onClick={() => {}}
+                    onClick={() => navigate(`/campaigns-details/${campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                      ?.campaignCreationId}`)}
                   >
                     <i className="fi fi-sr-eye"></i>
                   </div>
@@ -565,8 +567,14 @@ export const MiddleArea: React.FC = () => {
                     new Date(),
                     campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                       ?.endDate
-                  ) <= 0
-                    ? "Already Ended"
+                  ) < 0
+                    ? "Already Ended" :
+                    getNumberOfDaysBetweenTwoDates(
+                      new Date(),
+                      campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                        ?.endDate
+                    ) === 0 ? "Ending Today"
+
                     : `${getNumberOfDaysBetweenTwoDates(
                         new Date(),
                         campaigns?.filter(

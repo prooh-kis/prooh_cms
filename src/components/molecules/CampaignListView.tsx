@@ -40,7 +40,7 @@ export const CampaignListView = ({navigate, data, color, isSelected, handleCardC
                     {data.brandName}
                   </p>
                   <p className="text text-[12px] text-secondaryText text-center">
-                    , {data.duration} sec
+                    , {data.duration} days
                   </p>
                 </div>
             
