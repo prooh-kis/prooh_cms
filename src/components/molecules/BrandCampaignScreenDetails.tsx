@@ -10,7 +10,7 @@ export function BrandCampaignScreenDetails({showIcons, brandName, campaign, camp
         <div className="truncate">
           <h1 className="text-[14px] font-semibold truncate">{campaign?.name}</h1>
           <p className="text-[10px] truncate">{brandName}</p>
-          <p className="text-[10px] truncate">{campaign?.campaignDuration} sec</p>
+          <p className="text-[10px] truncate">{campaign?.campaignDuration} days</p>
 
         </div>
       </div>
