@@ -44,7 +44,7 @@ export function EditCreativeEndDatePopup({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<any>(campaign?.endDate?.split(".")[0]);
-  const [duration, setDuration] = useState<any>(campaign?.campaignDuration);
+  const [duration, setDuration] = useState<any>(campaign?.creatives?.creativeDuration);
 
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
@@ -212,9 +212,6 @@ export function EditCreativeEndDatePopup({
     }
   };
 
-  console.log(creatives)
-  console.log(campaign);
-  console.log(creativesMedia);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
@@ -287,7 +284,7 @@ export function EditCreativeEndDatePopup({
                 </div>
                 <div className="col-span-1 flex flex-col py-2">
                   <label className="block text-secondaryText text-[12px]">
-                    Duration
+                    Creative Duration
                   </label>
                   <PrimaryInput
                     inputType="number"

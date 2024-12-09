@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading } from "../../components/Loading";
@@ -71,9 +71,14 @@ export const MiddleArea: React.FC = () => {
                           />
                         </div>
                         <div className="p-1">
-                          <h1 className="text-[12px] truncate">
-                            {l?.creativeName?.toUpperCase()}
-                          </h1>
+                          <Tooltip
+                            title={`${l?.creativeName?.toUpperCase()}`}
+                          >
+                            <h1 className="text-[12px] truncate">
+                              {l?.creativeName?.toUpperCase()}
+                            </h1>
+                          </Tooltip>
+                
                           <div className="flex gap-1 items-center truncate">
                             <h1 className="text-[12px]">
                               {l?.extension?.split("/")[1]},

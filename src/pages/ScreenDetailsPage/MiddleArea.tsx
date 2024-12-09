@@ -534,6 +534,38 @@ export const MiddleArea: React.FC = () => {
                     className="text-gray-500 hover:text-green-500"
                     onClick={() => {
                       if (
+                        confirm(
+                          `Are you sure you want to edit the campaign???`
+                        )
+                      ) {
+                        saveDataOnLocalStorage(
+                          UPLOAD_CREATIVE_SCREEN_DATA,
+                          {
+                            [campaigns?.filter(
+                              (c: any) => c._id === selectedCampaign
+                            )[0]?.campaignCreationId]:
+                              campaigns?.filter(
+                                (c: any) => c._id === selectedCampaign
+                              )[0].creatives.standardDayTimeCreatives,
+                          }
+                        );
+                        dispatch(
+                          getScreenDataUploadCreativeAction({
+                            id: campaigns?.filter(
+                              (c: any) => c._id === selectedCampaign
+                            )[0]?.campaignCreationId,
+                          })
+                        );
+                        setOpenCreativeEndDateChangePopup(true);
+                      }
+                    }}
+                  >
+                    <i className="fi fi-sr-file-edit"></i>
+                  </div>
+                  <div
+                    className="text-gray-500 hover:text-red-500"
+                    onClick={() => {
+                      if (
                         confirm(`Are you sure you want delete the campaign???`)
                       ) {
                         changeCampaignStatusHandler({
@@ -546,7 +578,7 @@ export const MiddleArea: React.FC = () => {
                     <i className="fi fi-sr-trash"></i>
                   </div>
                   <div
-                    className="text-gray-500 hover:text-red-500"
+                    className="text-gray-500 hover:text-green-500"
                     onClick={() => navigate(`/campaigns-details/${campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                       ?.campaignCreationId}`)}
                   >
@@ -609,47 +641,16 @@ export const MiddleArea: React.FC = () => {
                 ?.creatives.standardDayTimeCreatives?.map(
                   (creative: any, j: any) => (
                     <div key={j} className="p-1 relative">
-                      <div className="absolute top-0 right-1 flex justify-end mt-[20px] z-10">
+                      {/* <div className="absolute top-0 right-1 flex justify-end mt-[20px] z-10">
                         <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
-                          <div
-                            className="text-white hover:text-green-500"
-                            onClick={() => {
-                              if (
-                                confirm(
-                                  `Are you sure you want to edit the campaign???`
-                                )
-                              ) {
-                                saveDataOnLocalStorage(
-                                  UPLOAD_CREATIVE_SCREEN_DATA,
-                                  {
-                                    [campaigns?.filter(
-                                      (c: any) => c._id === selectedCampaign
-                                    )[0]?.campaignCreationId]:
-                                      campaigns?.filter(
-                                        (c: any) => c._id === selectedCampaign
-                                      )[0].creatives.standardDayTimeCreatives,
-                                  }
-                                );
-                                dispatch(
-                                  getScreenDataUploadCreativeAction({
-                                    id: campaigns?.filter(
-                                      (c: any) => c._id === selectedCampaign
-                                    )[0]?.campaignCreationId,
-                                  })
-                                );
-                                setOpenCreativeEndDateChangePopup(true);
-                              }
-                            }}
-                          >
-                            <i className="fi fi-sr-file-edit"></i>
-                          </div>
+                          
                           <div className="text-white hover:text-green-500">
                             <i className="fi fi-sr-trash"></i>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <ShowMediaFile
-                        url={creative.url}
+                        url={creative?.url}
                         mediaType={creative?.type.split("/")[0]}
                         key={j}
                         height="h-full"
@@ -668,7 +669,7 @@ export const MiddleArea: React.FC = () => {
                             (c: any) => c._id === selectedCampaign
                           )[0]?.creatives.creativeDuration
                         }{" "}
-                        seconds, {creative.type}
+                        seconds, {creative?.type}
                       </p>
                     </div>
                   )
