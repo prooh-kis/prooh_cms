@@ -23,6 +23,7 @@ import {
 } from "../../constants/campaignConstants";
 import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
+import { EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET } from "../../constants/screenConstants";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -78,6 +79,15 @@ export const MiddleArea: React.FC = () => {
     data: screenDataUploadCreative,
   } = screenDataUploadCreativeGet;
 
+  const changeCampaignCreativeEndDate = useSelector(
+    (state: any) => state.changeCampaignCreativeEndDate
+  );
+  const {
+    loading: loadingChange,
+    error: errorChange,
+    success: successChange,
+  } = changeCampaignCreativeEndDate;
+
   useEffect(() => {
     if (campaignCreated) {
       dispatch(
@@ -105,7 +115,14 @@ export const MiddleArea: React.FC = () => {
         type: CAMPAIGN_STATUS_CHANGE_RESET,
       });
     }
-  }, [successStatusChange, errorStatusChange]);
+    if (successChange) {
+      message.success("Campaign Creative/End Date Changed");
+      dispatch({
+        type: EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET,
+      });
+      window.location.reload();
+    }
+  }, [dispatch, successStatusChange, errorStatusChange, successChange]);
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
@@ -170,7 +187,7 @@ export const MiddleArea: React.FC = () => {
   };
 
 
-  console.log(getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate));
+  console.log(campaign);
 
   return (
     <div className="mt-6 w-full h-full py-2">

@@ -73,6 +73,7 @@ export function EditCreativeEndDatePopup({
       setCreativesMedia(creatives[campaign?.brandName]);
     }
   }, [campaign, creatives]);
+  console.log(campaign);
 
   useEffect(() => {
     if (isCreativeOpen) {
@@ -211,6 +212,8 @@ export function EditCreativeEndDatePopup({
       }
     }
   };
+
+  console.log(creativesMedia);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
@@ -409,7 +412,7 @@ export function EditCreativeEndDatePopup({
         </div>
         <div className="flex justify-between pt-2 gap-2">
           <PrimaryButton
-            title="Upload"
+            title="Update"
             rounded="rounded-[12px]"
             action={handleNext}
             disabled={isLoading}

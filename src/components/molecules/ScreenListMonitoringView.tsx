@@ -76,7 +76,7 @@ export function ScreenListMonitoringView({
           {/* <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">
             View Details
           </li> */}
-          {campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status !== "Completed" && (
+          {/* {campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status !== "Completed" && ( */}
             <li
               className="px-4 py-2 cursor-pointer hover:bg-gray-100"
               onClick={() => {
@@ -105,7 +105,7 @@ export function ScreenListMonitoringView({
             >
               Edit
             </li>
-          )}
+          {/* )} */}
 
           {campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status === "Active" && (
             <li
@@ -127,7 +127,7 @@ export function ScreenListMonitoringView({
               Delete
             </li>
           )}
-          {(campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status === "Deleted" || campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status === "Pause") && (
+          {(campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status === "Deleted" || campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status === "Pause" || campaignCreated?.campaigns?.filter((c: any) => c.screenId === screen._id)[0]?.status === "Completed") && (
             <li
               onClick={() => {
                 handleChangeCampaignStatus("Active", screen._id);
