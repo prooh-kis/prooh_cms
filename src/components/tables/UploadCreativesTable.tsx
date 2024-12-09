@@ -26,7 +26,6 @@ export const UploadCreativesTable = ({
   setOpenShowMedia,
   onClose,
 }: UploadCreativesTableProps) => {
-  
   const screens: any = screenData?.flatMap((data: any) => data.screens);
 
   const isAllSelected =
@@ -192,7 +191,11 @@ export const UploadCreativesTable = ({
               <td className="py-2 px-1">
                 <div
                   className="flex items-center justify-center gap-1 truncate text-[12px]"
-                  onClick={() => setOpenShowMedia(s)}
+                  onClick={() =>
+                    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
+                      ?.[campaignId]?.creatives.flatMap((r: any) => r.screenIds)
+                      ?.includes(s.id) && setOpenShowMedia(s)
+                  }
                 >
                   <h1
                     className={

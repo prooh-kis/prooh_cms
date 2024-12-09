@@ -214,12 +214,11 @@ export const UploadCreatives = ({
         <div className="col-span-1">
           <ShowMediaPopup
             onClose={closePopup}
+            screenName={openShowMedia?.screenName}
             openShowMedia={openShowMedia ? true : false}
             media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
-              ?.[campaignId]?.creatives?.filter(
-                (f: any) =>
-                  f.screenResolution === openShowMedia?.resolution &&
-                  f.screenIds?.includes(openShowMedia?.id)
+              ?.[campaignId]?.creatives?.filter((f: any) =>
+                f.screenIds?.includes(openShowMedia?.id)
               )
               ?.flatMap((c: any) => c.standardDayTimeCreatives)}
             // removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
@@ -268,8 +267,9 @@ export const UploadCreatives = ({
                     />
                     <h1 className="text text-[12px]">
                       {Number(
-                        screenCreativeUpload?.flatMap((data: any) => data.screens)
-                          .length || 0
+                        screenCreativeUpload?.flatMap(
+                          (data: any) => data.screens
+                        ).length || 0
                       ) - getUploadedScreensNumber()}
                     </h1>
                   </div>
@@ -300,7 +300,11 @@ export const UploadCreatives = ({
           </div>
         </div>
         <div className="w-full p-1">
-          <h1 className="text-[10px] text-red-500">Please deselect the checkbox, once you upload the creatives on any screen and see a green icon in the creatives column, before selecting other screens for uploading...</h1>
+          <h1 className="text-[10px] text-red-500">
+            Please deselect the checkbox, once you upload the creatives on any
+            screen and see a green icon in the creatives column, before
+            selecting other screens for uploading...
+          </h1>
         </div>
       </div>
 

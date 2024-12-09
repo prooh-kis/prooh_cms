@@ -13,6 +13,7 @@ import {
 } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
+import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
 
 interface UploadCreativesFromBucketPopupProps {
   onClose?: any;
@@ -334,7 +335,7 @@ export function UploadCreativesFromBucketPopup({
                             ?.map((m: any, i: any) => (
                               <div key={i}>
                                 <h1 className="text-[12px] font-semibold border-b">
-                                  {`${f}s`.toUpperCase()}
+                                  {`${m}s`.toUpperCase()}
                                 </h1>
 
                                 {Object.keys(f[m])
@@ -386,7 +387,7 @@ export function UploadCreativesFromBucketPopup({
                                                 </h1>
                                               </Tooltip>
                                               <div className="flex gap-1 items-center truncate">
-                                                <h1 className="text-[12px">
+                                                <h1 className="text-[12px] font-semibold">
                                                   {l?.extension?.split("/")[1]},
                                                 </h1>
                                                 <h1 className="text-[12px] truncate">
@@ -415,7 +416,7 @@ export function UploadCreativesFromBucketPopup({
                 Selected Creative: {mediaFiles?.length}
               </h1>
               <button
-                className="test-[#BEBEBE] text-[14px] font-normal"
+                className="text-[#000000] opacity-[50%] text-[14px] font-normal"
                 onClick={() => {
                   setMediaFiles([]);
                 }}
@@ -426,35 +427,11 @@ export function UploadCreativesFromBucketPopup({
             {campaignOption !== "URL" && mediaFiles?.length > 0 && (
               <div className="flex flex-col gap-2 p-2 h-[45vh] relative overflow-auto">
                 {mediaFiles?.map((media: any, index: any) => (
-                  <div
-                    title="Click to remove from Selected"
+                  <SingleCreativeInPopup
+                    media={media}
+                    handleDelete={setMediaFiles}
                     key={index}
-                    className="relative p"
-                    onClick={() => {
-                      setMediaFiles((prev: any) => {
-                        return prev?.filter(
-                          (file: any) => file._id !== media._id
-                        );
-                      });
-                    }}
-                  >
-                    {/* i am trying show delete icon on each div not showing */}
-                    <i
-                      className="fi fi-rs-trash absolute top-2 right-2 cursor-pointer text-gray-500 hover:text-red-500"
-                      // onClick={() => {
-                      //   setMediaFiles((prev: any) => {
-                      //     return prev?.filter(
-                      //       (file: any) => file._id !== media._id
-                      //     );
-                      //   });
-                      // }}
-                    ></i>
-                    <ShowMediaFile
-                      url={media.awsURL}
-                      mediaType={media?.creativeType}
-                      width="w-full"
-                    />
-                  </div>
+                  />
                 ))}
               </div>
             )}

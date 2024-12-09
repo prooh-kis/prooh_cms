@@ -1,11 +1,11 @@
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import React, { useEffect, useState } from "react";
 
-
 interface ShowMediaPopupProps {
   openShowMedia?: boolean;
-  media?: any
+  media?: any;
   onClose?: any;
+  screenName: string;
   // removeAddedCreativeFromCampaign?: any;
 }
 
@@ -13,8 +13,9 @@ export function ShowMediaPopup({
   openShowMedia,
   media,
   onClose,
-  // removeAddedCreativeFromCampaign
-}: ShowMediaPopupProps) {
+  screenName,
+}: // removeAddedCreativeFromCampaign
+ShowMediaPopupProps) {
 
   useEffect(() => {
     if (openShowMedia) {
@@ -33,19 +34,21 @@ export function ShowMediaPopup({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-
-      <div className="border bg-white rounded-[10px] h-3/4 w-3/4">
+      <div className="border bg-white rounded-[10px] h-3/4 w-3/4 p-2">
         <div
-          className="relative inset-0 flex items-center justify-end gap-4 p-3"
+          className="relative inset-0 flex items-center justify-end gap-4"
           onClick={() => onClose()}
         >
           <i className="fi fi-br-circle-xmark"></i>
         </div>
-  
+        <h1>{screenName}</h1>
+
         <div className="grid grid-cols-2 flex p-2 justify-center gap-4 w-full h-full">
           {media?.map((l: any, index: any) => (
-            <div key={index} className="col-span-1 p-1 h-40 w-auto" 
-            // onClick={() => removeAddedCreativeFromCampaign(l)}
+            <div
+              key={index}
+              className="col-span-1 p-1 h-40 w-auto"
+              // onClick={() => removeAddedCreativeFromCampaign(l)}
             >
               <ShowMediaFile
                 url={l.url}
@@ -62,4 +65,3 @@ export function ShowMediaPopup({
     </div>
   );
 }
-

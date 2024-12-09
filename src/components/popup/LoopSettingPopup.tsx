@@ -211,27 +211,23 @@ export function LoopSettingPopup({
             </div>
             <div className="my-2 h-[58vh] overflow-scroll no-scrollbar">
               {campaigns &&
-                getStandardCreativesWithCampaignNames(campaigns)?.map(
-                  (camp: Campaign, i: number) => (
-                    <div
-                      key={i}
-                      className="flex gap-2 p-2 cursor-pointer"
-                      draggable
-                      onDragStart={handleDragStart(camp)}
-                    >
-                      <h1 className="text-[14px] font-semibold pt-2">
-                        {i + 1}.
-                      </h1>
-                      <div>
-                        <BrandCampaignScreenDetails
-                          brandName={camp.brandName}
-                          campaign={camp}
-                          showIcons={false}
-                        />
-                      </div>
+                campaigns?.map((camp: Campaign, i: number) => (
+                  <div
+                    key={i}
+                    className="flex gap-2 p-2 cursor-pointer"
+                    draggable
+                    onDragStart={handleDragStart(camp)}
+                  >
+                    <h1 className="text-[14px] font-semibold pt-2">{i + 1}.</h1>
+                    <div>
+                      <BrandCampaignScreenDetails
+                        brandName={camp.brandName}
+                        campaign={camp}
+                        showIcons={false}
+                      />
                     </div>
-                  )
-                )}
+                  </div>
+                ))}
             </div>
           </div>
 

@@ -1,26 +1,17 @@
 import { useEffect, useState } from "react";
 import { ShowMediaFile } from "../molecules/ShowMediaFIle";
-import { isNumber } from "@turf/turf";
 import { isValidUrl } from "../../utils/valueValidate";
-// import { campaignsCreateByScreenOwner } from "../../actions/campaignAction";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-import { message, Select, Tooltip } from "antd";
+import { message, Tooltip } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { Loading } from "../Loading";
-import {
-  getDataFromLocalStorage,
-  saveDataOnLocalStorage,
-} from "../../utils/localStorageUtils";
-import {
-  CAMPAIGN_CREATIVES_TO_UPLOAD,
-  FULL_CAMPAIGN_PLAN,
-  UPLOAD_CREATIVE_SCREEN_DATA,
-} from "../../constants/localStorageConstants";
+import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
+import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { CalendarInput } from "../../components/atoms/CalendarInput";
 import { editCampaignCreativesEndDateAction } from "../../actions/screenAction";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
+import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
 
 interface EditCreativeEndDatePopupProps {
   onClose?: any;
@@ -44,9 +35,13 @@ export function EditCreativeEndDatePopup({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<any>(campaign?.endDate?.split(".")[0]);
-  const [duration, setDuration] = useState<any>(campaign?.creatives?.creativeDuration);
+  const [duration, setDuration] = useState<any>(
+    campaign?.creatives?.creativeDuration
+  );
 
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
+
+  console.log("screenData : ", screenData);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -59,14 +54,6 @@ export function EditCreativeEndDatePopup({
     error: errorCreatives,
     data: creatives,
   } = creativesMediaGet;
-
-  const openErrorToast = (message: string) => {
-    toast.error(message, {
-      style: {
-        marginTop: "50px",
-      },
-    });
-  };
 
   useEffect(() => {
     if (creatives && campaign?.brandName) {
@@ -173,19 +160,6 @@ export function EditCreativeEndDatePopup({
       getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[
         campaign.campaignCreationId
       ];
-    // dispatch(
-    //   createCampaignCreationByScreenOwnerAction({
-    //     id: campaignId,
-    //     mediaData: [
-    //       {
-    //         awsURL: url,
-    //         fileType: "url",
-    //         videoDuration: Number(campaignDuration),
-    //         fileSize: 0,
-    //       },
-    //     ],
-    //   })
-    // );
     setTimeout(() => {
       handelDiscard();
     }, 0);
@@ -219,218 +193,208 @@ export function EditCreativeEndDatePopup({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
         className="bg-white p-4 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
-        style={{ height: "70vh", width: "40vw" }}
+        style={{ height: "80vh", width: "70vw" }}
       >
-        <div
-          className="relative inset-0 flex items-center justify-end gap-4 p-3"
-          onClick={() => onClose(false)}
-        >
-          <i className="fi fi-br-circle-xmark"></i>
+        <div className="flex justify-between">
+          <h1 className="text-[20px] text-[#092A41] font-bold">
+            Choose Creatives
+          </h1>
+          <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
         </div>
-        <div>
-          <div className="flex flex-col justify-center">
-            <h1 className="text-[12px]">Choose Creatives</h1>
-            <div className="flex justify-between">
-              <h1 className="text-[12px]">Screen: {selectedScreens?.length}</h1>
-              <h1 className={`text-[12px]`}>Resolution:</h1>
-            </div>
-
-            {isLoading && (
-              <h1 className="border border-1 bg-yellow-600 text-white text-lg px-8 py-2">
-                Wait for some time file is saving....
-              </h1>
-            )}
-          </div>
-          <div>
-            <div className="flex flex-row gap-2">
-              <input
-                placeholder="a"
-                type="checkbox"
-                id="url"
-                checked={campaignOption === "URL" ? true : false}
-                onChange={(e) => handleAddCampaignOption(e.target.checked)}
-              />
-              <label className="text-sm font-black" htmlFor="url">
-                url
-              </label>
-            </div>
-          </div>
-          {campaignOption === "URL" ? (
-            <div className="flex flex-col">
-              <div className="flex flex-col">
-                <h1>Media URL:</h1>
-                <input
-                  placeholder="Enter media url"
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  className="border border-gray-300 rounded-sm w-full h-10 text text-sm text-black-600 p-2"
-                />
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="col-span-1 flex flex-col py-2">
-                  <h1 className="block text-secondaryText text-[12px]">
-                    Change End Date
-                  </h1>
-                  <CalendarInput
-                    placeholder={endDate}
-                    value={endDate ? endDate : campaign?.endDate}
-                    action={(e: any) => {
-                      setEndDate(e);
-                    }}
-                    minDate={new Date()}
-                    disabled={false}
+        <div className="flex pt-4">
+          <div className="w-[80%] border border-1 p-2">
+            <div className="flex flex-col justify-center">
+              <div className="flex justify-between border border-1 p-2 text-[12px]">
+                <h1 className="">Screen: {selectedScreens?.length}</h1>
+                <div className="flex flex-row gap-2">
+                  <input
+                    placeholder="a"
+                    type="checkbox"
+                    id="url"
+                    checked={campaignOption === "URL" ? true : false}
+                    onChange={(e) => handleAddCampaignOption(e.target.checked)}
                   />
-                </div>
-                <div className="col-span-1 flex flex-col py-2">
-                  <label className="block text-secondaryText text-[12px]">
-                    Creative Duration
+                  <label className="text-sm font-black" htmlFor="url">
+                    url
                   </label>
-                  <PrimaryInput
-                    inputType="number"
-                    placeholder="10"
-                    value={duration}
-                    action={setDuration}
+                </div>
+                <h1>Resolution: {screenData?.resolution}</h1>
+              </div>
+
+              {isLoading && (
+                <h1 className="border border-1 bg-yellow-600 text-white text-lg px-8 py-2">
+                  Wait for some time file is saving....
+                </h1>
+              )}
+            </div>
+            {campaignOption === "URL" ? (
+              <div className="flex flex-col">
+                <div className="flex flex-col">
+                  <h1>Media URL:</h1>
+                  <input
+                    placeholder="Enter media url"
+                    type="text"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    className="border border-gray-300 rounded-sm w-full h-10 text text-sm text-black-600 p-2"
                   />
                 </div>
               </div>
+            ) : (
+              <div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="col-span-1 flex flex-col py-2">
+                    <h1 className="block text-secondaryText text-[12px]">
+                      Change End Date
+                    </h1>
+                    <CalendarInput
+                      placeholder={endDate}
+                      value={endDate ? endDate : campaign?.endDate}
+                      action={(e: any) => {
+                        setEndDate(e);
+                      }}
+                      minDate={new Date()}
+                      disabled={false}
+                    />
+                  </div>
+                  <div className="col-span-1 flex flex-col py-2">
+                    <label className="block text-secondaryText text-[12px]">
+                      Creative Duration
+                    </label>
+                    <PrimaryInput
+                      inputType="number"
+                      placeholder="10"
+                      value={duration}
+                      action={setDuration}
+                    />
+                  </div>
+                </div>
 
-              <h1 className="text-[14px] font-semibold">
-                Select from creatives
-              </h1>
-              {loadingCreatives ? (
-                <Loading />
-              ) : (
-                <div>
-                  {creativesMedia &&
-                    creativesMedia?.map((f: any, k: any) => (
-                      <div className="p-2" key={k} onClick={() => {}}>
-                        {Object.keys(f)
-                          .filter((c: any) => c !== "network")
-                          ?.map((m: any, i: any) => (
-                            <div key={i}>
-                              <h1 className="text-[12px] font-semibold border-b">
-                                {`${m}s`.toUpperCase()}
-                              </h1>
+                <h1 className="text-[14px] font-semibold">
+                  Select from creatives
+                </h1>
+                {loadingCreatives ? (
+                  <Loading />
+                ) : (
+                  <div>
+                    {creativesMedia &&
+                      creativesMedia?.map((f: any, k: any) => (
+                        <div key={k} className="h-[45vh] overflow-auto">
+                          {Object.keys(f)
+                            .filter((c: any) => c !== "network")
+                            ?.map((m: any, i: any) => (
+                              <div key={i}>
+                                <h1 className="text-[12px] font-semibold border-b">
+                                  {`${m}s`.toUpperCase()}
+                                </h1>
 
-                              {Object.keys(f[m])
-                                .filter((c: any) => c !== "network")
-                                ?.map((g: any, j: any) => (
-                                  <div key={j} className="py-2">
-                                    <h1 className="text-[10px] py-1">
-                                      Resolution: {g}
-                                    </h1>
-                                    <div className="grid grid-cols-3 gap-2">
-                                      {f?.[m]?.[g]?.map((l: any, y: any) => (
-                                        <div
-                                          key={y}
-                                          className="w-full border rounded"
-                                          onClick={() => {
-                                            setMediaFiles((prev: any) => {
-                                              if (
-                                                mediaFiles
-                                                  ?.map((file: any) => file._id)
-                                                  .includes(l._id)
-                                              ) {
-                                                return mediaFiles?.filter(
-                                                  (file: any) =>
-                                                    file._id !== l._id
-                                                );
-                                              } else {
-                                                return [...prev, l];
-                                              }
-                                            });
-                                          }}
-                                        >
-                                          <div className="w-full">
-                                            <ShowMediaFile
-                                              url={l?.awsURL}
-                                              mediaType={l?.creativeType}
-                                              key={y}
-                                              height="h-full"
-                                              width="w-full"
-                                            />
-                                          </div>
-                                          <div className="p-1">
-                                            <Tooltip
+                                {Object.keys(f[m])
+                                  .filter((c: any) => c !== "network")
+                                  ?.map((g: any, j: any) => (
+                                    <div key={j} className="py-2">
+                                      <h1 className="text-[10px] py-1">
+                                        Resolution: {g}
+                                      </h1>
+                                      <div className="grid grid-cols-3 gap-2">
+                                        {f?.[m]?.[g]?.map((l: any, y: any) => (
+                                          <div
+                                            key={y}
+                                            className="w-full border rounded"
+                                            onClick={() => {
+                                              setMediaFiles((prev: any) => {
+                                                if (
+                                                  mediaFiles
+                                                    ?.map(
+                                                      (file: any) => file._id
+                                                    )
+                                                    .includes(l._id)
+                                                ) {
+                                                  return mediaFiles?.filter(
+                                                    (file: any) =>
+                                                      file._id !== l._id
+                                                  );
+                                                } else {
+                                                  return [...prev, l];
+                                                }
+                                              });
+                                            }}
+                                          >
+                                            <div className="w-full">
+                                              <ShowMediaFile
+                                                url={l?.awsURL}
+                                                mediaType={l?.creativeType}
+                                                key={y}
+                                                height="h-full"
+                                                width="w-full"
+                                              />
+                                            </div>
+                                            <div className="p-1">
+                                              <Tooltip
                                                 title={`${l?.creativeName?.toUpperCase()}`}
                                               >
                                                 <h1 className="text-[10px] truncate">
                                                   {l?.creativeName?.toUpperCase()}
                                                 </h1>
-                                            </Tooltip>
-                                            <div className="flex gap-1 items-center truncate">
-                                              <h1 className="text-[12px]">
-                                                {l?.extension?.split("/")[1]},
-                                              </h1>
-                                              <h1 className="text-[12px] truncate">
-                                                {l?.duration} seconds
-                                              </h1>
+                                              </Tooltip>
+                                              <div className="flex gap-1 items-center truncate">
+                                                <h1 className="text-[12px]">
+                                                  {l?.extension?.split("/")[1]},
+                                                </h1>
+                                                <h1 className="text-[12px] truncate">
+                                                  {l?.duration} seconds
+                                                </h1>
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-                                      ))}
+                                        ))}
+                                      </div>
                                     </div>
-                                  </div>
-                                ))}
-                            </div>
-                          ))}
-                      </div>
-                    ))}
-                </div>
-              )}
-            </div>
-          )}
-          {campaignOption !== "URL" && mediaFiles?.length > 0 && (
-            <div>
-              <div className="flex fle-row justify-between">
-                <p className="py-1">Uploaded media</p>
-                <button
-                  className=""
-                  type="submit"
-                  onClick={() => {
-                    setMediaFiles([]);
-                  }}
-                >
-                  Reset
-                </button>
+                                  ))}
+                              </div>
+                            ))}
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
-              <div className="flex flex-wrap gap-2">
+            )}
+          </div>
+          <div className="w-[40%] border border-1 ">
+            <div className="flex justify-between p-2 border border-1">
+              <h1 className="test-[#092A41] text-[16px] font-semibold">
+                Selected Creative: {mediaFiles?.length}
+              </h1>
+              <button
+                className="text-[#000000] opacity-[50%] text-[14px] font-normal"
+                onClick={() => {
+                  setMediaFiles([]);
+                }}
+              >
+                Clear All
+              </button>
+            </div>
+            {campaignOption !== "URL" && mediaFiles?.length > 0 && (
+              <div className="flex flex-col gap-2 p-2 h-[45vh] overflow-auto">
                 {mediaFiles?.map((media: any, index: any) => (
-                  <ShowMediaFile
-                    url={media.awsURL}
-                    mediaType={media?.creativeType}
+                  <SingleCreativeInPopup
+                    media={media}
+                    handleDelete={setMediaFiles}
                     key={index}
                   />
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-        <div className="flex justify-between pt-2 gap-2">
-          <PrimaryButton
-            title="Update"
-            rounded="rounded-[12px]"
-            action={handleNext}
-            disabled={isLoading}
-            loading={isLoading}
-            loadingText="Updating..."
-          />
-          <PrimaryButton
-            title="Cancel"
-            rounded="rounded-[12px]"
-            reverse={true}
-            action={handelDiscard}
-            loading={isLoading}
-            loadingText="Updating..."
-          />
-        </div>
-      </div>
-      <div className="pt-20">
-        <ToastContainer position="top-center" />
+        <PrimaryButton
+          title="Upload"
+          rounded="rounded-[12px]"
+          action={handleNext}
+          disabled={isLoading}
+          loading={isLoading}
+          loadingText="uploading..."
+          width="w-[100vw]"
+        />
       </div>
     </div>
   );
