@@ -17,6 +17,7 @@ import {
   campaignDetailsGetReducer,
   campaignStatusChangeReducer,
   createCampaignCreationByScreenOwnerReducer,
+  editAllSubCampaignsReducer,
   getAllScreensForScreenOwnerCampaignCreationReducer,
   screenDataUploadCreativeGetReducer,
 } from "../reducers/campaignReducers";
@@ -71,6 +72,7 @@ const store = configureStore({
     allCampaignsDataGet: allCampaignsDataGetReducer,
     campaignDetailsGet: campaignDetailsGetReducer,
     campaignCreatedScreensDetailsGet: campaignCreatedScreensDetailsGetReducer,
+    editAllSubCampaigns: editAllSubCampaignsReducer,
 
     // creative
     creativesMediaUpload: creativesMediaUploadReducer,

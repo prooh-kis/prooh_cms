@@ -1,29 +1,34 @@
 import { message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
-import { convertDataTimeToLocale, getNumberOfDaysBetweenTwoDates } from "../../utils/dateAndTimeUtils";
+import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import {
   changeCampaignStatusAction,
+  editAllSubCampaignsAction,
+  getAllCampaignsDetailsAction,
   getCampaignCreatedScreensDetailsAction,
   getCampaignDetailsAction,
 } from "../../actions/campaignAction";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
 import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
-import { CampaignMonitoring } from "../../components/index";
 import { confirmData } from "../../utils/champaignStatusUtils";
 import {
   CAMPAIGN_STATUS_ACTIVE,
   CAMPAIGN_STATUS_DELETED,
   CAMPAIGN_STATUS_PAUSE,
   CAMPAIGN_STATUS_CHANGE_RESET,
+  EDIT_ALL_SUB_CAMPAIGNS_RESET,
 } from "../../constants/campaignConstants";
-import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET } from "../../constants/screenConstants";
+import {
+  EditCampaignCreationAndItsSubCampaigns,
+  EditCreativeEndDatePopup,
+  CampaignMonitoring,
+} from "../../components";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -40,7 +45,11 @@ export const MiddleArea: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = useState<any>({});
 
   const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
-  useState<any>(false);
+    useState<any>(false);
+  const [
+    openCreateCampaignEndDateChangePopup,
+    setOpenCreateCampaignEndDateChangePopup,
+  ] = useState<any>(false);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
   const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
 
@@ -79,6 +88,15 @@ export const MiddleArea: React.FC = () => {
     data: screenDataUploadCreative,
   } = screenDataUploadCreativeGet;
 
+  const editAllSubCampaigns = useSelector(
+    (state: any) => state.editAllSubCampaigns
+  );
+  const {
+    loading: loadingEditAllSubCampaigns,
+    error: errorEditAllSubCampaigns,
+    data: successEditAllSubCampaigns,
+  } = editAllSubCampaigns;
+
   const changeCampaignCreativeEndDate = useSelector(
     (state: any) => state.changeCampaignCreativeEndDate
   );
@@ -87,6 +105,31 @@ export const MiddleArea: React.FC = () => {
     error: errorChange,
     success: successChange,
   } = changeCampaignCreativeEndDate;
+
+  const handleEditAllSubCampaigns = (
+    campaignCreationId: string,
+    endDate: any
+  ) => {
+    dispatch(editAllSubCampaignsAction({ campaignCreationId, endDate }));
+  };
+
+  useEffect(() => {
+    if (successEditAllSubCampaigns) {
+      message.success("Campaign updated successfully!");
+      dispatch({
+        type: EDIT_ALL_SUB_CAMPAIGNS_RESET,
+      });
+      setOpenCreateCampaignEndDateChangePopup(false);
+      dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
+    }
+    if (errorEditAllSubCampaigns) {
+      message.error(errorEditAllSubCampaigns);
+      dispatch({
+        type: EDIT_ALL_SUB_CAMPAIGNS_RESET,
+      });
+      setOpenCreateCampaignEndDateChangePopup(false);
+    }
+  }, [successEditAllSubCampaigns, dispatch, errorEditAllSubCampaigns]);
 
   useEffect(() => {
     if (campaignCreated) {
@@ -130,7 +173,6 @@ export const MiddleArea: React.FC = () => {
     }
     dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
-
   }, [campaignId, dispatch, userInfo]);
 
   const toggleDropdown = (screenId: string) => {
@@ -186,9 +228,6 @@ export const MiddleArea: React.FC = () => {
     }
   };
 
-
-  console.log(campaign);
-
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
@@ -198,12 +237,20 @@ export const MiddleArea: React.FC = () => {
             selectedScreens={screens}
             mediaFiles={mediaFiles}
             setMediaFiles={setMediaFiles}
-            campaign={
-              campaign
-            }
+            campaign={campaign}
             screenData={screenCreativeUpload}
           />
         )}
+        {openCreateCampaignEndDateChangePopup && (
+          <EditCampaignCreationAndItsSubCampaigns
+            onClose={() => setOpenCreateCampaignEndDateChangePopup(false)}
+            openShowMedia={openCreateCampaignEndDateChangePopup}
+            campaignCreation={campaignCreated}
+            isLoading={loadingEditAllSubCampaigns}
+            handleNext={handleEditAllSubCampaigns}
+          />
+        )}
+
         {loading ? (
           <div className="col-span-8">
             <Loading />
@@ -243,33 +290,45 @@ export const MiddleArea: React.FC = () => {
                     </h2>
                   </div>
                 </div>
-                {!loadingStatusChange
-                && getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate) >= 0
-                ? (
+                {!loadingStatusChange ? (
+                  // && getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate) >= 0
                   <div className="px-4 flex h-auto gap-4">
-                    <i className="fi fi-sr-file-edit text-gray-500"
+                    <i
+                      className="fi fi-sr-file-edit text-gray-500"
                       title="Edit All"
-                      onClick={() => setOpenCreativeEndDateChangePopup(!openCreativeEndDateChangePopup)}
+                      onClick={() =>
+                        setOpenCreateCampaignEndDateChangePopup(
+                          !openCreateCampaignEndDateChangePopup
+                        )
+                      }
                     ></i>
                     <i
                       className="fi fi-ss-pause-circle text-gray-500"
                       title="Pause All"
-                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)}
+                      onClick={() =>
+                        handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)
+                      }
                     ></i>
                     <i
                       className="fi fi-sr-play-circle text-gray-500"
                       title="Active All"
-                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)}
+                      onClick={() =>
+                        handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)
+                      }
                     ></i>
                     <i
                       className="fi fi-sr-trash text-gray-500"
                       title="Delete All"
-                      onClick={() => handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)}
+                      onClick={() =>
+                        handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)
+                      }
                     ></i>
                   </div>
                 ) : (
                   <div>
-                    <h1 className="text-[12px] text-red-400">Campaign already ended</h1>
+                    <h1 className="text-[12px] text-red-400">
+                      Campaign already ended
+                    </h1>
                   </div>
                 )}
               </div>
@@ -422,7 +481,9 @@ export const MiddleArea: React.FC = () => {
                       <ScreenListMonitoringView
                         handleChangeCampaignStatus={handleChangeCampaignStatus}
                         campaignCreated={campaignCreated}
-                        setOpenCreativeEndDateChangePopup={setOpenCreativeEndDateChangePopup}
+                        setOpenCreativeEndDateChangePopup={
+                          setOpenCreativeEndDateChangePopup
+                        }
                         screen={screen}
                         noImages={false}
                       />
