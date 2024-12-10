@@ -19,11 +19,6 @@ export function EditCampaignCreationAndItsSubCampaigns({
   const [endDate, setEndDate] = useState<any>(
     campaignCreation?.endDate?.split(".")[0]
   );
-
-  if (!openShowMedia) {
-    return null;
-  }
-
   useEffect(() => {
     if (openShowMedia) {
       document.body.classList.add("overflow-hidden");
@@ -34,6 +29,10 @@ export function EditCampaignCreationAndItsSubCampaigns({
       document.body.classList.remove("overflow-hidden");
     };
   }, [openShowMedia]);
+
+  if (!openShowMedia) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
