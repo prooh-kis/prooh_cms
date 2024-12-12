@@ -5,6 +5,7 @@ export const UPDATE_PASSWORD = "/update-password";
 
 export const HOME = "/";
 export const CREATE_CAMPAIGN = "/create-campaign/:id?"
+export const EDIT_CAMPAIGN = "/edit-campaign/:id?"
 
 export const SCREENS_LIST = "/screens-list";
 export const SCREENS_DETAILS = "/screens-details/:id?";

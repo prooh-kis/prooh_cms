@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 import { AddDefaultMediaPopup } from "../../components/popup/AddDefaultMediaPopup";
+import { CAMPAIGN_CREATION_STATUS } from "../../constants/localStorageConstants";
+import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -49,7 +51,9 @@ export const MiddleArea: React.FC = () => {
             loading={false}
             loadingText="Signup..."
             title="Create Campaign"
-            action={() => navigate("/create-campaign")}
+            action={() => {
+              saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS , "create")
+              navigate("/create-campaign")}}
           />
           <PrimaryButton
             loading={false}

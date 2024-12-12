@@ -1,4 +1,5 @@
 export const FULL_CAMPAIGN_PLAN = "fullCampaignPlan";
+export const CAMPAIGN_CREATION_STATUS = "campaignCreationStatus"
 export const ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER = "allScreensForCampaignCreationScreenOwner";
 export const UPLOAD_CREATIVE_SCREEN_DATA = "uploadCreativeScreenData";
 export const CAMPAIGN_CREATIVES_TO_UPLOAD = "campaignCreativesToUpload";

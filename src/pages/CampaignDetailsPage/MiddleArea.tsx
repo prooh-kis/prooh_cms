@@ -29,6 +29,8 @@ import {
   EditCreativeEndDatePopup,
   CampaignMonitoring,
 } from "../../components";
+import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
+import { CAMPAIGN_CREATION_STATUS, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -295,7 +297,15 @@ export const MiddleArea: React.FC = () => {
                   <div className="px-4 flex h-auto gap-4">
                     <i
                       className="fi fi-sr-file-edit text-gray-500"
-                      title="Edit All"
+                      title="Edit Creatives"
+                      onClick={() =>{
+                        saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS , "edit")
+                        navigate(`/create-campaign/${campaignId}`);
+                      }}
+                    ></i>
+                    <i
+                      className="fi fi-sr-file-edit text-gray-500"
+                      title="Edit End Date"
                       onClick={() =>
                         setOpenCreateCampaignEndDateChangePopup(
                           !openCreateCampaignEndDateChangePopup

@@ -18,6 +18,7 @@ import {
   campaignStatusChangeReducer,
   createCampaignCreationByScreenOwnerReducer,
   editAllSubCampaignsReducer,
+  editCampaignCreationByScreenOwnerReducer,
   getAllScreensForScreenOwnerCampaignCreationReducer,
   screenDataUploadCreativeGetReducer,
 } from "../reducers/campaignReducers";
@@ -67,6 +68,9 @@ const store = configureStore({
     getAllScreensForScreenOwnerCampaignCreation:
       getAllScreensForScreenOwnerCampaignCreationReducer,
     screenDataUploadCreativeGet: screenDataUploadCreativeGetReducer,
+
+    // edit campaign creation by screen owner
+    editCampaignCreationByScreenOwner : editCampaignCreationByScreenOwnerReducer,
 
     // Campaigns
     allCampaignsDataGet: allCampaignsDataGetReducer,

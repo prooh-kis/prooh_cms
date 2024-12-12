@@ -26,12 +26,23 @@ export const MiddleArea: React.FC = () => {
   const createCampaignCreationByScreenOwner = useSelector(
     (state: any) => state.createCampaignCreationByScreenOwner
   );
+  
+  const editCampaignCreationByScreenOwner = useSelector(
+    (state: any) => state.editCampaignCreationByScreenOwner
+  )
+
   const {
     loading: loadingCampaignsCreations,
     error: errorCampaignsCreations,
     success: successCampaignsCreations,
     data: campaignsCreated,
   } = createCampaignCreationByScreenOwner;
+
+  const {
+    loading : loadingCampaignsEdit = false ,
+    error : loadingErrorResponse = "",
+    data : successCampaignsEdit = false
+  } = editCampaignCreationByScreenOwner ? editCampaignCreationByScreenOwner : { }
 
 
   useEffect(() => {
@@ -71,6 +82,8 @@ export const MiddleArea: React.FC = () => {
           successCampaignsCreations={successCampaignsCreations}
           campaignsCreated={campaignsCreated}
           loadingCampaignsCreations={loadingCampaignsCreations}
+          loadingCampaignsEdit={loadingCampaignsEdit}
+          successCampaignsEdit={successCampaignsEdit}
         />
       ) : null}
 

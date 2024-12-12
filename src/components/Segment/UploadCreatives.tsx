@@ -8,9 +8,10 @@ import {
 import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { CAMPAIGN_CREATION_STATUS, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import {
   createCampaignCreationByScreenOwnerAction,
+  editCampaignCreationByScreenOwnerAction,
   getScreenDataUploadCreativeAction,
 } from "../../actions/campaignAction";
 import { CheckboxInput } from "../atoms/CheckboxInput";
@@ -20,7 +21,7 @@ import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBuck
 import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { ShowMediaPopup } from "../popup/ShowMediaPopup";
-import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
+import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET, EDIT_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
 import axios from "axios";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
 
@@ -32,6 +33,8 @@ interface UploadCreativesProps {
   successCampaignsCreations?: any;
   campaignsCreated?: any;
   loadingCampaignsCreations?: any;
+  successCampaignsEdit ?: any ,
+  loadingCampaignsEdit ?: any
 }
 
 interface SingleFile {
@@ -64,6 +67,8 @@ export const UploadCreatives = ({
   campaignId,
   successCampaignsCreations,
   loadingCampaignsCreations,
+  successCampaignsEdit ,
+  loadingCampaignsEdit
 }: UploadCreativesProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
@@ -74,6 +79,7 @@ export const UploadCreatives = ({
 
   const [selectedScreens, setSelectedScreens] = useState<any>([]);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
+  const [clearCreatives , setClearCreatives] = useState(true)
 
   const [brandName, setBrandName] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName
@@ -84,6 +90,7 @@ export const UploadCreatives = ({
   const screenDataUploadCreativeGet = useSelector(
     (state: any) => state.screenDataUploadCreativeGet
   );
+
   const {
     loading,
     error,
@@ -128,13 +135,24 @@ export const UploadCreatives = ({
         JSON.stringify(creativesFromStorage)
       );
 
-      dispatch(
-        createCampaignCreationByScreenOwnerAction({
-          pageName: "Upload Creatives",
-          id: campaignId,
-          creatives: immutableCreatives,
-        })
-      );
+      const campaignCreationStatus = getDataFromLocalStorage(CAMPAIGN_CREATION_STATUS)
+      if ( campaignCreationStatus === "edit" ){
+        dispatch(
+          editCampaignCreationByScreenOwnerAction({
+            id: campaignId,
+            creatives: immutableCreatives,
+          })
+        );
+      }
+      else{
+        dispatch(
+          createCampaignCreationByScreenOwnerAction({
+            pageName: "Upload Creatives",
+            id: campaignId,
+            creatives: immutableCreatives,
+          })
+        );
+      }
     } else {
       message.error("No creative uploaded");
     }
@@ -168,7 +186,20 @@ export const UploadCreatives = ({
       message.success("Campaign saved successfully");
       // navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
     }
-  }, [dispatch, successCampaignsCreations, navigate]);
+    if ( successCampaignsEdit ){
+      dispatch({
+        type: EDIT_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+      });
+      message.success("Creatives Edited successfully");
+    }  
+    if ( clearCreatives ){
+      setClearCreatives(false)
+      var data = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
+      data[campaignId ? campaignId : ""].creatives = []
+      console.log(data[campaignId ? campaignId : ""])
+      saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
+    }
+  }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
 
   useEffect(() => {
     dispatch(getScreenDataUploadCreativeAction({ id: campaignId }));
@@ -178,7 +209,7 @@ export const UploadCreatives = ({
   useEffect(() => {
     if (screenDataUploadCreative) {
       setScreenCreativeUpload(screenDataUploadCreative);
-    }
+    }  
   }, [screenDataUploadCreative]);
 
   const getUploadedScreensNumber = () => {
@@ -287,8 +318,8 @@ export const UploadCreatives = ({
                   height="h-8"
                   width="w-30"
                   textSize="text-[12px]"
-                  loading={loadingCampaignsCreations}
-                  loadingText="Creating campaign..."
+                  loading={loadingCampaignsCreations || loadingCampaignsEdit }
+                  loadingText={ "Saving Creatives"}
                   action={() => {
                     if (validateForm()) {
                       saveCampaignCreativesDetails();

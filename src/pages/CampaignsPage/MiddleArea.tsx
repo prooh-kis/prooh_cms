@@ -32,9 +32,7 @@ export const MiddleArea: React.FC = () => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
     }
-    if (getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)?.list?.length > 0) {
-      console.log("No need to call again and again");
-    } else {
+    else {
       dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id }));
     }
   }, [dispatch, userInfo]);

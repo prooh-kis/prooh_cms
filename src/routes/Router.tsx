@@ -19,7 +19,7 @@ import {
 } from "../pages";
 
 import { PrivateRoute } from "./PrivateRoute";
-import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, CREATE_CAMPAIGN, FORGET_PASSWORD, HOME, MY_CREATIVES, SCREEN_CAMPAIGN_MONITORING, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
+import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, CREATE_CAMPAIGN, EDIT_CAMPAIGN, FORGET_PASSWORD, HOME, MY_CREATIVES, SCREEN_CAMPAIGN_MONITORING, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
 
 const Routers: React.FC = () => {
   return (
@@ -68,6 +68,15 @@ const Routers: React.FC = () => {
 
         <Route
           path={CREATE_CAMPAIGN}
+          element={
+            <PrivateRoute layout={HomePageLayout}>
+              <CreateCampaignPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={EDIT_CAMPAIGN}
           element={
             <PrivateRoute layout={HomePageLayout}>
               <CreateCampaignPage />
