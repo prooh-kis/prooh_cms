@@ -41,5 +41,10 @@ export const campaignTypeTabs = [
     id: "5",
     label: "Deleted",
     value: "Deleted",
-  },
+  }, 
+  {
+    id: "6",
+    label: "Live",
+    value: "Live",
+  }
 ];
