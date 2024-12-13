@@ -404,9 +404,14 @@ export const MiddleArea: React.FC = () => {
                             ) : (
                               <iframe className="rounded" src={cs.url} />
                             )}
-                            <h1 className="text-[12px] text-gray-500">
-                              {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
-                            </h1>
+                            <Tooltip
+                              title={`${cs.url?.split("_")[cs.url?.split("_")?.length - 1]}`}
+                            >
+                              <h1 className="text-[12px] text-gray-500 truncate">
+                                {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
+                              </h1>
+                            </Tooltip>
+
                           </div>
                         ))}
                       </div>
@@ -432,9 +437,13 @@ export const MiddleArea: React.FC = () => {
                               ) : (
                                 <iframe className="rounded" src={cs.url} />
                               )}
-                              <h1 className="text-[12px] text-gray-500">
-                                {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
-                              </h1>
+                              <Tooltip
+                                title={`${cs.url?.split("_")[cs.url?.split("_")?.length - 1]}`}
+                              >
+                                <h1 className="text-[12px] text-gray-500 truncate">
+                                  {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
+                                </h1>
+                              </Tooltip>
                             </div>
                           )
                         )}
@@ -460,7 +469,13 @@ export const MiddleArea: React.FC = () => {
                             ) : (
                               <iframe className="rounded" src={cs.url} />
                             )}
-                            <h1></h1>
+                            <Tooltip
+                              title={`${cs.url}`}
+                            >
+                              <h1 className="text-[12px] text-gray-500 truncate">
+                                {cs.url}
+                              </h1>
+                            </Tooltip>
                           </div>
                         ))}
                       </div>
