@@ -83,7 +83,7 @@ export const MiddleArea: React.FC = () => {
             {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)
               ?.list?.filter(
                 (campaign: any) =>
-                  campaign?.name?.toLowerCase().includes(searchQuery) ||
+                  campaign?.campaignName?.toLowerCase().includes(searchQuery) ||
                   campaign?.brandName?.toLowerCase().includes(searchQuery)
               )
               ?.map((data: any, index: any) => (
