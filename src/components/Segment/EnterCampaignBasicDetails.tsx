@@ -157,6 +157,7 @@ export const EnterCampaignBasicDetails = ({
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
     if (campaignId !== "create-campaign") {
+      //TODO add triggers object here
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           id: campaignId,
@@ -177,9 +178,16 @@ export const EnterCampaignBasicDetails = ({
           atIndex: atIndex,
           screenIds: screenIds,
           creatives: [],
+          triggers : {
+            timeTriggers : [],
+            weatherTriggers : [],
+            sportsTriggers : [],
+            vacantSlots : []
+          }
         })
       );
     } else {
+      //TODO add triggers object here
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           pageName: "Add Basic Details",
@@ -199,6 +207,12 @@ export const EnterCampaignBasicDetails = ({
           atIndex: atIndex,
           screenIds: screenIds,
           creatives: [],
+          triggers : {
+            timeTriggers : [],
+            weatherTriggers : [],
+            sportsTriggers : [],
+            vacantSlots : []
+          }
         })
       );
     }
