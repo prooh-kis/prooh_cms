@@ -23,6 +23,10 @@ export const Menu = (props: any) => {
 
   const arr = [
     {
+      label: "Create",
+      path: "/create-campaign",
+    },
+    {
       label: "Screens",
       path: "/screens-list",
     },

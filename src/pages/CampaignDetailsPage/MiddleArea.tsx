@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -188,7 +188,6 @@ export const MiddleArea: React.FC = () => {
     const data = campaignCreated?.campaigns?.find(
       (data: any) => data?.screenId == screenId
     );
-    console.log(data);
     setCampaign(data);
   };
 
@@ -295,44 +294,65 @@ export const MiddleArea: React.FC = () => {
                 {!loadingStatusChange ? (
                   // && getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate) >= 0
                   <div className="px-4 flex h-auto gap-4">
-                    <i
-                      className="fi fi-ss-pen-circle"
-                      title="Edit Creatives"
-                      onClick={() =>{
-                        saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS , "edit")
-                        navigate(`/create-campaign/${campaignId}`);
-                      }}
-                    ></i>
-                    <i
-                      className="fi fi-sr-file-edit text-gray-500"
-                      title="Edit End Date"
-                      onClick={() =>
-                        setOpenCreateCampaignEndDateChangePopup(
-                          !openCreateCampaignEndDateChangePopup
-                        )
-                      }
-                    ></i>
-                    <i
-                      className="fi fi-ss-pause-circle text-gray-500"
-                      title="Pause All"
-                      onClick={() =>
-                        handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)
-                      }
-                    ></i>
-                    <i
-                      className="fi fi-sr-play-circle text-gray-500"
-                      title="Active All"
-                      onClick={() =>
-                        handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)
-                      }
-                    ></i>
-                    <i
-                      className="fi fi-sr-trash text-gray-500"
-                      title="Delete All"
-                      onClick={() =>
-                        handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)
-                      }
-                    ></i>
+                    <Tooltip
+                      title="Edit creatives for all screens"
+                    >
+                      <i
+                        className="fi fi-ss-pen-circle text-gray-500"
+                        title="Edit Creatives"
+                        onClick={() =>{
+                          saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS , "edit")
+                          navigate(`/create-campaign/${campaignId}`);
+                        }}
+                      ></i>
+                    </Tooltip>
+                    <Tooltip
+                      title="Edit end date for all screens"
+                    >
+                      <i
+                        className="fi fi-sr-file-edit text-gray-500"
+                        title="Edit End Date"
+                        onClick={() =>
+                          setOpenCreateCampaignEndDateChangePopup(
+                            !openCreateCampaignEndDateChangePopup
+                          )
+                        }
+                      ></i>
+                    </Tooltip>
+                    <Tooltip
+                      title="Pause for all screens"
+                    >
+                      <i
+                        className="fi fi-ss-pause-circle text-gray-500"
+                        title="Pause All"
+                        onClick={() =>
+                          handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)
+                        }
+                      ></i>
+                    </Tooltip>
+                    <Tooltip
+                      title="Activate for all screens"
+                    >
+                      <i
+                        className="fi fi-sr-play-circle text-gray-500"
+                        title="Active All"
+                        onClick={() =>
+                          handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)
+                        }
+                      ></i>
+                    </Tooltip>
+                    <Tooltip
+                      title="Delete for all screens"
+                    >
+                      <i
+                        className="fi fi-sr-trash text-gray-500"
+                        title="Delete All"
+                        onClick={() =>
+                          handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)
+                        }
+                      ></i>
+                    </Tooltip>
+
                   </div>
                 ) : (
                   <div>
@@ -384,7 +404,9 @@ export const MiddleArea: React.FC = () => {
                             ) : (
                               <iframe className="rounded" src={cs.url} />
                             )}
-                            <h1></h1>
+                            <h1 className="text-[12px] text-gray-500">
+                              {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
+                            </h1>
                           </div>
                         ))}
                       </div>
@@ -410,7 +432,9 @@ export const MiddleArea: React.FC = () => {
                               ) : (
                                 <iframe className="rounded" src={cs.url} />
                               )}
-                              <h1></h1>
+                              <h1 className="text-[12px] text-gray-500">
+                                {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
+                              </h1>
                             </div>
                           )
                         )}

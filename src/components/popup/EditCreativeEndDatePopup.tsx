@@ -60,7 +60,6 @@ export function EditCreativeEndDatePopup({
       setCreativesMedia(creatives[campaign?.brandName]);
     }
   }, [campaign, creatives]);
-  console.log(campaign);
 
   useEffect(() => {
     if (isCreativeOpen) {
@@ -111,6 +110,7 @@ export function EditCreativeEndDatePopup({
     const scrData = screenData?.filter((scr: any) =>
       scr.screens?.map((s: any) => s.id).includes(selectedScreenIds[0])
     )[0]; // for (const scr of screenData) {
+   
     const standardDayTimeCreatives: any = [
       ...(scrData.standardDayTimeCreatives || []),
     ]; // Clone the array
@@ -186,8 +186,6 @@ export function EditCreativeEndDatePopup({
       }
     }
   };
-
-  console.log(creativesMedia);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">

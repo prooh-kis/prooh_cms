@@ -640,15 +640,7 @@ export const MiddleArea: React.FC = () => {
                 ?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives.standardDayTimeCreatives?.map(
                   (creative: any, j: any) => (
-                    <div key={j} className="p-1 relative">
-                      {/* <div className="absolute top-0 right-1 flex justify-end mt-[20px] z-10">
-                        <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
-                          
-                          <div className="text-white hover:text-green-500">
-                            <i className="fi fi-sr-trash"></i>
-                          </div>
-                        </div>
-                      </div> */}
+                    <div key={j} className="p-1">
                       <ShowMediaFile
                         url={creative?.url}
                         mediaType={creative?.type.split("/")[0]}
@@ -656,11 +648,9 @@ export const MiddleArea: React.FC = () => {
                         height="h-full"
                         width="w-full"
                       />
-                      <h1 className="text-[14px]">
+                      <h1 className="text-[14px] truncate">
                         {
-                          campaigns?.filter(
-                            (c: any) => c._id === selectedCampaign
-                          )[0]?.name
+                          creative?.url?.split("_")[creative?.url?.split("_")?.length - 1]
                         }
                       </h1>
                       <p className="text-[12px]">

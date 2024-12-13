@@ -83,12 +83,12 @@ export function ScreenListMonitoringView({
                     if (
                       confirm(`Are you sure you want to edit the campaign???`)
                     ) {
-                      saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-                        [`${campaignCreated?._id}`]:
-                          campaignCreated?.campaigns?.filter(
-                            (c: any) => c.screenId === screen._id
-                          )[0].creatives.standardDayTimeCreatives,
-                      });
+                        saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+                          [`${campaignCreated?._id}`]:
+                            campaignCreated?.campaigns?.filter(
+                              (c: any) => c.screenId === screen._id
+                            )[0]?.creatives?.standardDayTimeCreatives,
+                        });
                       dispatch(
                         getScreenDataUploadCreativeAction({
                           id: campaignCreated?._id,
