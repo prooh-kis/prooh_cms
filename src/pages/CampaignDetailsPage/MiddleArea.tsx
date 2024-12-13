@@ -296,7 +296,7 @@ export const MiddleArea: React.FC = () => {
                   // && getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate) >= 0
                   <div className="px-4 flex h-auto gap-4">
                     <i
-                      className="fi fi-sr-file-edit text-gray-500"
+                      className="fi fi-ss-pen-circle"
                       title="Edit Creatives"
                       onClick={() =>{
                         saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS , "edit")
