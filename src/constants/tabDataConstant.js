@@ -48,3 +48,22 @@ export const campaignTypeTabs = [
     value: "Live",
   }
 ];
+
+
+export const campaignCreationTypeTabs = [
+  {
+    id: "1",
+    label: "Active",
+    value: "Active",
+  },
+  {
+    id: "2",
+    label: "Upcoming",
+    value: "Pending",
+  },
+  {
+    id: "3",
+    label: "Completed",
+    value: "Completed",
+  }
+];

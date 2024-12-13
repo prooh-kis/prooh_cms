@@ -9,7 +9,8 @@ import { ALL_CAMPAIGNS_LIST } from "../../constants/localStorageConstants";
 import { getAllCampaignsDetailsAction } from "../../actions/campaignAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { SearchInputField } from "../../components/index";
-import { campaignTypeTabs } from "../../constants/tabDataConstant";
+import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
+import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -33,7 +34,7 @@ export const MiddleArea: React.FC = () => {
       message.error("Not a screen owner!!!");
     }
     else {
-      dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id }));
+      dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id , status : CAMPAIGN_STATUS_ACTIVE }));
     }
   }, [dispatch, userInfo]);
 
@@ -41,6 +42,17 @@ export const MiddleArea: React.FC = () => {
   const handleCardClick = (id: any) => {
     setSelectedCard(id);
   };
+
+  const handleGetCampaignByStatus = (status: any) => {
+      setCurrentTab(status);
+      dispatch(
+        getAllCampaignsDetailsAction({
+          userId: userInfo?._id,
+          status: campaignCreationTypeTabs.filter((tab: any) => tab.id === status)[0]
+            .value,
+        })
+      );
+    };
 
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
@@ -51,8 +63,8 @@ export const MiddleArea: React.FC = () => {
         <div className="p-1">
           <TabWithoutIcon
             currentTab={currentTab}
-            setCurrentTab={setCurrentTab}
-            tabData={campaignTypeTabs}
+            setCurrentTab={handleGetCampaignByStatus}
+            tabData={campaignCreationTypeTabs}
           />
         </div>
         {loading ? (
@@ -77,8 +89,7 @@ export const MiddleArea: React.FC = () => {
               ?.map((data: any, index: any) => (
                 <div
                   key={index}
-                  className="overflow-scroll no-scrollbar h-auto"
-                >
+                  className="overflow-scroll no-scrollbar h-auto">
                   <CampaignListView
                     isSelected={data?._id === selectedCard}
                     color={""}

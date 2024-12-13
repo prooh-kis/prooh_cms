@@ -138,14 +138,14 @@ export const getScreenDataUploadCreativeAction =
     };
 
 export const getAllCampaignsDetailsAction =
-  ({ userId }) =>
+  (input) =>
     async (dispatch) => {
       dispatch({
         type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
-        payload: userId,
+        payload: input,
       });
       try {
-        const { data } = await axios.post(`${url}/all`, { userId });
+        const { data } = await axios.post(`${url}/all`, input);
         dispatch({
           type: GET_ALL_CAMPAIGNS_DATA_SUCCESS,
           payload: data,
