@@ -48,7 +48,7 @@ export const CampaignListView = ({navigate, data, color, isSelected, handleCardC
             
               <div className="px-0 flex justify-between items-center truncate">
                 <p className="text text-[12px] text-green-500 text-center text-wrap truncate">
-                  On {data.screens.length} screens
+                  On {data.screens?.length} screens
                 </p>
               </div>
             </div>

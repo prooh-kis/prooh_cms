@@ -3,7 +3,7 @@ export const Loading = ({ grid = { cols: 3, rows: 4 }, height, width}: any) => {
   const generateColumnWidths = (cols: number) => {
     // Generate widths such that their sum equals 'w-full'
     const availableWidths = [1 / 4, 1 / 2, 1 / 4]; // Tailwind width fractions
-    if (cols > availableWidths.length) {
+    if (cols > availableWidths?.length) {
       throw new Error("Number of columns exceeds available distinct widths");
     }
   

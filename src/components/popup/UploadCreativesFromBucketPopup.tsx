@@ -123,11 +123,11 @@ export function UploadCreativesFromBucketPopup({
         const filteredScreens = item?.screens?.filter((screen: any) =>
           selectedScreenIds.includes(screen.id)
         );
-        if (filteredScreens.length > 0) {
+        if (filteredScreens?.length > 0) {
           // Return the updated object with filtered screens and updated count
           return {
             ...item,
-            count: filteredScreens.length,
+            count: filteredScreens?.length,
             screens: filteredScreens,
           };
         }
@@ -135,7 +135,7 @@ export function UploadCreativesFromBucketPopup({
         // Return null if no screens match
         return [null];
       })
-      .filter((item: any) => item !== null); // Remove null items
+      ?.filter((item: any) => item !== null); // Remove null items
 
     for (const scr of screenDataToUpload) {
       const standardDayTimeCreatives: any = [
@@ -164,7 +164,7 @@ export function UploadCreativesFromBucketPopup({
 
       creativeDataToUpload.push({
         screenResolution: scr.screenResolution,
-        count: selectedScreenIds.length,
+        count: selectedScreenIds?.length,
         creativeDuration: duration,
         screenIds: selectedScreenIds,
         standardDayTimeCreatives: standardDayTimeCreatives,
@@ -175,7 +175,7 @@ export function UploadCreativesFromBucketPopup({
 
     const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     for (const cd of creativeDataToUpload) {
-      if (cd.standardDayTimeCreatives.length > 0) {
+      if (cd.standardDayTimeCreatives?.length > 0) {
         campData.creatives.push(cd);
       }
     }
@@ -345,7 +345,7 @@ export function UploadCreativesFromBucketPopup({
                       creativesMedia?.map((f: any, k: any) => (
                         <div className="p-2" key={k} onClick={() => {}}>
                           {Object.keys(f)
-                            .filter((c: any) => c !== "network")
+                            ?.filter((c: any) => c !== "network")
                             ?.map((m: any, i: any) => (
                               <div key={i}>
                                 <h1 className="text-[12px] font-semibold border-b">
@@ -353,7 +353,7 @@ export function UploadCreativesFromBucketPopup({
                                 </h1>
 
                                 {Object.keys(f[m])
-                                  .filter((c: any) => c !== "network")
+                                  ?.filter((c: any) => c !== "network")
                                   ?.map((g: any, j: any) => (
                                     <div key={j} className="py-2">
                                       <h1 className="text-[10px] py-1">

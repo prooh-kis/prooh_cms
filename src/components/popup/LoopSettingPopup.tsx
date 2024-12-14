@@ -233,7 +233,7 @@ export function LoopSettingPopup({
 
           {/* Right Section */}
           <div className="col-span-8 px-8 mt-8 h-[60vh] overflow-scroll no-scrollbar">
-            {totalSlots.map((_, j) => (
+            {totalSlots?.map((_, j) => (
               <div
                 key={j}
                 className="flex h-auto border rounded gap-2 my-2 p-2"

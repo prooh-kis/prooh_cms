@@ -127,7 +127,7 @@ export const EnterCampaignBasicDetails = ({
     } else if (endDate === "") {
       message.error("Please enter endData ");
       return false;
-    } else if (atIndex.length === 0) {
+    } else if (atIndex?.length === 0) {
       message.error("Please set loop for the campaign");
       return false;
     } else if (screenIds.length === 0) {

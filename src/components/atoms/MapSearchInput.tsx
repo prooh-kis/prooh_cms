@@ -66,7 +66,7 @@ export function MapSearchInput(props: any) {
         limit: 1,
       })
       .send();
-    if (response.body.features.length > 0) {
+    if (response.body.features?.length > 0) {
       // const location = response.body.features[0].center;
       setSuggestions([]);
       props?.handleClick(response.body.features);
@@ -146,7 +146,7 @@ export function MapSearchInput(props: any) {
   );
 
   useEffect(() => {
-    if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
+    if (highlightedIndex >= 0 && highlightedIndex < suggestions?.length) {
       setQuery(suggestions[highlightedIndex].place_name);
     }
   }, [highlightedIndex, suggestions]);

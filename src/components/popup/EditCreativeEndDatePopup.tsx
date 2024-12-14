@@ -277,7 +277,7 @@ export function EditCreativeEndDatePopup({
                       creativesMedia?.map((f: any, k: any) => (
                         <div key={k} className="h-[45vh] overflow-auto">
                           {Object.keys(f)
-                            .filter((c: any) => c !== "network")
+                            ?.filter((c: any) => c !== "network")
                             ?.map((m: any, i: any) => (
                               <div key={i}>
                                 <h1 className="text-[12px] font-semibold border-b">
@@ -285,7 +285,7 @@ export function EditCreativeEndDatePopup({
                                 </h1>
 
                                 {Object.keys(f[m])
-                                  .filter((c: any) => c !== "network")
+                                  ?.filter((c: any) => c !== "network")
                                   ?.map((g: any, j: any) => (
                                     <div key={j} className="py-2">
                                       <h1 className="text-[10px] py-1">

@@ -55,7 +55,7 @@ export const Menu = (props: any) => {
           onMouseLeave={() => setIsOpen(false)} // Close dropdown on mouse leave
           className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 font-bold text-lg text-black-1000"
         >
-          {arr.map((data: any, index: any) => (
+          {arr?.map((data: any, index: any) => (
             <div
               key={index}
               onClick={() => {

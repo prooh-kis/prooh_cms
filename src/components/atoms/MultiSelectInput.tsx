@@ -17,29 +17,29 @@ export const MultiSelectInput: React.FC<{
 
   const toggleOption = (value: string) => {
     const newValue = selectedOptions.includes(value)
-      ? selectedOptions.filter((option: string) => option !== value)
+      ? selectedOptions?.filter((option: string) => option !== value)
       : [...selectedOptions, value];
     setSelectedOptions(newValue);
   };
 
-  const filteredOptions = options.filter((option) =>
+  const filteredOptions = options?.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const isAllSelected =
-    filteredOptions.length > 0 &&
+    filteredOptions?.length > 0 &&
     filteredOptions.every((option) => selectedOptions.includes(option.value));
 
   const toggleSelectAll = () => {
     if (isAllSelected) {
-      const remaining = selectedOptions.filter(
-        (value) => !filteredOptions.map((opt) => opt.value).includes(value)
+      const remaining = selectedOptions?.filter(
+        (value) => !filteredOptions?.map((opt) => opt.value).includes(value)
       );
       setSelectedOptions(remaining);
     } else {
       const combined = new Set([
         ...selectedOptions,
-        ...filteredOptions.map((opt) => opt.value),
+        ...filteredOptions?.map((opt) => opt.value),
       ]);
       setSelectedOptions(Array.from(combined));
     }
@@ -88,7 +88,7 @@ export const MultiSelectInput: React.FC<{
           {/* Options List */}
           <ul className="max-h-60 overflow-y-auto">
             {/* Select All Checkbox */}
-            {filteredOptions.length > 0 && (
+            {filteredOptions?.length > 0 && (
               <li className="p-2">
                 <label className="flex items-center space-x-2 text-sm">
                   <input
@@ -103,8 +103,8 @@ export const MultiSelectInput: React.FC<{
             )}
 
             {/* Individual Options */}
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
+            {filteredOptions?.length > 0 ? (
+              filteredOptions?.map((option) => (
                 <li key={option.value} className="p-2">
                   <label className="flex items-center space-x-2 text-sm">
                     <input

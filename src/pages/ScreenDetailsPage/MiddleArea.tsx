@@ -212,7 +212,7 @@ export const MiddleArea: React.FC = () => {
   };
 
   const changeCampaignStatusHandler = ({ campaignIds, status }: any) => {
-    if (confirm(`${campaignIds.length} campaigns are being ${status}`)) {
+    if (confirm(`${campaignIds?.length} campaigns are being ${status}`)) {
       // console.log(campaignIds)
       dispatch(
         changeCampaignStatusAction({
@@ -248,7 +248,7 @@ export const MiddleArea: React.FC = () => {
     dispatch(
       getScreenCampaignsDetailsAction({
         screenId: screenId,
-        status: campaignTypeTabs.filter((tab: any) => tab.id === status)[0]
+        status: campaignTypeTabs?.filter((tab: any) => tab.id === status)[0]
           .value,
       })
     );
@@ -391,7 +391,7 @@ export const MiddleArea: React.FC = () => {
                     loading={false}
                     loadingText="Saving..."
                   />
-                  {campaignIds.length > 0 && (
+                  {campaignIds?.length > 0 && (
                     <div className="flex items-center gap-4">
                       <div
                         className="text-gray-500 hover:text-blue-500"

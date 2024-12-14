@@ -116,7 +116,7 @@ export function UploadMonitoringPicturesPopup({
   };
 
   const validateForm = () => {
-    if (mediaFiles.length === 0) {
+    if (mediaFiles?.length === 0) {
       message.error("Please enter a monitoring media to continue");
       return false;
       // } else if (network === "") {
@@ -255,7 +255,7 @@ export function UploadMonitoringPicturesPopup({
             </h2>
           </div>
           <div className="px-2 relative overflow-auto max-h-auto">
-            {mediaFiles.length === 0 && (
+            {mediaFiles?.length === 0 && (
               <div className="py-2">
                 <MultipleFileUploader
                   handleFilesUploader={handleFilesUploader}
@@ -265,7 +265,7 @@ export function UploadMonitoringPicturesPopup({
               </div>
             )}
 
-            {mediaFiles.length > 0 && (
+            {mediaFiles?.length > 0 && (
               <div>
                 <div className="flex fle-row justify-between">
                   <p className="py-1">Uploaded media</p>

@@ -215,7 +215,7 @@ export const MiddleArea: React.FC = () => {
     if (confirm(confirmData[status])) {
       let data = campaignCreated?.campaigns
         ?.filter((campaign: any) => campaign.screenId == screenId)
-        .map((campaign: any) => campaign._id);
+        ?.map((campaign: any) => campaign._id);
       if (data?.length > 0) {
         dispatch(
           changeCampaignStatusAction({
