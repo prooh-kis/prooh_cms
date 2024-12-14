@@ -10,6 +10,7 @@ import {
   USER_SIGNUP_RESET,
 } from "../../constants/userConstants";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
+import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
 
 export function MiddleArea(props: any) {
   const [option, setOption] = useState<string>("signin");
@@ -84,6 +85,7 @@ export function MiddleArea(props: any) {
     dispatch({ type: USER_SIGNOUT });
     if (validateSignIn()) {
       dispatch(signin(email, password));
+      dispatch(getAllBrandAndNetworkAction());
     }
   };
   // auth

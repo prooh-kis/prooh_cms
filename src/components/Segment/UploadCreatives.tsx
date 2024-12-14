@@ -8,7 +8,10 @@ import {
 import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { CAMPAIGN_CREATION_STATUS, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import {
+  CAMPAIGN_CREATION_STATUS,
+  FULL_CAMPAIGN_PLAN,
+} from "../../constants/localStorageConstants";
 import {
   createCampaignCreationByScreenOwnerAction,
   editCampaignCreationByScreenOwnerAction,
@@ -21,9 +24,13 @@ import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBuck
 import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { ShowMediaPopup } from "../popup/ShowMediaPopup";
-import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET, EDIT_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
+import {
+  CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+  EDIT_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+} from "../../constants/campaignConstants";
 import axios from "axios";
 import { getCreativesMediaAction } from "../../actions/creativeAction";
+import SearchInputField from "../../components/molecules/SearchInputField";
 
 interface UploadCreativesProps {
   userInfo?: any;
@@ -33,8 +40,8 @@ interface UploadCreativesProps {
   successCampaignsCreations?: any;
   campaignsCreated?: any;
   loadingCampaignsCreations?: any;
-  successCampaignsEdit ?: any ,
-  loadingCampaignsEdit ?: any
+  successCampaignsEdit?: any;
+  loadingCampaignsEdit?: any;
 }
 
 interface SingleFile {
@@ -67,8 +74,8 @@ export const UploadCreatives = ({
   campaignId,
   successCampaignsCreations,
   loadingCampaignsCreations,
-  successCampaignsEdit ,
-  loadingCampaignsEdit
+  successCampaignsEdit,
+  loadingCampaignsEdit,
 }: UploadCreativesProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
@@ -79,7 +86,8 @@ export const UploadCreatives = ({
 
   const [selectedScreens, setSelectedScreens] = useState<any>([]);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
-  const [clearCreatives , setClearCreatives] = useState(true)
+  const [clearCreatives, setClearCreatives] = useState(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [brandName, setBrandName] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName
@@ -97,15 +105,6 @@ export const UploadCreatives = ({
     data: screenDataUploadCreative,
   } = screenDataUploadCreativeGet;
 
-  const validateForm = () => {
-    if ("") {
-      message.error("Please enter campaign name");
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   const screenOptions = state?.screens?.map((screen: any) => {
     return {
       value: screen?._id,
@@ -116,6 +115,7 @@ export const UploadCreatives = ({
   const closePopup = () => {
     setIsBucketPopupOpen(false);
     setOpenShowMedia(null);
+    setSelectedScreens([]);
   };
 
   const handleSetOpenBucketModel = () => {
@@ -135,16 +135,17 @@ export const UploadCreatives = ({
         JSON.stringify(creativesFromStorage)
       );
 
-      const campaignCreationStatus = getDataFromLocalStorage(CAMPAIGN_CREATION_STATUS)
-      if ( campaignCreationStatus === "edit" ){
+      const campaignCreationStatus = getDataFromLocalStorage(
+        CAMPAIGN_CREATION_STATUS
+      );
+      if (campaignCreationStatus === "edit") {
         dispatch(
           editCampaignCreationByScreenOwnerAction({
             id: campaignId,
             creatives: immutableCreatives,
           })
         );
-      }
-      else{
+      } else {
         dispatch(
           createCampaignCreationByScreenOwnerAction({
             pageName: "Upload Creatives",
@@ -186,17 +187,16 @@ export const UploadCreatives = ({
       message.success("Campaign saved successfully");
       // navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
     }
-    if ( successCampaignsEdit ){
+    if (successCampaignsEdit) {
       dispatch({
         type: EDIT_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
       message.success("Creatives Edited successfully");
-    }  
-    if ( clearCreatives ){
-      setClearCreatives(false)
-      var data = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
-      data[campaignId ? campaignId : ""].creatives = []
-      console.log(data[campaignId ? campaignId : ""])
+    }
+    if (clearCreatives) {
+      setClearCreatives(false);
+      var data = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN);
+      data[campaignId ? campaignId : ""].creatives = [];
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
   }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
@@ -209,7 +209,7 @@ export const UploadCreatives = ({
   useEffect(() => {
     if (screenDataUploadCreative) {
       setScreenCreativeUpload(screenDataUploadCreative);
-    }  
+    }
   }, [screenDataUploadCreative]);
 
   const getUploadedScreensNumber = () => {
@@ -318,12 +318,10 @@ export const UploadCreatives = ({
                   height="h-8"
                   width="w-30"
                   textSize="text-[12px]"
-                  loading={loadingCampaignsCreations || loadingCampaignsEdit }
-                  loadingText={ "Saving Creatives"}
+                  loading={loadingCampaignsCreations || loadingCampaignsEdit}
+                  loadingText={"Saving Creatives"}
                   action={() => {
-                    if (validateForm()) {
-                      saveCampaignCreativesDetails();
-                    }
+                    saveCampaignCreativesDetails();
                   }}
                 />
               )}
@@ -376,8 +374,13 @@ export const UploadCreatives = ({
         <div className="col-span-12 border rounded-[12px] py-2 px-4">
           <div className="flex justify-between items-center border-b py-1">
             <div className="flex justify-start gap-2">
-              {/* <h1 className="text text-[12px] font-semibold">All Network</h1>
-              <i className="fi fi-sr-angle-small-down text-[#7C8E9B] flex items-center"></i> */}
+              <div className="py-2 px-4">
+                <SearchInputField
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Search screen by screen ratio"
+                />
+              </div>
             </div>
             <div className="flex justify-end items-center gap-4 pb-1">
               <h1 className="text-[12px] font-semibold">
@@ -398,9 +401,7 @@ export const UploadCreatives = ({
               <i
                 className="fi fi-br-disk flex items-center text-blue-500"
                 onClick={() => {
-                  if (validateForm()) {
-                    saveCampaignCreativesDetails();
-                  }
+                  saveCampaignCreativesDetails();
                 }}
               ></i>
             </div>
@@ -419,6 +420,7 @@ export const UploadCreatives = ({
                     handleScreenSelection={handleScreenSelection}
                     selectedScreens={selectedScreens}
                     campaignId={campaignId}
+                    searchQuery={searchQuery}
                   />
                 </div>
               </div>

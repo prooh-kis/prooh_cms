@@ -1,4 +1,3 @@
-
 import Axios from "axios";
 // import { logoutAfterTimeOut } from "../utils/utilityFunctions";
 import {
@@ -27,7 +26,7 @@ import { login, logout } from "../store/authSlice";
 import { removeDispatchData } from "../utils/dispatchUtils";
 import { removeAllKeyFromLocalStorage } from "../utils/localStorageUtils";
 
-const USER_URL = `${process.env.REACT_APP_PROOH_SERVER}/api/v1/users`;
+import { userV1 } from "../constants/urlConsent";
 
 export const signup = (reqBody) => async (dispatch) => {
   dispatch({
@@ -35,7 +34,7 @@ export const signup = (reqBody) => async (dispatch) => {
     payload: reqBody,
   });
   try {
-    const { data } = await Axios.post(`${USER_URL}/signup`, reqBody);
+    const { data } = await Axios.post(`${userV1}/signup`, reqBody);
     dispatch({
       type: USER_SIGNUP_SUCCESS,
       payload: data,
@@ -70,7 +69,7 @@ export const createUser = (reqBody) => async (dispatch, getState) => {
       auth: { userInfo },
     } = getState();
 
-    const { data } = await Axios.post(`${USER_URL}/create`, reqBody, {
+    const { data } = await Axios.post(`${userV1}/create`, reqBody, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
     dispatch({
@@ -94,7 +93,7 @@ export const signin = (email, password) => async (dispatch) => {
     payload: { email, password },
   });
   try {
-    const { data } = await Axios.post(`${USER_URL}/signin`, {
+    const { data } = await Axios.post(`${userV1}/signin`, {
       email,
       password,
     });
@@ -141,7 +140,7 @@ export const userEmailVerification = (token) => async (dispatch) => {
     payload: { token },
   });
   try {
-    const { data } = await Axios.get(`${USER_URL}/verify/email?token=${token}`);
+    const { data } = await Axios.get(`${userV1}/verify/email?token=${token}`);
     dispatch({
       type: USER_EMAIL_VERIFICATION_SUCCESS,
       payload: data,
@@ -176,7 +175,7 @@ export const sendEmailToResetPassword = (email) => async (dispatch) => {
     payload: { email },
   });
   try {
-    const { data } = await Axios.get(`${USER_URL}/sendEmail?email=${email}`);
+    const { data } = await Axios.get(`${userV1}/sendEmail?email=${email}`);
     dispatch({
       type: SEND_EMAIL_TO_RESET_PASSWORD_SUCCESS,
       payload: data,
@@ -199,7 +198,7 @@ export const updateUserPassword =
       payload: { email, password },
     });
     try {
-      const { data } = await Axios.put(`${USER_URL}/updatePassword`, {
+      const { data } = await Axios.put(`${userV1}/updatePassword`, {
         email,
         password,
       });
@@ -227,7 +226,7 @@ export const googleSignupSignin =
       payload: { name, email, avatar },
     });
     try {
-      const { data } = await Axios.post(`${USER_URL}/googleSignupSignin`, {
+      const { data } = await Axios.post(`${userV1}/googleSignupSignin`, {
         name,
         email,
         avatar,
@@ -256,56 +255,64 @@ export const googleSignupSignin =
     }
   };
 
-export const sendEmailForConfirmation = (formData) => async (dispatch, getState) => {
-  dispatch({
-    type: SEND_EMAIL_FOR_CONFIRMATION_REQUEST,
-    // payload: ,
-  });
-  try {
+export const sendEmailForConfirmation =
+  (formData) => async (dispatch, getState) => {
+    dispatch({
+      type: SEND_EMAIL_FOR_CONFIRMATION_REQUEST,
+      // payload: ,
+    });
+    try {
+      const { data } = await Axios.post(
+        `${userV1}/sendEmailForConfirmation`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      dispatch({
+        type: SEND_EMAIL_FOR_CONFIRMATION_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SEND_EMAIL_FOR_CONFIRMATION_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
-    const { data } = await Axios.post(`${USER_URL}/sendEmailForConfirmation`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      }
-    });
+export const sendEmailForVendorConfirmation =
+  (emailData) => async (dispatch, getState) => {
     dispatch({
-      type: SEND_EMAIL_FOR_CONFIRMATION_SUCCESS,
-      payload: data,
+      type: SEND_EMAIL_FOR_VENDOR_CONFIRMATION_REQUEST,
+      // payload: ,
     });
-  } catch (error) {
-    dispatch({
-      type: SEND_EMAIL_FOR_CONFIRMATION_ERROR,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-}
-
-export const sendEmailForVendorConfirmation = (emailData) => async (dispatch, getState) => {
-  dispatch({
-    type: SEND_EMAIL_FOR_VENDOR_CONFIRMATION_REQUEST,
-    // payload: ,
-  });
-  try {
-
-    const { data } = await Axios.post(`${USER_URL}/sendEmailForVendorConfirmation`, emailData, {
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
-    dispatch({
-      type: SEND_EMAIL_FOR_VENDOR_CONFIRMATION_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-}
+    try {
+      const { data } = await Axios.post(
+        `${userV1}/sendEmailForVendorConfirmation`,
+        emailData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      dispatch({
+        type: SEND_EMAIL_FOR_VENDOR_CONFIRMATION_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

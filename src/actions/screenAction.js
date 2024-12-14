@@ -37,10 +37,7 @@ import {
   GET_SCREEN_CAMPAIGN_MONITORING_SUCCESS,
   GET_SCREEN_CAMPAIGN_MONITORING_FAIL,
 } from "../constants/screenConstants";
-
-const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
-const url2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns`;
-const url3 = `${process.env.REACT_APP_PROOH_SERVER}/api/v1/analytics`;
+import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
 export const getAllScreensDetailsAction =
   ({ userId }) =>
@@ -50,7 +47,7 @@ export const getAllScreensDetailsAction =
       payload: userId,
     });
     try {
-      const { data } = await axios.post(`${url}/all`, { userId });
+      const { data } = await axios.post(`${screenV2}/all`, { userId });
       dispatch({
         type: GET_ALL_SCREENS_DATA_SUCCESS,
         payload: data,
@@ -74,7 +71,9 @@ export const getScreenDetailsAction =
       payload: screenId,
     });
     try {
-      const { data } = await axios.post(`${url}/screenDetails`, { screenId });
+      const { data } = await axios.post(`${screenV2}/screenDetails`, {
+        screenId,
+      });
       dispatch({
         type: GET_SCREEN_DATA_SUCCESS,
         payload: data,
@@ -98,7 +97,7 @@ export const getScreenCampaignsDetailsAction =
       payload: { screenId, status },
     });
     try {
-      const { data } = await axios.post(`${url}/screenCampaignsDetails`, {
+      const { data } = await axios.post(`${screenV2}/screenCampaignsDetails`, {
         screenId,
         status,
       });
@@ -123,7 +122,7 @@ export const setCampaignsLoopForScreenAction = (input) => async (dispatch) => {
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${url2}/changeLoopIndex`, input);
+    const { data } = await axios.post(`${campaignV2}/changeLoopIndex`, input);
     dispatch({
       type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS,
       payload: data,
@@ -146,7 +145,10 @@ export const editCampaignCreativesEndDateAction =
       payload: input,
     });
     try {
-      const { data } = await axios.post(`${url2}/changeDateAndCreative`, input);
+      const { data } = await axios.post(
+        `${campaignV2}/changeDateAndCreative`,
+        input
+      );
       dispatch({
         type: EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS,
         payload: data,
@@ -171,7 +173,7 @@ export const screenCampaignsMonitoringAction =
     });
     try {
       const { data } = await axios.post(
-        `${url2}/addCampaignMonitoringData`,
+        `${campaignV2}/addCampaignMonitoringData`,
         input
       );
       dispatch({
@@ -197,7 +199,7 @@ export const getScreenCampaignsMonitoringAction =
     });
     try {
       const { data } = await axios.get(
-        `${url2}/getCampaignMonitoringData?screenId=${input?.screenId}&campaignId=${input?.campaignId}&date=${input?.date}`
+        `${campaignV2}/getCampaignMonitoringData?screenId=${input?.screenId}&campaignId=${input?.campaignId}&date=${input?.date}`
       );
       dispatch({
         type: GET_SCREEN_CAMPAIGN_MONITORING_SUCCESS,
@@ -220,7 +222,7 @@ export const screenCodeChangeAction = (input) => async (dispatch, getState) => {
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${url}/changeScreenCode`, input);
+    const { data } = await axios.post(`${screenV2}/changeScreenCode`, input);
     dispatch({
       type: SCREEN_CODE_CHANGE_SUCCESS,
       payload: data,
@@ -242,7 +244,7 @@ export const screenRefreshAction = (input) => async (dispatch, getState) => {
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${url}/restartScreen`, input);
+    const { data } = await axios.post(`${screenV2}/restartScreen`, input);
     dispatch({
       type: SCREEN_REFRESH_SUCCESS,
       payload: data,
@@ -266,7 +268,7 @@ export const screenDataUpdateRedisAction =
       payload: { ids },
     });
     try {
-      const { data } = await axios.post(`${url}/updateRedisData`, { ids });
+      const { data } = await axios.post(`${screenV2}/updateRedisData`, { ids });
       dispatch({
         type: UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS,
         payload: data,
@@ -291,7 +293,7 @@ export const getScreenLogsAction =
     });
     try {
       const { data } = await axios.get(
-        `${url3}/getScreenlogs?screenId=${screenId}&start=${start}&limit=${limit}?`
+        `${analyticsV1}/getScreenlogs?screenId=${screenId}&start=${start}&limit=${limit}?`
       );
       dispatch({
         type: GET_SCREEN_LOGS_SUCCESS,
@@ -315,7 +317,10 @@ export const changeDefaultScreenMedia =
       payload: input,
     });
     try {
-      const { data } = await axios.post(`${url2}/addDefaultCampaign`, input);
+      const { data } = await axios.post(
+        `${campaignV2}/addDefaultCampaign`,
+        input
+      );
       dispatch({
         type: CHANGE_DEFAULT_SCREEN_MEDIA_SUCCESS,
         payload: data,

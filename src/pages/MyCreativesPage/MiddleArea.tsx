@@ -1,13 +1,18 @@
 import { message, Tooltip } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading } from "../../components/Loading";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
-import { getCreativesMediaAction } from "../../actions/creativeAction";
+import {
+  getAllBrandAndNetworkAction,
+  getCreativesMediaAction,
+} from "../../actions/creativeAction";
 import { UploadCreativesV2Popup } from "../../components/popup/UploadCreativesV2Popup";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { DropdownInput } from "../../components/atoms/DropdownInput";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
+import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
+import { ALL_BRAND_LIST } from "../../constants/localStorageConstants";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -71,14 +76,12 @@ export const MiddleArea: React.FC = () => {
                           />
                         </div>
                         <div className="p-1">
-                          <Tooltip
-                            title={`${l?.creativeName?.toUpperCase()}`}
-                          >
+                          <Tooltip title={`${l?.creativeName?.toUpperCase()}`}>
                             <h1 className="text-[12px] truncate">
                               {l?.creativeName?.toUpperCase()}
                             </h1>
                           </Tooltip>
-                
+
                           <div className="flex gap-1 items-center truncate">
                             <h1 className="text-[12px]">
                               {l?.extension?.split("/")[1]},
@@ -104,6 +107,13 @@ export const MiddleArea: React.FC = () => {
     }
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   }, [dispatch, userInfo]);
+
+  useEffect(() => {
+    if (getDataFromLocalStorage(ALL_BRAND_LIST)) {
+    } else {
+      dispatch(getAllBrandAndNetworkAction());
+    }
+  }, []);
 
   return (
     <div className="mt-8 w-full h-full pb-5">

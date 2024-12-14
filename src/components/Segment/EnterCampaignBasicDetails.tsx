@@ -11,6 +11,7 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ALL_BRAND_LIST,
   ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER,
   FULL_CAMPAIGN_PLAN,
 } from "../../constants/localStorageConstants";
@@ -19,7 +20,12 @@ import {
   getAllScreensForScreenOwnerCampaignCreationAction,
 } from "../../actions/campaignAction";
 import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
-import { MultiSelectInput, SwitchInput } from "../../components";
+import {
+  MultiSelectInput,
+  SearchableSelect,
+  SwitchInput,
+} from "../../components";
+import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
 
 interface EnterCampaignBasicDetailsProps {
   userInfo?: any;
@@ -178,12 +184,12 @@ export const EnterCampaignBasicDetails = ({
           atIndex: atIndex,
           screenIds: screenIds,
           creatives: [],
-          triggers : {
-            timeTriggers : [],
-            weatherTriggers : [],
-            sportsTriggers : [],
-            vacantSlots : []
-          }
+          triggers: {
+            timeTriggers: [],
+            weatherTriggers: [],
+            sportsTriggers: [],
+            vacantSlots: [],
+          },
         })
       );
     } else {
@@ -207,12 +213,12 @@ export const EnterCampaignBasicDetails = ({
           atIndex: atIndex,
           screenIds: screenIds,
           creatives: [],
-          triggers : {
-            timeTriggers : [],
-            weatherTriggers : [],
-            sportsTriggers : [],
-            vacantSlots : []
-          }
+          triggers: {
+            timeTriggers: [],
+            weatherTriggers: [],
+            sportsTriggers: [],
+            vacantSlots: [],
+          },
         })
       );
     }
@@ -269,6 +275,13 @@ export const EnterCampaignBasicDetails = ({
     step,
   ]);
 
+  useEffect(() => {
+    if (getDataFromLocalStorage(ALL_BRAND_LIST)) {
+    } else {
+      dispatch(getAllBrandAndNetworkAction());
+    }
+  }, []);
+
   const handleScreenSelection = (screens: any) => {
     setScreenIds(screens);
   };
@@ -287,6 +300,7 @@ export const EnterCampaignBasicDetails = ({
     if (isEnabled) setAtIndex(index);
     else message.error("please enable set screen priority");
   };
+
   return (
     <div className="w-full py-3">
       <div className="">
@@ -315,11 +329,14 @@ export const EnterCampaignBasicDetails = ({
               <label className="block text-secondaryText text-[14px] mb-2">
                 Brand Name
               </label>
-              <PrimaryInput
-                inputType="text"
-                placeholder="Brand Name"
-                value={brandName.toUpperCase()}
-                action={setBrandName}
+              <SearchableSelect
+                onChange={(value: string) => setBrandName(value?.toUpperCase())}
+                options={getDataFromLocalStorage(ALL_BRAND_LIST).map(
+                  (value: string) => {
+                    return { label: value, value: value };
+                  }
+                )}
+                placeholder="Search by brand Name"
               />
             </div>
           </div>
@@ -471,7 +488,16 @@ export const EnterCampaignBasicDetails = ({
             </div>
           </div>
           <div className="border rounded-[12px]">
-            <h1 className="my-2 px-2 text-[14px]">Screens</h1>
+            <div className="flex justify-between">
+              <h1 className="my-2 px-2 text-[14px]">Screens</h1>
+              <button
+                className="text-[12px] px-2"
+                onClick={() => setScreenIds([])}
+              >
+                Clear All
+              </button>
+            </div>
+
             <div className="grid grid-cols-2 gap-2 justify-center px-1 py-1">
               {getDataFromLocalStorage(
                 ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER

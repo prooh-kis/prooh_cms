@@ -29,8 +29,7 @@ import {
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_SUCCESS,
 } from "../constants/campaignConstants";
 
-const url = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/campaigns`;
-const url2 = `${process.env.REACT_APP_PROOH_SERVER}/api/v2/screens`;
+import { campaignV2, screenV2 } from "../constants/urlConsent";
 
 export const createCampaignCreationByScreenOwnerAction =
   (input) => async (dispatch) => {
@@ -40,7 +39,7 @@ export const createCampaignCreationByScreenOwnerAction =
     });
     try {
       const { data } = await axios.post(
-        `${url}/createCampaignByScreenOwner`,
+        `${campaignV2}/createCampaignByScreenOwner`,
         input
       );
 
@@ -67,7 +66,7 @@ export const editCampaignCreationByScreenOwnerAction =
     });
     try {
       const { data } = await axios.post(
-        `${url}/editCampaignByScreenOwner`,
+        `${campaignV2}/editCampaignByScreenOwner`,
         input
       );
 
@@ -92,7 +91,9 @@ export const getAllScreensForScreenOwnerCampaignCreationAction =
       type: GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_REQUEST,
     });
     try {
-      const { data } = await axios.get(`${url}/getAllScreensForScreenOwner`);
+      const { data } = await axios.get(
+        `${campaignV2}/getAllScreensForScreenOwner`
+      );
 
       dispatch({
         type: GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_SUCCESS,
@@ -111,108 +112,106 @@ export const getAllScreensForScreenOwnerCampaignCreationAction =
 
 export const getScreenDataUploadCreativeAction =
   ({ id }) =>
-    async (dispatch, getState) => {
-      dispatch({
-        type: GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
-        payload: { id },
-      });
-      try {
-        const { data } = await axios.post(
-          `${url2}/screenDataUploadCreativeForCms`,
-          { id }
-        );
+  async (dispatch, getState) => {
+    dispatch({
+      type: GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
+      payload: { id },
+    });
+    try {
+      const { data } = await axios.post(
+        `${screenV2}/screenDataUploadCreativeForCms`,
+        { id }
+      );
 
-        dispatch({
-          type: GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
-
-export const getAllCampaignsDetailsAction =
-  (input) =>
-    async (dispatch) => {
       dispatch({
-        type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
-        payload: input,
+        type: GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
+        payload: data,
       });
-      try {
-        const { data } = await axios.post(`${url}/all`, input);
-        dispatch({
-          type: GET_ALL_CAMPAIGNS_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_ALL_CAMPAIGNS_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const getAllCampaignsDetailsAction = (input) => async (dispatch) => {
+  dispatch({
+    type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
+    payload: input,
+  });
+  try {
+    const { data } = await axios.post(`${campaignV2}/all`, input);
+    dispatch({
+      type: GET_ALL_CAMPAIGNS_DATA_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ALL_CAMPAIGNS_DATA_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 export const getCampaignDetailsAction =
   ({ campaignId }) =>
-    async (dispatch) => {
-      dispatch({
-        type: GET_CAMPAIGN_DATA_REQUEST,
-        payload: campaignId,
+  async (dispatch) => {
+    dispatch({
+      type: GET_CAMPAIGN_DATA_REQUEST,
+      payload: campaignId,
+    });
+    try {
+      const { data } = await axios.post(`${campaignV2}/campaignDetails`, {
+        campaignId,
       });
-      try {
-        const { data } = await axios.post(`${url}/campaignDetails`, {
-          campaignId,
-        });
-        dispatch({
-          type: GET_CAMPAIGN_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_CAMPAIGN_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+      dispatch({
+        type: GET_CAMPAIGN_DATA_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGN_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const getCampaignCreatedScreensDetailsAction =
   ({ screenIds }) =>
-    async (dispatch) => {
+  async (dispatch) => {
+    dispatch({
+      type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
+      payload: { screenIds },
+    });
+    try {
+      const { data } = await axios.post(
+        `${campaignV2}/campaignCreatedScreensDetails`,
+        { screenIds }
+      );
       dispatch({
-        type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
-        payload: { screenIds },
+        type: GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
+        payload: data,
       });
-      try {
-        const { data } = await axios.post(
-          `${url}/campaignCreatedScreensDetails`,
-          { screenIds }
-        );
-        dispatch({
-          type: GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const changeCampaignStatusAction = (input) => async (dispatch) => {
   dispatch({
@@ -220,7 +219,10 @@ export const changeCampaignStatusAction = (input) => async (dispatch) => {
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${url}/changeCampaignStatus`, input);
+    const { data } = await axios.post(
+      `${campaignV2}/changeCampaignStatus`,
+      input
+    );
     dispatch({
       type: CAMPAIGN_STATUS_CHANGE_SUCCESS,
       payload: data,
@@ -243,7 +245,7 @@ export const editAllSubCampaignsAction = (input) => async (dispatch) => {
   });
   try {
     const { data } = await axios.put(
-      `${url}/updateCampaignCreationAndItsAllSubCampaigns`,
+      `${campaignV2}/updateCampaignCreationAndItsAllSubCampaigns`,
       input
     );
     dispatch({

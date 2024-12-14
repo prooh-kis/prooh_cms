@@ -25,6 +25,7 @@ import {
 import {
   creativesMediaGetReducer,
   creativesMediaUploadReducer,
+  getAllBrandAndNetworkReducer,
 } from "../reducers/creativeReducers";
 import {
   allScreensDataGetReducer,
@@ -70,7 +71,7 @@ const store = configureStore({
     screenDataUploadCreativeGet: screenDataUploadCreativeGetReducer,
 
     // edit campaign creation by screen owner
-    editCampaignCreationByScreenOwner : editCampaignCreationByScreenOwnerReducer,
+    editCampaignCreationByScreenOwner: editCampaignCreationByScreenOwnerReducer,
 
     // Campaigns
     allCampaignsDataGet: allCampaignsDataGetReducer,
@@ -81,6 +82,7 @@ const store = configureStore({
     // creative
     creativesMediaUpload: creativesMediaUploadReducer,
     creativesMediaGet: creativesMediaGetReducer,
+    getAllBrandAndNetwork: getAllBrandAndNetworkReducer,
 
     // Screens
     allScreensDataGet: allScreensDataGetReducer,

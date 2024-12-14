@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { message } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import { uploadCreativesMediaAction } from "../../actions/creativeAction";
-import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import { useLocation } from "react-router-dom";
 import {
   getImageResolution,
@@ -16,6 +15,12 @@ import {
 import { getAWSUrlToUploadFile, saveFileOnAWS } from "../../utils/awsUtils";
 import { MultipleFileUploader } from "../../components/molecules/MultipleFileUploader";
 import { UPLOAD_CREATIVES_RESET } from "../../constants/creativeConstants";
+import { SuggestionInput } from "../../components/atoms/SuggestionInput";
+import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
+import {
+  ALL_BRAND_LIST,
+  ALL_NETWORK_LIST,
+} from "../../constants/localStorageConstants";
 
 interface UploadCreativesV2PopupProps {
   onClose?: any;
@@ -84,6 +89,7 @@ export function UploadCreativesV2Popup({
       setNetwork("");
       setLoading(false);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
+      onClose();
     }
   }, [dispatch, successUpload, errorUpload]);
 
@@ -232,19 +238,19 @@ export function UploadCreativesV2Popup({
           </div>
           <div className="p-2">
             <div className="py-1">
-              <PrimaryInput
-                inputType="text"
-                placeholder="brand"
-                value={brandName}
-                action={setBrandName}
+              <SuggestionInput
+                suggestions={getDataFromLocalStorage(ALL_BRAND_LIST)}
+                onChange={(value: string) => setBrandName(value?.toUpperCase())}
+                value={brandName || ""}
+                placeholder="Brand Name"
               />
             </div>
             <div className="py-1">
-              <PrimaryInput
-                inputType="text"
-                placeholder="network"
-                value={network}
-                action={setNetwork}
+              <SuggestionInput
+                suggestions={getDataFromLocalStorage(ALL_NETWORK_LIST)}
+                onChange={(value: string) => setNetwork(value)}
+                value={network || ""}
+                placeholder="Network"
               />
             </div>
           </div>

@@ -20,7 +20,6 @@ export function ScreenView({
     } else {
       className += " text-blue-500";
     }
-    console.log("classname : ", className);
     return className;
   };
 

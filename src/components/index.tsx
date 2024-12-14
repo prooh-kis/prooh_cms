@@ -11,6 +11,9 @@ export { SwitchInput } from "./atoms/SwitchInput";
 export { PrimaryButton } from "./atoms/PrimaryButton";
 export { DropdownInput } from "./atoms/DropdownInput";
 export { CalendarInput } from "./atoms/CalendarInput";
+export { SearchableSelect } from "./atoms/SearchableSelect";
+export { SuggestionInput } from "./atoms/SuggestionInput";
+export { ReloadButton } from "./atoms/ReloadButton";
 
 // molecules
 export { CampaignMonitoring } from "./molecules/CampaignMonitoring";

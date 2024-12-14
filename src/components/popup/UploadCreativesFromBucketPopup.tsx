@@ -14,6 +14,7 @@ import {
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
+import SearchInputField from "../../components/molecules/SearchInputField";
 
 interface UploadCreativesFromBucketPopupProps {
   onClose?: any;
@@ -41,6 +42,7 @@ export function UploadCreativesFromBucketPopup({
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
 
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const uniqueResolution = selectedScreens.reduce(
     (unique: any, screen: any) => {
@@ -110,6 +112,7 @@ export function UploadCreativesFromBucketPopup({
         url: item.awsURL,
         size: item.fileSize,
         _id: { $oid: item._id },
+        duration: item?.duration || 10,
       };
       dataToUpload.push(mediaData);
     });
@@ -138,9 +141,13 @@ export function UploadCreativesFromBucketPopup({
       const standardDayTimeCreatives: any = [
         ...(scr.standardDayTimeCreatives || []),
       ]; // Clone the array
+      let duration: number = 0;
 
       selectedScreenIds?.forEach((s: any) => {
         if (scr.screens?.some((sd: any) => sd.id === s)) {
+          duration = Math.max(
+            ...dataToUpload?.map((data: any) => parseInt(data.duration))
+          );
           dataToUpload.forEach((data: any) => {
             if (
               !standardDayTimeCreatives.some((f: any) => f.url === data.url)
@@ -158,7 +165,7 @@ export function UploadCreativesFromBucketPopup({
       creativeDataToUpload.push({
         screenResolution: scr.screenResolution,
         count: selectedScreenIds.length,
-        creativeDuration: parseInt(scr.creativeDuration, 10),
+        creativeDuration: duration,
         screenIds: selectedScreenIds,
         standardDayTimeCreatives: standardDayTimeCreatives,
         standardNightTimeCreatives: [],
@@ -295,6 +302,13 @@ export function UploadCreativesFromBucketPopup({
                     : uniqueResolution}
                 </h1>
               </div>
+              <div className="py-2 px-4">
+                <SearchInputField
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Search Creative by creative name"
+                />
+              </div>
               {uniqueResolution?.length > 1 && (
                 <h1 className="text-[10px] text-red-500">
                   Screens with different resolutions selected, please check and
@@ -346,57 +360,70 @@ export function UploadCreativesFromBucketPopup({
                                         Resolution: {g}
                                       </h1>
                                       <div className="grid grid-cols-3 gap-2">
-                                        {f?.[m]?.[g]?.map((l: any, y: any) => (
-                                          <div
-                                            key={y}
-                                            className="col-span-1 w-full border rounded"
-                                            onClick={() => {
-                                              setMediaFiles((prev: any) => {
-                                                if (
-                                                  mediaFiles
-                                                    ?.map(
-                                                      (file: any) => file._id
-                                                    )
-                                                    .includes(l._id)
-                                                ) {
-                                                  return mediaFiles?.filter(
-                                                    (file: any) =>
-                                                      file._id !== l._id
-                                                  );
-                                                } else {
-                                                  return [...prev, l];
-                                                }
-                                              });
-                                            }}
-                                          >
-                                            <div className="w-full">
-                                              <ShowMediaFile
-                                                url={l?.awsURL}
-                                                mediaType={l?.creativeType}
-                                                key={y}
-                                                height="h-full"
-                                                width="w-full"
-                                              />
-                                            </div>
-                                            <div className="p-1">
-                                              <Tooltip
-                                                title={`${l?.creativeName?.toUpperCase()}`}
-                                              >
-                                                <h1 className="text-[10px] truncate">
-                                                  {l?.creativeName?.toUpperCase()}
-                                                </h1>
-                                              </Tooltip>
-                                              <div className="flex gap-1 items-center truncate">
-                                                <h1 className="text-[12px] font-semibold">
-                                                  {l?.extension?.split("/")[1]},
-                                                </h1>
-                                                <h1 className="text-[12px] truncate">
-                                                  {l?.duration} seconds
-                                                </h1>
+                                        {f?.[m]?.[g]
+                                          ?.filter((l: any) =>
+                                            l?.creativeName
+                                              ?.toUpperCase()
+                                              .includes(
+                                                searchQuery?.toUpperCase()
+                                              )
+                                          )
+                                          ?.map((l: any, y: any) => (
+                                            <div
+                                              key={y}
+                                              className="col-span-1 w-full border rounded"
+                                              onClick={() => {
+                                                setMediaFiles((prev: any) => {
+                                                  if (
+                                                    mediaFiles
+                                                      ?.map(
+                                                        (file: any) => file._id
+                                                      )
+                                                      .includes(l._id)
+                                                  ) {
+                                                    return mediaFiles?.filter(
+                                                      (file: any) =>
+                                                        file._id !== l._id
+                                                    );
+                                                  } else {
+                                                    return [...prev, l];
+                                                  }
+                                                });
+                                              }}
+                                            >
+                                              <div className="w-full">
+                                                <ShowMediaFile
+                                                  url={l?.awsURL}
+                                                  mediaType={l?.creativeType}
+                                                  key={y}
+                                                  height="h-full"
+                                                  width="w-full"
+                                                />
+                                              </div>
+                                              <div className="p-1">
+                                                <Tooltip
+                                                  title={`${l?.creativeName?.toUpperCase()}`}
+                                                >
+                                                  <h1 className="text-[10px] truncate">
+                                                    {l?.creativeName?.toUpperCase()}
+                                                  </h1>
+                                                </Tooltip>
+                                                <div className="flex gap-1 items-center truncate">
+                                                  <h1 className="text-[12px] font-semibold">
+                                                    {
+                                                      l?.extension?.split(
+                                                        "/"
+                                                      )[1]
+                                                    }
+                                                    ,
+                                                  </h1>
+                                                  <h1 className="text-[12px] truncate">
+                                                    {l?.duration} seconds
+                                                  </h1>
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
-                                        ))}
+                                          ))}
                                       </div>
                                     </div>
                                   ))}

@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllScreensDetailsAction } from "../../actions/screenAction";
 import { ScreenListThumbnail } from "../../components/molecules/ScreenListThumbnail";
 import { Loading } from "../../components/Loading";
-import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
-import { ALL_SCREENS_LIST } from "../../constants/localStorageConstants";
-import { getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
-import SearchInputField from "../../components/molecules/SearchInputField";
+import { ReloadButton, SearchInputField } from "../../components";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -35,13 +32,19 @@ export const MiddleArea: React.FC = () => {
     if (!userInfo) {
       navigate("/auth");
     }
-    dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
+
+    if (!allScreens)
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
   }, [dispatch, userInfo]);
 
   // Handle card click, setting the clicked card's index
   const handleCardClick = (id: any) => {
     setSelectedCard(id);
     navigate(`/screens-details/${id}`);
+  };
+
+  const reLoad = () => {
+    dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
   };
 
   return (
@@ -51,16 +54,17 @@ export const MiddleArea: React.FC = () => {
           <Loading />
         ) : (
           <div className="">
-            <div className="w-[34vw] pb-4">
+            <div className="flex gap-4 w-[70vw] pb-4">
               <SearchInputField
                 value={searchText}
                 onChange={setSearchText}
                 placeholder="Search by screen name"
               />
+              <ReloadButton onClick={reLoad} />
             </div>
             <div className="flex gap-8 items-center flex-wrap">
-              {getDataFromLocalStorage(ALL_SCREENS_LIST)
-                ?.list?.filter((screen: any) =>
+              {allScreens
+                ?.filter((screen: any) =>
                   screen.screenName
                     .toLowerCase()
                     .includes(searchText?.toLowerCase())

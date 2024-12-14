@@ -41,8 +41,6 @@ export function EditCreativeEndDatePopup({
 
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
-  console.log("screenData : ", screenData);
-
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
@@ -110,7 +108,7 @@ export function EditCreativeEndDatePopup({
     const scrData = screenData?.filter((scr: any) =>
       scr.screens?.map((s: any) => s.id).includes(selectedScreenIds[0])
     )[0]; // for (const scr of screenData) {
-   
+
     const standardDayTimeCreatives: any = [
       ...(scrData.standardDayTimeCreatives || []),
     ]; // Clone the array
