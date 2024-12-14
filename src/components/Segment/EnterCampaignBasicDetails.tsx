@@ -331,7 +331,7 @@ export const EnterCampaignBasicDetails = ({
               </label>
               <SearchableSelect
                 onChange={(value: string) => setBrandName(value?.toUpperCase())}
-                options={getDataFromLocalStorage(ALL_BRAND_LIST).map(
+                options={getDataFromLocalStorage(ALL_BRAND_LIST)?.map(
                   (value: string) => {
                     return { label: value, value: value };
                   }
