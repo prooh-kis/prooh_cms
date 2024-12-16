@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import { message } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
-import { uploadCreativesMediaAction } from "../../actions/creativeAction";
+import { getAllBrandAndNetworkAction, uploadCreativesMediaAction } from "../../actions/creativeAction";
 import { useLocation } from "react-router-dom";
 import {
   getImageResolution,
@@ -89,6 +89,7 @@ export function UploadCreativesV2Popup({
       setNetwork("");
       setLoading(false);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
+      dispatch(getAllBrandAndNetworkAction());
       onClose();
     }
   }, [dispatch, successUpload, errorUpload]);
