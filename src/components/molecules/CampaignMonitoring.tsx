@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
-import { CalendarPopup, MonitoringPictures } from "../../components";
+import {
+  CalendarPopup,
+  MonitoringPictures,
+  NoDataView,
+} from "../../components";
 import { getAllDatesBetween } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "./TabWithoutIcon";
 import { campaignMonitoringTab } from "../../constants/tabDataConstant";
@@ -134,9 +138,7 @@ export const CampaignMonitoring = (props: any) => {
               Loading Data...., please wait
             </h1>
           ) : !screenCampaignMonitoring ? (
-            <h1 className="w-full py-1 px-4 border border-1 border-red-500 bg-red-100 text-[#000000] rounded-md mt-2">
-              No Data Available
-            </h1>
+            <NoDataView />
           ) : (
             <div>
               <TabWithoutIcon

@@ -13,12 +13,14 @@ import { DropdownInput } from "../../components/atoms/DropdownInput";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_BRAND_LIST } from "../../constants/localStorageConstants";
+import { NoDataView, SearchInputField } from "../../components";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
 
   const [creativeName, setCreativeName] = useState<any>("");
   const [networkChoice, setNetworkChoice] = useState<any>(0);
+  const [purpose, setPurpose] = useState<string>("New");
 
   const [resolution, setResolution] = useState<any>("");
 
@@ -44,6 +46,15 @@ export const MiddleArea: React.FC = () => {
     error: errorCreatives,
     data: creatives,
   } = creativesMediaGet;
+
+  const handleOpenCreateCreativePopup = (purpose: string) => {
+    if (purpose === "New") {
+      setBrandName("");
+      setNetwork("");
+    }
+    setPurpose(purpose);
+    setOpenCreateCreativePopup(true);
+  };
 
   const getJSXValue = (contentType: string) => {
     if (Object.keys(creativesMedia || {})?.length > 0) {
@@ -97,7 +108,7 @@ export const MiddleArea: React.FC = () => {
               </div>
             ))
         );
-      } else return <h1 className="text-red-500">No Data</h1>;
+      } else return <NoDataView />;
     }
   };
 
@@ -130,6 +141,7 @@ export const MiddleArea: React.FC = () => {
         setNetwork={setNetwork}
         userInfo={userInfo}
         onClose={() => setOpenCreateCreativePopup(false)}
+        purpose={purpose}
       />
 
       <div className="grid grid-cols-12 gap-2 py-2">
@@ -138,19 +150,18 @@ export const MiddleArea: React.FC = () => {
             <h1 className="text-[14px] font-semibold">Brand</h1>
             <div
               className="flex gap-1 items-center"
-              onClick={() => setOpenCreateCreativePopup(true)}
+              onClick={() => handleOpenCreateCreativePopup("New")}
             >
               <i className="fi fi-br-plus-small flex items-center"></i>
               <h1 className="text-[12px]">Folder</h1>
             </div>
           </div>
           <div className="flex items-center p-1">
-            <PrimaryInput
-              inputType="text"
-              placeholder="Search"
+            <SearchInputField
+              placeholder="Search By brand name"
               height="h-8"
               value={searchQuery}
-              action={setSearchQuery}
+              onChange={setSearchQuery}
             />
           </div>
           {loadingCreatives ? (
@@ -196,7 +207,7 @@ export const MiddleArea: React.FC = () => {
                 </div>
                 <div
                   className="flex gap-1 items-center"
-                  onClick={() => setOpenCreateCreativePopup(true)}
+                  onClick={() => handleOpenCreateCreativePopup("Old")}
                 >
                   <i className="fi fi-br-plus-small flex items-center"></i>
                   <h1 className="text-[12px]">Creative Media</h1>

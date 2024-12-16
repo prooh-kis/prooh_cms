@@ -4,11 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CampaignListView } from "../../components/molecules/CampaignListView";
 import { Loading } from "../../components/Loading";
-import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
-import { ALL_CAMPAIGNS_LIST } from "../../constants/localStorageConstants";
 import { getAllCampaignsDetailsAction } from "../../actions/campaignAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
-import { SearchInputField } from "../../components/index";
+import { ReloadButton, SearchInputField } from "../../components/index";
 import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
 import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
 
@@ -32,9 +30,13 @@ export const MiddleArea: React.FC = () => {
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
-    }
-    else {
-      dispatch(getAllCampaignsDetailsAction({ userId: userInfo?._id , status : CAMPAIGN_STATUS_ACTIVE }));
+    } else if (!allCampaigns) {
+      dispatch(
+        getAllCampaignsDetailsAction({
+          userId: userInfo?._id,
+          status: CAMPAIGN_STATUS_ACTIVE,
+        })
+      );
     }
   }, [dispatch, userInfo]);
 
@@ -44,29 +46,54 @@ export const MiddleArea: React.FC = () => {
   };
 
   const handleGetCampaignByStatus = (status: any) => {
-      setCurrentTab(status);
-      dispatch(
-        getAllCampaignsDetailsAction({
-          userId: userInfo?._id,
-          status: campaignCreationTypeTabs.filter((tab: any) => tab.id === status)[0]
-            .value,
-        })
-      );
-    };
+    setCurrentTab(status);
+    dispatch(
+      getAllCampaignsDetailsAction({
+        userId: userInfo?._id,
+        status: campaignCreationTypeTabs?.filter(
+          (tab: any) => tab.id === status
+        )[0]?.value,
+      })
+    );
+  };
+
+  const reset = () => {
+    dispatch(
+      getAllCampaignsDetailsAction({
+        userId: userInfo?._id,
+        status: CAMPAIGN_STATUS_ACTIVE,
+      })
+    );
+  };
 
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
       <div className="w-full">
-        <div className="my-1 border rounded p-4">
-          <h1 className="text-[16px] font-semibold">My Campaigns</h1>
+        <div className="flex gap-4 items-center my-1 border rounded p-4">
+          <h1 className="text-[16px] font-semibold">
+            My Campaigns{" "}
+            <span className="text-[18px] text-green-500">
+              {
+                allCampaigns?.filter(
+                  (campaign: any) =>
+                    campaign?.campaignName
+                      ?.toLowerCase()
+                      .includes(searchQuery) ||
+                    campaign?.brandName?.toLowerCase().includes(searchQuery)
+                )?.length
+              }
+            </span>
+          </h1>
+          <ReloadButton onClick={reset} />
         </div>
-        <div className="p-1">
+        {/* This is not working now */}
+        {/* <div className="p-1">
           <TabWithoutIcon
             currentTab={currentTab}
             setCurrentTab={handleGetCampaignByStatus}
             tabData={campaignCreationTypeTabs}
           />
-        </div>
+        </div> */}
         {loading ? (
           <div className="w-full h-full">
             <Loading />
@@ -80,8 +107,8 @@ export const MiddleArea: React.FC = () => {
                 placeholder="Search Campaign by campaign name or brand"
               />
             </div>
-            {getDataFromLocalStorage(ALL_CAMPAIGNS_LIST)
-              ?.list?.filter(
+            {allCampaigns
+              ?.filter(
                 (campaign: any) =>
                   campaign?.campaignName?.toLowerCase().includes(searchQuery) ||
                   campaign?.brandName?.toLowerCase().includes(searchQuery)
@@ -89,7 +116,8 @@ export const MiddleArea: React.FC = () => {
               ?.map((data: any, index: any) => (
                 <div
                   key={index}
-                  className="overflow-scroll no-scrollbar h-auto">
+                  className="overflow-scroll no-scrollbar h-auto"
+                >
                   <CampaignListView
                     isSelected={data?._id === selectedCard}
                     color={""}

@@ -23,24 +23,24 @@ export const Menu = (props: any) => {
 
   const arr = [
     {
-      label: "Create",
+      label: "Creatives",
+      path: MY_CREATIVES,
+    },
+    {
+      label: "Create Campaign",
       path: "/create-campaign",
     },
     {
-      label: "Screens",
-      path: "/screens-list",
+      label: "Campaigns List",
+      path: "/campaigns-list",
     },
     {
-      label: "Campaigns",
-      path: "/campaigns-list",
+      label: "Screens List",
+      path: "/screens-list",
     },
     {
       label: "Monitoring",
       path: "/screen-campaign-monitoring",
-    },
-    {
-      label: "Creatives",
-      path: MY_CREATIVES,
     },
   ];
 
@@ -53,7 +53,7 @@ export const Menu = (props: any) => {
       {isOpen && (
         <div
           onMouseLeave={() => setIsOpen(false)} // Close dropdown on mouse leave
-          className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 font-bold text-lg text-black-1000"
+          className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 font-normal text-sm text-black-1000"
         >
           {arr?.map((data: any, index: any) => (
             <div
@@ -62,7 +62,7 @@ export const Menu = (props: any) => {
                 toggleDropdown();
                 navigate(data.path);
               }}
-              className="px-4 py-2  text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+              className="px-4 py-2  text-gray-700 hover:bg-sky-600 hover:text-white  hover:font-semibold  hover:text-md cursor-pointer"
             >
               {data?.label}
             </div>

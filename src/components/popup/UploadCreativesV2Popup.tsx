@@ -5,7 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import { message } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
-import { getAllBrandAndNetworkAction, uploadCreativesMediaAction } from "../../actions/creativeAction";
+import {
+  getAllBrandAndNetworkAction,
+  uploadCreativesMediaAction,
+} from "../../actions/creativeAction";
 import { useLocation } from "react-router-dom";
 import {
   getImageResolution,
@@ -32,6 +35,7 @@ interface UploadCreativesV2PopupProps {
   network?: string;
   setNetwork?: any;
   userInfo?: any;
+  purpose: string;
 }
 export function UploadCreativesV2Popup({
   onClose,
@@ -43,6 +47,7 @@ export function UploadCreativesV2Popup({
   network,
   setNetwork,
   userInfo,
+  purpose,
 }: UploadCreativesV2PopupProps) {
   const dispatch = useDispatch<any>();
   const { pathname } = useLocation();
@@ -204,8 +209,8 @@ export function UploadCreativesV2Popup({
         uploadCreativesMediaAction({
           id: creativeId,
           userId: userInfo?._id,
-          brand: brandName.toUpperCase(),
-          network: network,
+          brand: brandName?.toUpperCase(),
+          network: network?.toUpperCase(),
           creatives: myData,
         })
       );
@@ -230,11 +235,15 @@ export function UploadCreativesV2Popup({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 p-1">
       <div
         className="bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full h-full flex flex-col justify-between"
-        style={{ height: "70vh", width: "40vw" }}
+        style={{ height: "70vh", width: "50vw" }}
       >
         <div className="">
           <div className="flex p-2 justify-between">
-            <h1 className="text-[14px] font-semibold">Add Creatives</h1>
+            <h1 className="text-[16px] font-semibold">
+              {purpose === "New"
+                ? "Add New Creative With New Brand And New Network"
+                : "Add Creatives"}
+            </h1>
             <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
           </div>
           <div className="p-2">
@@ -249,7 +258,7 @@ export function UploadCreativesV2Popup({
             <div className="py-1">
               <SuggestionInput
                 suggestions={getDataFromLocalStorage(ALL_NETWORK_LIST)}
-                onChange={(value: string) => setNetwork(value)}
+                onChange={(value: string) => setNetwork(value?.toUpperCase())}
                 value={network || ""}
                 placeholder="Network"
               />

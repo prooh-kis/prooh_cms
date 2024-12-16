@@ -22,6 +22,7 @@ import { CampaignListMonitoringView } from "../../components/molecules/CampaignL
 import { CalendarPopup } from "../../components/popup/CalendarPopup";
 import { MonitoringPictures } from "../../components/Segment/MonitoringPictures";
 import { UploadMonitoringPicturesPopup } from "../../components/popup/UploadMonitoringPicturesPopup";
+import { NoDataView, SearchInputField } from "../../components";
 
 const time = ["day", "night", "misc"];
 const pictures = ["images", "video", "geoTag", "newspaper"];
@@ -148,11 +149,10 @@ export const MiddleArea: React.FC = () => {
         <div className="grid grid-cols-12 gap-2 py-2">
           <div className="col-span-3 border rounded">
             <div className="w-full p-2">
-              <PrimaryInput
-                inputType="text"
+              <SearchInputField
                 placeholder="Screen Name"
                 value={searchQuery}
-                action={setSearchQuery}
+                onChange={setSearchQuery}
                 height="h-8"
               />
             </div>
@@ -179,11 +179,10 @@ export const MiddleArea: React.FC = () => {
           </div>
           <div className="col-span-3 border rounded">
             <div className="w-full p-2">
-              <PrimaryInput
-                inputType="text"
+              <SearchInputField
                 placeholder="Brand Name"
                 value={searchQueryForCampaign}
-                action={setSearchQueryForCampaign}
+                onChange={setSearchQueryForCampaign}
                 height="h-8"
               />
             </div>
@@ -213,7 +212,7 @@ export const MiddleArea: React.FC = () => {
                       </div>
                     ))
                 ) : (
-                  <div className="p-4 text-[12px]">No Campaigns Found</div>
+                  <NoDataView />
                 )}
               </div>
             )}
