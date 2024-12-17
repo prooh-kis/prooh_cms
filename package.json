@@ -33,6 +33,7 @@
     "install": "^0.13.0",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.3",
+    "jwt-decode": "^4.0.0",
     "lottie-web": "^5.12.2",
     "mapbox-gl": "^3.6.0",
     "moment": "^2.30.1",

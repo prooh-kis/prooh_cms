@@ -336,7 +336,7 @@ export function UploadCreativesFromBucketPopup({
                 </div>
               </div>
             ) : (
-              <div className="p-2 h-[45vh] relative overflow-auto max-h-auto">
+              <div className="p-2 h-[40vh] relative overflow-auto max-h-auto">
                 {loadingCreatives ? (
                   <Loading />
                 ) : (

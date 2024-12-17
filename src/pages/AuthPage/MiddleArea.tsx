@@ -11,6 +11,7 @@ import {
 } from "../../constants/userConstants";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
+import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
 
 export function MiddleArea(props: any) {
   const [option, setOption] = useState<string>("signin");
@@ -86,6 +87,7 @@ export function MiddleArea(props: any) {
     if (validateSignIn()) {
       dispatch(signin(email, password));
       dispatch(getAllBrandAndNetworkAction());
+      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
     }
   };
   // auth

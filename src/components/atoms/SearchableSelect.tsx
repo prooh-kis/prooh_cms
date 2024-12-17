@@ -43,7 +43,7 @@ export const SearchableSelect: React.FC<{
         }}
         onFocus={() => setIsOpen(true)}
         placeholder={placeholder}
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
+        className=" border rounded-lg h-[48px] w-full pl-5 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
       />
 
       {isOpen && (

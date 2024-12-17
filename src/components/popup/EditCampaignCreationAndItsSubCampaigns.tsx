@@ -36,7 +36,7 @@ export function EditCampaignCreationAndItsSubCampaigns({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-      <div className="border bg-white rounded-[10px] h-1/4 w-3/4 p-2">
+      <div className="border bg-white rounded-[10px] h-1/4 w-1/4 p-2">
         <div
           className="relative inset-0 flex items-center justify-end gap-4"
           onClick={() => onClose()}
@@ -55,7 +55,7 @@ export function EditCampaignCreationAndItsSubCampaigns({
             action={(e: any) => {
               setEndDate(e);
             }}
-            minDate={new Date()}
+            minDate={campaignCreation?.endDate || new Date()}
             disabled={false}
           />
         </div>

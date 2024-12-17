@@ -192,8 +192,9 @@ export function EditCreativeEndDatePopup({
         style={{ height: "80vh", width: "70vw" }}
       >
         <div className="flex justify-between">
-          <h1 className="text-[20px] text-[#092A41] font-bold">
-            Choose Creatives
+          <h1>
+            Edit Campaign{" "}
+            <span className="font-bold text-green-600">{campaign?.name}</span>
           </h1>
           <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
         </div>
@@ -249,7 +250,7 @@ export function EditCreativeEndDatePopup({
                       action={(e: any) => {
                         setEndDate(e);
                       }}
-                      minDate={new Date()}
+                      minDate={campaign?.endDate || new Date()}
                       disabled={false}
                     />
                   </div>
