@@ -4,6 +4,7 @@ import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { useDispatch } from "react-redux";
 import { getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
+import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
 
 export function ScreenListMonitoringView({
   screen,
@@ -59,6 +60,13 @@ export function ScreenListMonitoringView({
             {screen?.location.address || screen?.location},{" "}
             {screen.location.city || screen.city}
           </h1>
+          <h1 className="text-[8px]">
+            {convertDataTimeToLocale(
+              campaignCreated?.campaigns?.filter(
+                (c: any) => c.screenId === screen._id
+              )[0]?.endDate
+            )}
+          </h1>
           <h1 className={getClassNameByStatus()}>
             {campaignCreated?.campaigns?.filter(
               (c: any) => c.screenId === screen._id
@@ -83,12 +91,12 @@ export function ScreenListMonitoringView({
                     if (
                       confirm(`Are you sure you want to edit the campaign???`)
                     ) {
-                        saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-                          [`${campaignCreated?._id}`]:
-                            campaignCreated?.campaigns?.filter(
-                              (c: any) => c.screenId === screen._id
-                            )[0]?.creatives?.standardDayTimeCreatives,
-                        });
+                      saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+                        [`${campaignCreated?._id}`]:
+                          campaignCreated?.campaigns?.filter(
+                            (c: any) => c.screenId === screen._id
+                          )[0]?.creatives?.standardDayTimeCreatives,
+                      });
                       dispatch(
                         getScreenDataUploadCreativeAction({
                           id: campaignCreated?._id,

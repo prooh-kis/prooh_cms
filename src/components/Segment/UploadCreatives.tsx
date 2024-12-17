@@ -94,6 +94,7 @@ export const UploadCreatives = ({
   );
 
   const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
+  const [toggleState, setToggleState] = useState<boolean>(false);
 
   const screenDataUploadCreativeGet = useSelector(
     (state: any) => state.screenDataUploadCreativeGet
@@ -227,6 +228,27 @@ export const UploadCreatives = ({
     return screenIds.length;
   };
 
+  const removeAddedCreativeFromCampaign = (url: string) => {
+    if (confirm("Do you really want to remove it?")) {
+      let data = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+      data.creatives = data?.creatives?.map((data1: any) => {
+        if (data1?.screenIds?.includes(openShowMedia?.id)) {
+          data1.standardDayTimeCreatives =
+            data1?.standardDayTimeCreatives?.filter(
+              (data2: any) => data2?.url != url
+            );
+          return data1;
+        }
+        return data1;
+      });
+      data.creatives = data?.creatives?.filter(
+        (data1: any) => data1?.standardDayTimeCreatives?.length > 0
+      );
+      saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, { [campaignId]: data });
+      setToggleState((pre: boolean) => !pre);
+    }
+  };
+
   return (
     <div className="w-full py-3">
       {isBucketPopupOpen && (
@@ -252,7 +274,7 @@ export const UploadCreatives = ({
                 f.screenIds?.includes(openShowMedia?.id)
               )
               ?.flatMap((c: any) => c.standardDayTimeCreatives)}
-            // removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
+            removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
             // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
           />
         </div>

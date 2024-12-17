@@ -1,12 +1,13 @@
+import { NoDataView } from "../../components/molecules/NoDataView";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 interface ShowMediaPopupProps {
   openShowMedia?: boolean;
   media?: any;
   onClose?: any;
   screenName: string;
-  // removeAddedCreativeFromCampaign?: any;
+  removeAddedCreativeFromCampaign?: any;
 }
 
 export function ShowMediaPopup({
@@ -14,9 +15,8 @@ export function ShowMediaPopup({
   media,
   onClose,
   screenName,
-}: // removeAddedCreativeFromCampaign
-ShowMediaPopupProps) {
-
+  removeAddedCreativeFromCampaign,
+}: ShowMediaPopupProps) {
   useEffect(() => {
     if (openShowMedia) {
       document.body.classList.add("overflow-hidden");
@@ -41,7 +41,8 @@ ShowMediaPopupProps) {
         >
           <i className="fi fi-br-circle-xmark"></i>
         </div>
-        <h1>{screenName}</h1>
+        <h1 className="pb-4"> Screen : {screenName}</h1>
+        {media?.length === 0 && <NoDataView />}
 
         <div className="grid grid-cols-2 flex p-2 justify-center gap-4 w-full h-full">
           {media?.map((l: any, index: any) => (
@@ -58,6 +59,15 @@ ShowMediaPopupProps) {
                 width="w-full"
                 rounded="rounded-[12px]"
               />
+              <div
+                className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:opacity-[50%] pt-4"
+                onClick={() => {
+                  removeAddedCreativeFromCampaign(l.url);
+                }}
+              >
+                <i className="fi fi-rs-trash"></i>
+                <h1>Delete</h1>
+              </div>
             </div>
           ))}
         </div>
