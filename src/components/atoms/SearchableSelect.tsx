@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Option = {
   label: string;
@@ -12,6 +12,7 @@ export const SearchableSelect: React.FC<{
 }> = ({ options, onChange, placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const filteredOptions =
@@ -27,8 +28,24 @@ export const SearchableSelect: React.FC<{
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={dropdownRef}>
       <input
         type="text"
         value={

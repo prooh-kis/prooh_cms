@@ -26,5 +26,6 @@ export { NoDataView } from "./molecules/NoDataView";
 export { CalendarPopup } from "./popup/CalendarPopup";
 export { EditCampaignCreationAndItsSubCampaigns } from "./popup/EditCampaignCreationAndItsSubCampaigns";
 export { EditCreativeEndDatePopup } from "./popup/EditCreativeEndDatePopup";
+export { EnterTimeTriggerPopup } from "./popup/EnterTimeTriggerPopup";
 // Segment
 export { MonitoringPictures } from "./Segment/MonitoringPictures";

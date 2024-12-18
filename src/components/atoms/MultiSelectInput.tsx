@@ -75,7 +75,7 @@ export const MultiSelectInput: React.FC<{
       {isOpen && (
         <div className="absolute z-10 w-full bg-white border rounded-lg shadow-md max-h-80 overflow-y-auto">
           {/* Search Box */}
-          <div className="p-2 border-b">
+          <div className="p-2">
             <input
               type="text"
               placeholder="Search..."

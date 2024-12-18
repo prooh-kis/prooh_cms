@@ -21,6 +21,7 @@ import {
 } from "../../actions/campaignAction";
 import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
 import {
+  EnterTimeTriggerPopup,
   MultiSelectInput,
   SearchableSelect,
   SwitchInput,
@@ -57,9 +58,13 @@ export const EnterCampaignBasicDetails = ({
   step,
 }: EnterCampaignBasicDetailsProps) => {
   const navigate = useNavigate();
+  const [timeTriggers, setTimeTriggers] = useState<any>(
+    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.triggers
+      ?.timeTriggers || []
+  );
   const dispatch = useDispatch<any>();
   const [isEnabled, setIsEnable] = useState(false);
-
+  const [open, setOpen] = useState<boolean>(false);
   const [campaignName, setCampaignName] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name || ""
   );
@@ -162,6 +167,8 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
+    console.log("timetriggers : ", timeTriggers);
+
     if (campaignId !== "create-campaign") {
       //TODO add triggers object here
       dispatch(
@@ -185,7 +192,7 @@ export const EnterCampaignBasicDetails = ({
           screenIds: screenIds,
           creatives: [],
           triggers: {
-            timeTriggers: [],
+            timeTriggers: timeTriggers,
             weatherTriggers: [],
             sportsTriggers: [],
             vacantSlots: [],
@@ -214,7 +221,7 @@ export const EnterCampaignBasicDetails = ({
           screenIds: screenIds,
           creatives: [],
           triggers: {
-            timeTriggers: [],
+            timeTriggers: timeTriggers,
             weatherTriggers: [],
             sportsTriggers: [],
             vacantSlots: [],
@@ -235,6 +242,7 @@ export const EnterCampaignBasicDetails = ({
     industry,
     startDate,
     endDate,
+    timeTriggers,
     userInfo?._id,
     userInfo?.name,
     userInfo?.email,
@@ -301,8 +309,46 @@ export const EnterCampaignBasicDetails = ({
     else message.error("please enable set screen priority");
   };
 
+  const validateEndDate = (selectedDate: any) => {
+    if (new Date(selectedDate) <= new Date(startDate)) {
+      message.error("End time must be greater then start date.");
+      setEndDate("");
+    } else setEndDate(selectedDate);
+  };
+
+  const handleStartDateChange = (value: any) => {
+    const now = new Date();
+    const selected = new Date(value);
+    now.setMinutes(now.getMinutes() + 5);
+    if (selected <= now) {
+      message.error(
+        "The selected date and time must be at least 5 minutes ahead of the current time."
+      );
+      setStartDate("");
+    } else setStartDate(value);
+  };
+
+  const handelEndDateChange = (value: any) => {
+    validateEndDate(value);
+  };
+
+  const handleOpenCloseAddTimeTrigger = useCallback(() => {
+    setOpen((pre: boolean) => !pre);
+  }, [open]);
+
+  const handleSave = (data: any) => {
+    setTimeTriggers(data);
+  };
+
+  console.log("time truu : ", timeTriggers);
   return (
     <div className="w-full py-3">
+      <EnterTimeTriggerPopup
+        open={open}
+        onClose={handleOpenCloseAddTimeTrigger}
+        handleSave={handleSave}
+        data={timeTriggers}
+      />
       <div className="">
         <h1 className="text-[24px] text-primaryText font-semibold">
           Add Basic Details
@@ -416,7 +462,7 @@ export const EnterCampaignBasicDetails = ({
               <CalendarInput
                 placeholder="Start Date"
                 value={startDate}
-                action={setStartDate}
+                action={handleStartDateChange}
                 disabled={false}
                 minDate={new Date()}
               />
@@ -430,13 +476,26 @@ export const EnterCampaignBasicDetails = ({
               <CalendarInput
                 placeholder={!enterDuration ? "End Date" : "0"}
                 value={endDate}
-                action={(e: any) => {
-                  setEndDate(e);
-                }}
+                action={handelEndDateChange}
                 minDate={startDate || new Date()}
                 disabled={false}
               />
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-8 pt-2">
+            <div className="col-span-1 py-1 text-[14px]">
+              <label className="block text-secondaryText  mb-2">
+                Schedule Time{" "}
+              </label>
+              <div
+                onClick={handleOpenCloseAddTimeTrigger}
+                className="flex gap-2 w-full px-4 py-2 text-left bg-white border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300 items-center cursor-pointer"
+              >
+                <i className="fi fi-rr-clock text-gray-400"></i>
+                <h1>Set Ad Play Time</h1>
+              </div>
+            </div>
+            <div className="col-span-1 py-1"></div>
           </div>
         </div>
         <div className="col-span-4">

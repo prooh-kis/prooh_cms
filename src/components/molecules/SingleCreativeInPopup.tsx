@@ -2,7 +2,6 @@ import React from "react";
 import { ShowMediaFile } from "./ShowMediaFIle";
 
 export const SingleCreativeInPopup = ({ media, handleDelete }: any) => {
-  console.log("media : ", media);
   return (
     <div className="flex gap-2">
       <div className="max-w-[12vw] min-w-[12vw]">
