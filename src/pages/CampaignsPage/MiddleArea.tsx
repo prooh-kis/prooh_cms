@@ -6,7 +6,11 @@ import { CampaignListView } from "../../components/molecules/CampaignListView";
 import { Loading } from "../../components/Loading";
 import { getAllCampaignsDetailsAction } from "../../actions/campaignAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
-import { ReloadButton, SearchInputField } from "../../components/index";
+import {
+  NoDataView,
+  ReloadButton,
+  SearchInputField,
+} from "../../components/index";
 import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
 import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
 
@@ -87,13 +91,13 @@ export const MiddleArea: React.FC = () => {
           <ReloadButton onClick={reset} />
         </div>
         {/* This is not working now */}
-        {/* <div className="p-1">
+        <div className="p-1">
           <TabWithoutIcon
             currentTab={currentTab}
             setCurrentTab={handleGetCampaignByStatus}
             tabData={campaignCreationTypeTabs}
           />
-        </div> */}
+        </div>
         {loading ? (
           <div className="w-full h-full">
             <Loading />
@@ -107,6 +111,11 @@ export const MiddleArea: React.FC = () => {
                 placeholder="Search Campaign by campaign name or brand"
               />
             </div>
+            {allCampaigns?.length === 0 && (
+              <div className="pt-4">
+                <NoDataView />
+              </div>
+            )}
             {allCampaigns
               ?.filter(
                 (campaign: any) =>
