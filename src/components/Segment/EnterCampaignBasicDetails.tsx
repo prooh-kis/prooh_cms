@@ -317,13 +317,9 @@ export const EnterCampaignBasicDetails = ({
   };
 
   const handleStartDateChange = (value: any) => {
-    const now = new Date();
-    const selected = new Date(value);
-    now.setMinutes(now.getMinutes() + 5);
-    if (selected <= now) {
-      message.error(
-        "The selected date and time must be at least 5 minutes ahead of the current time."
-      );
+    console.log("ddddd : ", new Date(), new Date(value));
+    if (new Date() > new Date(value)) {
+      message.error("start date must be greater then today data and time!");
       setStartDate("");
     } else setStartDate(value);
   };
