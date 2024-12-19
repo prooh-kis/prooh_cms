@@ -15,6 +15,7 @@ import {
   allCampaignsDataGetReducer,
   campaignCreatedScreensDetailsGetReducer,
   campaignDetailsGetReducer,
+  campaignLogsByCampaignIdReducer,
   campaignStatusChangeReducer,
   createCampaignCreationByScreenOwnerReducer,
   editAllSubCampaignsReducer,
@@ -78,6 +79,8 @@ const store = configureStore({
     campaignDetailsGet: campaignDetailsGetReducer,
     campaignCreatedScreensDetailsGet: campaignCreatedScreensDetailsGetReducer,
     editAllSubCampaigns: editAllSubCampaignsReducer,
+    //Log
+    campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
 
     // creative
     creativesMediaUpload: creativesMediaUploadReducer,

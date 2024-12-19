@@ -1,11 +1,15 @@
-import { message, Tooltip } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import { message, Skeleton, Tooltip } from "antd";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
-import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
+import {
+  convertDataTimeToLocale,
+  getNumberOfDaysBetweenTwoDates,
+} from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import {
+  campaignLogsByCampaignIdAction,
   changeCampaignStatusAction,
   editAllSubCampaignsAction,
   getAllCampaignsDetailsAction,
@@ -28,9 +32,17 @@ import {
   EditCampaignCreationAndItsSubCampaigns,
   EditCreativeEndDatePopup,
   CampaignMonitoring,
+  SearchInputField,
+  CampaignLogsPopup,
 } from "../../components";
-import { getDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
-import { CAMPAIGN_CREATION_STATUS, FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import {
+  getDataFromLocalStorage,
+  saveDataOnLocalStorage,
+} from "../../utils/localStorageUtils";
+import {
+  CAMPAIGN_CREATION_STATUS,
+  FULL_CAMPAIGN_PLAN,
+} from "../../constants/localStorageConstants";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -48,6 +60,7 @@ export const MiddleArea: React.FC = () => {
 
   const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
     useState<any>(false);
+  const [openCampaignLogPopup, setOpenCampaignLogPopup] = useState<any>(false);
   const [
     openCreateCampaignEndDateChangePopup,
     setOpenCreateCampaignEndDateChangePopup,
@@ -98,6 +111,15 @@ export const MiddleArea: React.FC = () => {
     error: errorEditAllSubCampaigns,
     data: successEditAllSubCampaigns,
   } = editAllSubCampaigns;
+
+  const campaignLogsByCampaignId = useSelector(
+    (state: any) => state.campaignLogsByCampaignId
+  );
+  const {
+    loading: loadingCampaignLogsByCampaignId,
+    error: errorCampaignLogsByCampaignId,
+    data: successCampaignLogsByCampaignId,
+  } = campaignLogsByCampaignId;
 
   const changeCampaignCreativeEndDate = useSelector(
     (state: any) => state.changeCampaignCreativeEndDate
@@ -229,6 +251,24 @@ export const MiddleArea: React.FC = () => {
     }
   };
 
+  const handleOpenCloseCampaignLogPopup = useCallback(() => {
+    setOpenCampaignLogPopup((pre: boolean) => !pre);
+  }, [openCampaignLogPopup]);
+
+  const handleShowLogReport = (screenId: string) => {
+    const campaignId =
+      campaignCreated?.campaigns?.filter(
+        (campaign: any) => campaign.screenId == screenId
+      )[0]?._id || "";
+
+    if (campaignId) {
+      dispatch(campaignLogsByCampaignIdAction(campaignId));
+      handleOpenCloseCampaignLogPopup();
+    } else {
+      message.error("No creative added!");
+    }
+  };
+
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
@@ -249,6 +289,14 @@ export const MiddleArea: React.FC = () => {
             campaignCreation={campaignCreated}
             isLoading={loadingEditAllSubCampaigns}
             handleNext={handleEditAllSubCampaigns}
+          />
+        )}
+        {openCampaignLogPopup && (
+          <CampaignLogsPopup
+            logs={successCampaignLogsByCampaignId}
+            loading={loadingCampaignLogsByCampaignId}
+            open={openCampaignLogPopup}
+            onClose={handleOpenCloseCampaignLogPopup}
           />
         )}
 
@@ -291,76 +339,73 @@ export const MiddleArea: React.FC = () => {
                     </h2>
                   </div>
                 </div>
-                {!loadingStatusChange ? (
-                  // && getNumberOfDaysBetweenTwoDates(new Date().toISOString(), campaignCreated?.endDate) >= 0
-                  <div className="px-4 flex h-auto gap-4">
-                    <Tooltip
-                      title="Edit creatives for all screens"
-                    >
-                      <i
-                        className="fi fi-ss-pen-circle text-gray-500"
-                        title="Edit Creatives"
-                        onClick={() =>{
-                          saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS , "edit")
-                          navigate(`/create-campaign/${campaignId}`);
-                        }}
-                      ></i>
-                    </Tooltip>
-                    <Tooltip
-                      title="Edit end date for all screens"
-                    >
-                      <i
-                        className="fi fi-sr-file-edit text-gray-500"
-                        title="Edit End Date"
-                        onClick={() =>
-                          setOpenCreateCampaignEndDateChangePopup(
-                            !openCreateCampaignEndDateChangePopup
-                          )
-                        }
-                      ></i>
-                    </Tooltip>
-                    <Tooltip
-                      title="Pause for all screens"
-                    >
-                      <i
-                        className="fi fi-ss-pause-circle text-gray-500"
-                        title="Pause All"
-                        onClick={() =>
-                          handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)
-                        }
-                      ></i>
-                    </Tooltip>
-                    <Tooltip
-                      title="Activate for all screens"
-                    >
-                      <i
-                        className="fi fi-sr-play-circle text-gray-500"
-                        title="Active All"
-                        onClick={() =>
-                          handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)
-                        }
-                      ></i>
-                    </Tooltip>
-                    <Tooltip
-                      title="Delete for all screens"
-                    >
-                      <i
-                        className="fi fi-sr-trash text-gray-500"
-                        title="Delete All"
-                        onClick={() =>
-                          handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)
-                        }
-                      ></i>
-                    </Tooltip>
-
-                  </div>
-                ) : (
-                  <div>
+                <div className="flex flex-col px-4">
+                  {loadingStatusChange ? (
+                    <Skeleton active paragraph={{ rows: 1 }} />
+                  ) : (
+                    <div className=" flex h-auto gap-4">
+                      <Tooltip title="Edit creatives for all screens">
+                        <i
+                          className="fi fi-ss-pen-circle text-gray-500"
+                          title="Edit Creatives"
+                          onClick={() => {
+                            saveDataOnLocalStorage(
+                              CAMPAIGN_CREATION_STATUS,
+                              "edit"
+                            );
+                            navigate(`/create-campaign/${campaignId}`);
+                          }}
+                        ></i>
+                      </Tooltip>
+                      <Tooltip title="Edit end date for all screens">
+                        <i
+                          className="fi fi-sr-file-edit text-gray-500"
+                          title="Edit End Date"
+                          onClick={() =>
+                            setOpenCreateCampaignEndDateChangePopup(
+                              !openCreateCampaignEndDateChangePopup
+                            )
+                          }
+                        ></i>
+                      </Tooltip>
+                      <Tooltip title="Pause for all screens">
+                        <i
+                          className="fi fi-ss-pause-circle text-gray-500"
+                          title="Pause All"
+                          onClick={() =>
+                            handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE)
+                          }
+                        ></i>
+                      </Tooltip>
+                      <Tooltip title="Activate for all screens">
+                        <i
+                          className="fi fi-sr-play-circle text-gray-500"
+                          title="Active All"
+                          onClick={() =>
+                            handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE)
+                          }
+                        ></i>
+                      </Tooltip>
+                      <Tooltip title="Delete for all screens">
+                        <i
+                          className="fi fi-sr-trash text-gray-500"
+                          title="Delete All"
+                          onClick={() =>
+                            handleChangeStatusAll(CAMPAIGN_STATUS_DELETED)
+                          }
+                        ></i>
+                      </Tooltip>
+                    </div>
+                  )}
+                  {getNumberOfDaysBetweenTwoDates(
+                    new Date().toISOString(),
+                    campaignCreated?.endDate
+                  ) <= 0 ? (
                     <h1 className="text-[12px] text-red-400">
                       Campaign already ended
                     </h1>
-                  </div>
-                )}
+                  ) : null}
+                </div>
               </div>
               <div className="px-4 p-2">
                 <div className="grid grid-cols-8 gap-4">
@@ -405,13 +450,20 @@ export const MiddleArea: React.FC = () => {
                               <iframe className="rounded" src={cs.url} />
                             )}
                             <Tooltip
-                              title={`${cs.url?.split("_")[cs.url?.split("_")?.length - 1]}`}
+                              title={`${
+                                cs.url?.split("_")[
+                                  cs.url?.split("_")?.length - 1
+                                ]
+                              }`}
                             >
                               <h1 className="text-[12px] text-gray-500 truncate">
-                                {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
+                                {
+                                  cs.url?.split("_")[
+                                    cs.url?.split("_")?.length - 1
+                                  ]
+                                }
                               </h1>
                             </Tooltip>
-
                           </div>
                         ))}
                       </div>
@@ -438,10 +490,18 @@ export const MiddleArea: React.FC = () => {
                                 <iframe className="rounded" src={cs.url} />
                               )}
                               <Tooltip
-                                title={`${cs.url?.split("_")[cs.url?.split("_")?.length - 1]}`}
+                                title={`${
+                                  cs.url?.split("_")[
+                                    cs.url?.split("_")?.length - 1
+                                  ]
+                                }`}
                               >
                                 <h1 className="text-[12px] text-gray-500 truncate">
-                                  {cs.url?.split("_")[cs.url?.split("_")?.length - 1]}
+                                  {
+                                    cs.url?.split("_")[
+                                      cs.url?.split("_")?.length - 1
+                                    ]
+                                  }
                                 </h1>
                               </Tooltip>
                             </div>
@@ -469,9 +529,7 @@ export const MiddleArea: React.FC = () => {
                             ) : (
                               <iframe className="rounded" src={cs.url} />
                             )}
-                            <Tooltip
-                              title={`${cs.url}`}
-                            >
+                            <Tooltip title={`${cs.url}`}>
                               <h1 className="text-[12px] text-gray-500 truncate">
                                 {cs.url}
                               </h1>
@@ -504,12 +562,11 @@ export const MiddleArea: React.FC = () => {
               </h1>
             </div>
             <div className="flex items-center p-2">
-              <PrimaryInput
-                inputType="text"
-                placeholder="Search"
+              <SearchInputField
+                placeholder="Search screens by name"
                 height="h-8"
                 value={searchQuery}
-                action={setSearchQuery}
+                onChange={setSearchQuery}
               />
             </div>
             {loadingScreens ? (
@@ -535,6 +592,7 @@ export const MiddleArea: React.FC = () => {
                         }
                         screen={screen}
                         noImages={false}
+                        handleGetCampaignLog={handleShowLogReport}
                       />
                     </div>
                   ))}

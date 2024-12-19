@@ -167,7 +167,6 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
-    console.log("timetriggers : ", timeTriggers);
 
     if (campaignId !== "create-campaign") {
       //TODO add triggers object here
@@ -317,7 +316,6 @@ export const EnterCampaignBasicDetails = ({
   };
 
   const handleStartDateChange = (value: any) => {
-    console.log("ddddd : ", new Date(), new Date(value));
     if (new Date() > new Date(value)) {
       message.error("start date must be greater then today data and time!");
       setStartDate("");
@@ -336,7 +334,6 @@ export const EnterCampaignBasicDetails = ({
     setTimeTriggers(data);
   };
 
-  console.log("time truu : ", timeTriggers);
   return (
     <div className="w-full py-3">
       <EnterTimeTriggerPopup

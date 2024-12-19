@@ -12,6 +12,7 @@ export function ScreenListMonitoringView({
   setOpenCreativeEndDateChangePopup,
   campaignCreated,
   handleChangeCampaignStatus,
+  handleGetCampaignLog,
 }: any) {
   const dispatch = useDispatch<any>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -154,6 +155,15 @@ export function ScreenListMonitoringView({
                     Activate
                   </li>
                 )}
+
+                <li
+                  onClick={() => {
+                    handleGetCampaignLog(screen._id);
+                  }}
+                  className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                >
+                  View Log Report
+                </li>
               </ul>
             </div>
           )}

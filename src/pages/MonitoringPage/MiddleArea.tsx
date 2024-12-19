@@ -171,7 +171,11 @@ export const MiddleArea: React.FC = () => {
                       key={index}
                       onClick={() => handleScreenClick({ screen: data })}
                     >
-                      <ScreenListMonitoringView screen={data} noImages={true} />
+                      <ScreenListMonitoringView
+                        screen={data}
+                        noImages={true}
+                        handleGetCampaignLog={() => {}}
+                      />
                     </div>
                   ))}
               </div>
