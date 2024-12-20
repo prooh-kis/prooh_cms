@@ -327,6 +327,7 @@ export const MiddleArea: React.FC = () => {
               <div>
                 <div className="px-4 flex h-auto gap-4">
                   <div
+                    title="Refresh Data"
                     className="flex justify-center items-top"
                     onClick={() => {
                       if (confirm(`Do you want to refresh your screen???`)) {
@@ -337,6 +338,7 @@ export const MiddleArea: React.FC = () => {
                     <i className="fi fi-br-refresh text-gray-500"></i>
                   </div>
                   <div
+                    title="Update screen playlist database"
                     className="flex justify-center items-top"
                     onClick={() => {
                       if (
@@ -353,6 +355,7 @@ export const MiddleArea: React.FC = () => {
                     <i className="fi fi-rr-back-up text-gray-500"></i>
                   </div>
                   <div
+                    title="View Screen logs"
                     className="flex justify-center items-top"
                     onClick={() => {
                       // if (confirm(``)) {

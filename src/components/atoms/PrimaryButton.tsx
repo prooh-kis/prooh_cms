@@ -18,7 +18,7 @@ export const PrimaryButton = ({icon, reverse, textSize, disabled, width, height,
   return (
     <div className="flex justify-center items-center">
       <button
-        title="plan_campaign"
+        title={title}
         type="submit"
         onClick={action}
         disabled={disabled || loading}
