@@ -39,15 +39,13 @@ export const EnterTimeTriggerPopup = ({
   }
 
   const handleSelect = (time: any) => {
-    let data: any = [];
+    let data: any = values;
     if (
       values?.find(
         (data: any) => data.day == currentTab && data.startTime == time
       )
     ) {
-      data = values?.filter(
-        (data: any) => data.day !== currentTab && data.startTime !== time
-      );
+      console.log("present!");
     } else {
       data = [...values, { day: currentTab, startTime: time, hours: 4 }];
     }
@@ -67,7 +65,7 @@ export const EnterTimeTriggerPopup = ({
   };
 
   const handleReset = () => {
-    setValues([]);
+    setValues((pre: any) => pre.filter((data: any) => data?.day != currentTab));
   };
 
   return (

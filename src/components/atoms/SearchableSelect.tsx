@@ -9,11 +9,12 @@ export const SearchableSelect: React.FC<{
   options: Option[];
   onChange: (value: string) => void;
   placeholder: string;
-}> = ({ options, onChange, placeholder }) => {
+  value: string;
+}> = ({ options, onChange, placeholder, value }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>(value);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(value);
 
   const filteredOptions =
     searchTerm?.length == 0

@@ -376,6 +376,7 @@ export const EnterCampaignBasicDetails = ({
                   }
                 )}
                 placeholder="Search by brand Name"
+                value={brandName}
               />
             </div>
           </div>
