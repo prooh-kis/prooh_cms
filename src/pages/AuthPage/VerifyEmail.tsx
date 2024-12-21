@@ -18,7 +18,7 @@ export const VerifyEmail = (props: any) => {
     if (success && data) {
       alert("Thank you for joining with us....");
       if (data.isMaster) {
-        navigate("/screens");
+        navigate("/screens-list");
       } else {
         navigate("/");
       }

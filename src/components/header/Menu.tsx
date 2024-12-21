@@ -21,7 +21,12 @@ export const Menu = (props: any) => {
     navigate(AUTH);
   };
 
-  const arr = [
+  const arr = userInfo?.userRole === "secondary" ? [
+    {
+      label: "Screens List",
+      path: "/screens-list",
+    },
+  ] : [
     {
       label: "Creatives",
       path: MY_CREATIVES,
