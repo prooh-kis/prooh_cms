@@ -37,7 +37,7 @@ export function UploadCreativesFromBucketPopup({
   const dispatch = useDispatch<any>();
   const [campaignOption, setCampaignOption] = useState("Image/Video");
   const [url, setUrl] = useState<any>("");
-  const [campaignDuration, setCampaignDuration] = useState<any>("");
+  const [campaignDuration, setCampaignDuration] = useState<any>(10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
 
@@ -112,7 +112,7 @@ export function UploadCreativesFromBucketPopup({
         url: item.awsURL,
         size: item.fileSize,
         _id: { $oid: item._id },
-        duration: item?.duration || 10,
+        duration: campaignDuration ? campaignDuration : item?.duration,
       };
       dataToUpload.push(mediaData);
     });
