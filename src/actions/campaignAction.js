@@ -18,6 +18,9 @@ import {
   GET_CAMPAIGN_DATA_FAIL,
   GET_CAMPAIGN_DATA_REQUEST,
   GET_CAMPAIGN_DATA_SUCCESS,
+  GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_FAIL,
+  GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_REQUEST,
+  GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_SUCCESS,
   GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
   GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
   GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
@@ -29,7 +32,7 @@ import {
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_SUCCESS,
 } from "../constants/campaignConstants";
 
-import { campaignV2, screenV2 } from "../constants/urlConsent";
+import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
 export const createCampaignCreationByScreenOwnerAction =
   (input) => async (dispatch) => {
@@ -262,3 +265,28 @@ export const editAllSubCampaignsAction = (input) => async (dispatch) => {
     });
   }
 };
+
+export const campaignLogsByCampaignIdAction =
+  (campaignId) => async (dispatch) => {
+    dispatch({
+      type: GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_REQUEST,
+      payload: campaignId,
+    });
+    try {
+      const { data } = await axios.get(
+        `${analyticsV1}/getAllCampaignLogs?campaignId=${campaignId}`
+      );
+      dispatch({
+        type: GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

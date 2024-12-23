@@ -23,6 +23,7 @@ import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaign
 import {
   EnterTimeTriggerPopup,
   MultiSelectInput,
+  ReloadButton,
   SearchableSelect,
   SwitchInput,
 } from "../../components";
@@ -167,7 +168,6 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
-    console.log("timetriggers : ", timeTriggers);
 
     if (campaignId !== "create-campaign") {
       //TODO add triggers object here
@@ -259,10 +259,9 @@ export const EnterCampaignBasicDetails = ({
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
-      if (step === 1) {
-        setStep(2);
-      }
-      message.success("Campaign initiated successfully");
+      // if (step === 1) {
+      //   setStep(2);
+      // }
     }
 
     if (
@@ -317,13 +316,8 @@ export const EnterCampaignBasicDetails = ({
   };
 
   const handleStartDateChange = (value: any) => {
-    const now = new Date();
-    const selected = new Date(value);
-    now.setMinutes(now.getMinutes() + 5);
-    if (selected <= now) {
-      message.error(
-        "The selected date and time must be at least 5 minutes ahead of the current time."
-      );
+    if (new Date() > new Date(value)) {
+      message.error("start date must be greater then today data and time!");
       setStartDate("");
     } else setStartDate(value);
   };
@@ -340,7 +334,6 @@ export const EnterCampaignBasicDetails = ({
     setTimeTriggers(data);
   };
 
-  console.log("time truu : ", timeTriggers);
   return (
     <div className="w-full py-3">
       <EnterTimeTriggerPopup
@@ -350,8 +343,11 @@ export const EnterCampaignBasicDetails = ({
         data={timeTriggers}
       />
       <div className="">
-        <h1 className="text-[24px] text-primaryText font-semibold">
-          Add Basic Details
+        <h1 className="text-[24px] text-primaryText font-semibold flex items-center">
+          Add Basic Details{" "}
+          <span className="pl-8">
+            <ReloadButton onClick={() => window.location.reload()} />
+          </span>
         </h1>
         <p className="text-[14px] text-secondaryText">
           Enter your basic details for the campaigns to proceed further
@@ -383,6 +379,7 @@ export const EnterCampaignBasicDetails = ({
                   }
                 )}
                 placeholder="Search by brand Name"
+                value={brandName}
               />
             </div>
           </div>
@@ -497,6 +494,23 @@ export const EnterCampaignBasicDetails = ({
             </div>
             <div className="col-span-1 py-1"></div>
           </div>
+          <div className="flex py-4">
+            {!loadingCampaignsCreations && (
+              <PrimaryButton
+                loading={loadingCampaignsCreations}
+                loadingText="Creating campaign..."
+                rounded="rounded-[6px]"
+                title="Continue"
+                action={() => {
+                  if (validateForm()) {
+                    saveCampaignDetails();
+                    message.success("Campaign initiated successfully");
+                    setStep(2);
+                  }
+                }}
+              />
+            )}
+          </div>
         </div>
         <div className="col-span-4">
           <div className="border rounded-[12px] p-1 my-2">
@@ -579,23 +593,6 @@ export const EnterCampaignBasicDetails = ({
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="flex py-4">
-        {!loadingCampaignsCreations && (
-          <PrimaryButton
-            loading={loadingCampaignsCreations}
-            loadingText="Creating campaign..."
-            rounded="rounded-[6px]"
-            title="Continue"
-            action={() => {
-              if (validateForm()) {
-                saveCampaignDetails();
-                message.success("Campaign initiated successfully");
-              }
-            }}
-          />
-        )}
       </div>
     </div>
   );

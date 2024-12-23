@@ -21,28 +21,40 @@ export const Menu = (props: any) => {
     navigate(AUTH);
   };
 
-  const arr = [
-    {
-      label: "Creatives",
-      path: MY_CREATIVES,
-    },
-    {
-      label: "Create Campaign",
-      path: "/create-campaign",
-    },
-    {
-      label: "Campaigns List",
-      path: "/campaigns-list",
-    },
-    {
-      label: "Screens List",
-      path: "/screens-list",
-    },
-    {
-      label: "Monitoring",
-      path: "/screen-campaign-monitoring",
-    },
-  ];
+  const arr =
+    userInfo?.userRole === "secondary"
+      ? [
+          {
+            label: "Screens List",
+            path: "/screens-list",
+          },
+          {
+            label: "Campaigns List",
+            path: "/campaigns-list",
+          },
+        ]
+      : [
+          {
+            label: "Creatives",
+            path: MY_CREATIVES,
+          },
+          {
+            label: "Create Campaign",
+            path: "/create-campaign",
+          },
+          {
+            label: "Campaigns List",
+            path: "/campaigns-list",
+          },
+          {
+            label: "Screens List",
+            path: "/screens-list",
+          },
+          {
+            label: "Monitoring",
+            path: "/screen-campaign-monitoring",
+          },
+        ];
 
   return (
     <div className="relative inline-block text-left">

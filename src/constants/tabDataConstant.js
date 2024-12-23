@@ -16,6 +16,24 @@ export const campaignMonitoringTab = [
   },
 ];
 
+export const creativeTypeTab = [
+  {
+    id: "standardDayTimeCreatives",
+    label: "Standard Days Creative",
+    value: "standardDayTimeCreatives",
+  },
+  {
+    id: "standardNightTimeCreatives",
+    label: "Standard Night Creative",
+    value: "standardNightTimeCreatives",
+  },
+  {
+    id: "triggerCreatives",
+    label: "Trigger Creatives",
+    value: "triggerCreatives",
+  },
+];
+
 export const campaignTypeTabs = [
   {
     id: "1",
@@ -41,14 +59,13 @@ export const campaignTypeTabs = [
     id: "5",
     label: "Deleted",
     value: "Deleted",
-  }, 
+  },
   {
     id: "6",
     label: "Live",
     value: "Live",
-  }
+  },
 ];
-
 
 export const campaignCreationTypeTabs = [
   {
@@ -65,5 +82,5 @@ export const campaignCreationTypeTabs = [
     id: "3",
     label: "Completed",
     value: "Completed",
-  }
+  },
 ];

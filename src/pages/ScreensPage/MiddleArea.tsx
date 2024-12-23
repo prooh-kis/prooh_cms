@@ -34,17 +34,19 @@ export const MiddleArea: React.FC = () => {
     }
 
     if (!allScreens)
-      dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
   }, [dispatch, userInfo]);
 
   // Handle card click, setting the clicked card's index
   const handleCardClick = (id: any) => {
-    setSelectedCard(id);
-    navigate(`/screens-details/${id}`);
+    if (userInfo && userInfo?.isMaster && userInfo?.userRole === "primary") {
+      setSelectedCard(id);
+      navigate(`/screens-details/${id}`);
+    }
   };
 
   const reLoad = () => {
-    dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
   };
 
   return (
@@ -75,7 +77,7 @@ export const MiddleArea: React.FC = () => {
                       isSelected={data._id === selectedCard}
                       color={""}
                       handleCardClick={() => handleCardClick(data._id)}
-                      navigate={() => navigate(`/screens-details/${data._id}`)}
+                      // navigate={() => navigate(`/screens-details/${data._id}`)}
                       data={data}
                     />
                   </div>

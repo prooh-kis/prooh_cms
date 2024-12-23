@@ -62,7 +62,7 @@ export function ChangeScreenCodePopup({
       setOpenScreenCodePopup(false);
     }
     if (userInfo) {
-      dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
     }
   }, [dispatch, userInfo, successChange, setOpenScreenCodePopup]);
 

@@ -213,7 +213,6 @@ export const MiddleArea: React.FC = () => {
 
   const changeCampaignStatusHandler = ({ campaignIds, status }: any) => {
     if (confirm(`${campaignIds?.length} campaigns are being ${status}`)) {
-      // console.log(campaignIds)
       dispatch(
         changeCampaignStatusAction({
           campaignIds: campaignIds,
@@ -328,6 +327,7 @@ export const MiddleArea: React.FC = () => {
               <div>
                 <div className="px-4 flex h-auto gap-4">
                   <div
+                    title="Refresh Data"
                     className="flex justify-center items-top"
                     onClick={() => {
                       if (confirm(`Do you want to refresh your screen???`)) {
@@ -338,6 +338,7 @@ export const MiddleArea: React.FC = () => {
                     <i className="fi fi-br-refresh text-gray-500"></i>
                   </div>
                   <div
+                    title="Update screen playlist database"
                     className="flex justify-center items-top"
                     onClick={() => {
                       if (
@@ -354,6 +355,7 @@ export const MiddleArea: React.FC = () => {
                     <i className="fi fi-rr-back-up text-gray-500"></i>
                   </div>
                   <div
+                    title="View Screen logs"
                     className="flex justify-center items-top"
                     onClick={() => {
                       // if (confirm(``)) {
@@ -534,21 +536,15 @@ export const MiddleArea: React.FC = () => {
                     className="text-gray-500 hover:text-green-500"
                     onClick={() => {
                       if (
-                        confirm(
-                          `Are you sure you want to edit the campaign???`
-                        )
+                        confirm(`Are you sure you want to edit the campaign???`)
                       ) {
-                        saveDataOnLocalStorage(
-                          UPLOAD_CREATIVE_SCREEN_DATA,
-                          {
-                            [campaigns?.filter(
-                              (c: any) => c._id === selectedCampaign
-                            )[0]?.campaignCreationId]:
-                              campaigns?.filter(
-                                (c: any) => c._id === selectedCampaign
-                              )[0].creatives.standardDayTimeCreatives,
-                          }
-                        );
+                        saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+                          [campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.campaignCreationId]: campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0].creatives.standardDayTimeCreatives,
+                        });
                         dispatch(
                           getScreenDataUploadCreativeAction({
                             id: campaigns?.filter(
@@ -579,8 +575,15 @@ export const MiddleArea: React.FC = () => {
                   </div>
                   <div
                     className="text-gray-500 hover:text-green-500"
-                    onClick={() => navigate(`/campaigns-details/${campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
-                      ?.campaignCreationId}`)}
+                    onClick={() =>
+                      navigate(
+                        `/campaigns-details/${
+                          campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.campaignCreationId
+                        }`
+                      )
+                    }
                   >
                     <i className="fi fi-sr-eye"></i>
                   </div>
@@ -600,13 +603,14 @@ export const MiddleArea: React.FC = () => {
                     campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                       ?.endDate
                   ) < 0
-                    ? "Already Ended" :
-                    getNumberOfDaysBetweenTwoDates(
-                      new Date(),
-                      campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
-                        ?.endDate
-                    ) === 0 ? "Ending Today"
-
+                    ? "Already Ended"
+                    : getNumberOfDaysBetweenTwoDates(
+                        new Date(),
+                        campaigns?.filter(
+                          (c: any) => c._id === selectedCampaign
+                        )[0]?.endDate
+                      ) === 0
+                    ? "Ending Today"
                     : `${getNumberOfDaysBetweenTwoDates(
                         new Date(),
                         campaigns?.filter(
@@ -650,7 +654,9 @@ export const MiddleArea: React.FC = () => {
                       />
                       <h1 className="text-[14px] truncate">
                         {
-                          creative?.url?.split("_")[creative?.url?.split("_")?.length - 1]
+                          creative?.url?.split("_")[
+                            creative?.url?.split("_")?.length - 1
+                          ]
                         }
                       </h1>
                       <p className="text-[12px]">

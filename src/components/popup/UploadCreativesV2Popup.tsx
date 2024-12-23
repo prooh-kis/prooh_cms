@@ -23,7 +23,9 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import {
   ALL_BRAND_LIST,
   ALL_NETWORK_LIST,
+  ALL_PACKAGE_LIST,
 } from "../../constants/localStorageConstants";
+import { SearchableSelect } from "../../components/atoms/SearchableSelect";
 
 interface UploadCreativesV2PopupProps {
   onClose?: any;
@@ -231,6 +233,23 @@ export function UploadCreativesV2Popup({
     setMediaFiles(mediaFiles?.filter((_: any, i: any) => i != index));
   };
 
+  const handleAddBrandName = (value: string) => {
+    if (purpose === "New") {
+      let oldBrandName = getDataFromLocalStorage(ALL_BRAND_LIST)?.find(
+        (data: string) => data === value
+      );
+      if (oldBrandName) {
+        message.error(
+          "Brand name already exist, try new brand name, other wise go with other flow of upload creative"
+        );
+      } else {
+        setBrandName(value);
+      }
+    } else {
+      setBrandName(value);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 p-1">
       <div
@@ -250,15 +269,17 @@ export function UploadCreativesV2Popup({
             <div className="py-1">
               <SuggestionInput
                 suggestions={getDataFromLocalStorage(ALL_BRAND_LIST)}
-                onChange={(value: string) => setBrandName(value?.toUpperCase())}
+                onChange={(value: string) =>
+                  handleAddBrandName(value?.toUpperCase())
+                }
                 value={brandName || ""}
                 placeholder="Brand Name"
               />
             </div>
             <div className="py-1">
               <SuggestionInput
-                suggestions={getDataFromLocalStorage(ALL_NETWORK_LIST)}
-                onChange={(value: string) => setNetwork(value?.toUpperCase())}
+                suggestions={getDataFromLocalStorage(ALL_PACKAGE_LIST)}
+                onChange={(value: string) => setNetwork(value)}
                 value={network || ""}
                 placeholder="Network"
               />

@@ -6,11 +6,10 @@ interface ScreenListThumbnailProps {
   color?: string;
   isSelected?: boolean;
   handleCardClick?: () => void;
-  navigate?: any;
   data?: any;
 }
 
-export const ScreenListThumbnail = ({navigate, data, color, isSelected, handleCardClick}: ScreenListThumbnailProps): JSX.Element => {
+export const ScreenListThumbnail = ({data, color, isSelected, handleCardClick}: ScreenListThumbnailProps): JSX.Element => {
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
       if (getTimeDifferenceInMin(screen?.lastActive) < 15)

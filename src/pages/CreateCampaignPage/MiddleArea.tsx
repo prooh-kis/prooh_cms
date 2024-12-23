@@ -7,15 +7,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { UploadCreatives } from "../../components/Segment/UploadCreatives";
-import { createCampaignCreationByScreenOwnerAction, getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
-
+import {
+  createCampaignCreationByScreenOwnerAction,
+  getScreenDataUploadCreativeAction,
+} from "../../actions/campaignAction";
 
 export const MiddleArea: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
 
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const campaignId = pathname.split("/").splice(-1)[0] || undefined;
 
   const [step, setStep] = useState<any>(1);
@@ -26,10 +28,11 @@ export const MiddleArea: React.FC = () => {
   const createCampaignCreationByScreenOwner = useSelector(
     (state: any) => state.createCampaignCreationByScreenOwner
   );
-  
+  const [toggleState, setToggleState] = useState<boolean>(false);
+
   const editCampaignCreationByScreenOwner = useSelector(
     (state: any) => state.editCampaignCreationByScreenOwner
-  )
+  );
 
   const {
     loading: loadingCampaignsCreations,
@@ -39,30 +42,37 @@ export const MiddleArea: React.FC = () => {
   } = createCampaignCreationByScreenOwner;
 
   const {
-    loading : loadingCampaignsEdit = false ,
-    error : loadingErrorResponse = "",
-    data : successCampaignsEdit = false
-  } = editCampaignCreationByScreenOwner ? editCampaignCreationByScreenOwner : { }
-
+    loading: loadingCampaignsEdit = false,
+    error: loadingErrorResponse = "",
+    data: successCampaignsEdit = false,
+  } = editCampaignCreationByScreenOwner
+    ? editCampaignCreationByScreenOwner
+    : {};
 
   useEffect(() => {
     if (!userInfo) {
       navigate("/auth");
     }
-    if (campaignId && getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.currentPage === "Add Basic Details") {
-      setStep(2);
+    if (
+      campaignId &&
+      getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.currentPage ===
+        "Add Basic Details"
+    ) {
+      setStep(1);
     }
-    if (campaignId && campaignId !== "create-campaign" && !successCampaignsCreations) {
-      dispatch(
-        createCampaignCreationByScreenOwnerAction({id: campaignId})
-      );
+    if (
+      campaignId &&
+      campaignId !== "create-campaign" &&
+      !successCampaignsCreations
+    ) {
+      dispatch(createCampaignCreationByScreenOwnerAction({ id: campaignId }));
     }
-  },[dispatch, campaignId]);
+  }, [dispatch, campaignId]);
 
   return (
     <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
       {step === 1 ? (
-        <EnterCampaignBasicDetails 
+        <EnterCampaignBasicDetails
           userInfo={userInfo}
           campaignId={campaignId}
           campaignType={CAMPAIGN_PLAN_TYPE_SCREEN_OWNER}
@@ -86,7 +96,6 @@ export const MiddleArea: React.FC = () => {
           successCampaignsEdit={successCampaignsEdit}
         />
       ) : null}
-
     </div>
   );
 };

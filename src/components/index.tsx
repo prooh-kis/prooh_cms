@@ -21,11 +21,13 @@ export { SearchInputField } from "./molecules/SearchInputField";
 export { ScreenView } from "./molecules/ScreenView";
 export { SingleCreativeInPopup } from "./molecules/SingleCreativeInPopup";
 export { NoDataView } from "./molecules/NoDataView";
+export { DownLoadCampaignLogReport } from "./molecules/DownLoadCampaignLogReport";
 
 // popup
 export { CalendarPopup } from "./popup/CalendarPopup";
 export { EditCampaignCreationAndItsSubCampaigns } from "./popup/EditCampaignCreationAndItsSubCampaigns";
 export { EditCreativeEndDatePopup } from "./popup/EditCreativeEndDatePopup";
 export { EnterTimeTriggerPopup } from "./popup/EnterTimeTriggerPopup";
+export { CampaignLogsPopup } from "./popup/CampaignLogsPopup";
 // Segment
 export { MonitoringPictures } from "./Segment/MonitoringPictures";
