@@ -18,7 +18,7 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    onChange(inputValue.trim());
+    onChange(inputValue);
 
     if (inputValue.trim() !== "") {
       const filtered = suggestions.filter((suggestion) =>

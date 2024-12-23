@@ -46,7 +46,7 @@ export const MiddleArea: React.FC = () => {
   };
 
   const reLoad = () => {
-    dispatch(getAllScreensDetailsAction({ userId: userInfo?._id }));
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
   };
 
   return (

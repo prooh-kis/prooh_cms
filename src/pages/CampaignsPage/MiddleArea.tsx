@@ -37,7 +37,7 @@ export const MiddleArea: React.FC = () => {
     } else if (!allCampaigns) {
       dispatch(
         getAllCampaignsDetailsAction({
-          userId: userInfo?._id,
+          userId: userInfo?.primaryUserId,
           status: CAMPAIGN_STATUS_ACTIVE,
         })
       );
@@ -53,7 +53,7 @@ export const MiddleArea: React.FC = () => {
     setCurrentTab(status);
     dispatch(
       getAllCampaignsDetailsAction({
-        userId: userInfo?._id,
+        userId: userInfo?.primaryUserId,
         status: campaignCreationTypeTabs?.filter(
           (tab: any) => tab.id === status
         )[0]?.value,
@@ -64,7 +64,7 @@ export const MiddleArea: React.FC = () => {
   const reset = () => {
     dispatch(
       getAllCampaignsDetailsAction({
-        userId: userInfo?._id,
+        userId: userInfo?.primaryUserId,
         status: CAMPAIGN_STATUS_ACTIVE,
       })
     );

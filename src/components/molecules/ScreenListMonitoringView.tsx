@@ -4,7 +4,12 @@ import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { useDispatch } from "react-redux";
 import { getScreenDataUploadCreativeAction } from "../../actions/campaignAction";
-import { convertDataTimeToLocale } from "../../utils/dateAndTimeUtils";
+import {
+  convertDataTimeToLocale,
+  convertIntoDateAndTime,
+  getTimeDifferenceInMin,
+} from "../../utils/dateAndTimeUtils";
+import { useSelector } from "react-redux";
 
 export function ScreenListMonitoringView({
   screen,
@@ -16,6 +21,16 @@ export function ScreenListMonitoringView({
 }: any) {
   const dispatch = useDispatch<any>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const auth = useSelector((state: any) => state.auth);
+  const { userInfo } = auth;
+
+  const getScreenClassName = (screen: any) => {
+    if (screen?.screenCode) {
+      if (getTimeDifferenceInMin(screen?.lastActive) < 15)
+        return "border w-3 h-3 bg-green-500 rounded-full justify-end";
+      else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
+    } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
+  };
 
   const getClassNameByStatus = () => {
     let className = "text-[12px] truncate";
@@ -48,7 +63,7 @@ export function ScreenListMonitoringView({
       <div className="flex gap-2 p-2 hover:bg-gray-100 hover:rounded">
         {!noImages && (
           <img
-            className="rounded h-16 w-20"
+            className="rounded h-24 w-32"
             src={screen?.images[0]}
             alt={screen?._id}
           />
@@ -62,12 +77,21 @@ export function ScreenListMonitoringView({
             {screen.location.city || screen.city}
           </h1>
           <h1 className="text-[8px]">
+            End Date:{" "}
             {convertDataTimeToLocale(
               campaignCreated?.campaigns?.filter(
                 (c: any) => c.screenId === screen._id
               )[0]?.endDate
             )}
           </h1>
+
+          <div className="flex flex-row gap-2 items-center px-1">
+            <h1 className="text-[10px] text-blue-500">
+              Last Active:{" "}
+              {convertIntoDateAndTime(screen?.lastActive) || "Not Available"}
+            </h1>
+            <div className={getScreenClassName(screen)} />
+          </div>
           <h1 className={getClassNameByStatus()}>
             {campaignCreated?.campaigns?.filter(
               (c: any) => c.screenId === screen._id
@@ -80,7 +104,7 @@ export function ScreenListMonitoringView({
             onClick={() => setShowMenu(true)}
           ></i>
 
-          {campaignCreated && showMenu && (
+          {campaignCreated && showMenu && userInfo?.userRole === "primary" && (
             <div
               onMouseLeave={() => setShowMenu(false)}
               className="absolute z-10 mt-2 w-[150px] bg-white border border-gray-300 rounded-md shadow-lg right-0 text-sm text-black-1000"

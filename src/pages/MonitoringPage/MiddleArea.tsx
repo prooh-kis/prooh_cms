@@ -81,7 +81,7 @@ export const MiddleArea: React.FC = () => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
     }
-    dispatch(getAllScreensDetailsAction({ userId: userInfo._id }));
+    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
   }, [dispatch, userInfo]);
 
   const handleScreenClick = ({ screen }: any) => {
