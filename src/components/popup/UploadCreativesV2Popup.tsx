@@ -277,12 +277,8 @@ export function UploadCreativesV2Popup({
               />
             </div>
             <div className="py-1">
-              <SearchableSelect
-                options={getDataFromLocalStorage(ALL_PACKAGE_LIST)?.map(
-                  (data: string) => {
-                    return { label: data, value: data };
-                  }
-                )}
+              <SuggestionInput
+                suggestions={getDataFromLocalStorage(ALL_PACKAGE_LIST)}
                 onChange={(value: string) => setNetwork(value)}
                 value={network || ""}
                 placeholder="Network"

@@ -258,10 +258,9 @@ export const EnterCampaignBasicDetails = ({
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
-      if (step === 1) {
-        setStep(2);
-      }
-      message.success("Campaign initiated successfully");
+      // if (step === 1) {
+      //   setStep(2);
+      // }
     }
 
     if (
@@ -491,6 +490,23 @@ export const EnterCampaignBasicDetails = ({
             </div>
             <div className="col-span-1 py-1"></div>
           </div>
+          <div className="flex py-4">
+            {!loadingCampaignsCreations && (
+              <PrimaryButton
+                loading={loadingCampaignsCreations}
+                loadingText="Creating campaign..."
+                rounded="rounded-[6px]"
+                title="Continue"
+                action={() => {
+                  if (validateForm()) {
+                    saveCampaignDetails();
+                    message.success("Campaign initiated successfully");
+                    setStep(2);
+                  }
+                }}
+              />
+            )}
+          </div>
         </div>
         <div className="col-span-4">
           <div className="border rounded-[12px] p-1 my-2">
@@ -573,23 +589,6 @@ export const EnterCampaignBasicDetails = ({
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="flex py-4">
-        {!loadingCampaignsCreations && (
-          <PrimaryButton
-            loading={loadingCampaignsCreations}
-            loadingText="Creating campaign..."
-            rounded="rounded-[6px]"
-            title="Continue"
-            action={() => {
-              if (validateForm()) {
-                saveCampaignDetails();
-                message.success("Campaign initiated successfully");
-              }
-            }}
-          />
-        )}
       </div>
     </div>
   );
