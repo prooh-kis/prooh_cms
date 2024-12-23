@@ -1,4 +1,4 @@
-import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER } from "../../constants/campaignConstants";
+import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER, CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
 import { EnterCampaignBasicDetails } from "../../components/Segment/EnterCampaignBasicDetails";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,6 +60,7 @@ export const MiddleArea: React.FC = () => {
     ) {
       setStep(1);
     }
+
     if (
       campaignId &&
       campaignId !== "create-campaign" &&

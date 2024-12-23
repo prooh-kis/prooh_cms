@@ -254,14 +254,13 @@ export const EnterCampaignBasicDetails = ({
     if (errorCampaignsCreations) {
       message.error(errorCampaignsCreations);
     }
+
     if (successCampaignsCreations) {
       navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
-      // if (step === 1) {
-      //   setStep(2);
-      // }
+      setStep(2);
     }
 
     if (
@@ -505,7 +504,6 @@ export const EnterCampaignBasicDetails = ({
                   if (validateForm()) {
                     saveCampaignDetails();
                     message.success("Campaign initiated successfully");
-                    setStep(2);
                   }
                 }}
               />
