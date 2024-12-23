@@ -139,22 +139,13 @@ export const UploadCreatives = ({
       const campaignCreationStatus = getDataFromLocalStorage(
         CAMPAIGN_CREATION_STATUS
       );
-      if (campaignCreationStatus === "edit") {
-        dispatch(
-          editCampaignCreationByScreenOwnerAction({
-            id: campaignId,
-            creatives: immutableCreatives,
-          })
-        );
-      } else {
-        dispatch(
-          createCampaignCreationByScreenOwnerAction({
-            pageName: "Upload Creatives",
-            id: campaignId,
-            creatives: immutableCreatives,
-          })
-        );
-      }
+      dispatch(
+        createCampaignCreationByScreenOwnerAction({
+          pageName: "Upload Creatives",
+          id: campaignId,
+          creatives: immutableCreatives,
+        })
+      );
     } else {
       message.error("No creative uploaded");
     }
@@ -275,7 +266,7 @@ export const UploadCreatives = ({
               )
               ?.flatMap((c: any) => c.standardDayTimeCreatives)}
             removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
-            // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+          // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
           />
         </div>
       )}
