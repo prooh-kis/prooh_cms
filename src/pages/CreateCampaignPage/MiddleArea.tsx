@@ -50,10 +50,6 @@ export const MiddleArea: React.FC = () => {
     : {};
 
   useEffect(() => {
-    if (successCampaignsCreations) setToggleState((pre: boolean) => !pre);
-  }, [successCampaignsCreations]);
-
-  useEffect(() => {
     if (!userInfo) {
       navigate("/auth");
     }

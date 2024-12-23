@@ -23,6 +23,7 @@ import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaign
 import {
   EnterTimeTriggerPopup,
   MultiSelectInput,
+  ReloadButton,
   SearchableSelect,
   SwitchInput,
 } from "../../components";
@@ -342,8 +343,11 @@ export const EnterCampaignBasicDetails = ({
         data={timeTriggers}
       />
       <div className="">
-        <h1 className="text-[24px] text-primaryText font-semibold">
-          Add Basic Details
+        <h1 className="text-[24px] text-primaryText font-semibold flex items-center">
+          Add Basic Details{" "}
+          <span className="pl-8">
+            <ReloadButton onClick={() => window.location.reload()} />
+          </span>
         </h1>
         <p className="text-[14px] text-secondaryText">
           Enter your basic details for the campaigns to proceed further
