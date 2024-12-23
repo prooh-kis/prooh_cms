@@ -188,7 +188,7 @@ export const UploadCreatives = ({
     if (clearCreatives) {
       setClearCreatives(false);
       var data = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN);
-      data[campaignId ? campaignId : ""].creatives = [];
+      data[campaignId != null ? campaignId : ""].creatives = [];
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
   }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
