@@ -18,9 +18,13 @@ import {
 } from "../../constants/localStorageConstants";
 import {
   createCampaignCreationByScreenOwnerAction,
+  getAllCampaignsDetailsAction,
   getAllScreensForScreenOwnerCampaignCreationAction,
 } from "../../actions/campaignAction";
-import { CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
+import {
+  CAMPAIGN_STATUS_ACTIVE,
+  CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+} from "../../constants/campaignConstants";
 import {
   EnterTimeTriggerPopup,
   MultiSelectInput,
@@ -112,7 +116,6 @@ export const EnterCampaignBasicDetails = ({
   const [enterDuration, setEnterDuration] = useState<any>(false);
 
   const [enterDate, setEnterDate] = useState<any>(false);
-
 
   const getAllScreensForScreenOwnerCampaignCreation = useSelector(
     (state: any) => state.getAllScreensForScreenOwnerCampaignCreation
@@ -264,6 +267,12 @@ export const EnterCampaignBasicDetails = ({
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
+      dispatch(
+        getAllCampaignsDetailsAction({
+          userId: userInfo?.primaryUserId,
+          status: CAMPAIGN_STATUS_ACTIVE,
+        })
+      );
       setStep(2);
     }
 
@@ -466,7 +475,9 @@ export const EnterCampaignBasicDetails = ({
                     alert("You can't edit start date");
                   }}
                 >
-                  <h1 className="text-[14px]">{new Date(startDate).toLocaleDateString()}</h1>
+                  <h1 className="text-[14px]">
+                    {new Date(startDate).toLocaleDateString()}
+                  </h1>
                 </div>
               ) : (
                 <CalendarInput
@@ -477,7 +488,6 @@ export const EnterCampaignBasicDetails = ({
                   minDate={new Date()}
                 />
               )}
-
             </div>
             <div className="col-span-1 py-1">
               <div className="flex justify-between">
@@ -489,10 +499,12 @@ export const EnterCampaignBasicDetails = ({
                 <div
                   className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
                   onClick={() => {
-                   setEnterDate(true);
+                    setEnterDate(true);
                   }}
                 >
-                  <h1 className="text-[14px]">{new Date(endDate).toLocaleDateString()}</h1>
+                  <h1 className="text-[14px]">
+                    {new Date(endDate).toLocaleDateString()}
+                  </h1>
                 </div>
               ) : (
                 <CalendarInput
@@ -587,10 +599,15 @@ export const EnterCampaignBasicDetails = ({
           </div>
           <div className="border rounded-[12px]">
             <div className="flex justify-between">
-              <h1 className="my-2 px-2 text-[14px]">Screens ({getDataFromLocalStorage(
-                ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-              )
-                ?.filter((s: any) => screenIds.includes(s._id)).length})</h1>
+              <h1 className="my-2 px-2 text-[14px]">
+                Screens (
+                {
+                  getDataFromLocalStorage(
+                    ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                  )?.filter((s: any) => screenIds.includes(s._id)).length
+                }
+                )
+              </h1>
               <button
                 className="text-[12px] px-2"
                 onClick={() => setScreenIds([])}

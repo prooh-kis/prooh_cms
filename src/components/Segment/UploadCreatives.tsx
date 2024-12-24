@@ -15,6 +15,7 @@ import {
 import {
   createCampaignCreationByScreenOwnerAction,
   editCampaignCreationByScreenOwnerAction,
+  getAllCampaignsDetailsAction,
   getScreenDataUploadCreativeAction,
 } from "../../actions/campaignAction";
 import { CheckboxInput } from "../atoms/CheckboxInput";
@@ -25,6 +26,7 @@ import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { ShowMediaPopup } from "../popup/ShowMediaPopup";
 import {
+  CAMPAIGN_STATUS_ACTIVE,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
   EDIT_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
 } from "../../constants/campaignConstants";
@@ -178,6 +180,12 @@ export const UploadCreatives = ({
       });
       message.success("Campaign saved successfully");
       // navigate(`/campaigns-list`);
+      dispatch(
+        getAllCampaignsDetailsAction({
+          userId: userInfo?.primaryUserId,
+          status: CAMPAIGN_STATUS_ACTIVE,
+        })
+      );
     }
     if (successCampaignsEdit) {
       dispatch({
@@ -193,7 +201,7 @@ export const UploadCreatives = ({
       data[campaignId].creatives = data[campaignId].creatives || [];
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
-    // 
+    //
   }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
 
   useEffect(() => {
@@ -270,7 +278,7 @@ export const UploadCreatives = ({
               )
               ?.flatMap((c: any) => c.standardDayTimeCreatives)}
             removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
-          // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+            // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
           />
         </div>
       )}
@@ -390,15 +398,14 @@ export const UploadCreatives = ({
         </div> */}
         <div className="col-span-12 border rounded-[12px] py-2 px-4">
           <div className="flex justify-between items-center border-b py-1">
-            <div className="flex justify-start gap-2">
-              <div className="py-2 px-4">
-                <SearchInputField
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder="Search screen by screen ratio"
-                />
-              </div>
+            <div className="py-2 px-4 w-96">
+              <SearchInputField
+                value={searchQuery}
+                onChange={setSearchQuery}
+                placeholder="Search screen by screen ratio"
+              />
             </div>
+
             <div className="flex justify-end items-center gap-4 pb-1">
               <h1 className="text-[12px] font-semibold">
                 {selectedScreens.length} selected

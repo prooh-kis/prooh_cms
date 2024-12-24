@@ -239,15 +239,12 @@ export function UploadCreativesV2Popup({
         (data: string) => data === value
       );
       if (oldBrandName) {
-        message.error(
+        message.warning(
           "Brand name already exist, try new brand name, other wise go with other flow of upload creative"
         );
-      } else {
-        setBrandName(value);
       }
-    } else {
-      setBrandName(value);
     }
+    setBrandName(value);
   };
 
   return (
