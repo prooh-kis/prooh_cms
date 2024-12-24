@@ -7,6 +7,7 @@ import { message } from "antd";
 import { PrimaryButton } from "../atoms/PrimaryButton";
 import {
   getAllBrandAndNetworkAction,
+  getCreativesMediaAction,
   uploadCreativesMediaAction,
 } from "../../actions/creativeAction";
 import { useLocation } from "react-router-dom";
@@ -97,6 +98,7 @@ export function UploadCreativesV2Popup({
       setLoading(false);
       dispatch({ type: UPLOAD_CREATIVES_RESET });
       dispatch(getAllBrandAndNetworkAction());
+      dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
       onClose();
     }
   }, [dispatch, successUpload, errorUpload]);
