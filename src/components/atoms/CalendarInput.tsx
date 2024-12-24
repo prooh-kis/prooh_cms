@@ -16,6 +16,7 @@ export const CalendarInput = ({
   minDate = new Date(),
 }: CalenderInputProps) => {
 
+  console.log("input", value);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
