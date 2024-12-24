@@ -17,7 +17,8 @@ export const MiddleArea: React.FC = () => {
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
 
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
+  console.log(state);
   const campaignId = pathname.split("/").splice(-1)[0] || undefined;
 
   const [step, setStep] = useState<any>(1);

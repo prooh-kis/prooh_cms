@@ -4,6 +4,7 @@ import { PrimaryInput } from "../atoms/PrimaryInput";
 import { useNavigate } from "react-router-dom";
 import { CalendarInput } from "../atoms/CalendarInput";
 import {
+  convertDataTimeToLocale,
   getEndDateFromStartDateANdDuration,
   getNumberOfDaysBetweenTwoDates,
 } from "../../utils/dateAndTimeUtils";
@@ -109,6 +110,9 @@ export const EnterCampaignBasicDetails = ({
   );
 
   const [enterDuration, setEnterDuration] = useState<any>(false);
+
+  const [enterDate, setEnterDate] = useState<any>(false);
+
 
   const getAllScreensForScreenOwnerCampaignCreation = useSelector(
     (state: any) => state.getAllScreensForScreenOwnerCampaignCreation
@@ -455,13 +459,25 @@ export const EnterCampaignBasicDetails = ({
               <label className="block text-secondaryText text-[14px] mb-2">
                 Start Date
               </label>
-              <CalendarInput
-                placeholder="Start Date"
-                value={startDate}
-                action={handleStartDateChange}
-                disabled={false}
-                minDate={new Date()}
-              />
+              {startDate !== "" ? (
+                <div
+                  className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+                  onClick={() => {
+                    alert("You can't edit start date");
+                  }}
+                >
+                  <h1 className="text-[14px]">{new Date(startDate).toLocaleDateString()}</h1>
+                </div>
+              ) : (
+                <CalendarInput
+                  placeholder="Start Date"
+                  value={startDate}
+                  action={handleStartDateChange}
+                  disabled={false}
+                  minDate={new Date()}
+                />
+              )}
+
             </div>
             <div className="col-span-1 py-1">
               <div className="flex justify-between">
@@ -469,13 +485,24 @@ export const EnterCampaignBasicDetails = ({
                   {!enterDuration ? "End Date" : "Duration"}
                 </label>
               </div>
-              <CalendarInput
-                placeholder={!enterDuration ? "End Date" : "0"}
-                value={endDate}
-                action={handelEndDateChange}
-                minDate={startDate || new Date()}
-                disabled={false}
-              />
+              {!enterDate ? (
+                <div
+                  className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+                  onClick={() => {
+                   setEnterDate(true);
+                  }}
+                >
+                  <h1 className="text-[14px]">{new Date(endDate).toLocaleDateString()}</h1>
+                </div>
+              ) : (
+                <CalendarInput
+                  placeholder={!enterDuration ? "End Date" : "0"}
+                  value={endDate}
+                  action={handelEndDateChange}
+                  minDate={startDate || new Date()}
+                  disabled={false}
+                />
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-8 pt-2">
@@ -560,7 +587,10 @@ export const EnterCampaignBasicDetails = ({
           </div>
           <div className="border rounded-[12px]">
             <div className="flex justify-between">
-              <h1 className="my-2 px-2 text-[14px]">Screens</h1>
+              <h1 className="my-2 px-2 text-[14px]">Screens ({getDataFromLocalStorage(
+                ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+              )
+                ?.filter((s: any) => screenIds.includes(s._id)).length})</h1>
               <button
                 className="text-[12px] px-2"
                 onClick={() => setScreenIds([])}

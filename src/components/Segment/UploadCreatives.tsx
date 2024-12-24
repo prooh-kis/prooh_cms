@@ -177,7 +177,7 @@ export const UploadCreatives = ({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
       message.success("Campaign saved successfully");
-      // navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
+      // navigate(`/campaigns-list`);
     }
     if (successCampaignsEdit) {
       dispatch({
@@ -185,12 +185,15 @@ export const UploadCreatives = ({
       });
       message.success("Creatives Edited successfully");
     }
+
+    // this might be unnecessary
     if (clearCreatives) {
       setClearCreatives(false);
       var data = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN);
-      data[campaignId != null ? campaignId : ""].creatives = [];
+      data[campaignId].creatives = data[campaignId].creatives || [];
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
+    // 
   }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
 
   useEffect(() => {
@@ -206,7 +209,7 @@ export const UploadCreatives = ({
 
   const getUploadedScreensNumber = () => {
     let screenIds: any = [];
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId].creatives?.map(
+    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.map(
       (c: any) => {
         c.screenIds?.map((screenId: any) => {
           if (!screenIds.includes(screenId)) {
@@ -251,6 +254,7 @@ export const UploadCreatives = ({
           brandName={brandName}
           campaignId={campaignId}
           screenData={screenCreativeUpload}
+          saveCampaignCreativesDetails={saveCampaignCreativesDetails}
         />
       )}
 
@@ -426,6 +430,7 @@ export const UploadCreatives = ({
               <div className={"grid grid-cols-4"}>
                 <div className={openShowMedia ? "col-span-3" : "col-span-4"}>
                   <UploadCreativesTable
+                    loading={loadingCampaignsCreations}
                     onClose={closePopup}
                     openShowMedia={openShowMedia}
                     setOpenShowMedia={setOpenShowMedia}

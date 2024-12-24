@@ -24,6 +24,7 @@ interface UploadCreativesFromBucketPopupProps {
   brandName?: string;
   campaignId?: any;
   screenData?: any;
+  saveCampaignCreativesDetails?: any;
 }
 export function UploadCreativesFromBucketPopup({
   onClose,
@@ -33,6 +34,7 @@ export function UploadCreativesFromBucketPopup({
   brandName,
   campaignId,
   screenData,
+  saveCampaignCreativesDetails,
 }: UploadCreativesFromBucketPopupProps) {
   const dispatch = useDispatch<any>();
   const [campaignOption, setCampaignOption] = useState("Image/Video");

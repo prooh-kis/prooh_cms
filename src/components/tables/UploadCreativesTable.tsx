@@ -16,6 +16,7 @@ interface UploadCreativesTableProps {
   setOpenShowMedia?: any;
   onClose?: any;
   searchQuery: string;
+  loading?: any;
 }
 
 export const UploadCreativesTable = ({
@@ -26,6 +27,7 @@ export const UploadCreativesTable = ({
   openShowMedia,
   setOpenShowMedia,
   onClose,
+  loading,
   searchQuery,
 }: UploadCreativesTableProps) => {
   const screens: any = screenData?.flatMap((data: any) => data.screens);
@@ -84,6 +86,7 @@ export const UploadCreativesTable = ({
                   color="#129BFF"
                   onChange={(e) => handleHeaderCheckboxChange(e)}
                   checked={isAllSelected}
+                  disabled={loading}
                 />
               </div>
             </th>

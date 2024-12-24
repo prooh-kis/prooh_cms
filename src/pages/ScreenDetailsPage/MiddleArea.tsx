@@ -660,12 +660,12 @@ export const MiddleArea: React.FC = () => {
                         }
                       </h1>
                       <p className="text-[12px]">
-                        {
+                        {creative?.type?.split("/")[0] === "image" &&
                           campaigns?.filter(
                             (c: any) => c._id === selectedCampaign
                           )[0]?.creatives.creativeDuration
                         }{" "}
-                        seconds, {creative?.type}
+                        {creative?.type?.split("/")[0] === "image" && "seconds, "} {creative?.type}
                       </p>
                     </div>
                   )

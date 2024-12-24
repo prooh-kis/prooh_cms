@@ -22,7 +22,11 @@ export const Header: React.FC = () => {
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/auth");
+    }
+  }, [navigate, userInfo]);
 
   return (
     <div className="w-full h-16 bg-white border border-b flex items-center justify-between fixed z-50">

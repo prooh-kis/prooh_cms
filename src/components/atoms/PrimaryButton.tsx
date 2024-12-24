@@ -32,6 +32,7 @@ export const PrimaryButton = ({icon, reverse, textSize, disabled, width, height,
               "bg-primaryButton font-semibold text-white hover:bg-transparent hover:border-primaryButton hover:border-2 hover:text-primaryButton"}
           ${disabled ? "bg-[#D7D7D7]" : ""}
           transition-colors duration-300
+          ${loading ? "animate-pulse duration-200 ease-in-out forwards bg-gray-100 rounded-full p-1": ""}
         `}
       >
         {icon} {loading ? loadingText :title}
