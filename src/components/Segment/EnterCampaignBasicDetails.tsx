@@ -346,6 +346,8 @@ export const EnterCampaignBasicDetails = ({
     setTimeTriggers(data);
   };
 
+  console.log("campaignId : ", campaignId);
+
   return (
     <div className="w-full py-3">
       <EnterTimeTriggerPopup
@@ -468,26 +470,25 @@ export const EnterCampaignBasicDetails = ({
               <label className="block text-secondaryText text-[14px] mb-2">
                 Start Date
               </label>
-              {startDate !== "" ? (
+              {/* {startDate !== "" && campaignId !== "" ? (
                 <div
                   className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                  onClick={() => {
-                    alert("You can't edit start date");
-                  }}
+                  // onClick={() => {
+                  //   alert("You can't edit start date");
+                  // }}
                 >
                   <h1 className="text-[14px]">
                     {new Date(startDate).toLocaleDateString()}
                   </h1>
                 </div>
-              ) : (
-                <CalendarInput
-                  placeholder="Start Date"
-                  value={startDate}
-                  action={handleStartDateChange}
-                  disabled={false}
-                  minDate={new Date()}
-                />
-              )}
+              ) : ( */}
+              <CalendarInput
+                placeholder="Start Date"
+                value={startDate}
+                action={handleStartDateChange}
+                disabled={campaignId != "create-campaign" ? true : false}
+                minDate={new Date()}
+              />
             </div>
             <div className="col-span-1 py-1">
               <div className="flex justify-between">
@@ -511,7 +512,11 @@ export const EnterCampaignBasicDetails = ({
                   placeholder={!enterDuration ? "End Date" : "0"}
                   value={endDate}
                   action={handelEndDateChange}
-                  minDate={startDate || new Date()}
+                  minDate={
+                    campaignId != "create-campaign"
+                      ? endDate
+                      : startDate || new Date()
+                  }
                   disabled={false}
                 />
               )}
