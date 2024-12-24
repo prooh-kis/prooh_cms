@@ -55,6 +55,7 @@ export const ScreenLogReportPopup = React.memo(function ScreenLogReport(
                   <th className="border px-4">Device Time</th>
                   <th className="border px-4">Device Status</th>
                   <th className="border px-4">Campaign Name</th>
+                  <th className="border px-4">Media</th>
                   <th className="border px-4">Brand Name</th>
                 </tr>
               </thead>
@@ -70,6 +71,9 @@ export const ScreenLogReportPopup = React.memo(function ScreenLogReport(
                     </td>
                     <td className="border px-4">{c.screenStatus}</td>
                     <td className="border px-4">{c?.campaignName || "N/A"}</td>
+                    <td className="border px-4">
+                      {c?.mediaId?.split("_")[1] || "N/A"}
+                    </td>
                     <td className="border px-4">{c?.brandName || "N/A"}</td>
                   </tr>
                 ))}
