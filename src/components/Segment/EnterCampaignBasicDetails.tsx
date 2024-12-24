@@ -496,30 +496,18 @@ export const EnterCampaignBasicDetails = ({
                   {!enterDuration ? "End Date" : "Duration"}
                 </label>
               </div>
-              {!enterDate ? (
-                <div
-                  className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                  onClick={() => {
-                    setEnterDate(true);
-                  }}
-                >
-                  <h1 className="text-[14px]">
-                    {new Date(endDate).toLocaleDateString()}
-                  </h1>
-                </div>
-              ) : (
-                <CalendarInput
-                  placeholder={!enterDuration ? "End Date" : "0"}
-                  value={endDate}
-                  action={handelEndDateChange}
-                  minDate={
-                    campaignId != "create-campaign"
-                      ? endDate
-                      : startDate || new Date()
-                  }
-                  disabled={false}
-                />
-              )}
+
+              <CalendarInput
+                placeholder={!enterDuration ? "End Date" : "0"}
+                value={endDate}
+                action={handelEndDateChange}
+                minDate={
+                  campaignId != "create-campaign"
+                    ? endDate
+                    : startDate || new Date()
+                }
+                disabled={false}
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-8 pt-2">
