@@ -9,7 +9,7 @@ export const DownLoadCampaignLogReport = ({ campaignLog, campaign }: any) => {
   const getData = (campaign: any, index: number) => {
     return [
       index,
-      convertDataTimeToLocale(campaign?.time),
+      convertDataTimeToLocale(campaign?.logTime),
       campaign.screenStatus,
     ];
   };

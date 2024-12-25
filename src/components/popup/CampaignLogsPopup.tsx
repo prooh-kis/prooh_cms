@@ -45,7 +45,8 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
               <thead>
                 <tr className="gap-4">
                   <th className="border p-2 ">Sl. No</th>
-                  <th className="border p-2">Playback Time</th>
+                  <th className="border p-2">Log Time</th>
+                  <th className="border p-2">Device Time</th>
                   <th className="border p-2">ScreenName</th>
                   <th className="border p-2">Device Status</th>
                 </tr>
@@ -55,7 +56,10 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
                   <tr className="" key={i}>
                     <td className="border p-2">{i + 1}</td>
                     <td className="border p-2">
-                      {convertDataTimeToLocale(c.time)}
+                      {convertDataTimeToLocale(c.logTime)}
+                    </td>
+                    <td className="border p-2">
+                      {convertDataTimeToLocale(c.deviceTime)}
                     </td>
                     <td className="border p-2">{logs?.campaign?.screenName}</td>
                     <td
