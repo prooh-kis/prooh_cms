@@ -47,6 +47,7 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
                   <th className="border p-2 ">Sl. No</th>
                   <th className="border p-2">Log Time</th>
                   <th className="border p-2">Device Time</th>
+                  <th className="border p-2">Creative Name</th>
                   <th className="border p-2">ScreenName</th>
                   <th className="border p-2">Device Status</th>
                 </tr>
@@ -60,6 +61,9 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
                     </td>
                     <td className="border p-2">
                       {convertDataTimeToLocale(c.deviceTime)}
+                    </td>
+                    <td className="border p-2">
+                      {c.mediaId?.split("_")[1]}
                     </td>
                     <td className="border p-2">{logs?.campaign?.screenName}</td>
                     <td
