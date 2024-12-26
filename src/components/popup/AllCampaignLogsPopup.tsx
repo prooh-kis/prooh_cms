@@ -60,8 +60,8 @@ export const AllCampaignLogsPopup = ({
     if (selectedScreens?.length === 0) {
       message.error("Please select screens!");
       return false;
-    } else if (selectedScreens?.length > 20) {
-      message.error("You can select only 20 screens max!");
+    } else if (selectedScreens?.length > 10) {
+      message.error("You can select only 10 screens max!");
       return false;
     } else {
       return true;
@@ -133,9 +133,9 @@ export const AllCampaignLogsPopup = ({
   };
 
   const handelSelectScreen = (screenId: string) => {
-    if (selectedScreens?.length + 1 > 20) {
+    if (selectedScreens?.length + 1 > 10) {
       message.error(
-        "You can select only 20 screens at a time, please filter screens or select one by one"
+        "You can select only 10 screens at a time, please filter screens or select one by one"
       );
     } else {
       let newSelectedScreen = [];
@@ -153,9 +153,9 @@ export const AllCampaignLogsPopup = ({
 
   const handleSelectAllScreens = (checked: boolean) => {
     console.log("checked :", checked);
-    if (filteredScreens?.length + selectedScreens?.length > 20) {
+    if (filteredScreens?.length + selectedScreens?.length > 10) {
       message.error(
-        "You can select only 20 screens at a time, please filter screens or select one by one"
+        "You can select only 10 screens at a time, please filter screens or select one by one"
       );
     } else if (!checked) {
       const data = selectedScreens?.filter(
@@ -177,7 +177,7 @@ export const AllCampaignLogsPopup = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div
         className={`bg-white p-4 mt-8 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto ${
-          isMinimized ? "w-40 h-20" : "h-[90vh] w-[60vw]"
+          isMinimized ? "w-40 h-10" : "h-[90vh] w-[60vw]"
         }`} // Minimize condition
       >
         <div className="flex justify-between">
