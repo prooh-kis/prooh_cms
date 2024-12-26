@@ -18,6 +18,7 @@ export function ScreenListMonitoringView({
   campaignCreated,
   handleChangeCampaignStatus,
   handleGetCampaignLog,
+  showOption,
 }: any) {
   const dispatch = useDispatch<any>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -99,10 +100,12 @@ export function ScreenListMonitoringView({
           </h1>
         </div>
         <div className="relative inline-block ml-auto">
-          <i
-            className="fi fi-bs-menu-dots cursor-pointer"
-            onClick={() => setShowMenu(true)}
-          ></i>
+          {showOption && (
+            <i
+              className="fi fi-bs-menu-dots cursor-pointer"
+              onClick={() => setShowMenu(true)}
+            ></i>
+          )}
 
           {campaignCreated && showMenu && userInfo?.userRole === "primary" && (
             <div

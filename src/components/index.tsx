@@ -29,5 +29,6 @@ export { EditCampaignCreationAndItsSubCampaigns } from "./popup/EditCampaignCrea
 export { EditCreativeEndDatePopup } from "./popup/EditCreativeEndDatePopup";
 export { EnterTimeTriggerPopup } from "./popup/EnterTimeTriggerPopup";
 export { CampaignLogsPopup } from "./popup/CampaignLogsPopup";
+export { AllCampaignLogsPopup } from "./popup/AllCampaignLogsPopup";
 // Segment
 export { MonitoringPictures } from "./Segment/MonitoringPictures";

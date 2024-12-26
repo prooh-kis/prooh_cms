@@ -174,6 +174,7 @@ export const MiddleArea: React.FC = () => {
                       <ScreenListMonitoringView
                         screen={data}
                         noImages={true}
+                        showOption={false}
                         handleGetCampaignLog={() => {}}
                       />
                     </div>

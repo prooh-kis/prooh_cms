@@ -35,6 +35,7 @@ import {
   SearchInputField,
   CampaignLogsPopup,
   NoDataView,
+  AllCampaignLogsPopup,
 } from "../../components";
 import {
   getDataFromLocalStorage,
@@ -64,6 +65,9 @@ export const MiddleArea: React.FC = () => {
   const [campaign, setCampaign] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [dropdownVisible, setDropdownVisible] = useState<any>({});
+
+  const [openAllCampaignLogsPopup, setOpenAllCampaignLogsPopup] =
+    useState<any>(false);
 
   const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
     useState<any>(false);
@@ -276,6 +280,10 @@ export const MiddleArea: React.FC = () => {
     }
   };
 
+  const handleToggleOpenAllCampaignLogsPopup = useCallback(() => {
+    setOpenAllCampaignLogsPopup((pre: boolean) => !pre);
+  }, [openAllCampaignLogsPopup]);
+
   return (
     <div className="mt-6 w-full h-full py-2">
       <div className="w-full grid grid-cols-12 gap-2">
@@ -296,6 +304,16 @@ export const MiddleArea: React.FC = () => {
             campaignCreation={campaignCreated}
             isLoading={loadingEditAllSubCampaigns}
             handleNext={handleEditAllSubCampaigns}
+          />
+        )}
+        {openAllCampaignLogsPopup && (
+          <AllCampaignLogsPopup
+            campaigns={campaignCreated?.campaigns}
+            screens={screens}
+            loadingScreens={loadingScreens}
+            open={openAllCampaignLogsPopup}
+            onClose={handleToggleOpenAllCampaignLogsPopup}
+            campaignCreated={campaignCreated}
           />
         )}
         {openCampaignLogPopup && (
@@ -352,6 +370,12 @@ export const MiddleArea: React.FC = () => {
                       <Skeleton active paragraph={{ rows: 1 }} />
                     ) : (
                       <div className=" flex h-auto gap-4">
+                        <Tooltip title="Get all campaigns logs">
+                          <i
+                            className="fi fi-rr-document text-gray-500"
+                            onClick={handleToggleOpenAllCampaignLogsPopup}
+                          ></i>
+                        </Tooltip>
                         <Tooltip title="Edit creatives for all screens">
                           <i
                             className="fi fi-ss-pen-circle text-gray-500"
@@ -524,6 +548,7 @@ export const MiddleArea: React.FC = () => {
                         }
                         screen={screen}
                         noImages={false}
+                        showOption={true}
                         handleGetCampaignLog={handleShowLogReport}
                       />
                     </div>
