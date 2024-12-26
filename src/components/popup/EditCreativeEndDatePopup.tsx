@@ -110,11 +110,11 @@ export function EditCreativeEndDatePopup({
     )[0]; // for (const scr of screenData) {
 
     const standardDayTimeCreatives: any = [
-      ...(scrData.standardDayTimeCreatives || []),
+      ...(scrData?.standardDayTimeCreatives || []),
     ]; // Clone the array
 
     dataToUpload.forEach((data: any) => {
-      if (!standardDayTimeCreatives.some((f: any) => f.url === data.url)) {
+      if (!standardDayTimeCreatives?.some((f: any) => f.url === data.url)) {
         standardDayTimeCreatives.push({
           size: data.size,
           type: data.type,
