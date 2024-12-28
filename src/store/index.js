@@ -15,6 +15,7 @@ import {
   allCampaignsDataGetReducer,
   campaignCreatedScreensDetailsGetReducer,
   campaignDetailsGetReducer,
+  campaignFullDetailsGetReducer,
   campaignLogsByCampaignIdReducer,
   campaignStatusChangeReducer,
   createCampaignCreationByScreenOwnerReducer,
@@ -79,6 +80,7 @@ const store = configureStore({
     campaignDetailsGet: campaignDetailsGetReducer,
     campaignCreatedScreensDetailsGet: campaignCreatedScreensDetailsGetReducer,
     editAllSubCampaigns: editAllSubCampaignsReducer,
+    getCampaignFullDetails: campaignFullDetailsGetReducer,
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
 

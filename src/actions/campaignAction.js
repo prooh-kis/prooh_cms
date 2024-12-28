@@ -24,6 +24,9 @@ import {
   GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
   GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
   GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
+  GET_FULL_CAMPAIGN_DATA_FAIL,
+  GET_FULL_CAMPAIGN_DATA_REQUEST,
+  GET_FULL_CAMPAIGN_DATA_SUCCESS,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
@@ -181,6 +184,31 @@ export const getCampaignDetailsAction =
     } catch (error) {
       dispatch({
         type: GET_CAMPAIGN_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+export const getFullCampaignDetailsAction =
+  (campaignId) => async (dispatch) => {
+    dispatch({
+      type: GET_FULL_CAMPAIGN_DATA_REQUEST,
+      payload: campaignId,
+    });
+    try {
+      const { data } = await axios.get(
+        `${campaignV2}/campaignDetailsByCampaignCreationId?id=${campaignId}`
+      );
+      dispatch({
+        type: GET_FULL_CAMPAIGN_DATA_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      console.log("error : ", error);
+      dispatch({
+        type: GET_FULL_CAMPAIGN_DATA_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

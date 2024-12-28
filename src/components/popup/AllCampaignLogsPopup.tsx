@@ -26,10 +26,8 @@ export const AllCampaignLogsPopup = ({
   const [recentlyDownloadedScreens, setRecentlyDownloadedScreens] = useState<
     string[]
   >([]);
-  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Minimize state
-  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const filteredScreens = screens?.filter((screen: any) =>
     screen?.screenName?.toLowerCase().includes(searchQuery)
@@ -60,8 +58,8 @@ export const AllCampaignLogsPopup = ({
     if (selectedScreens?.length === 0) {
       message.error("Please select screens!");
       return false;
-    } else if (selectedScreens?.length > 10) {
-      message.error("You can select only 10 screens max!");
+    } else if (selectedScreens?.length > 20) {
+      message.error("You can select only 20 screens max!");
       return false;
     } else {
       return true;
@@ -133,9 +131,9 @@ export const AllCampaignLogsPopup = ({
   };
 
   const handelSelectScreen = (screenId: string) => {
-    if (selectedScreens?.length + 1 > 10) {
+    if (selectedScreens?.length + 1 > 20) {
       message.error(
-        "You can select only 10 screens at a time, please filter screens or select one by one"
+        "You can select only 20 screens at a time, please filter screens or select one by one"
       );
     } else {
       let newSelectedScreen = [];
@@ -153,9 +151,9 @@ export const AllCampaignLogsPopup = ({
 
   const handleSelectAllScreens = (checked: boolean) => {
     console.log("checked :", checked);
-    if (filteredScreens?.length + selectedScreens?.length > 10) {
+    if (filteredScreens?.length + selectedScreens?.length > 20) {
       message.error(
-        "You can select only 10 screens at a time, please filter screens or select one by one"
+        "You can select only 20 screens at a time, please filter screens or select one by one"
       );
     } else if (!checked) {
       const data = selectedScreens?.filter(
@@ -176,133 +174,110 @@ export const AllCampaignLogsPopup = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div
-        className={`bg-white p-4 mt-8 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto ${
-          isMinimized ? "w-40 h-10" : "h-[90vh] w-[60vw]"
-        }`} // Minimize condition
+        className="bg-white p-4 mt-8 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto"
+        style={{ height: "90vh", width: "60vw" }}
       >
         <div className="flex justify-between">
-          {!isMinimized ? (
-            <h1 className="text-[16px] font-bold">
-              Download All Campaigns Logs
-              <span className="text-green-500 pl-4">{campaigns?.length}</span>
-            </h1>
-          ) : (
-            <h1 className="text-[16px] font-bold">Download Logs</h1>
-          )}
-
-          <div className="flex gap-2">
-            <i
-              className="fi fi-br-circle-xmark cursor-pointer"
-              onClick={() => onClose()}
-            ></i>
-            <button
-              onClick={() => setIsMinimized(!isMinimized)} // Toggle minimize
-              className="text-gray-600 hover:text-blue-500"
-            >
-              {isMinimized ? "Expand" : "Minimize"}
-            </button>
-          </div>
+          <h1 className="text-[16px] font-bold">
+            Download All Campaigns Logs
+            <span className="text-green-500 pl-4">{campaigns?.length}</span>
+          </h1>
+          <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
         </div>
-
-        {/* Full Mode Content */}
-        {!isMinimized && (
+        <PrimaryButton
+          action={handleGetLogData}
+          title="Download logs"
+          loading={isDownloading}
+          loadingText="Downloading , please wait......"
+          width="w-full"
+        />
+        {isDownloading && (
           <>
-            <PrimaryButton
-              action={handleGetLogData}
-              title="Download logs"
-              loading={isDownloading}
-              loadingText="Downloading , please wait......"
-              width="w-full"
-            />
-            {isDownloading && (
-              <>
-                <h1 className="text-green-500 bg-green-200 p-4 mt-4">
-                  Total campaign Downloaded{" "}
-                  <span className="text-green-700">{count}</span>
-                </h1>
-                <h1>Time take to complete task : {formatTime(time)}</h1>
-                {campaigns?.length === 0 && (
-                  <h1 className="text-lg text-red-600 bg-red-200 p-4">
-                    No Campaign to download report
-                  </h1>
-                )}
-              </>
-            )}
-
-            {isDownloading && (
-              <div className="flex flex-col justify-center items-center">
-                <div className="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 mb-4"></div>
-                <span className="text-xl text-gray-700">Downloading...</span>
-              </div>
-            )}
-
-            <div className="flex items-center p-2">
-              <SearchInputField
-                placeholder="Search screens by name"
-                height="h-8"
-                value={searchQuery}
-                onChange={setSearchQuery}
-              />
-            </div>
-            <div className="flex justify-between p-2">
-              <div className="flex gap-4">
-                <input
-                  type="checkbox"
-                  value="Checked All"
-                  id="Select All"
-                  checked={selectedScreens?.length === filteredScreens?.length}
-                  onChange={(e) => handleSelectAllScreens(e.target.checked)}
-                />
-                <label htmlFor="Individual">Select All</label>
-                <button
-                  className="hover:text-sky-500"
-                  onClick={() => setSelectedScreens([])}
-                >
-                  Reset
-                </button>
-              </div>
-              <h1>Total screen selected: {selectedScreens?.length}</h1>
-              <h1>
-                Total campaign selected:{" "}
-                {
-                  campaigns?.filter((camp: any) =>
-                    selectedScreens?.includes(camp.screenId)
-                  )?.length
-                }
+            <h1 className="text-green-500 bg-green-200 p-4 mt-4">
+              Total campaign Downloaded{" "}
+              <span className="text-green-700">{count}</span>
+            </h1>
+            <h1>Time take to complete task : {formatTime(time)}</h1>
+            {campaigns?.length === 0 && (
+              <h1 className="text-lg text-red-600 bg-red-200 p-4">
+                No Campaign to download report
               </h1>
-            </div>
-            {loadingScreens ? (
-              <Loading />
-            ) : (
-              <div className="h-[70vh] overflow-scroll px-4">
-                {filteredScreens?.map((screen: any, k: any) => (
-                  <div className="flex justify-between " key={k}>
-                    <div
-                      className="p-0 m-0 flex gap-4"
-                      title="Click to select screen to view monitoring data"
-                      onClick={() => handelSelectScreen(screen?._id)}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedScreens?.includes(screen?._id)}
-                      />
-                      <ScreenListMonitoringView
-                        screen={screen}
-                        noImages={false}
-                        showOption={false}
-                        campaignCreated={campaignCreated}
-                      />
-                    </div>
-                    {recentlyDownloadedScreens?.includes(screen?._id) ? (
-                      <h1 className="text-green-500 pt-4">Downloaded</h1>
-                    ) : (
-                      <h1 className="text-red-500 pt-4">Not Download</h1>
-                    )}
-                  </div>
-                ))}
-              </div>
             )}
           </>
+        )}
+
+        {isDownloading && (
+          <div className="flex flex-col justify-center items-center">
+            <div className="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 mb-4"></div>
+            <span className="text-xl text-gray-700">Downloading...</span>
+          </div>
+        )}
+
+        <div className="flex items-center p-2">
+          <SearchInputField
+            placeholder="Search screens by name"
+            height="h-8"
+            value={searchQuery}
+            onChange={setSearchQuery}
+          />
+        </div>
+        <div className="flex justify-between p-2">
+          <div className="flex gap-4">
+            <input
+              type="checkbox"
+              value="Checked All"
+              id="Select All"
+              checked={selectedScreens?.length === filteredScreens?.length}
+              onChange={(e) => handleSelectAllScreens(e.target.checked)}
+            />
+            <label htmlFor="Individual">Select All</label>
+            <button
+              className="hover:text-sky-500"
+              onClick={() => setSelectedScreens([])}
+            >
+              Reset
+            </button>
+          </div>
+          <h1>Total screen selected: {selectedScreens?.length}</h1>
+          <h1>
+            Total campaign selected:{" "}
+            {
+              campaigns?.filter((camp: any) =>
+                selectedScreens?.includes(camp.screenId)
+              )?.length
+            }
+          </h1>
+        </div>
+        {loadingScreens ? (
+          <Loading />
+        ) : (
+          <div className="h-[70vh] overflow-scroll px-4">
+            {filteredScreens?.map((screen: any, k: any) => (
+              <div className="flex justify-between " key={k}>
+                <div
+                  className="p-0 m-0 flex gap-4"
+                  title="Click to select screen to view monitoring data"
+                  onClick={() => handelSelectScreen(screen?._id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedScreens?.includes(screen?._id)}
+                  />
+                  <ScreenListMonitoringView
+                    screen={screen}
+                    noImages={false}
+                    showOption={false}
+                    campaignCreated={campaignCreated}
+                  />
+                </div>
+                {recentlyDownloadedScreens?.includes(screen?._id) ? (
+                  <h1 className="text-green-500 pt-4">Downloaded</h1>
+                ) : (
+                  <h1 className="text-red-500 pt-4">Not Download</h1>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

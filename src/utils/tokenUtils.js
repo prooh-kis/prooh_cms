@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { getDataFromLocalStorage } from "./localStorageUtils";
 import store from "../store";
 import { login, logout } from "../store/authSlice";
+import { SIGN_IN } from "../../routes/routes";
 
 export const getTokenExpirationTime = (token) => {
   const decoded = jwtDecode(token);
@@ -35,7 +36,7 @@ export const setupAutoLogout = () => {
         localStorage.removeItem("userInfo");
         localStorage.clear();
         store.dispatch(logout());
-        window.location.href = "/auth"; // Redirect to login page
+        window.location.href = SIGN_IN; // Redirect to login page
       }, timeUntilExpiration - 60000); // Logout 1 minute before expiration
     }
   } else {
@@ -45,7 +46,7 @@ export const setupAutoLogout = () => {
       localStorage.removeItem("userInfo");
       localStorage.clear();
       store.dispatch(logout());
-      window.location.href = "/auth"; // Redirect to login page
+      window.location.href = SIGN_IN; // Redirect to login page
     }, 0);
   }
 };

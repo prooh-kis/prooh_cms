@@ -7,8 +7,8 @@ import {
   CampaignDetailsPage,
   CampaignsPage,
   CreateCampaignPage,
+  EditCampaign,
   ForgetPassword,
-  LandingPage,
   MonitoringPage,
   MyCreativesPage,
   PageNotFound,
@@ -19,20 +19,49 @@ import {
 } from "../pages";
 
 import { PrivateRoute } from "./PrivateRoute";
-import { AUTH, CAMPAIGNS_DETAILS, CAMPAIGNS_LIST, CREATE_CAMPAIGN, EDIT_CAMPAIGN, FORGET_PASSWORD, HOME, MY_CREATIVES, SCREEN_CAMPAIGN_MONITORING, SCREENS_DETAILS, SCREENS_LIST, UPDATE_PASSWORD, VERIFY_EMAIL } from "./routes";
+import {
+  SIGN_IN,
+  CAMPAIGNS_DETAILS,
+  CAMPAIGNS_LIST,
+  CREATE_CAMPAIGN,
+  EDIT_CAMPAIGN,
+  FORGET_PASSWORD,
+  HOME,
+  MY_CREATIVES,
+  SCREEN_CAMPAIGN_MONITORING,
+  SCREENS_DETAILS,
+  SCREENS_LIST,
+  UPDATE_PASSWORD,
+  VERIFY_EMAIL,
+  SIGN_UP,
+} from "./routes";
+import { PublicRoute } from "./PublicRoute";
+import { SignIn } from "../pages/AuthPage/SignIn";
+import { SignUp } from "../pages/AuthPage/SignUp";
+import { AppDashBoardLayout } from "../pages/AppDashBoardLayout";
 
 const Routers: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route
-          path={AUTH}
+          path={SIGN_IN}
           element={
-            <PrivateRoute layout={HomePageLayout}>
-              <AuthPage />
-            </PrivateRoute>
+            <PublicRoute>
+              <SignIn />
+            </PublicRoute>
           }
         />
+
+        <Route
+          path={SIGN_UP}
+          element={
+            <PublicRoute>
+              <SignUp />
+            </PublicRoute>
+          }
+        />
+
         <Route
           path={VERIFY_EMAIL}
           element={
@@ -44,12 +73,12 @@ const Routers: React.FC = () => {
         <Route
           path={FORGET_PASSWORD}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <PublicRoute>
               <ForgetPassword />
-            </PrivateRoute>
+            </PublicRoute>
           }
         />
-            <Route
+        <Route
           path={UPDATE_PASSWORD}
           element={
             <PrivateRoute layout={HomePageLayout}>
@@ -58,81 +87,92 @@ const Routers: React.FC = () => {
           }
         />
         <Route
-          path={HOME}
-          element={
-            <PrivateRoute layout={HomePageLayout}>
-              <LandingPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path={CREATE_CAMPAIGN}
-          element={
-            <PrivateRoute layout={HomePageLayout}>
-              <CreateCampaignPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path={EDIT_CAMPAIGN}
-          element={
-            <PrivateRoute layout={HomePageLayout}>
-              <CreateCampaignPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
           path={SCREENS_LIST}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <AppDashBoardLayout>
               <ScreensPage />
-            </PrivateRoute>
+            </AppDashBoardLayout>
           }
         />
         <Route
           path={SCREENS_DETAILS}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <AppDashBoardLayout>
               <ScreenDetailsPage />
-            </PrivateRoute>
+            </AppDashBoardLayout>
           }
         />
 
         <Route
           path={CAMPAIGNS_LIST}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <AppDashBoardLayout>
               <CampaignsPage />
-            </PrivateRoute>
+            </AppDashBoardLayout>
           }
         />
         <Route
           path={CAMPAIGNS_DETAILS}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <AppDashBoardLayout>
               <CampaignDetailsPage />
-            </PrivateRoute>
+            </AppDashBoardLayout>
           }
         />
+
+        <Route
+          path={CREATE_CAMPAIGN}
+          element={
+            <PublicRoute>
+              <CreateCampaignPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path={EDIT_CAMPAIGN}
+          element={
+            <PublicRoute>
+              <EditCampaign />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path={HOME}
+          element={
+            <AppDashBoardLayout>
+              <ScreensPage />
+            </AppDashBoardLayout>
+          }
+        />
+
+        <Route
+          path={EDIT_CAMPAIGN}
+          element={
+            <PublicRoute>
+              <CreateCampaignPage />
+            </PublicRoute>
+          }
+        />
+
         <Route
           path={MY_CREATIVES}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <AppDashBoardLayout>
               <MyCreativesPage />
-            </PrivateRoute>
+            </AppDashBoardLayout>
           }
         />
         <Route
           path={SCREEN_CAMPAIGN_MONITORING}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <AppDashBoardLayout>
               <MonitoringPage />
-            </PrivateRoute>
+            </AppDashBoardLayout>
           }
         />
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

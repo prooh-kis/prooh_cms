@@ -4,7 +4,6 @@ import { PrimaryInput } from "../atoms/PrimaryInput";
 import { useNavigate } from "react-router-dom";
 import { CalendarInput } from "../atoms/CalendarInput";
 import {
-  convertDataTimeToLocale,
   getEndDateFromStartDateANdDuration,
   getNumberOfDaysBetweenTwoDates,
 } from "../../utils/dateAndTimeUtils";
@@ -33,6 +32,7 @@ import {
   SwitchInput,
 } from "../../components";
 import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
+import { SelectScreensViaNetwork } from "../../components/molecules/SelectScreensViaNetwork";
 
 interface EnterCampaignBasicDetailsProps {
   userInfo?: any;
@@ -44,6 +44,7 @@ interface EnterCampaignBasicDetailsProps {
   campaignsCreated?: any;
   setStep?: any;
   step?: any;
+  purpose?: string;
 }
 
 const allIndexs = Array.from({ length: 18 }, (_, i) => ({
@@ -62,6 +63,7 @@ export const EnterCampaignBasicDetails = ({
   campaignsCreated,
   setStep,
   step,
+  purpose,
 }: EnterCampaignBasicDetailsProps) => {
   const navigate = useNavigate();
   const [timeTriggers, setTimeTriggers] = useState<any>(
@@ -175,66 +177,44 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
-
-    if (campaignId !== "create-campaign") {
-      //TODO add triggers object here
+    console.log(
+      "campaignsCreated?.creatives || []",
+      campaignsCreated?.creatives || []
+    );
+    const data = {
+      pageName: "Add Basic Details",
+      name: campaignName,
+      brandName: brandName.toUpperCase(),
+      campaignType: campaignType,
+      clientName: clientName,
+      industry: industry,
+      startDate: new Date(startDate).toISOString(),
+      endDate: new Date(endDate).toISOString(),
+      duration: getNumberOfDaysBetweenTwoDates(startDate, endDate),
+      campaignPlannerId: userInfo?._id,
+      campaignPlannerName: userInfo?.name,
+      campaignPlannerEmail: userInfo?.email,
+      campaignManagerId: userInfo?.primaryUserId,
+      campaignManagerEmail: userInfo?.primaryUserEmail,
+      atIndex: atIndex,
+      screenIds: screenIds,
+      creatives: campaignsCreated?.creatives || [],
+      triggers: {
+        timeTriggers: timeTriggers,
+        weatherTriggers: [],
+        sportsTriggers: [],
+        vacantSlots: [],
+      },
+    };
+    if (purpose === "Edit") {
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           id: campaignId,
-          pageName: "Add Basic Details",
-          name: campaignName,
-          brandName: brandName.toUpperCase(),
-          campaignType: campaignType,
-          clientName: clientName,
-          industry: industry,
-          startDate: new Date(startDate).toISOString(),
-          endDate: new Date(endDate).toISOString(),
-          duration: getNumberOfDaysBetweenTwoDates(startDate, endDate),
-          campaignPlannerId: userInfo?._id,
-          campaignPlannerName: userInfo?.name,
-          campaignPlannerEmail: userInfo?.email,
-          campaignManagerId: userInfo?.primaryUserId,
-          campaignManagerEmail: userInfo?.primaryUserEmail,
-          atIndex: atIndex,
-          screenIds: screenIds,
-          creatives: [],
-          triggers: {
-            timeTriggers: timeTriggers,
-            weatherTriggers: [],
-            sportsTriggers: [],
-            vacantSlots: [],
-          },
+          ...data,
         })
       );
     } else {
-      //TODO add triggers object here
-      dispatch(
-        createCampaignCreationByScreenOwnerAction({
-          pageName: "Add Basic Details",
-          name: campaignName,
-          brandName: brandName.toUpperCase(),
-          campaignType: campaignType,
-          clientName: clientName,
-          industry: industry,
-          startDate: new Date(startDate).toISOString(),
-          endDate: new Date(endDate).toISOString(),
-          duration: getNumberOfDaysBetweenTwoDates(startDate, endDate),
-          campaignPlannerId: userInfo?._id,
-          campaignPlannerName: userInfo?.name,
-          campaignPlannerEmail: userInfo?.email,
-          campaignManagerId: userInfo?.primaryUserId,
-          campaignManagerEmail: userInfo?.primaryUserEmail,
-          atIndex: atIndex,
-          screenIds: screenIds,
-          creatives: [],
-          triggers: {
-            timeTriggers: timeTriggers,
-            weatherTriggers: [],
-            sportsTriggers: [],
-            vacantSlots: [],
-          },
-        })
-      );
+      dispatch(createCampaignCreationByScreenOwnerAction(data));
     }
   }, [
     handleSetNewDuration,
@@ -260,10 +240,19 @@ export const EnterCampaignBasicDetails = ({
   useEffect(() => {
     if (errorCampaignsCreations) {
       message.error(errorCampaignsCreations);
+      dispatch({ type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET });
     }
 
     if (successCampaignsCreations) {
-      navigate(`/create-campaign/${campaignsCreated.campaignCreationRes._id}`);
+      if (purpose === "Edit") {
+        navigate(`/edit-campaign/${campaignsCreated.campaignCreationRes._id}`);
+        console.log("for Edit call");
+      } else {
+        navigate(
+          `/create-campaign/${campaignsCreated.campaignCreationRes._id}`
+        );
+        console.log("for add call");
+      }
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
@@ -274,13 +263,6 @@ export const EnterCampaignBasicDetails = ({
         })
       );
       setStep(2);
-    }
-
-    if (
-      !allScreens &&
-      !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
-    ) {
-      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
     }
   }, [
     navigate,
@@ -298,6 +280,12 @@ export const EnterCampaignBasicDetails = ({
     if (getDataFromLocalStorage(ALL_BRAND_LIST)) {
     } else {
       dispatch(getAllBrandAndNetworkAction());
+    }
+    if (
+      !allScreens &&
+      !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
+    ) {
+      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
     }
   }, []);
 
@@ -347,7 +335,7 @@ export const EnterCampaignBasicDetails = ({
   };
 
   return (
-    <div className="w-full py-3">
+    <div className="w-full py-3 px-20">
       <EnterTimeTriggerPopup
         open={open}
         onClose={handleOpenCloseAddTimeTrigger}
@@ -356,7 +344,7 @@ export const EnterCampaignBasicDetails = ({
       />
       <div className="">
         <h1 className="text-[24px] text-primaryText font-semibold flex items-center">
-          Add Basic Details{" "}
+          {purpose === "Edit" ? "Edit " : "Add "} Basic Details{" "}
           <span className="pl-8">
             <ReloadButton onClick={() => window.location.reload()} />
           </span>
@@ -429,20 +417,20 @@ export const EnterCampaignBasicDetails = ({
               {loadingAllScreens ? (
                 <h1>Loading Screens</h1>
               ) : (
-                <MultiSelectInput
-                  options={getDataFromLocalStorage(
-                    ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-                  )?.sort((a: any, b: any) => {
-                    const nameA = a.screenName.toLowerCase();
-                    const nameB = b.screenName.toLowerCase();
-
-                    if (nameA < nameB) return -1; // nameA comes first
-                    if (nameA > nameB) return 1; // nameB comes first
-                    return 0; // names are equal
-                  })}
-                  selectedOptions={screenIds}
+                <SelectScreensViaNetwork
+                  screenList={
+                    getDataFromLocalStorage(
+                      ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                    )?.screensList || []
+                  }
                   setSelectedOptions={handleScreenSelection}
+                  selectedOptions={screenIds}
                   placeHolder="Select screens"
+                  networkWithScreens={
+                    getDataFromLocalStorage(
+                      ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                    )?.networkWithScreens || []
+                  }
                 />
               )}
             </div>
@@ -468,7 +456,7 @@ export const EnterCampaignBasicDetails = ({
               <label className="block text-secondaryText text-[14px] mb-2">
                 Start Date
               </label>
-              {startDate !== "" && campaignId !== "create-campaign"? (
+              {purpose === "Edit" ? (
                 <div
                   className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
                   // onClick={() => {
@@ -495,7 +483,7 @@ export const EnterCampaignBasicDetails = ({
                   {!enterDuration ? "End Date" : "Duration"}
                 </label>
               </div>
-              {!enterDate && campaignId !== "create-campaign" ? (
+              {purpose === "Edit" ? (
                 <div
                   className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
                   onClick={() => {
@@ -503,7 +491,9 @@ export const EnterCampaignBasicDetails = ({
                   }}
                 >
                   <h1 className="text-[14px]">
-                    {endDate === "" ? "dd/mm/yyyy" : new Date(endDate).toLocaleDateString()}
+                    {endDate === ""
+                      ? "dd/mm/yyyy"
+                      : new Date(endDate).toLocaleDateString()}
                   </h1>
                 </div>
               ) : (
@@ -600,13 +590,7 @@ export const EnterCampaignBasicDetails = ({
           <div className="border rounded-[12px]">
             <div className="flex justify-between">
               <h1 className="my-2 px-2 text-[14px]">
-                Screens (
-                {
-                  getDataFromLocalStorage(
-                    ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-                  )?.filter((s: any) => screenIds.includes(s._id)).length
-                }
-                )
+                Screens ({screenIds?.length})
               </h1>
               <button
                 className="text-[12px] px-2"
@@ -620,18 +604,16 @@ export const EnterCampaignBasicDetails = ({
               {getDataFromLocalStorage(
                 ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
               )
-                ?.filter((s: any) => screenIds.includes(s._id))
+                ?.screensList?.filter((s: any) => screenIds.includes(s.value))
                 ?.map((screen: any, i: any) => (
                   <div
                     key={i}
                     className="border rounded-[8px] flex justify-center gap-2 px-2 py-1"
                   >
-                    <h1 className="text-[12px] truncate">
-                      {screen.screenName}
-                    </h1>
+                    <h1 className="text-[12px] truncate">{screen.label}</h1>
                     <i
                       className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}
-                      onClick={() => handleRemoveScreenIds(screen._id)}
+                      onClick={() => handleRemoveScreenIds(screen.value)}
                     ></i>
                   </div>
                 ))}

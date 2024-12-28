@@ -16,7 +16,7 @@ const loadUserFromLocalStorage = () => {
       localStorage.removeItem("userInfo");
       localStorage.clear();
       store.dispatch(logout());
-      window.location.href = "/auth"; // Redirect to login page
+      window.location.href = SIGN_IN; // Redirect to login page
     }
   }
 };

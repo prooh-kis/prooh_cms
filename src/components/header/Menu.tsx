@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signout } from "../../actions/userAction";
-import { AUTH, MY_CREATIVES } from "../../routes/routes";
+import { SIGN_IN, MY_CREATIVES } from "../../routes/routes";
 import { useState } from "react";
 
 export const Menu = (props: any) => {
@@ -18,7 +18,7 @@ export const Menu = (props: any) => {
   const signOutHandler = () => {
     toggleDropdown();
     dispatch(signout());
-    navigate(AUTH);
+    navigate(SIGN_IN);
   };
 
   const arr =

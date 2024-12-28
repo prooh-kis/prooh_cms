@@ -287,7 +287,7 @@ export const UploadCreatives = ({
           <div className="flex gap-2 items-center">
             <i
               className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
-              onClick={() => setStep(1)}
+              onClick={() => navigate(`/edit-campaign/${campaignId}`)}
             ></i>
             <h1 className="text text-[14px] font-semibold">Upload Creatives</h1>
           </div>

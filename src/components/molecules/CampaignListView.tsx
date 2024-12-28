@@ -1,9 +1,12 @@
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
-import { convertDataTimeToLocale, convertIntoDateAndTime, getTimeDifferenceInMin } from "../../utils/dateAndTimeUtils";
+import {
+  convertDataTimeToLocale,
+  convertIntoDateAndTime,
+  getTimeDifferenceInMin,
+} from "../../utils/dateAndTimeUtils";
 import clsx from "clsx";
 
 interface ScreenListThumbnailProps {
-
   color: string;
   isSelected?: boolean;
   handleCardClick: () => void;
@@ -11,23 +14,36 @@ interface ScreenListThumbnailProps {
   data: any;
 }
 
-export const CampaignListView = ({navigate, data, color, isSelected, handleCardClick}: ScreenListThumbnailProps): JSX.Element => {
+export const CampaignListView = ({
+  navigate,
+  data,
+  color,
+  isSelected,
+  handleCardClick,
+}: ScreenListThumbnailProps): JSX.Element => {
   return (
-    <div 
+    <div
       onClick={handleCardClick}
       onDoubleClick={navigate}
       className={clsx(
-        "border rounded w-full h-auto my-2 p-2 flex items-center transition-colors cursor-pointer",
+        "border rounded w-full h-auto my-2 p-2 flex items-center transition-colors cursor-pointer bg-white",
         {
-          [`hover:border-primaryButton hover:shadow-lg`]: !isSelected,  // Apply hover color if not clicked
-          [`border-primaryButton`]: isSelected,         // Apply border color if clicked
+          [`hover:border-primaryButton hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
+          [`border-primaryButton`]: isSelected, // Apply border color if clicked
         }
       )}
     >
       <div className="py-0 w-full flex justify-between items-center">
         <div className="flex gap-2">
-          <div className={`border rounded flex justify-center items-center w-20 bg-[${generateColorFromAlphabet(data.brandName.split("")[0], 0) || "#D7D7D750"}]`}>
-            <h1 className="text-[40px] text-gray-400 font-black">{data.brandName.split("")[0]}</h1>
+          <div
+            className={`border rounded flex justify-center items-center w-20 bg-[${
+              generateColorFromAlphabet(data.brandName.split("")[0], 0) ||
+              "#D7D7D750"
+            }]`}
+          >
+            <h1 className="text-[40px] text-gray-400 font-black">
+              {data.brandName.split("")[0]}
+            </h1>
           </div>
           <div className="flex">
             <div className="px-1 w-full truncate">
@@ -43,9 +59,8 @@ export const CampaignListView = ({navigate, data, color, isSelected, handleCardC
                     , {data.duration} days
                   </p>
                 </div>
-            
               </div>
-            
+
               <div className="px-0 flex justify-between items-center truncate">
                 <p className="text text-[12px] text-green-500 text-center text-wrap truncate">
                   On {data.screens?.length} screens
@@ -76,5 +91,5 @@ export const CampaignListView = ({navigate, data, color, isSelected, handleCardC
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

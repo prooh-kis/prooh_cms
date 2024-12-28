@@ -43,7 +43,6 @@ export const SelectScreensViaNetwork: React.FC<{
   };
 
   const toggleNetworkOption = (value: string) => {
-    console.log("value : ", value);
     let newValue;
     if (selectedNetwork.includes(value)) {
       // here i am updating selected network list
@@ -53,12 +52,10 @@ export const SelectScreensViaNetwork: React.FC<{
       let allScreenIds = networkWithScreens[value]?.map(
         (data: any) => data.value
       );
-      console.log("if allScreenIds ", allScreenIds);
 
       let newScreenIds = selectedOptions?.filter(
         (screenId: string) => !allScreenIds.includes(screenId)
       );
-      console.log("data: ", newScreenIds);
 
       setSelectedOptions(newScreenIds);
     } else {
@@ -66,12 +63,6 @@ export const SelectScreensViaNetwork: React.FC<{
       let allScreenIds = networkWithScreens[value]?.map(
         (data: any) => data.value
       );
-      console.log("else allScreenIds ", allScreenIds);
-      console.log(
-        "data: ",
-        Array.from(new Set([...selectedOptions, ...allScreenIds]))
-      );
-
       setSelectedOptions((pre: any) =>
         Array.from(new Set([...pre, ...allScreenIds]))
       );
@@ -238,7 +229,13 @@ export const SelectScreensViaNetwork: React.FC<{
                             onChange={() => toggleNetworkOption(option.value)}
                             className="form-checkbox rounded"
                           />
-                          <span>{option.label}</span>
+                          <span>
+                            {option.label}{" "}
+                            <span className="font-bold">
+                              {" "}
+                              {networkWithScreens?.[option.value]?.length}
+                            </span>
+                          </span>
                         </label>
                         {index == i ? (
                           <i

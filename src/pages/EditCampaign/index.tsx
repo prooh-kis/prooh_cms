@@ -1,25 +1,21 @@
-import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER, CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET } from "../../constants/campaignConstants";
+import { CAMPAIGN_PLAN_TYPE_SCREEN_OWNER } from "../../constants/campaignConstants";
 import { EnterCampaignBasicDetails } from "../../components/Segment/EnterCampaignBasicDetails";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { useLocation, useNavigate } from "react-router-dom";
-import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
-import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { UploadCreatives } from "../../components/Segment/UploadCreatives";
 import {
   createCampaignCreationByScreenOwnerAction,
-  getScreenDataUploadCreativeAction,
+  getFullCampaignDetailsAction,
 } from "../../actions/campaignAction";
+import { SIGN_IN } from "../../routes/routes";
 
-export const MiddleArea: React.FC = () => {
+export const EditCampaign: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const targetDivRef = useRef<HTMLDivElement>(null);
-
   const { pathname, state } = useLocation();
-  console.log(state);
   const campaignId = pathname.split("/").splice(-1)[0] || undefined;
+  console.log("getFullCampaignDetailsAction : ", campaignId);
 
   const [step, setStep] = useState<any>(1);
 
@@ -29,7 +25,6 @@ export const MiddleArea: React.FC = () => {
   const createCampaignCreationByScreenOwner = useSelector(
     (state: any) => state.createCampaignCreationByScreenOwner
   );
-  const [toggleState, setToggleState] = useState<boolean>(false);
 
   const editCampaignCreationByScreenOwner = useSelector(
     (state: any) => state.editCampaignCreationByScreenOwner
@@ -52,27 +47,16 @@ export const MiddleArea: React.FC = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      navigate("/auth");
+      navigate(SIGN_IN);
     }
-    if (
-      campaignId &&
-      getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.currentPage ===
-        "Add Basic Details"
-    ) {
-      setStep(1);
-    }
-
-    if (
-      campaignId &&
-      campaignId !== "create-campaign" &&
-      !successCampaignsCreations
-    ) {
-      dispatch(createCampaignCreationByScreenOwnerAction({ id: campaignId }));
-    }
+    console.log("calling to get campaign detail for edit");
+    dispatch(getFullCampaignDetailsAction(campaignId));
   }, [dispatch, campaignId]);
 
+  console.log("step :", step);
+
   return (
-    <div className="mt-6 w-full h-full pb-5 flex justify-center items-center">
+    <div className="w-full h-full items-center">
       {step === 1 ? (
         <EnterCampaignBasicDetails
           userInfo={userInfo}
@@ -84,6 +68,7 @@ export const MiddleArea: React.FC = () => {
           campaignsCreated={campaignsCreated}
           setStep={setStep}
           step={step}
+          purpose="Edit"
         />
       ) : step === 2 ? (
         <UploadCreatives

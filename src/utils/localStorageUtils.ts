@@ -28,18 +28,5 @@ export const getDataFromLocalStorage = (key: string) => {
 };
 
 export const removeAllKeyFromLocalStorage = () => {
-  // const keys: string[] = [
-  //   FULL_CAMPAIGN_PLAN,
-  //   ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER,
-  //   UPLOAD_CREATIVE_SCREEN_DATA,
-  //   CAMPAIGN_CREATIVES_TO_UPLOAD,
-  //   SCREEN_CAMPAIGN_MONITORING_PICS,
-  //   ALL_SCREENS_LIST,
-  //   ALL_CAMPAIGNS_LIST
-  // ];
-  // for (let key of keys) {
-  //   window.localStorage.removeItem(key);
-  // }
   window.localStorage.clear();
-
 };

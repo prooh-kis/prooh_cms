@@ -29,6 +29,9 @@ import {
   GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
   GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
   GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
+  GET_FULL_CAMPAIGN_DATA_FAIL,
+  GET_FULL_CAMPAIGN_DATA_REQUEST,
+  GET_FULL_CAMPAIGN_DATA_SUCCESS,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
@@ -164,6 +167,24 @@ export function campaignDetailsGetReducer(state = {}, action) {
     case GET_CAMPAIGN_DATA_SUCCESS:
       return { ...state, loading: false, success: true, data: action.payload };
     case GET_CAMPAIGN_DATA_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export function campaignFullDetailsGetReducer(state = {}, action) {
+  switch (action.type) {
+    case GET_FULL_CAMPAIGN_DATA_REQUEST:
+      return { loading: true };
+    case GET_FULL_CAMPAIGN_DATA_SUCCESS:
+      const campaign = action.payload;
+      const saveData = {
+        [campaign._id]: campaign,
+      };
+      saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, saveData);
+      return { ...state, loading: false, success: true, data: action.payload };
+    case GET_FULL_CAMPAIGN_DATA_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
