@@ -142,9 +142,9 @@ export const AppDashBoardLayout = (props: any) => {
             <div className="h-10 flex items-center gap-2">
               <img src={userImage} alt="userImage" className="h-10" />
               <div className="justify-center w-30 truncate">
-                <h3 className="text-lg">{userInfo.name}</h3>
+                <h3 className="text-lg">{userInfo?.name}</h3>
                 <p className="text-xs font-semibold text-gray-700">
-                  {userInfo.isBrand && "Campaign Planner"}
+                  {userInfo?.isBrand && "Campaign Planner"}
                 </p>
               </div>
               <div>

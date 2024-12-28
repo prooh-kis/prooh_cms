@@ -113,7 +113,7 @@ export const CampaignsPage: React.FC = () => {
               <NoDataView />
             </div>
           )}
-          <div className="h-[60vh]  overflow-scroll">
+          <div className="h-[70vh]  overflow-scroll">
             {allCampaigns
               ?.filter(
                 (campaign: any) =>
