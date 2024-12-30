@@ -25,8 +25,6 @@ export const SignUp: React.FC = () => {
   const userSignup = useSelector((state: any) => state.userSignup);
   const { loading, error, success, userInfo } = userSignup;
 
-  console.log("userInfo : ", userInfo);
-
   const reset = () => {
     setName("");
     setEmail("");
@@ -36,7 +34,6 @@ export const SignUp: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      console.log("Error in signup : ", error);
       alert(error);
       dispatch({ type: USER_SIGNUP_RESET });
     }

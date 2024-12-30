@@ -147,6 +147,13 @@ export const CampaignDetailsPage: React.FC = () => {
     dispatch(editAllSubCampaignsAction({ campaignCreationId, endDate }));
   };
 
+  const campaigns =
+    screens?.length > 0
+      ? campaignCreated?.campaigns?.filter((camp: any) =>
+          campaignCreated?.screens?.includes(camp.screenId)
+        )
+      : [];
+
   useEffect(() => {
     if (successEditAllSubCampaigns) {
       message.success("Campaign updated successfully!");
@@ -216,9 +223,9 @@ export const CampaignDetailsPage: React.FC = () => {
     }));
   };
 
-  const handelSelectScreen = (screenId: string) => {
+  const handelSelectScreen = (campaignId: string) => {
     const data = campaignCreated?.campaigns?.find(
-      (data: any) => data?.screenId == screenId
+      (data: any) => data?._id == campaignId
     );
     setCampaign(data);
   };
@@ -243,10 +250,10 @@ export const CampaignDetailsPage: React.FC = () => {
     }
   };
 
-  const handleChangeCampaignStatus = (status: string, screenId: string) => {
+  const handleChangeCampaignStatus = (status: string, campaignId: string) => {
     if (confirm(confirmData[status])) {
       let data = campaignCreated?.campaigns
-        ?.filter((campaign: any) => campaign.screenId == screenId)
+        ?.filter((campaign: any) => campaign._id == campaignId)
         ?.map((campaign: any) => campaign._id);
       if (data?.length > 0) {
         dispatch(
@@ -265,12 +272,7 @@ export const CampaignDetailsPage: React.FC = () => {
     setOpenCampaignLogPopup((pre: boolean) => !pre);
   }, [openCampaignLogPopup]);
 
-  const handleShowLogReport = (screenId: string) => {
-    const campaignId =
-      campaignCreated?.campaigns?.filter(
-        (campaign: any) => campaign.screenId == screenId
-      )[0]?._id || "";
-
+  const handleShowLogReport = (campaignId: string) => {
     if (campaignId) {
       dispatch(campaignLogsByCampaignIdAction(campaignId));
       handleOpenCloseCampaignLogPopup();
@@ -278,6 +280,7 @@ export const CampaignDetailsPage: React.FC = () => {
       message.error("No creative added!");
     }
   };
+  // ?.filter((camp: any) => camp?.screenName?.includes(searchQuery))
 
   const handleToggleOpenAllCampaignLogsPopup = useCallback(() => {
     setOpenAllCampaignLogsPopup((pre: boolean) => !pre);
@@ -329,7 +332,7 @@ export const CampaignDetailsPage: React.FC = () => {
         </div>
       ) : (
         <div className="col-span-8">
-          <div className="w-full border rounded py-2 mt-2 bg-white">
+          <div className="w-full border rounded py-4 bg-white">
             <div className="flex justify-between pb-2 mx-1 border-b">
               <div className="flex">
                 <i
@@ -509,7 +512,7 @@ export const CampaignDetailsPage: React.FC = () => {
           <Loading />
         </div>
       ) : (
-        <div className="col-span-4 border rounded my-2 bg-white">
+        <div className="col-span-4 border rounded bg-white">
           <div className="px-2 pt-2">
             <h1 className="text-[14px] font-semibold">
               Playing on {campaignCreated?.screens?.length || 0} screens
@@ -527,30 +530,30 @@ export const CampaignDetailsPage: React.FC = () => {
             <Loading />
           ) : (
             <div className="h-[70vh] overflow-scroll no-scrollbar">
-              {screens
-                ?.filter((screen: any) =>
-                  screen?.screenName?.toLowerCase().includes(searchQuery)
-                )
-                ?.map((screen: any, k: any) => (
-                  <div
-                    key={k}
-                    className="p-0 m-0"
-                    title="Click to select screen to view monitoring data"
-                    onClick={() => handelSelectScreen(screen?._id)}
-                  >
-                    <ScreenListMonitoringView
-                      handleChangeCampaignStatus={handleChangeCampaignStatus}
-                      campaignCreated={campaignCreated}
-                      setOpenCreativeEndDateChangePopup={
-                        setOpenCreativeEndDateChangePopup
-                      }
-                      screen={screen}
-                      noImages={false}
-                      showOption={true}
-                      handleGetCampaignLog={handleShowLogReport}
-                    />
-                  </div>
-                ))}
+              {campaigns?.length === 0 && <NoDataView />}
+              {campaigns?.map((camp: any, k: any) => (
+                <div
+                  key={k}
+                  className="p-0 m-0"
+                  title="Click to select screen to view monitoring data"
+                  onClick={() => handelSelectScreen(camp?._id)}
+                >
+                  <ScreenListMonitoringView
+                    handleChangeCampaignStatus={handleChangeCampaignStatus}
+                    campaignCreated={campaignCreated}
+                    setOpenCreativeEndDateChangePopup={
+                      setOpenCreativeEndDateChangePopup
+                    }
+                    screen={screens?.find(
+                      (screen: any) => screen?.screenId == camp?.screenId
+                    )}
+                    campaign={camp}
+                    noImages={false}
+                    showOption={true}
+                    handleGetCampaignLog={handleShowLogReport}
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>

@@ -29,8 +29,6 @@ export const SelectScreensViaNetwork: React.FC<{
   const [index, setIndex] = useState<number>(-1);
   const [selectedNetwork, setSelectedNetwork] = useState<string[]>([]);
 
-  console.log("selectedOptions : ", selectedOptions, selectedNetwork);
-
   const toggleOption = (value: string) => {
     const newValue = selectedOptions.includes(value)
       ? selectedOptions?.filter((option: string) => option !== value)

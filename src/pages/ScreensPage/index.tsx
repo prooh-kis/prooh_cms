@@ -22,7 +22,6 @@ export const ScreensPage: React.FC = () => {
   const [selectedScreensViaNetwork, setSelectedScreensViaNetwork] = useState<
     string[]
   >([]);
-  console.log("selectedScreensViaNetwork : ", selectedScreensViaNetwork);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -71,8 +70,6 @@ export const ScreensPage: React.FC = () => {
     getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
       ?.networkWithScreens || [];
 
-  console.log("networks : ", networks);
-
   const handleSelectNetwork = (value: string) => {
     let newValue;
     if (selectedNetwork.includes(value)) {
@@ -104,7 +101,14 @@ export const ScreensPage: React.FC = () => {
               <h1 className="text-[#151515] text-[16px] font-semibold">
                 Filter
               </h1>
-              <h1 className="text-[#092A41] text-[14px] ">Clear All</h1>
+              <h1
+                className="text-[#092A41] text-[14px] "
+                onClick={() => {
+                  setSelectedScreensViaNetwork([]);
+                }}
+              >
+                Clear All
+              </h1>
             </div>
             <div className="flex justify-between mt-2">
               <h1>Network</h1>

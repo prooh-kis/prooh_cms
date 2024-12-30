@@ -177,10 +177,6 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
-    console.log(
-      "campaignsCreated?.creatives || []",
-      campaignsCreated?.creatives || []
-    );
     const data = {
       pageName: "Add Basic Details",
       name: campaignName,
@@ -246,12 +242,10 @@ export const EnterCampaignBasicDetails = ({
     if (successCampaignsCreations) {
       if (purpose === "Edit") {
         navigate(`/edit-campaign/${campaignsCreated.campaignCreationRes._id}`);
-        console.log("for Edit call");
       } else {
         navigate(
           `/create-campaign/${campaignsCreated.campaignCreationRes._id}`
         );
-        console.log("for add call");
       }
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,

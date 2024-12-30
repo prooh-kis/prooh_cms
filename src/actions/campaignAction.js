@@ -206,7 +206,6 @@ export const getFullCampaignDetailsAction =
         payload: data,
       });
     } catch (error) {
-      console.log("error : ", error);
       dispatch({
         type: GET_FULL_CAMPAIGN_DATA_FAIL,
         payload:

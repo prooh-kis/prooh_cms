@@ -12,7 +12,6 @@ import {
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 
 export function MiddleArea(props: any) {
-
   const [option, setOption] = useState<string>("signin");
   const navigate = useNavigate();
   const [signInText, setSignInText] = useState<string>("Sign In");
@@ -78,7 +77,7 @@ export function MiddleArea(props: any) {
           // static primary user data for new planner (secondary user)
           primaryUserId: "669002c8f3a1bdb18da55404",
           primaryUserEmail: "prooh.aiaws@gmail.com",
-          userRole: "secondary"
+          userRole: "secondary",
         })
       );
     }
@@ -135,11 +134,9 @@ export function MiddleArea(props: any) {
     if (errorSignIn) {
       alert(errorSignIn);
 
-      console.log("errorSignIn in signup : ", errorSignIn);
       dispatch({ type: USER_SIGNOUT });
     }
     if (userInfo1) {
-      console.log("signin success");
       reset();
       navigate("/");
     }
@@ -222,7 +219,9 @@ export function MiddleArea(props: any) {
                 type="submit"
                 className="w-full rounded-md bg-primaryButton text-white h-12"
                 onClick={handleSignIn}
-              >{signInText}</button>
+              >
+                {signInText}
+              </button>
             </div>
           </div>
         )}
@@ -231,7 +230,8 @@ export function MiddleArea(props: any) {
           <div>
             {success ? (
               <h1 className="text-[12px] text-blue-500">
-                User Registration successfull, please check your email and verify for proceeding further...
+                User Registration successfull, please check your email and
+                verify for proceeding further...
               </h1>
             ) : (
               <div className="flex flex-col gap-2">
@@ -296,14 +296,15 @@ export function MiddleArea(props: any) {
                     className="w-full rounded-md border h-12 bg-primaryButton text-white"
                     onClick={handleSignUp}
                     disabled={loading}
-                  >{loading ? "Creating user" : "Sign Up"}</button>
+                  >
+                    {loading ? "Creating user" : "Sign Up"}
+                  </button>
                 </div>
               </div>
             )}
-
           </div>
         )}
       </div>
     </div>
   );
-};
+}

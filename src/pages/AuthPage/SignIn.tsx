@@ -22,8 +22,6 @@ export const SignIn: React.FC = () => {
   const userSignin = useSelector((state: any) => state.userSignin);
   const { loading, error: errorSignIn, success, userInfo } = userSignin;
 
-  console.log("userInfo : ", userInfo);
-
   useEffect(() => {
     if (success) {
       dispatch(getAllScreensForScreenOwnerCampaignCreationAction());

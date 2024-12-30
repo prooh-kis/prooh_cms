@@ -15,7 +15,6 @@ export const EditCampaign: React.FC = () => {
   const navigate = useNavigate();
   const { pathname, state } = useLocation();
   const campaignId = pathname.split("/").splice(-1)[0] || undefined;
-  console.log("getFullCampaignDetailsAction : ", campaignId);
 
   const [step, setStep] = useState<any>(1);
 
@@ -49,11 +48,8 @@ export const EditCampaign: React.FC = () => {
     if (!userInfo) {
       navigate(SIGN_IN);
     }
-    console.log("calling to get campaign detail for edit");
     dispatch(getFullCampaignDetailsAction(campaignId));
   }, [dispatch, campaignId]);
-
-  console.log("step :", step);
 
   return (
     <div className="w-full h-full items-center">

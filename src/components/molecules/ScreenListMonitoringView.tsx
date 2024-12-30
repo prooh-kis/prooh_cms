@@ -19,6 +19,7 @@ export function ScreenListMonitoringView({
   handleChangeCampaignStatus,
   handleGetCampaignLog,
   showOption,
+  campaign,
 }: any) {
   const dispatch = useDispatch<any>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -35,23 +36,11 @@ export function ScreenListMonitoringView({
 
   const getClassNameByStatus = () => {
     let className = "text-[12px] truncate";
-    if (
-      campaignCreated?.campaigns?.filter(
-        (c: any) => c.screenId === screen._id
-      )[0]?.status === "Active"
-    ) {
+    if (campaign?.status === "Active") {
       className += " text-green-500";
-    } else if (
-      campaignCreated?.campaigns?.filter(
-        (c: any) => c.screenId === screen._id
-      )[0]?.status === "Pause"
-    ) {
+    } else if (campaign?.status === "Pause") {
       className += " text-orange-500";
-    } else if (
-      campaignCreated?.campaigns?.filter(
-        (c: any) => c.screenId === screen._id
-      )[0]?.status === "Deleted"
-    ) {
+    } else if (campaign?.status === "Deleted") {
       className += " text-yellow-500";
     } else {
       className += " text-blue-500";
@@ -74,14 +63,14 @@ export function ScreenListMonitoringView({
             {screen?.screenName}
           </h1>
           <h1 className="text-[12px] text-gray-500 truncate">
-            {screen?.location.address || screen?.location},{" "}
-            {screen.location.city || screen.city}
+            {screen?.location?.address || screen?.location},{" "}
+            {screen?.location?.city || screen?.city}
           </h1>
           <h1 className="text-[8px]">
             End Date:{" "}
             {convertDataTimeToLocale(
               campaignCreated?.campaigns?.filter(
-                (c: any) => c.screenId === screen._id
+                (c: any) => c.screenId === screen?._id
               )[0]?.endDate
             )}
           </h1>
@@ -95,7 +84,7 @@ export function ScreenListMonitoringView({
           </div>
           <h1 className={getClassNameByStatus()}>
             {campaignCreated?.campaigns?.filter(
-              (c: any) => c.screenId === screen._id
+              (c: any) => c.screenId === screen?._id
             )[0]?.status ?? "No Creatives"}
           </h1>
         </div>
@@ -121,9 +110,7 @@ export function ScreenListMonitoringView({
                     ) {
                       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
                         [`${campaignCreated?._id}`]:
-                          campaignCreated?.campaigns?.filter(
-                            (c: any) => c.screenId === screen._id
-                          )[0]?.creatives?.standardDayTimeCreatives,
+                          campaign?.creatives?.standardDayTimeCreatives,
                       });
                       dispatch(
                         getScreenDataUploadCreativeAction({
@@ -137,45 +124,33 @@ export function ScreenListMonitoringView({
                   Edit
                 </li>
 
-                {campaignCreated?.campaigns?.filter(
-                  (c: any) => c.screenId === screen._id
-                )[0]?.status === "Active" && (
+                {campaign?.status === "Active" && (
                   <li
                     onClick={() => {
-                      handleChangeCampaignStatus("Pause", screen._id);
+                      handleChangeCampaignStatus("Pause", campaign?._id);
                     }}
                     className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
                   >
                     Pause
                   </li>
                 )}
-                {(campaignCreated?.campaigns?.filter(
-                  (c: any) => c.screenId === screen._id
-                )[0]?.status === "Active" ||
-                  campaignCreated?.campaigns?.filter(
-                    (c: any) => c.screenId === screen._id
-                  )[0]?.status === "Pause") && (
+                {(campaign?.status === "Active" ||
+                  campaign?.status === "Pause") && (
                   <li
                     onClick={() => {
-                      handleChangeCampaignStatus("Delete", screen._id);
+                      handleChangeCampaignStatus("Delete", campaign?._id);
                     }}
                     className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
                   >
                     Delete
                   </li>
                 )}
-                {(campaignCreated?.campaigns?.filter(
-                  (c: any) => c.screenId === screen._id
-                )[0]?.status === "Deleted" ||
-                  campaignCreated?.campaigns?.filter(
-                    (c: any) => c.screenId === screen._id
-                  )[0]?.status === "Pause" ||
-                  campaignCreated?.campaigns?.filter(
-                    (c: any) => c.screenId === screen._id
-                  )[0]?.status === "Completed") && (
+                {(campaign?.status === "Deleted" ||
+                  campaign?.status === "Pause" ||
+                  campaign?.status === "Completed") && (
                   <li
                     onClick={() => {
-                      handleChangeCampaignStatus("Active", screen._id);
+                      handleChangeCampaignStatus("Active", campaign?._id);
                     }}
                     className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
                   >
@@ -185,7 +160,7 @@ export function ScreenListMonitoringView({
 
                 <li
                   onClick={() => {
-                    handleGetCampaignLog(screen._id);
+                    handleGetCampaignLog(campaign?._id);
                   }}
                   className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
                 >

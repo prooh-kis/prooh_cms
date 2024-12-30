@@ -150,7 +150,6 @@ export const AllCampaignLogsPopup = ({
   };
 
   const handleSelectAllScreens = (checked: boolean) => {
-    console.log("checked :", checked);
     if (filteredScreens?.length + selectedScreens?.length > 20) {
       message.error(
         "You can select only 20 screens at a time, please filter screens or select one by one"
@@ -160,7 +159,6 @@ export const AllCampaignLogsPopup = ({
         (screenId) =>
           !filteredScreens?.map((screen: any) => screen?._id).includes(screenId)
       );
-      console.log("hhssdaat ", data);
       setSelectedScreens(Array.from(new Set(data)));
     } else {
       const data = [

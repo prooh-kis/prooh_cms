@@ -91,7 +91,7 @@ const Routers: React.FC = () => {
         <Route
           path={USERS}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Users">
               <MyUsers />
             </AppDashBoardLayout>
           }
@@ -99,7 +99,7 @@ const Routers: React.FC = () => {
         <Route
           path={SCREENS_LIST}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Screens">
               <ScreensPage />
             </AppDashBoardLayout>
           }
@@ -115,7 +115,7 @@ const Routers: React.FC = () => {
         <Route
           path={SCREENS_DETAILS}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Users">
               <ScreenDetailsPage />
             </AppDashBoardLayout>
           }
@@ -124,7 +124,7 @@ const Routers: React.FC = () => {
         <Route
           path={CAMPAIGNS_LIST}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Campaigns">
               <CampaignsPage />
             </AppDashBoardLayout>
           }
@@ -132,7 +132,7 @@ const Routers: React.FC = () => {
         <Route
           path={CAMPAIGNS_DETAILS}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Campaigns">
               <CampaignDetailsPage />
             </AppDashBoardLayout>
           }
@@ -159,7 +159,7 @@ const Routers: React.FC = () => {
         <Route
           path={HOME}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Dashboard">
               <ScreensPage />
             </AppDashBoardLayout>
           }
@@ -177,7 +177,7 @@ const Routers: React.FC = () => {
         <Route
           path={MY_CREATIVES}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Creatives">
               <MyCreativesPage />
             </AppDashBoardLayout>
           }
@@ -185,7 +185,7 @@ const Routers: React.FC = () => {
         <Route
           path={SCREEN_CAMPAIGN_MONITORING}
           element={
-            <AppDashBoardLayout>
+            <AppDashBoardLayout value="Monitoring">
               <MonitoringPage />
             </AppDashBoardLayout>
           }
