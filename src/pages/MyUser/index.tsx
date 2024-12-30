@@ -61,26 +61,16 @@ export const MyUsers = (props: any) => {
   }, [userInfo]);
 
   return (
-    <div className="w-full h-full p-2">
-      <div className="my-1 border rounded p-4 bg-white flex justify-between">
-        <h1 className="text-[24px] font-bold">User List</h1>
-        {/* <button
-          title="Create new user"
-          className="w-36 h-10 border border-solid px-4 py-2 bg-sky-500/75 rounded-md text-white"
-          onClick={() => navigate(ADD_NEW_USER)}
-        >
-          <div className="flex flex-row justify-center gap-2">
-            <h1>+</h1>
-            <h1>New User</h1>
-          </div>
-        </button> */}
+    <div className="w-full h-full ">
+      <div className="border rounded p-4 w-full bg-white">
+        <h1 className="text-[16px] font-semibold">Users</h1>
       </div>
 
-      <div className="w-full">
+      <div className="w-full mt-2">
         <table className="auto w-full">
           <thead>
             <tr className="bg-sky-200">
-              <th className="border py-4">Sl. No</th>
+              <th className="border py-2">Sl. No</th>
               <th className="border ">Name</th>
               <th className="border ">Email</th>
               <th className="border ">User Role</th>
@@ -90,7 +80,7 @@ export const MyUsers = (props: any) => {
           <tbody className="overflow-auto mt-4">
             {users?.map((user: any, i: any) => (
               <tr className="bg-white hover:bg-gray-200" key={i}>
-                <td className="border  pl-4">{i + 1}</td>
+                <td className="border  pl-4 py-1">{i + 1}</td>
                 <td className="border  pl-4">{user?.name}</td>
                 <td className="border pl-4">{user.email}</td>
                 <td className="border  pl-4">{user?.userRole}</td>

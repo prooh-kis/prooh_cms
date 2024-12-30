@@ -92,14 +92,14 @@ export const ScreensPage: React.FC = () => {
     setSelectedNetwork(newValue);
   };
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="flex flex-col gap-2">
       <div className="bg-white rounded-md border p-4 w-full font-bold text-[24px] flex gap-4 ">
         My Screens
         <ReloadButton onClick={reLoad} />
       </div>
       <div className="flex gap-2">
         {userInfo?.userRole === USER_ROLE_PRIMARY && (
-          <div className="w-[17vw] h-[80vh] bg-white rounded-md p-4 ">
+          <div className="w-[17vw] h-[80vh] overflow-scroll no-scrollbar bg-white rounded-md p-4 ">
             <div className="flex justify-between items-center">
               <h1 className="text-[#151515] text-[16px] font-semibold">
                 Filter

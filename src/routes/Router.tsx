@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { HomePageLayout } from "../components";
-
 import {
   AuthPage,
   CampaignDetailsPage,
@@ -18,7 +16,6 @@ import {
   VerifyEmail,
 } from "../pages";
 
-import { PrivateRoute } from "./PrivateRoute";
 import {
   SIGN_IN,
   CAMPAIGNS_DETAILS,
@@ -37,10 +34,12 @@ import {
   SCREENS_LIST_FOR_SECONDARY_USER,
   USERS,
 } from "./routes";
-import { PublicRoute } from "./PublicRoute";
+// layout
+import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
+import { PublicRoute } from "../layout/PublicRoute";
+
 import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
-import { AppDashBoardLayout } from "../pages/AppDashBoardLayout";
 import { MyUsers } from "../pages/MyUser";
 
 const Routers: React.FC = () => {

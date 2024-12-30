@@ -252,7 +252,7 @@ export const ScreenDetailsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-2">
+    <div className="">
       <div className="w-full grid grid-cols-12 gap-2">
         {isScreenLogReportOpen && (
           <ScreenLogReportPopup
@@ -293,7 +293,7 @@ export const ScreenDetailsPage: React.FC = () => {
           </div>
         ) : (
           <div className="col-span-8">
-            <div className="w-full border bg-white flex justify-between py-2 mt-2 rounded-md">
+            <div className="w-full border bg-white flex justify-between py-2 rounded-md">
               <div className="flex gap-2">
                 <i
                   className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
@@ -520,7 +520,7 @@ export const ScreenDetailsPage: React.FC = () => {
         {loadingCampaigns ? (
           <Loading />
         ) : campaigns && selectedCampaign ? (
-          <div className="col-span-4 border rounded my-2 bg-white">
+          <div className="col-span-4 border rounded bg-white ">
             <div className="border-b p-2">
               <div className="flex justify-between items-center">
                 <h1 className="text-[16px] font-semibold">
@@ -618,7 +618,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </h1>
               </div>
             </div>
-            <div className="p-2 bg-white">
+            <div className="p-2 bg-white h-[80vh] overflow-scroll no-scrollbar">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives?.standardDayTimeCreatives?.length === 0 && (

@@ -127,8 +127,8 @@ export const MyCreativesPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full p-2">
-      <div className="my-1 border rounded p-4 bg-white">
+    <div className="w-full h-full ">
+      <div className="border rounded p-4 bg-white">
         <h1 className="text-[16px] font-bold">Creative Bucket</h1>
       </div>
       <div className="w-full ">

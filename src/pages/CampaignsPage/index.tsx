@@ -71,7 +71,7 @@ export const CampaignsPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full p-2">
+    <div className="w-full ">
       <div className="flex gap-4 items-center border rounded p-4 bg-white w-[85vw]">
         <h1 className="text-[16px] font-semibold">
           My Campaigns{" "}
@@ -88,7 +88,7 @@ export const CampaignsPage: React.FC = () => {
         <ReloadButton onClick={reset} />
       </div>
       {/* This is not working now */}
-      <div className="px-4 bg-white w-[85vw] mt-2">
+      <div className="px-4 bg-white w-[85vw] mt-2 py-2">
         <TabWithoutIcon
           currentTab={currentTab}
           setCurrentTab={handleGetCampaignByStatus}

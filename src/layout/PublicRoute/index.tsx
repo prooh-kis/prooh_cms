@@ -1,7 +1,7 @@
 import React, { ElementType, PropsWithChildren } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { SIGN_IN } from "./routes";
-import { Header } from "../components/header";
+import { SIGN_IN } from "../../routes/routes";
+import { Header } from "../../components/header";
 
 interface IProps {
   layout: ElementType;
