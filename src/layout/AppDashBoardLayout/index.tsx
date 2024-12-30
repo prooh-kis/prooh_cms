@@ -32,7 +32,7 @@ export const AppDashBoardLayout = (props: any) => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else if (userInfo?.userRole !== USER_ROLE_PRIMARY) {
-      message.error("You have no access");
+      // message.error("You have no access");
       navigate(SCREENS_LIST_FOR_SECONDARY_USER);
     }
   }, []);

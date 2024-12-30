@@ -90,7 +90,7 @@ export const ScreensPage: React.FC = () => {
   };
   return (
     <div className="flex flex-col gap-2">
-      <div className="bg-white rounded-md border p-4 w-full font-bold text-[24px] flex gap-4 ">
+      <div className="bg-white rounded-md border sm:p-4 p-2 w-full font-bold text-[20px] sm:text-[24px] flex justify-between items-center ">
         My Screens
         <ReloadButton onClick={reLoad} />
       </div>
@@ -156,7 +156,7 @@ export const ScreensPage: React.FC = () => {
         )}
         <div className="w-full h-[80vh] flex flex-col gap-2">
           <div className="bg-white rounded-md p-2 w-full flex justify-between items-center ">
-            <h1 className="text-[#151515] text-[20px] font-bold pl-4">
+            <h1 className="text-[#151515] text-[20px] font-bold pl-4 hidden lg:block">
               Network{" "}
               <span className="text-green-500 pl-4">
                 {filterScreens?.length}

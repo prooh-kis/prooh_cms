@@ -73,14 +73,14 @@ export const CampaignListView = ({
           <div>
             <div className="flex gap-2 items-center">
               <i className="fi fi-br-hourglass-start text-green-500 text-[12px] flex items-center"></i>
-              <h1 className="text-[10px] text-blue-500">
+              <h1 className="text-[12px] text-blue-500">
                 : {convertDataTimeToLocale(data.startDate)}
               </h1>
             </div>
 
             <div className="flex gap-2 items-center">
               <i className="fi fi-br-hourglass-end text-red-500 text-[12px] flex items-center"></i>
-              <h1 className="text-[10px] text-blue-500">
+              <h1 className="text-[12px] text-blue-500">
                 : {convertDataTimeToLocale(data.endDate)}
               </h1>
             </div>
