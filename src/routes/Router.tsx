@@ -34,11 +34,14 @@ import {
   UPDATE_PASSWORD,
   VERIFY_EMAIL,
   SIGN_UP,
+  SCREENS_LIST_FOR_SECONDARY_USER,
+  USERS,
 } from "./routes";
 import { PublicRoute } from "./PublicRoute";
 import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
 import { AppDashBoardLayout } from "../pages/AppDashBoardLayout";
+import { MyUsers } from "../pages/MyUser";
 
 const Routers: React.FC = () => {
   return (
@@ -65,9 +68,9 @@ const Routers: React.FC = () => {
         <Route
           path={VERIFY_EMAIL}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <PublicRoute>
               <VerifyEmail />
-            </PrivateRoute>
+            </PublicRoute>
           }
         />
         <Route
@@ -81,9 +84,17 @@ const Routers: React.FC = () => {
         <Route
           path={UPDATE_PASSWORD}
           element={
-            <PrivateRoute layout={HomePageLayout}>
+            <PublicRoute>
               <UpdatePassword />
-            </PrivateRoute>
+            </PublicRoute>
+          }
+        />
+        <Route
+          path={USERS}
+          element={
+            <AppDashBoardLayout>
+              <MyUsers />
+            </AppDashBoardLayout>
           }
         />
         <Route
@@ -92,6 +103,14 @@ const Routers: React.FC = () => {
             <AppDashBoardLayout>
               <ScreensPage />
             </AppDashBoardLayout>
+          }
+        />
+        <Route
+          path={SCREENS_LIST_FOR_SECONDARY_USER}
+          element={
+            <PublicRoute>
+              <ScreensPage />
+            </PublicRoute>
           }
         />
         <Route

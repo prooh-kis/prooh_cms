@@ -9,6 +9,11 @@ export const CREATE_CAMPAIGN = "/create-campaign/:id?";
 export const EDIT_CAMPAIGN = "/edit-campaign/:id?";
 
 export const SCREENS_LIST = "/screens-list";
+export const SCREENS_LIST_FOR_SECONDARY_USER = "/screens-list-secondary";
+
+export const ADD_NEW_USER = "/users/add-new";
+export const USERS = "/users";
+
 export const SCREENS_DETAILS = "/screens-details/:id?";
 
 export const CAMPAIGNS_LIST = "/campaigns-list";

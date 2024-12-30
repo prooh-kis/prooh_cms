@@ -7,12 +7,16 @@ import {
   MY_CREATIVES,
   SCREEN_CAMPAIGN_MONITORING,
   SCREENS_LIST,
+  SCREENS_LIST_FOR_SECONDARY_USER,
   SIGN_IN,
+  USERS,
 } from "../../routes/routes";
 import userImage from "../../assets/userImage.png";
 import { Menu } from "../../components/header/Menu";
 import { useDispatch } from "react-redux";
 import { signout } from "../../actions/userAction";
+import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
+import { message } from "antd";
 
 export const AppDashBoardLayout = (props: any) => {
   const { children } = props;
@@ -25,6 +29,9 @@ export const AppDashBoardLayout = (props: any) => {
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
+    } else if (userInfo?.userRole !== USER_ROLE_PRIMARY) {
+      message.error("You have no access");
+      navigate(SCREENS_LIST_FOR_SECONDARY_USER);
     }
   }, []);
 
@@ -49,6 +56,11 @@ export const AppDashBoardLayout = (props: any) => {
       value: "Monitoring",
       path: SCREEN_CAMPAIGN_MONITORING,
       icon: "fi fi-br-camera-movie text-xl",
+    },
+    {
+      value: "Users",
+      path: USERS,
+      icon: "fi fi-sr-users-alt text-xl",
     },
   ];
 

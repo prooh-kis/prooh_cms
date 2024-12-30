@@ -9,6 +9,7 @@ import { ReloadButton, SearchInputField } from "../../components";
 import { SIGN_IN } from "../../routes/routes";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
+import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
 
 export const ScreensPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -97,55 +98,59 @@ export const ScreensPage: React.FC = () => {
         <ReloadButton onClick={reLoad} />
       </div>
       <div className="flex gap-2">
-        <div className="w-[17vw] h-[80vh] bg-white rounded-md p-4 ">
-          <div className="flex justify-between items-center">
-            <h1 className="text-[#151515] text-[16px] font-semibold">Filter</h1>
-            <h1 className="text-[#092A41] text-[14px] ">Clear All</h1>
-          </div>
-          <div className="flex justify-between mt-2">
-            <h1>Network</h1>
-            {showNetwork ? (
-              <i
-                className="fi fi-br-angle-up"
-                onClick={() => setShowNetwork((pre: boolean) => !pre)}
-              ></i>
-            ) : (
-              <i
-                className="fi fi-br-angle-down"
-                onClick={() => setShowNetwork((pre: boolean) => !pre)}
-              ></i>
+        {userInfo?.userRole === USER_ROLE_PRIMARY && (
+          <div className="w-[17vw] h-[80vh] bg-white rounded-md p-4 ">
+            <div className="flex justify-between items-center">
+              <h1 className="text-[#151515] text-[16px] font-semibold">
+                Filter
+              </h1>
+              <h1 className="text-[#092A41] text-[14px] ">Clear All</h1>
+            </div>
+            <div className="flex justify-between mt-2">
+              <h1>Network</h1>
+              {showNetwork ? (
+                <i
+                  className="fi fi-br-angle-up"
+                  onClick={() => setShowNetwork((pre: boolean) => !pre)}
+                ></i>
+              ) : (
+                <i
+                  className="fi fi-br-angle-down"
+                  onClick={() => setShowNetwork((pre: boolean) => !pre)}
+                ></i>
+              )}
+            </div>
+            {showNetwork && (
+              <div className="mt-2">
+                {Object.keys(networks)?.map((network: string) => (
+                  <div
+                    className="flex justify-between text-sm pt-1"
+                    key={network}
+                    onChange={() => handleSelectNetwork(network)}
+                  >
+                    <label className="flex items-center space-x-2 ">
+                      <input
+                        type="checkbox"
+                        value={network}
+                        checked={selectedNetwork.includes(network)}
+                        onChange={() => handleSelectNetwork(network)}
+                        className="form-checkbox rounded text-[#129BFF]"
+                      />
+                      <span>
+                        {network}{" "}
+                        <span className="font-bold">
+                          {" "}
+                          {networks?.[network]?.length}
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-          {showNetwork && (
-            <div className="mt-2">
-              {Object.keys(networks)?.map((network: string) => (
-                <div
-                  className="flex justify-between text-sm pt-1"
-                  key={network}
-                  onChange={() => handleSelectNetwork(network)}
-                >
-                  <label className="flex items-center space-x-2 ">
-                    <input
-                      type="checkbox"
-                      value={network}
-                      checked={selectedNetwork.includes(network)}
-                      onChange={() => handleSelectNetwork(network)}
-                      className="form-checkbox rounded text-[#129BFF]"
-                    />
-                    <span>
-                      {network}{" "}
-                      <span className="font-bold">
-                        {" "}
-                        {networks?.[network]?.length}
-                      </span>
-                    </span>
-                  </label>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="w-[70vw] h-[80vh] flex flex-col gap-2">
+        )}
+        <div className="w-full h-[80vh] flex flex-col gap-2">
           <div className="bg-white rounded-md p-2 w-full flex justify-between items-center ">
             <h1 className="text-[#151515] text-[20px] font-bold pl-4">
               Network{" "}

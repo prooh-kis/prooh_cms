@@ -1,17 +1,16 @@
-import React, { useRef, ChangeEvent, useEffect, useState } from "react";
-import Lottie from "react-lottie";
-import animationData from "../../assets/lottie/message.json";
-
+// import React, { useRef, ChangeEvent, useEffect, useState } from "react";
+// import Lottie from "react-lottie";
+// import animationData from "../../assets/lottie/message.json";
 
 export const Message: React.FC<any> = (props: any) => {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  };
+  // const defaultOptions = {
+  //   loop: true,
+  //   autoplay: true,
+  //   animationData: animationData,
+  //   rendererSettings: {
+  //     preserveAspectRatio: "xMidYMid slice",
+  //   },
+  // };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
@@ -29,21 +28,17 @@ export const Message: React.FC<any> = (props: any) => {
         </div>
 
         <div className="">
-          <Lottie 
+          {/* <Lottie
             options={defaultOptions}
             height={props?.height || 300}
             width={props?.width || 300}
-          />
+          /> */}
           <div className="flex items-center justify-center">
-            <h1 className="font-bold">
-              {props?.message || "Message"}
-            </h1>
-            <p>
-              {props?.content || ""}
-            </p>
+            <h1 className="font-bold">{props?.message || "Message"}</h1>
+            <p>{props?.content || ""}</p>
           </div>
         </div>
       </div>
-  </div>
+    </div>
   );
 };

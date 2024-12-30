@@ -5,7 +5,9 @@ import authReducer from "./authSlice";
 import {
   emailSendForConfirmationReducer,
   emailSendForVendorConfirmationReducer,
+  userDeleteReducer,
   userEmailVerificationReducer,
+  userListReducer,
   userSendEmailToResetPasswordReducer,
   userSigninReducer,
   userSignupReducer,
@@ -64,6 +66,8 @@ const store = configureStore({
     userSendEmailToResetPassword: userSendEmailToResetPasswordReducer,
     emailSendForConfirmation: emailSendForConfirmationReducer,
     emailSendForVendorConfirmation: emailSendForVendorConfirmationReducer,
+    userList: userListReducer,
+    userDelete: userDeleteReducer,
 
     // campaign creation by screen owner
     createCampaignCreationByScreenOwner:

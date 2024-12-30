@@ -20,6 +20,11 @@ import {
   SEND_EMAIL_FOR_VENDOR_CONFIRMATION_REQUEST,
   SEND_EMAIL_FOR_VENDOR_CONFIRMATION_SUCCESS,
   SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_ERROR,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
 } from "../constants/userConstants";
 import store from "../store";
 import { login, logout } from "../store/authSlice";
@@ -316,3 +321,62 @@ export const sendEmailForVendorConfirmation =
       });
     }
   };
+
+export const getUserList = () => async (dispatch, getState) => {
+  dispatch({
+    type: USER_LIST_REQUEST,
+    payload: {},
+  });
+  try {
+    const {
+      auth: { userInfo },
+    } = getState();
+    const { data } = await Axios.get(`${userV1}/users`, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_LIST_ERROR,
+      payload: message,
+    });
+  }
+};
+
+export const deleteUser = (userId) => async (dispatch, getState) => {
+  dispatch({
+    type: USER_DELETE_REQUEST,
+    payload: { userId },
+  });
+  try {
+    const {
+      auth: { userInfo },
+    } = getState();
+    const { data } = await Axios.delete(`${USER_URL}/deleteUser`, {
+      params: {
+        userId: userId,
+      },
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_LIST_ERROR,
+      payload: message,
+    });
+  }
+};

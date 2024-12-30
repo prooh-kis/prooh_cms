@@ -27,7 +27,14 @@ import {
   SEND_EMAIL_FOR_VENDOR_CONFIRMATION_SUCCESS,
   SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR,
   SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET,
-
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_ERROR,
+  USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_ERROR,
+  USER_DELETE_RESET,
 } from "../constants/userConstants";
 
 export function userSignupReducer(state = {}, action) {
@@ -35,9 +42,14 @@ export function userSignupReducer(state = {}, action) {
     case USER_SIGNUP_REQUEST:
       return { loading: true };
     case USER_SIGNUP_SUCCESS:
-      return {...state, loading: false, userInfo: action.payload, success: true };
+      return {
+        ...state,
+        loading: false,
+        userInfo: action.payload,
+        success: true,
+      };
     case USER_SIGNUP_FAIL:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case USER_SIGNUP_RESET:
       return {};
     default:
@@ -50,9 +62,14 @@ export function userSigninReducer(state = {}, action) {
     case USER_SIGNIN_REQUEST:
       return { loading: true };
     case USER_SIGNIN_SUCCESS:
-      return {...state, loading: false, userInfo: action.payload, success: true };
+      return {
+        ...state,
+        loading: false,
+        userInfo: action.payload,
+        success: true,
+      };
     case USER_SIGNIN_FAIL:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case USER_SIGNOUT:
       return {};
     default:
@@ -60,15 +77,14 @@ export function userSigninReducer(state = {}, action) {
   }
 }
 
-
 export function userUpdatePasswordReducer(state = {}, action) {
   switch (action.type) {
     case USER_UPDATE_PASSWORD_REQUEST:
       return { loading: true };
     case USER_UPDATE_PASSWORD_SUCCESS:
-      return {...state, loading: false, success: true, data: action.payload };
+      return { ...state, loading: false, success: true, data: action.payload };
     case USER_UPDATE_PASSWORD_FAIL:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case USER_UPDATE_PASSWORD_RESET:
       return {};
     default:
@@ -83,9 +99,9 @@ export function userEmailVerificationReducer(state = {}, action) {
     case USER_EMAIL_VERIFICATION_REQUEST:
       return { loading: true };
     case USER_EMAIL_VERIFICATION_SUCCESS:
-      return {...state, loading: false, success: true, data: action.payload };
+      return { ...state, loading: false, success: true, data: action.payload };
     case USER_EMAIL_VERIFICATION_ERROR:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case USER_EMAIL_VERIFICATION_RESET:
       return {};
     default:
@@ -98,9 +114,9 @@ export function userSendEmailToResetPasswordReducer(state = {}, action) {
     case SEND_EMAIL_TO_RESET_PASSWORD_REQUEST:
       return { loading: true };
     case SEND_EMAIL_TO_RESET_PASSWORD_SUCCESS:
-      return {...state, loading: false, success: true, data: action.payload };
+      return { ...state, loading: false, success: true, data: action.payload };
     case SEND_EMAIL_TO_RESET_PASSWORD_ERROR:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case SEND_EMAIL_TO_RESET_PASSWORD_RESET:
       return {};
     default:
@@ -113,9 +129,9 @@ export function emailSendForConfirmationReducer(state = {}, action) {
     case SEND_EMAIL_FOR_CONFIRMATION_REQUEST:
       return { loading: true };
     case SEND_EMAIL_FOR_CONFIRMATION_SUCCESS:
-      return {...state, loading: false, success: true, data: action.payload };
+      return { ...state, loading: false, success: true, data: action.payload };
     case SEND_EMAIL_FOR_CONFIRMATION_ERROR:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case SEND_EMAIL_FOR_CONFIRMATION_RESET:
       return {};
     default:
@@ -128,10 +144,40 @@ export function emailSendForVendorConfirmationReducer(state = {}, action) {
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_REQUEST:
       return { loading: true };
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_SUCCESS:
-      return {...state, loading: false, success: true, data: action.payload };
+      return { ...state, loading: false, success: true, data: action.payload };
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR:
-      return {...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function userListReducer(state = [], action) {
+  switch (action.type) {
+    case USER_LIST_REQUEST:
+      return { loading: true };
+    case USER_LIST_SUCCESS:
+      return { loading: false, success: true, data: action.payload };
+    case USER_LIST_ERROR:
+      return { loading: false, error: action.payload };
+    case USER_LIST_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function userDeleteReducer(state = {}, action) {
+  switch (action.type) {
+    case USER_DELETE_REQUEST:
+      return { loading: true };
+    case USER_DELETE_SUCCESS:
+      return { loading: false, success: true, data: action.payload };
+    case USER_DELETE_ERROR:
+      return { loading: false, error: action.payload };
+    case USER_DELETE_RESET:
       return {};
     default:
       return state;
