@@ -146,8 +146,8 @@ export const MyCreativesPage: React.FC = () => {
         />
 
         <div className="grid grid-cols-12 gap-1 py-1">
-          <div className="col-span-4  bg-white">
-            <div className="flex justify-between items-center p-2">
+          <div className="col-span-4 bg-white p-4">
+            <div className="flex justify-between items-center py-2">
               <h1 className="text-[14px] font-semibold">Brand</h1>
               <div
                 className="flex gap-1 items-center"
@@ -157,19 +157,18 @@ export const MyCreativesPage: React.FC = () => {
                 <h1 className="text-[12px]">Folder</h1>
               </div>
             </div>
-            <div className="flex items-center p-1">
-              <SearchInputField
-                placeholder="Search By brand name"
-                height="h-8"
-                value={searchQuery}
-                onChange={setSearchQuery}
-              />
-            </div>
-            <div className="p-2 h-[70vh] ">
+            <SearchInputField
+              placeholder="Search By brand name"
+              height="h-8"
+              value={searchQuery}
+              onChange={setSearchQuery}
+            />
+
+            <div className="h-[70vh] py-2 ">
               {loadingCreatives ? (
                 <Loading />
               ) : (
-                <div className="p-2 h-[70vh] overflow-scroll">
+                <div className="h-[70vh] overflow-scroll">
                   {creatives &&
                     Object.keys(creatives)
                       ?.filter((brand: string) =>

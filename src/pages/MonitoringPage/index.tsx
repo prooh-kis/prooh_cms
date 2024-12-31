@@ -16,9 +16,6 @@ import {
   SCREEN_CAMPAIGN_MONITORING_PICS,
 } from "../../constants/localStorageConstants";
 import { getAllDatesBetween } from "../../utils/dateAndTimeUtils";
-import { PrimaryInput } from "../../components/atoms/PrimaryInput";
-import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
-import { CampaignListMonitoringView } from "../../components/molecules/CampaignListMonitoringView";
 import { CalendarPopup } from "../../components/popup/CalendarPopup";
 import { MonitoringPictures } from "../../components/Segment/MonitoringPictures";
 import { UploadMonitoringPicturesPopup } from "../../components/popup/UploadMonitoringPicturesPopup";
@@ -148,7 +145,8 @@ export const MonitoringPage: React.FC = () => {
         </div>
         <div className="grid grid-cols-12 gap-1 mt-1">
           <div className="col-span-3 bg-white">
-            <div className="w-full p-2">
+            <div className="w-full py-2 px-4">
+              <h1 className="text-[16px] font-semibold py-2">Screen List</h1>
               <SearchInputField
                 placeholder="Screen Name"
                 value={searchQuery}
@@ -171,12 +169,15 @@ export const MonitoringPage: React.FC = () => {
                       key={index}
                       onClick={() => handleScreenClick({ screen: data })}
                     >
-                      <ScreenListMonitoringView
-                        screen={data}
-                        noImages={true}
-                        showOption={false}
-                        handleGetCampaignLog={() => {}}
-                      />
+                      <h1
+                        className={
+                          monitoringScreen?._id === data?._id
+                            ? "border-b py-2 px-4  text-[14px]  text-blue-500"
+                            : "border-b border-gray-100 py-2 px-4  text-[14px]  hover:bg-gray-100"
+                        }
+                      >
+                        {data?.screenName}
+                      </h1>
                     </div>
                   ))}
               </div>
@@ -184,6 +185,8 @@ export const MonitoringPage: React.FC = () => {
           </div>
           <div className="col-span-3 rounded bg-white">
             <div className="w-full p-2">
+              <h1 className="text-[16px] font-semibold py-2">Campaign List</h1>
+
               <SearchInputField
                 placeholder="Brand Name"
                 value={searchQueryForCampaign}
@@ -210,10 +213,15 @@ export const MonitoringPage: React.FC = () => {
                           handleCampaignClick({ campaign: campaign });
                         }}
                       >
-                        <CampaignListMonitoringView
-                          campaign={campaign}
-                          noImages={true}
-                        />
+                        <h1
+                          className={
+                            monitoringCampaign?._id === campaign?._id
+                              ? "border-b py-2 px-4  text-[14px]  text-blue-500"
+                              : "border-b border-gray-100 py-2 px-4  text-[14px]  hover:bg-gray-100"
+                          }
+                        >
+                          {campaign.brandName}
+                        </h1>
                       </div>
                     ))
                 ) : (
