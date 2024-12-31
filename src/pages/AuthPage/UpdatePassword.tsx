@@ -50,12 +50,12 @@ export const UpdatePassword = (props: any) => {
   };
   return (
     <div className="flex justify-center pt-16">
-      <div className="border border-solid p-8 gap-2 w-full max-w-96 ">
-        <div className="flex flex-col gap-2">
+      <div className="border border-solid p-8 gap-1 w-full max-w-96 ">
+        <div className="flex flex-col gap-1">
           <h1 className="text-xl py-2 text-blue-600 font-bold">
             Set New Password
           </h1>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             <label>New Password*</label>
             <input
               type="password"
@@ -67,7 +67,7 @@ export const UpdatePassword = (props: any) => {
               className="border border-solid rounded p-2"
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             <label>Confirm New Password*</label>
             <input
               type="password"
@@ -81,7 +81,7 @@ export const UpdatePassword = (props: any) => {
           </div>
           <div className="flex justify-center pt-4">
             <button
-              className="border border-solid px-4 py-2 bg-red-500/75 rounded-md text-white w-96"
+              className="border border-solid px-4 py-2 bg-red-500/75  text-white w-96"
               onClick={handleSavePassword}
             >
               Save New Password

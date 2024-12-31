@@ -40,7 +40,7 @@ export const CalendarInput = ({
         disabled={disabled}
         value={value}
         onChange={(e) => action(e.target.value)}
-        className="text-[14px] h-[48px] w-full border rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+        className="text-[14px] h-[48px] w-full border  py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
         min={getMinDateTime()}
         placeholder={placeholder}
       />

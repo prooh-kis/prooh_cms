@@ -253,7 +253,7 @@ export const ScreenDetailsPage: React.FC = () => {
 
   return (
     <div className="">
-      <div className="w-full grid grid-cols-12 gap-2">
+      <div className="w-full grid grid-cols-12 gap-1">
         {isScreenLogReportOpen && (
           <ScreenLogReportPopup
             isOpen={isScreenLogReportOpen}
@@ -293,8 +293,8 @@ export const ScreenDetailsPage: React.FC = () => {
           </div>
         ) : (
           <div className="col-span-8">
-            <div className="w-full border bg-white flex justify-between py-2 rounded-md">
-              <div className="flex gap-2">
+            <div className="w-full bg-white flex justify-between py-8 ">
+              <div className="flex gap-1">
                 <i
                   className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
                   onClick={() => navigate(-1)}
@@ -376,7 +376,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </h1>
               </div>
             </div>
-            <div className="border rounded my-2 bg-white">
+            <div className=" my-1 bg-white">
               <div className="px-4 pt-4 pb-2 flex justify-between">
                 <h1 className="text-[16px] font-semibold">Campaigns</h1>
                 <div className="flex gap-4 items-center">
@@ -394,7 +394,7 @@ export const ScreenDetailsPage: React.FC = () => {
                   {campaignIds?.length > 0 && (
                     <div className="flex items-center gap-4">
                       <div
-                        className="text-gray-500 hover:text-blue-500"
+                        className="text-gray-500 hover:text-[#129BFF]"
                         onClick={() => {
                           if (
                             confirm(
@@ -509,7 +509,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="border rounded my-2">
+            <div className="my-1">
               <CampaignMonitoring
                 campaign={currentCampaign}
                 screenId={screenId}
@@ -520,8 +520,8 @@ export const ScreenDetailsPage: React.FC = () => {
         {loadingCampaigns ? (
           <Loading />
         ) : campaigns && selectedCampaign ? (
-          <div className="col-span-4 border rounded bg-white ">
-            <div className="border-b p-2">
+          <div className="col-span-4  bg-white p-4 ">
+            <div className="">
               <div className="flex justify-between items-center">
                 <h1 className="text-[16px] font-semibold">
                   {
@@ -529,7 +529,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       ?.name
                   }
                 </h1>
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                   <div
                     className="text-gray-500 hover:text-green-500"
                     onClick={() => {
@@ -622,9 +622,9 @@ export const ScreenDetailsPage: React.FC = () => {
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives?.standardDayTimeCreatives?.length === 0 && (
-                <div className="p-1 relative border rounded h-32 z-100">
+                <div className="p-1 relative  h-32 z-100">
                   <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
-                    <div className="flex justify-end rounded p-1 w-16 gap-4 bg-[#D7D7D750]">
+                    <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
                       <div
                         className="text-white hover:text-green-500"
                         onClick={handleCreativeEdit}

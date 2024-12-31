@@ -15,7 +15,7 @@ export const Message: React.FC<any> = (props: any) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
       <div
-        className="bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full relative overflow-auto max-h-auto no-scrollbar"
+        className="bg-white p-4  shadow-lg w-9/12 max-w-full relative overflow-auto max-h-auto no-scrollbar"
         style={{ height: "50vh", width: "50vw" }}
       >
         <div className="flex flex-row justify-between items-center">

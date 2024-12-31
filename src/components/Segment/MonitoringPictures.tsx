@@ -26,7 +26,7 @@ export const MonitoringPictures = ({
       <h1 className="text-[12px] font-semibold">
         Upload {time.toUpperCase()} Pictures
       </h1>
-      <div className="grid grid-cols-4 gap-4 my-2">
+      <div className="grid grid-cols-4 gap-4 my-1">
         <div className="col-span-1">
           <div
             className="border border-dotted bg-gray-100 rounded h-24 flex items-center justify-center"

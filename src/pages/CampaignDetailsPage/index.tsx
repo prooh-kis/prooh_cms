@@ -287,7 +287,7 @@ export const CampaignDetailsPage: React.FC = () => {
   }, [openAllCampaignLogsPopup]);
 
   return (
-    <div className="w-full grid grid-cols-12 gap-2">
+    <div className="w-full grid grid-cols-12 gap-1">
       {openCreativeEndDateChangePopup && (
         <EditCreativeEndDatePopup
           onClose={() => setOpenCreativeEndDateChangePopup(false)}
@@ -456,7 +456,7 @@ export const CampaignDetailsPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="border rounded my-2 p-4 bg-white">
+          <div className="border rounded my-1 p-4 bg-white">
             <TabWithoutIcon
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
@@ -467,7 +467,7 @@ export const CampaignDetailsPage: React.FC = () => {
                 <div key={i}>
                   {c?.[currentTab]?.length > 0 && (
                     <div className="p-2">
-                      <div className="grid grid-cols-3 gap-2 ">
+                      <div className="grid grid-cols-3 gap-1 ">
                         {c?.[currentTab]?.map((cs: any, j: any) => (
                           <div className="col-span-1 p-2 " key={j}>
                             <ShowMediaFile
@@ -499,7 +499,7 @@ export const CampaignDetailsPage: React.FC = () => {
               ))}
             </div>
           </div>
-          <div className="border rounded my-2">
+          <div className="border rounded my-1">
             <CampaignMonitoring
               campaign={campaign}
               screenId={campaign?.screenId}
@@ -512,13 +512,12 @@ export const CampaignDetailsPage: React.FC = () => {
           <Loading />
         </div>
       ) : (
-        <div className="col-span-4 border rounded bg-white">
-          <div className="px-2 pt-2">
-            <h1 className="text-[14px] font-semibold">
-              Playing on {campaignCreated?.screens?.length || 0} screens
-            </h1>
-          </div>
-          <div className="flex items-center p-2">
+        <div className="col-span-4 border rounded bg-white p-4">
+          <h1 className="text-[14px] font-semibold p-1">
+            Playing on {campaignCreated?.screens?.length || 0} screens
+          </h1>
+
+          <div className="mt-2">
             <SearchInputField
               placeholder="Search screens by name"
               height="h-8"
@@ -529,13 +528,12 @@ export const CampaignDetailsPage: React.FC = () => {
           {loadingScreens ? (
             <Loading />
           ) : (
-            <div className="h-[70vh] overflow-scroll no-scrollbar">
+            <div className="h-[70vh] overflow-scroll no-scrollbar py-2">
               {campaigns?.length === 0 && <NoDataView />}
               {campaigns?.map((camp: any, k: any) => (
                 <div
                   key={k}
                   className="p-0 m-0"
-                  title="Click to select screen to view monitoring data"
                   onClick={() => handelSelectScreen(camp?._id)}
                 >
                   <ScreenListMonitoringView

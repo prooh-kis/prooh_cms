@@ -58,9 +58,9 @@ export const EnterTimeTriggerPopup = ({
         (data: any) => data.day === currentTab && data.startTime === time
       )
     ) {
-      return "p-4 border border-1 rounded-md bg-sky-500 text-[#ffffff] font-bold text-[16px]";
+      return "p-4 border border-1  bg-sky-500 text-[#ffffff] font-bold text-[16px]";
     } else {
-      return "text-[16px] p-4 border border-1 rounded-md";
+      return "text-[16px] p-4 border border-1 ";
     }
   };
 
@@ -80,7 +80,7 @@ export const EnterTimeTriggerPopup = ({
             {tabData?.map((data: any, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-2"
+                className="flex flex-col gap-1"
                 onClick={() => setCurrentTab(data?.id)}
               >
                 <h1
@@ -147,7 +147,7 @@ export const EnterTimeTriggerPopup = ({
           <div className="flex justify-end gap-4 pt-8 font-bold">
             <button
               onClick={handleReset}
-              className="border-2 p-2 px-8 border-red-500 text-red-500 hover:text-[#fffff] hover:bg-red-500  hover:text-[#ffffff] rounded-md"
+              className="border-2 p-2 px-8 border-red-500 text-red-500 hover:text-[#fffff] hover:bg-red-500  hover:text-[#ffffff] "
             >
               Reset
             </button>
@@ -156,7 +156,7 @@ export const EnterTimeTriggerPopup = ({
                 handleSave(values);
                 onClose();
               }}
-              className="border-2 p-2 px-8 border-sky-500 text-[#ffffff]  bg-sky-500 hover:text-sky-500 hover:bg-[#ffffff]  hover:text-sky-500 rounded-md"
+              className="border-2 p-2 px-8 border-sky-500 text-[#ffffff]  bg-sky-500 hover:text-sky-500 hover:bg-[#ffffff]  hover:text-sky-500 "
             >
               Done
             </button>

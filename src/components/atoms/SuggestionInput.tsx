@@ -51,10 +51,10 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
         onBlur={handleBlur}
         onFocus={() => value && setShowSuggestions(true)}
         placeholder={placeholder}
-        className="w-full h-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
+        className="w-full h-12 px-4 py-2 border  focus:outline-none focus:ring focus:ring-indigo-300"
       />
       {showSuggestions && filteredSuggestions?.length > 0 && (
-        <ul className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-md mt-1 max-h-36 overflow-y-auto z-50">
+        <ul className="absolute top-full left-0 right-0 bg-white border border-gray-300  shadow-md mt-1 max-h-36 overflow-y-auto z-50">
           {filteredSuggestions?.map((suggestion, index) => (
             <li
               key={index}

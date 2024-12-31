@@ -265,7 +265,7 @@ export function UploadCreativesFromBucketPopup({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4 rounded-lg shadow-lg w-full max-w-full  "
+        className="bg-white p-4  shadow-lg w-full max-w-full  "
         style={{ height: "80vh", width: "70vw" }}
       >
         <div className="flex justify-between">
@@ -281,7 +281,7 @@ export function UploadCreativesFromBucketPopup({
                 <h1 className="text-[12px]">
                   Screen: {selectedScreens?.length}
                 </h1>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-1">
                   <input
                     placeholder="a"
                     type="checkbox"
@@ -361,7 +361,7 @@ export function UploadCreativesFromBucketPopup({
                                       <h1 className="text-[10px] py-1">
                                         Resolution: {g}
                                       </h1>
-                                      <div className="grid grid-cols-3 gap-2">
+                                      <div className="grid grid-cols-3 gap-1">
                                         {f?.[m]?.[g]
                                           ?.filter((l: any) =>
                                             l?.creativeName
@@ -454,7 +454,7 @@ export function UploadCreativesFromBucketPopup({
               </button>
             </div>
             {campaignOption !== "URL" && mediaFiles?.length > 0 && (
-              <div className="flex flex-col gap-2 p-2 h-[45vh] relative overflow-auto">
+              <div className="flex flex-col gap-1 p-2 h-[45vh] relative overflow-auto">
                 {mediaFiles?.map((media: any, index: any) => (
                   <SingleCreativeInPopup
                     media={media}
@@ -469,7 +469,7 @@ export function UploadCreativesFromBucketPopup({
         <div className="h-[104px]">
           {(campaignOption === "URL" || isImagePresent()) && (
             <div className="flex flex-col p-2">
-              <div className="py-2 flex items-center gap-2">
+              <div className="py-2 flex items-center gap-1">
                 <i className="fi fi-br-stopwatch"></i>
                 <h1 className="">(in seconds)</h1>
               </div>

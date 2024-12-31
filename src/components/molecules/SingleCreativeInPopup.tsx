@@ -3,7 +3,7 @@ import { ShowMediaFile } from "./ShowMediaFIle";
 
 export const SingleCreativeInPopup = ({ media, handleDelete }: any) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1">
       <div className="max-w-[12vw] min-w-[12vw]">
         <ShowMediaFile
           url={media?.awsURL}

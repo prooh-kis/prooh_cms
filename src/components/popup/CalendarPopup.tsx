@@ -40,12 +40,12 @@ export function CalendarPopup({
           <i className="fi fi-br-circle-xmark"></i>
         </div>
         <div className="p-2 overflow-scroll no-scrollbar h-[60vh]">
-          <div className="flex flex-wrap justify-center items-center gap-2">
+          <div className="flex flex-wrap justify-center items-center gap-1">
             {dates?.map((date: any) => (
               <div
                 key={date}
                 className={`border ${
-                  monitoringDate === date ? "border-blue-500" : ""
+                  monitoringDate === date ? "border-[#129BFF]" : ""
                 } truncate rounded p-2 w-40 flex justify-center items-center`}
                 onClick={() => {
                   setMonitoringDate(date);

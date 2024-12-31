@@ -22,7 +22,7 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
+        className="bg-white p-4  shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
         style={{ height: "80vh", width: "50vw" }}
       >
         <div className="flex justify-between">
@@ -62,9 +62,7 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
                     <td className="border p-2">
                       {convertDataTimeToLocale(c.deviceTime)}
                     </td>
-                    <td className="border p-2">
-                      {c.mediaId?.split("_")[1]}
-                    </td>
+                    <td className="border p-2">{c.mediaId?.split("_")[1]}</td>
                     <td className="border p-2">{logs?.campaign?.screenName}</td>
                     <td
                       className={

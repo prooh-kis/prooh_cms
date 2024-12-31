@@ -66,7 +66,7 @@ export const MyUsers = (props: any) => {
         <h1 className="text-[16px] font-semibold">Users</h1>
       </div>
 
-      <div className="w-full mt-2">
+      <div className="w-full mt-1">
         <table className="auto w-full">
           <thead>
             <tr className="bg-sky-200">

@@ -23,6 +23,11 @@ export const ScreensPage: React.FC = () => {
     string[]
   >([]);
 
+  const handleClearAll = () => {
+    setSelectedNetwork([]);
+    setSelectedScreensViaNetwork([]);
+  };
+
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
@@ -89,28 +94,26 @@ export const ScreensPage: React.FC = () => {
     setSelectedNetwork(newValue);
   };
   return (
-    <div className="flex flex-col gap-2">
-      <div className="bg-white rounded-md border sm:p-4 p-2 w-full font-bold text-[20px] sm:text-[24px] flex justify-between items-center ">
+    <div className="flex flex-col gap-1">
+      <div className="bg-white   sm:p-4 p-2 w-full font-bold text-[20px] sm:text-[24px] flex justify-between items-center ">
         My Screens
         <ReloadButton onClick={reLoad} />
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         {userInfo?.userRole === USER_ROLE_PRIMARY && (
-          <div className="w-[17vw] h-[80vh] overflow-scroll no-scrollbar bg-white rounded-md p-4 ">
+          <div className="w-[17vw] h-[80vh] overflow-scroll no-scrollbar bg-white  p-4 ">
             <div className="flex justify-between items-center">
               <h1 className="text-[#151515] text-[16px] font-semibold">
                 Filter
               </h1>
               <h1
                 className="text-[#092A41] text-[14px] "
-                onClick={() => {
-                  setSelectedScreensViaNetwork([]);
-                }}
+                onClick={handleClearAll}
               >
                 Clear All
               </h1>
             </div>
-            <div className="flex justify-between mt-2">
+            <div className="flex justify-between mt-1">
               <h1>Network</h1>
               {showNetwork ? (
                 <i
@@ -125,7 +128,7 @@ export const ScreensPage: React.FC = () => {
               )}
             </div>
             {showNetwork && (
-              <div className="mt-2">
+              <div className="mt-1">
                 {Object.keys(networks)?.map((network: string) => (
                   <div
                     className="flex justify-between text-sm pt-1"
@@ -154,8 +157,8 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="w-full h-[80vh] flex flex-col gap-2">
-          <div className="bg-white rounded-md p-2 w-full flex justify-between items-center ">
+        <div className="w-full h-[80vh] flex flex-col gap-1">
+          <div className="bg-white  p-2 w-full flex justify-between items-center ">
             <h1 className="text-[#151515] text-[20px] font-bold pl-4 hidden lg:block">
               Network{" "}
               <span className="text-green-500 pl-4">
@@ -170,7 +173,7 @@ export const ScreensPage: React.FC = () => {
               />
             </div>
           </div>
-          <div className="flex gap-2 flex-wrap h-[70vh] overflow-scroll bg-gray-100">
+          <div className="flex gap-1 flex-wrap h-[70vh] overflow-scroll bg-gray-100">
             {filterScreens?.map((data: any, index: any) => (
               <div key={index} className="">
                 <ScreenListThumbnail

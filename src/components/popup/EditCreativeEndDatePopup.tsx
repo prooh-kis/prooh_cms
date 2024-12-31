@@ -188,7 +188,7 @@ export function EditCreativeEndDatePopup({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
+        className="bg-white p-4  shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
         style={{ height: "80vh", width: "70vw" }}
       >
         <div className="flex justify-between">
@@ -203,7 +203,7 @@ export function EditCreativeEndDatePopup({
             <div className="flex flex-col justify-center">
               <div className="flex justify-between border border-1 p-2 text-[12px]">
                 <h1 className="">Screen: {selectedScreens?.length}</h1>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-1">
                   <input
                     placeholder="a"
                     type="checkbox"
@@ -239,7 +239,7 @@ export function EditCreativeEndDatePopup({
               </div>
             ) : (
               <div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-1">
                   <div className="col-span-1 flex flex-col py-2">
                     <h1 className="block text-secondaryText text-[12px]">
                       Change End Date
@@ -292,7 +292,7 @@ export function EditCreativeEndDatePopup({
                                       <h1 className="text-[10px] py-1">
                                         Resolution: {g}
                                       </h1>
-                                      <div className="grid grid-cols-3 gap-2">
+                                      <div className="grid grid-cols-3 gap-1">
                                         {f?.[m]?.[g]?.map((l: any, y: any) => (
                                           <div
                                             key={y}
@@ -371,7 +371,7 @@ export function EditCreativeEndDatePopup({
               </button>
             </div>
             {campaignOption !== "URL" && mediaFiles?.length > 0 && (
-              <div className="flex flex-col gap-2 p-2 h-[45vh] overflow-auto">
+              <div className="flex flex-col gap-1 p-2 h-[45vh] overflow-auto">
                 {mediaFiles?.map((media: any, index: any) => (
                   <SingleCreativeInPopup
                     media={media}

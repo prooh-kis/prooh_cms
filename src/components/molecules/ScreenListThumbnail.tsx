@@ -72,8 +72,8 @@ export const ScreenListThumbnail = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-row gap-2 items-center px-1">
-          <h1 className="text-[10px] text-blue-500">
+        <div className="flex flex-row gap-1 items-center px-1">
+          <h1 className="text-[10px] text-[#129BFF]">
             Last Active:{" "}
             {convertIntoDateAndTime(data?.lastActive) || "Not Available"}
           </h1>

@@ -35,12 +35,12 @@ export function ForgetPassword(props: any) {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="w-[90%] lg:w-[400px] rounded-[15px] shadow-lg bg-white px-5 lg:px-8 py-6 lg:py-10">
+      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10">
         <div className="flex flex-col gap-4">
           <h1 className="items-center text-xl font-bold">Forget Password</h1>
           {true && (
             <a
-              className="text-sm text-blue-500 cursor-pointer"
+              className="text-sm text-[#129BFF] cursor-pointer"
               onClick={() =>
                 window.open(
                   "https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
@@ -84,7 +84,7 @@ export function ForgetPassword(props: any) {
 
             <Form.Item>
               <button
-                className="w-full  border-2 border-[#129BFF]  bg-[#129BFF] text-[#ffffff] text-xl py-2 rounded-md hover:bg-[#ffffff] hover:text-[#129BFF] "
+                className="w-full  border-2 border-[#129BFF]  bg-[#129BFF] text-[#ffffff] text-xl py-2  hover:bg-[#ffffff] hover:text-[#129BFF] "
                 type={"submit"}
               >
                 {loading ? "Please wait" : "Send Email"}
@@ -94,14 +94,14 @@ export function ForgetPassword(props: any) {
 
           <div className="pt-2">
             <button
-              className="w-full py-3 bg-white text-[#2C2C2C] rounded-lg font-semibold border border-gray-300 hover:bg-[#2C2C2C] hover:text-white"
+              className="w-full py-3 bg-white text-[#2C2C2C]  font-semibold border border-gray-300 hover:bg-[#2C2C2C] hover:text-white"
               onClick={() => navigate(SIGN_UP)}
             >
               Create a new account
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-2 pt-4">
+          <div className="flex items-center justify-center gap-1 pt-4">
             <p className="text-sm text-black font-semibold">
               Already have an account?
             </p>

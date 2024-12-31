@@ -8,7 +8,7 @@ export const SearchInputField = ({ value, onChange, placeholder }: any) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder || "Search..."}
-        className="border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+        className="bg-gray-100  rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#129BFF] w-full text-[14px]"
       />
       <div className="absolute left-3 top-2">
         <svg

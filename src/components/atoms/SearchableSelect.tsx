@@ -61,11 +61,11 @@ export const SearchableSelect: React.FC<{
         }}
         onFocus={() => setIsOpen(true)}
         placeholder={placeholder}
-        className=" border rounded-lg h-[48px] w-full pl-5 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+        className=" border  h-[48px] w-full pl-5 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
       />
 
       {isOpen && (
-        <div className="absolute z-10 w-full bg-white border rounded-lg shadow-md max-h-60 overflow-y-auto">
+        <div className="absolute z-10 w-full bg-white border  shadow-md max-h-60 overflow-y-auto">
           {filteredOptions?.length > 0 ? (
             filteredOptions?.map((option) => (
               <div

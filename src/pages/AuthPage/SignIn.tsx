@@ -47,8 +47,8 @@ export const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-[90%] lg:w-[400px] rounded-[15px] shadow-lg bg-white px-5 lg:px-8 py-6 lg:py-10">
+    <div className="flex flex-col justify-center items-center ">
+      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10">
         <div className="flex flex-col gap-4">
           <h1 className="items-center text-xl font-bold"> Welcome Back</h1>
 
@@ -102,7 +102,7 @@ export const SignIn: React.FC = () => {
               />
             </Form.Item>
             <div className="flex flex-row justify-between">
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-1">
                 <input
                   title="q"
                   type="checkbox"
@@ -114,7 +114,7 @@ export const SignIn: React.FC = () => {
                 </label>
               </div>
               <h1
-                className="text-sm text-blue-500 cursor-pointer"
+                className="text-sm text-[#129BFF] cursor-pointer"
                 onClick={() => navigate(FORGET_PASSWORD)}
               >
                 Forget Password
@@ -124,7 +124,7 @@ export const SignIn: React.FC = () => {
             <Form.Item style={{ marginBottom: "0", paddingTop: "20px" }}>
               <div className="pt-2 flex flex-col gap-4">
                 <button
-                  className="w-full bg-[#129BFF] text-[#ffffff] text-xl py-2 rounded-md"
+                  className="w-full bg-[#129BFF] text-[#ffffff] text-xl py-2 "
                   type={"submit"}
                 >
                   {loading ? "Please wait..." : "Sign In"}

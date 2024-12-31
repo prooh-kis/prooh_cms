@@ -172,7 +172,7 @@ export const AllCampaignLogsPopup = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div
-        className="bg-white p-4 mt-8 rounded-lg shadow-lg w-full max-w-full relative overflow-auto max-h-auto"
+        className="bg-white p-4 mt-8  shadow-lg w-full max-w-full relative overflow-auto max-h-auto"
         style={{ height: "90vh", width: "60vw" }}
       >
         <div className="flex justify-between">
@@ -206,7 +206,7 @@ export const AllCampaignLogsPopup = ({
 
         {isDownloading && (
           <div className="flex flex-col justify-center items-center">
-            <div className="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 mb-4"></div>
+            <div className="animate-spin border-t-4 border-[#129BFF] border-solid rounded-full w-16 h-16 mb-4"></div>
             <span className="text-xl text-gray-700">Downloading...</span>
           </div>
         )}

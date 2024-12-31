@@ -119,14 +119,14 @@ export const SelectScreensViaNetwork: React.FC<{
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-2 text-left bg-white border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
+        className="w-full px-4 py-2 text-left bg-white border  focus:outline-none focus:ring focus:ring-indigo-300"
       >
         {placeHolder}
         <i className="fi fi-rs-angle-small-down float-right"></i>
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full bg-white border rounded-lg shadow-md max-h-80 overflow-y-auto">
+        <div className="absolute z-10 w-full bg-white border  shadow-md max-h-80 overflow-y-auto">
           {/* Search Box */}
           <div className="p-2">
             <div className="flex gap-8 items-center p-2">
@@ -137,7 +137,7 @@ export const SelectScreensViaNetwork: React.FC<{
                   type="radio"
                   name="option"
                   onClick={() => setOption("Individual")}
-                  // className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  // className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-[#129BFF] dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
                   htmlFor="Individual"
@@ -155,7 +155,7 @@ export const SelectScreensViaNetwork: React.FC<{
                   id="Select Network"
                   type="radio"
                   name="option"
-                  // className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  // className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-[#129BFF] dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
                   htmlFor="Select Network"

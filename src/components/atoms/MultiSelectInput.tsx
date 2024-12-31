@@ -66,14 +66,14 @@ export const MultiSelectInput: React.FC<{
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-2 text-left bg-white border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
+        className="w-full px-4 py-2 text-left bg-white border  focus:outline-none focus:ring focus:ring-indigo-300"
       >
         {placeHolder}
         <i className="fi fi-rs-angle-small-down float-right"></i>
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full bg-white border rounded-lg shadow-md max-h-80 overflow-y-auto">
+        <div className="absolute z-10 w-full bg-white border  shadow-md max-h-80 overflow-y-auto">
           {/* Search Box */}
           <div className="p-2">
             <input

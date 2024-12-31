@@ -36,12 +36,18 @@ export function ConformationModel({ open, onClose }: any) {
         <div className="flex flex-col justify-center items-center pt-4">
           <button
             className="border border-1 py-2 px-8 bg-[#129BFF] text-white rounded-2xl w-[50%]"
-            onClick={() => navigate("/create-campaign")}
+            onClick={() => {
+              onClose();
+              navigate("/create-campaign");
+            }}
           >
             Yes
           </button>
           <h1
-            onClick={() => navigate("/my-creatives")}
+            onClick={() => {
+              onClose();
+              navigate("/my-creatives");
+            }}
             className="text-[16px] text-[#129BFF]  pt-2 underline"
           >
             {"I Don't Have Creative, Upload new"}

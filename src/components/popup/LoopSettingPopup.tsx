@@ -178,7 +178,7 @@ export function LoopSettingPopup({
       <div className="border bg-white rounded-[10px] h-3/4 w-3/4">
         <div className="flex justify-between p-4 border-b">
           <h1 className="text-[16px] font-bold">Loop Setting</h1>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1 items-center">
             <PrimaryButton
               title="Set Loop"
               height="h-8"
@@ -209,12 +209,12 @@ export function LoopSettingPopup({
                 action={setCampaignName}
               />
             </div>
-            <div className="my-2 h-[58vh] overflow-scroll no-scrollbar">
+            <div className="my-1 h-[58vh] overflow-scroll no-scrollbar">
               {campaigns &&
                 campaigns?.map((camp: Campaign, i: number) => (
                   <div
                     key={i}
-                    className="flex gap-2 p-2 cursor-pointer"
+                    className="flex gap-1 p-2 cursor-pointer"
                     draggable
                     onDragStart={handleDragStart(camp)}
                   >
@@ -236,7 +236,7 @@ export function LoopSettingPopup({
             {totalSlots?.map((_, j) => (
               <div
                 key={j}
-                className="flex h-auto border rounded gap-2 my-2 p-2"
+                className="flex h-auto border rounded gap-1 my-1 p-2"
                 onDrop={handleDrop(j)}
                 onDragOver={handleDragOver}
               >

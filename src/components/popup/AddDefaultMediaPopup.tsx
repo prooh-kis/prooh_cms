@@ -165,7 +165,7 @@ export function AddDefaultMediaPopup({
                 />
               )}
               <div
-              // className={`border ${monitoringDate === date ? "border-blue-500" : ""} truncate rounded p-2 w-40 flex justify-center items-center`}
+              // className={`border ${monitoringDate === date ? "border-[#129BFF]" : ""} truncate rounded p-2 w-40 flex justify-center items-center`}
               // onClick={() => setOpenAddDefaultMediaPopup(date)}
               >
                 {creatives &&
@@ -183,7 +183,7 @@ export function AddDefaultMediaPopup({
                               <h1 className="text-[10px] py-1">
                                 Resolution: {g}
                               </h1>
-                              <div className="grid grid-cols-3 gap-2">
+                              <div className="grid grid-cols-3 gap-1">
                                 {creatives[brand][f][g]?.map(
                                   (l: any, y: any) => (
                                     <div

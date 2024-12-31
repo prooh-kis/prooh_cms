@@ -18,14 +18,14 @@ export function ScreenView({
     } else if (campaignStatus === "Deleted") {
       className += " text-yellow-500";
     } else {
-      className += " text-blue-500";
+      className += " text-[#129BFF]";
     }
     return className;
   };
 
   return (
     <div className="p-1" key={screen._id}>
-      <div className="flex gap-2 p-2 hover:bg-gray-100 hover:rounded">
+      <div className="flex gap-1 p-2 hover:bg-gray-100 hover:rounded">
         {!noImages && (
           <img
             className="rounded h-16 max-w-24 min-w-24"
@@ -51,7 +51,7 @@ export function ScreenView({
           {showMenu && (
             <div
               onMouseLeave={() => setShowMenu(false)} // Close dropdown on mouse leave
-              className="absolute z-10 mt-2 w-[200px] bg-white border border-gray-300 rounded-md shadow-lg right-0 text-sm text-black-1000"
+              className="absolute z-10 mt-1 w-[200px] bg-white border border-gray-300  shadow-lg right-0 text-sm text-black-1000"
             >
               <div
                 onClick={() => {

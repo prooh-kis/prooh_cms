@@ -87,10 +87,10 @@ export const AppDashBoardLayout = (props: any) => {
     <div className="h-[100vh] w-[100vw] p-0 m-0 bg-gray-100">
       <Header />
       <ConformationModel open={open} onClose={toggleOpen} />
-      <div className="flex gap-2 mt-2">
+      <div className="flex gap-1 mt-1">
         <div className="h-[92vh] w-[15vw] overflow-scroll no-scrollbar flex flex-col bg-white">
           <div className="flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"></div>
-          <div className="flex flex-col pt-8 justify-between h-[60vh]">
+          <div className="flex flex-col pt-8 justify-between h-[90vh] px-2">
             <div className="flex flex-col gap-4">
               <div
                 onClick={() => {
@@ -99,7 +99,7 @@ export const AppDashBoardLayout = (props: any) => {
                 }}
                 className={
                   current === "Dashboard"
-                    ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw] rounded-md px-2 py-1"
+                    ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
                     : "flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"
                 }
               >
@@ -121,7 +121,7 @@ export const AppDashBoardLayout = (props: any) => {
                   onClick={() => handleClick(index)}
                   className={
                     current === d.option
-                      ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw] rounded-md px-2 py-1"
+                      ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
                       : "flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"
                   }
                 >
@@ -143,7 +143,7 @@ export const AppDashBoardLayout = (props: any) => {
               onClick={signOutHandler}
               className={
                 current === "logOut"
-                  ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw] rounded-md px-2 py-1"
+                  ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
                   : "flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"
               }
             >

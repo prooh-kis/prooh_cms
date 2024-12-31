@@ -284,14 +284,14 @@ export const UploadCreatives = ({
       )}
       <div className="border rounded-[12px] py-4 px-2">
         <div className="w-full flex justify-between ">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1 items-center">
             <i
               className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
               onClick={() => navigate(`/edit-campaign/${campaignId}`)}
             ></i>
             <h1 className="text text-[14px] font-semibold">Upload Creatives</h1>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1 items-center">
             <h1 className="text-[16px] font-semibold">
               {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name}
             </h1>
@@ -362,7 +362,7 @@ export const UploadCreatives = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-2 py-4">
+      <div className="grid grid-cols-12 gap-1 py-4">
         {/* <div className="col-span-2 border rounded-[12px] p-2">
           <div className="flex justify-between items-center border-b py-1">
             <h1 className="text text-[12px] font-semibold">Filter</h1>
@@ -423,7 +423,7 @@ export const UploadCreatives = ({
                 action={handleSetOpenBucketModel}
               />
               <i
-                className="fi fi-br-disk flex items-center text-blue-500"
+                className="fi fi-br-disk flex items-center text-[#129BFF]"
                 onClick={() => {
                   saveCampaignCreativesDetails();
                 }}

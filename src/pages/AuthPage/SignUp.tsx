@@ -77,7 +77,7 @@ export const SignUp: React.FC = () => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="w-[90%] lg:w-[400px] rounded-[15px] shadow-lg bg-white px-5 lg:px-8 py-6 lg:py-10">
+      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10">
         <div className="flex flex-col gap-4">
           <h1 className="items-center text-xl font-bold">Welcome Planner</h1>
 
@@ -169,14 +169,14 @@ export const SignUp: React.FC = () => {
             <Form.Item style={{ marginBottom: "0", paddingTop: "20px" }}>
               <div className="pt-2 flex flex-col gap-4">
                 <button
-                  className="w-full bg-[#129BFF] text-[#ffffff] text-xl py-2 rounded-md"
+                  className="w-full bg-[#129BFF] text-[#ffffff] text-xl py-2 "
                   type={"submit"}
                 >
                   {loading ? "Please wait..." : "Sign Up"}
                 </button>
               </div>
             </Form.Item>
-            <div className="flex items-center justify-center gap-2 pt-4">
+            <div className="flex items-center justify-center gap-1 pt-4">
               <p className="text-sm text-black font-semibold">
                 Already have an account?
               </p>

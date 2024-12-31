@@ -1,7 +1,7 @@
 export const ReloadButton = ({ onClick }: any) => {
   return (
     <div
-      className="flex gap-2 items-center hover:text:sky:600"
+      className="flex gap-1 items-center hover:text:sky:600"
       onClick={onClick}
       title="Reload page, for latest data"
     >

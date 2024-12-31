@@ -252,7 +252,7 @@ export function UploadCreativesV2Popup({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 p-1">
       <div
-        className="bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full h-full flex flex-col justify-between"
+        className="bg-white p-4  shadow-lg w-9/12 max-w-full h-full flex flex-col justify-between"
         style={{ height: "70vh", width: "50vw" }}
       >
         <div className="">

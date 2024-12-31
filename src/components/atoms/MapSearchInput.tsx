@@ -122,7 +122,7 @@ export function MapSearchInput(props: any) {
   };
 
   const renderSuggestions = () => (
-    <ul className="absolute z-10 w-full max-h-40 overflow-y-auto bg-white rounded-lg shadow-lg">
+    <ul className="absolute z-10 w-full max-h-40 overflow-y-auto bg-white  shadow-lg">
       {suggestions?.map((suggestion: any, index: number) => (
         <li
           key={suggestion.id}
@@ -160,7 +160,7 @@ export function MapSearchInput(props: any) {
         onChange={handleQueryChange}
         onKeyDown={handleSearch}
         placeholder={props?.placeholder}
-        className="h-[48px] w-full border rounded-lg pl-10 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+        className="h-[48px] w-full border  pl-10 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
       />
       <div className="h-auto">{renderSuggestions()}</div>
     </div>

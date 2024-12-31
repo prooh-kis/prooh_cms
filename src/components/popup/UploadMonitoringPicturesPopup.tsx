@@ -238,7 +238,7 @@ export function UploadMonitoringPicturesPopup({
       </div>
       <div
         className="
-        bg-white p-4 rounded-lg shadow-lg w-9/12 max-w-full
+        bg-white p-4  shadow-lg w-9/12 max-w-full
         h-full flex flex-col justify-between
         "
         style={{ height: "70vh", width: "40vw" }}
@@ -280,7 +280,7 @@ export function UploadMonitoringPicturesPopup({
                   </button>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1">
                   {mediaFiles?.map((media: any, j: any) => (
                     <ShowMediaFile
                       url={media?.awsURL || media?.url}

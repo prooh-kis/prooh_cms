@@ -452,7 +452,7 @@ export const EnterCampaignBasicDetails = ({
               </label>
               {purpose === "Edit" ? (
                 <div
-                  className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+                  className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
                   // onClick={() => {
                   //   alert("You can't edit start date");
                   // }}
@@ -479,7 +479,7 @@ export const EnterCampaignBasicDetails = ({
               </div>
               {purpose === "Edit" ? (
                 <div
-                  className="flex items-center justify-start h-[48px] w-full border rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 active:bg-blue-100 transition-colors"
+                  className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
                   onClick={() => {
                     // setEnterDate(true);
                   }}
@@ -508,7 +508,7 @@ export const EnterCampaignBasicDetails = ({
               </label>
               <div
                 onClick={handleOpenCloseAddTimeTrigger}
-                className="flex gap-2 w-full px-4 py-2 text-left bg-white border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300 items-center cursor-pointer"
+                className="flex gap-1 w-full px-4 py-2 text-left bg-white border  focus:outline-none focus:ring focus:ring-indigo-300 items-center cursor-pointer"
               >
                 <i className="fi fi-rr-clock text-gray-400"></i>
                 <h1>Set Ad Play Time</h1>
@@ -534,7 +534,7 @@ export const EnterCampaignBasicDetails = ({
           </div>
         </div>
         <div className="col-span-4">
-          <div className="border rounded-[12px] p-1 my-2">
+          <div className="border rounded-[12px] p-1 my-1">
             <div className="flex justify-between items-center py-1">
               <h1 className="px-2 text-[14px]">Priority</h1>
               <SwitchInput
@@ -551,7 +551,7 @@ export const EnterCampaignBasicDetails = ({
                 offColor="bg-red-500"
               />
             </div>
-            <div className="grid grid-cols-6 gap-2 justify-center px-1">
+            <div className="grid grid-cols-6 gap-1 justify-center px-1">
               {allIndexs?.map((index: any, i: any) => (
                 <div
                   key={i}
@@ -583,7 +583,7 @@ export const EnterCampaignBasicDetails = ({
           </div>
           <div className="border rounded-[12px]">
             <div className="flex justify-between">
-              <h1 className="my-2 px-2 text-[14px]">
+              <h1 className="my-1 px-2 text-[14px]">
                 Screens ({screenIds?.length})
               </h1>
               <button
@@ -594,7 +594,7 @@ export const EnterCampaignBasicDetails = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 justify-center px-1 py-1">
+            <div className="grid grid-cols-2 gap-1 justify-center px-1 py-1">
               {getDataFromLocalStorage(
                 ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
               )
@@ -602,7 +602,7 @@ export const EnterCampaignBasicDetails = ({
                 ?.map((screen: any, i: any) => (
                   <div
                     key={i}
-                    className="border rounded-[8px] flex justify-center gap-2 px-2 py-1"
+                    className="border rounded-[8px] flex justify-center gap-1 px-2 py-1"
                   >
                     <h1 className="text-[12px] truncate">{screen.label}</h1>
                     <i

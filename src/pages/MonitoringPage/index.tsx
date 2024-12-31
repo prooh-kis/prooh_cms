@@ -114,7 +114,7 @@ export const MonitoringPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="w-full h-full ">
       <UploadMonitoringPicturesPopup
         openUploadPopup={openUploadPopup}
         mediaFiles={mediaFiles}
@@ -143,11 +143,11 @@ export const MonitoringPage: React.FC = () => {
         </div>
       )}
       <div className="w-full ">
-        <div className="border rounded p-4 w-full bg-white">
+        <div className="p-4 w-full bg-white">
           <h1 className="text-[16px] font-semibold">Campaign Monitoring</h1>
         </div>
-        <div className="grid grid-cols-12 gap-2 mt-2">
-          <div className="col-span-3 border rounded bg-white">
+        <div className="grid grid-cols-12 gap-1 mt-1">
+          <div className="col-span-3 bg-white">
             <div className="w-full p-2">
               <SearchInputField
                 placeholder="Screen Name"
@@ -182,7 +182,7 @@ export const MonitoringPage: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="col-span-3 border rounded bg-white">
+          <div className="col-span-3 rounded bg-white">
             <div className="w-full p-2">
               <SearchInputField
                 placeholder="Brand Name"
@@ -223,7 +223,7 @@ export const MonitoringPage: React.FC = () => {
             )}
           </div>
           {monitoringScreen && monitoringCampaign && (
-            <div className="col-span-6 border rounded bg-white">
+            <div className="col-span-6 bg-white">
               <div className="flex justify-between items-center border-b">
                 <div className="p-4 flex items-end gap-1">
                   <h1 className="text-[12px]">
@@ -239,7 +239,7 @@ export const MonitoringPage: React.FC = () => {
                   </h1>
                 </div>
                 <div
-                  className="flex gap-2 items-center p-4"
+                  className="flex gap-1 items-center p-4"
                   onClick={() => setOpenCalendarPopup(true)}
                 >
                   <i className="fi fi-sr-calendar-lines text-[12px] flex items-center"></i>

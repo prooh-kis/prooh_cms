@@ -68,7 +68,7 @@ export const MyCreativesPage: React.FC = () => {
             ?.map((resolution: any, j: any) => (
               <div key={j} className="py-2">
                 <h1 className="text-[10px] py-1">Resolution: {resolution}</h1>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-1">
                   {creativesMedia?.[contentType]?.[resolution]
                     ?.filter((l: any) =>
                       l?.creativeName
@@ -76,7 +76,7 @@ export const MyCreativesPage: React.FC = () => {
                         .includes(creativeName.toLowerCase())
                     )
                     ?.map((l: any, y: any) => (
-                      <div key={y} className="w-full border rounded">
+                      <div key={y} className="w-full border">
                         <div className="w-full">
                           <ShowMediaFile
                             url={l?.awsURL}
@@ -128,7 +128,7 @@ export const MyCreativesPage: React.FC = () => {
 
   return (
     <div className="w-full h-full ">
-      <div className="border rounded p-4 bg-white">
+      <div className="p-4 bg-white">
         <h1 className="text-[16px] font-bold">Creative Bucket</h1>
       </div>
       <div className="w-full ">
@@ -145,8 +145,8 @@ export const MyCreativesPage: React.FC = () => {
           purpose={purpose}
         />
 
-        <div className="grid grid-cols-12 gap-2 py-1">
-          <div className="col-span-4 border rounded bg-white">
+        <div className="grid grid-cols-12 gap-1 py-1">
+          <div className="col-span-4  bg-white">
             <div className="flex justify-between items-center p-2">
               <h1 className="text-[14px] font-semibold">Brand</h1>
               <div
@@ -165,41 +165,45 @@ export const MyCreativesPage: React.FC = () => {
                 onChange={setSearchQuery}
               />
             </div>
-            {loadingCreatives ? (
-              <Loading />
-            ) : (
-              <div className="p-2 h-[70vh] overflow-scroll">
-                {creatives &&
-                  Object.keys(creatives)
-                    ?.filter((brand: string) =>
-                      brand.toLowerCase()?.includes(searchQuery?.toLowerCase())
-                    )
-                    ?.map((brand: any, i: any) => (
-                      <div
-                        className={
-                          brand === brandName
-                            ? "flex gap-4 items-center p-2 border-b text-blue-400"
-                            : "flex gap-4 items-center p-2 border-b"
-                        }
-                        key={i}
-                        onClick={() => {
-                          setBrandName(brand);
-                          setNetwork(creatives[brand][0].network);
-                          setCreativesMedia(creatives[brand][0]);
-                        }}
-                      >
-                        <i className="fi fi-sr-folder-open flex items-center text-[#D7D7D7]"></i>
-                        <h1 className="text-[12px] font-semibold">{brand}</h1>
-                      </div>
-                    ))}
-              </div>
-            )}
+            <div className="p-2 h-[70vh] ">
+              {loadingCreatives ? (
+                <Loading />
+              ) : (
+                <div className="p-2 h-[70vh] overflow-scroll">
+                  {creatives &&
+                    Object.keys(creatives)
+                      ?.filter((brand: string) =>
+                        brand
+                          .toLowerCase()
+                          ?.includes(searchQuery?.toLowerCase())
+                      )
+                      ?.map((brand: any, i: any) => (
+                        <div
+                          className={
+                            brand === brandName
+                              ? "flex gap-4 items-center p-2 border-b text-blue-400"
+                              : "flex gap-4 items-center p-2 border-b"
+                          }
+                          key={i}
+                          onClick={() => {
+                            setBrandName(brand);
+                            setNetwork(creatives[brand][0].network);
+                            setCreativesMedia(creatives[brand][0]);
+                          }}
+                        >
+                          <i className="fi fi-sr-folder-open flex items-center text-[#D7D7D7]"></i>
+                          <h1 className="text-[12px] font-semibold">{brand}</h1>
+                        </div>
+                      ))}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="col-span-8 border rounded bg-white">
+          <div className="col-span-8 bg-white">
             {brandName && (
               <div className="p-2">
                 <div className="border-b py-1 flex items-center justify-between">
-                  <div className="flex gap-2 items-center py-1">
+                  <div className="flex gap-1 items-center py-1">
                     {/* <i
                     className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
                     onClick={() =>{}}
@@ -214,7 +218,7 @@ export const MyCreativesPage: React.FC = () => {
                     <h1 className="text-[12px]">Creative Media</h1>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-2 border-b py-1">
+                <div className="grid grid-cols-3 gap-1 border-b py-1">
                   <div className="col-span-1 py-1">
                     <label className="block text-secondaryText text-[12px] mb-2">
                       Creative Name
@@ -264,7 +268,7 @@ export const MyCreativesPage: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="flex gap-2 items-center justify-start py-2">
+                  <div className="flex gap-1 items-center justify-start py-2">
                     <TabWithoutIcon
                       currentTab={currentTab}
                       setCurrentTab={setCurrentTab}

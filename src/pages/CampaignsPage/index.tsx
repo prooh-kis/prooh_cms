@@ -72,48 +72,56 @@ export const CampaignsPage: React.FC = () => {
 
   return (
     <div className="w-full ">
-      <div className="flex gap-4 items-center border rounded p-4 bg-white w-[85vw]">
-        <h1 className="text-[16px] font-semibold">
-          My Campaigns{" "}
-          <span className="text-[18px] text-green-500">
-            {
-              allCampaigns?.filter(
-                (campaign: any) =>
-                  campaign?.campaignName?.toLowerCase().includes(searchQuery) ||
-                  campaign?.brandName?.toLowerCase().includes(searchQuery)
-              )?.length
-            }
-          </span>
-        </h1>
-        <ReloadButton onClick={reset} />
-      </div>
-      {/* This is not working now */}
-      <div className="px-4 bg-white w-[85vw] mt-2 py-2">
-        <TabWithoutIcon
-          currentTab={currentTab}
-          setCurrentTab={handleGetCampaignByStatus}
-          tabData={campaignCreationTypeTabs}
-        />
-      </div>
-      {loading ? (
-        <div className="w-full h-full">
-          <Loading />
-        </div>
-      ) : (
-        <div className="">
-          <div className="flex items-center mt-2">
+      <div className="bg-white w-[85vw]">
+        <div className="flex justify-between pr-8 border-b">
+          <div className="flex gap-4 items-center p-4 ">
+            <h1 className="text-[16px] font-semibold">
+              My Campaigns{" "}
+              <span className="text-[18px] text-[#68879C] ">
+                (
+                {
+                  allCampaigns?.filter(
+                    (campaign: any) =>
+                      campaign?.campaignName
+                        ?.toLowerCase()
+                        .includes(searchQuery) ||
+                      campaign?.brandName?.toLowerCase().includes(searchQuery)
+                  )?.length
+                }
+                )
+              </span>
+            </h1>
+            <ReloadButton onClick={reset} />
+          </div>
+          <div className="flex items-center mt-1 w-96">
             <SearchInputField
               value={searchQuery}
               onChange={setSearchQuery}
               placeholder="Search Campaign by campaign name or brand"
             />
           </div>
+        </div>
+
+        <div className="mt-1 px-4">
+          <TabWithoutIcon
+            currentTab={currentTab}
+            setCurrentTab={handleGetCampaignByStatus}
+            tabData={campaignCreationTypeTabs}
+          />
+        </div>
+      </div>
+      {loading ? (
+        <div className="w-full h-full">
+          <Loading />
+        </div>
+      ) : (
+        <div className="mt-1">
           {allCampaigns?.length === 0 && (
             <div className="pt-4">
               <NoDataView />
             </div>
           )}
-          <div className="h-[70vh]  overflow-scroll">
+          <div className="h-[82vh] overflow-scroll mt-1">
             {allCampaigns
               ?.filter(
                 (campaign: any) =>

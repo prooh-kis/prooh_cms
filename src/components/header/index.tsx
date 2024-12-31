@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
   const { userInfo } = auth;
 
   return (
-    <div className="w-full h-16 bg-white border border-b flex items-center justify-between z-50">
+    <div className="w-full h-16 bg-white flex items-center justify-between z-50">
       <div className="col-span-2 flex items-center mx-10">
         <ToastContainer />
         <div
@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
       <div className="col-span-2 flex items-center justify-end">
         {userInfo ? (
           <div className="h-10 w-auto flex items-center space-x-2 pr-10">
-            <div className="h-10 flex items-center gap-2">
+            <div className="h-10 flex items-center gap-1">
               <img src={userImage} alt="userImage" className="h-10" />
               <div className="justify-center w-30 truncate">
                 <h3 className="text-lg">{userInfo.name}</h3>
@@ -49,16 +49,7 @@ export const Header: React.FC = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="px-4">
-            <button
-              onClick={() => navigate(SIGN_IN)}
-              className="border border-2 px-6 py-2 rounded-md bg-[#00A0FA] font-bold text-[#FFFFFF] hover:text-[#00A0FA] hover:bg-white hover:border-[#00A0FA]"
-            >
-              Get In
-            </button>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

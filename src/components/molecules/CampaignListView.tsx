@@ -26,7 +26,7 @@ export const CampaignListView = ({
       onClick={handleCardClick}
       onDoubleClick={navigate}
       className={clsx(
-        "border rounded w-full h-auto my-2 p-2 flex items-center transition-colors cursor-pointer bg-white",
+        "rounded w-full h-auto my-1 p-4 flex items-center transition-colors cursor-pointer bg-white",
         {
           [`hover:border-primaryButton hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
           [`border-primaryButton`]: isSelected, // Apply border color if clicked
@@ -34,11 +34,11 @@ export const CampaignListView = ({
       )}
     >
       <div className="py-0 w-full flex justify-between items-center">
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <div
-            className={`border rounded flex justify-center items-center w-20 bg-[${
+            className={`rounded flex justify-center items-center w-20 bg-[#F6F6F6] bg-[${
               generateColorFromAlphabet(data.brandName.split("")[0], 0) ||
-              "#D7D7D750"
+              "#F6F6F6"
             }]`}
           >
             <h1 className="text-[40px] text-gray-400 font-black">
@@ -46,8 +46,8 @@ export const CampaignListView = ({
             </h1>
           </div>
           <div className="flex">
-            <div className="px-1 w-full truncate">
-              <div className="">
+            <div className="px-1 w-full truncate flex flex-col gap-1">
+              <div className="flex flex-col gap-1">
                 <h1 className="text text-[14px] font-semibold">
                   {data.campaignName}
                 </h1>
@@ -62,31 +62,26 @@ export const CampaignListView = ({
               </div>
 
               <div className="px-0 flex justify-between items-center truncate">
-                <p className="text text-[12px] text-green-500 text-center text-wrap truncate">
+                <p className="text text-[12px] text-secondaryText text-center">
                   On {data.screens?.length} screens
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <div className="px-1 flex gap-4 items-center">
-          <div>
-            <div className="flex gap-2 items-center">
-              <i className="fi fi-br-hourglass-start text-green-500 text-[12px] flex items-center"></i>
-              <h1 className="text-[12px] text-blue-500">
-                : {convertDataTimeToLocale(data.startDate)}
-              </h1>
-            </div>
-
-            <div className="flex gap-2 items-center">
-              <i className="fi fi-br-hourglass-end text-red-500 text-[12px] flex items-center"></i>
-              <h1 className="text-[12px] text-blue-500">
-                : {convertDataTimeToLocale(data.endDate)}
-              </h1>
-            </div>
+        <div className="px-1 flex flex-col gap-2 items-center pr-8">
+          <div className="flex gap-1 items-center">
+            <i className="fi fi-br-hourglass-start text-[#68879C] text-[12px] flex items-center"></i>
+            <h1 className="text-[12px] text-[#68879C]">
+              : {convertDataTimeToLocale(data.startDate)}
+            </h1>
           </div>
-          <div>
-            <i className="fi fi-rs-circle-ellipsis"></i>
+
+          <div className="flex gap-1 items-center">
+            <i className="fi fi-br-hourglass-end text-red-500 text-[12px] flex items-center"></i>
+            <h1 className="text-[12px] text-[#68879C]">
+              : {convertDataTimeToLocale(data.endDate)}
+            </h1>
           </div>
         </div>
       </div>

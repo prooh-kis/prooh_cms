@@ -124,7 +124,7 @@ export const CampaignMonitoring = (props: any) => {
         <div>
           <div className="flex justify-end ">
             <div
-              className="border border-1 py-2 px-4 text-blue-500 text-[14px] cursor-pointer flex gap-2 items-center rounded-md"
+              className="border border-1 py-2 px-4 text-[#129BFF] text-[14px] cursor-pointer flex gap-1 items-center "
               title="click to change date"
               onClick={() => setOpenCalendarPopup(true)}
             >
@@ -134,7 +134,7 @@ export const CampaignMonitoring = (props: any) => {
           </div>
 
           {loadingGetScreenCampaignMonitoring ? (
-            <h1 className="w-full py-1 px-4 border border-1 border-yellow-500 bg-yellow-100 text-[#000000] rounded-md mt-2">
+            <h1 className="w-full py-1 px-4 border border-1 border-yellow-500 bg-yellow-100 text-[#000000]  mt-1">
               Loading Data...., please wait
             </h1>
           ) : !screenCampaignMonitoring ? (
