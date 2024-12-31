@@ -23,7 +23,7 @@ export const ScreenLogReportPopup = React.memo(function ScreenLogReport(
         <div className="flex justify-between">
           <h1 className="py-4 text-lg font-bold">
             Screen logs report{" "}
-            <span className="text-green-500">{screenLogs?.length}</span>
+            <span className="text-[#348730]">{screenLogs?.length}</span>
           </h1>
           <i
             onClick={() => onClose(false)}

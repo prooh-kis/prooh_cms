@@ -547,7 +547,7 @@ export const EnterCampaignBasicDetails = ({
                     setAtIndex([0]);
                   }
                 }}
-                onColor="bg-green-500"
+                onColor="bg-[#348730]"
                 offColor="bg-red-500"
               />
             </div>

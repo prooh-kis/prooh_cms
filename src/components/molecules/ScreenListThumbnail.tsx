@@ -20,7 +20,7 @@ export const ScreenListThumbnail = ({
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
       if (getTimeDifferenceInMin(screen?.lastActive) < 15)
-        return "border w-3 h-3 bg-green-500 rounded-full justify-end";
+        return "border w-3 h-3 bg-[#348730] rounded-full justify-end";
       else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
     } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
   };
@@ -66,7 +66,7 @@ export const ScreenListThumbnail = ({
               </p>
             </div>
             <div className="px-0 flex justify-between items-center truncate">
-              <p className="text text-[12px] text-green-500 text-center text-wrap truncate">
+              <p className="text text-[12px] text-[#348730] text-center text-wrap truncate">
                 {data.campaigns} Active Campaigns
               </p>
             </div>

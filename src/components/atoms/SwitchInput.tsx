@@ -10,7 +10,7 @@ type SwitchProps = {
 export const SwitchInput: React.FC<SwitchProps> = ({
   isEnabled,
   onToggle,
-  onColor = "bg-green-500",
+  onColor = "bg-[#348730]",
   offColor = "bg-gray-300",
 }) => {
   return (

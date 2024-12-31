@@ -12,9 +12,9 @@ export function ScreenView({
   const getClassNameByStatus = () => {
     let className = "text-[12px] truncate";
     if (campaignStatus === "Active") {
-      className += " text-green-500";
+      className += " text-[#348730]";
     } else if (campaignStatus === "Pause") {
-      className += " text-orange-500";
+      className += " text-[#FF6E3E]";
     } else if (campaignStatus === "Deleted") {
       className += " text-yellow-500";
     } else {

@@ -89,7 +89,7 @@ export const AppDashBoardLayout = (props: any) => {
       <ConformationModel open={open} onClose={toggleOpen} />
       <div className="flex gap-1 mt-1">
         <div className="h-[92vh] w-[15vw] overflow-scroll no-scrollbar flex flex-col bg-white">
-          <div className="flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"></div>
+          <div className="flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"></div>
           <div className="flex flex-col pt-8 justify-between h-[90vh] px-2">
             <div className="flex flex-col gap-4">
               <div
@@ -100,7 +100,7 @@ export const AppDashBoardLayout = (props: any) => {
                 className={
                   current === "Dashboard"
                     ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                    : "flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"
+                    : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
                 }
               >
                 <div className="flex items-center gap-6">
@@ -122,7 +122,7 @@ export const AppDashBoardLayout = (props: any) => {
                   className={
                     current === d.option
                       ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                      : "flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"
+                      : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
                   }
                 >
                   <div className="flex items-center gap-6">
@@ -144,7 +144,7 @@ export const AppDashBoardLayout = (props: any) => {
               className={
                 current === "logOut"
                   ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                  : "flex gap-4 items-center text-[#B6C4CE] font-semibold w-[14vw] px-2 py-1"
+                  : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
               }
             >
               <div className="flex items-center gap-6">

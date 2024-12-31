@@ -187,7 +187,7 @@ export const ScreensPage: React.FC = () => {
           <div className="bg-white  p-2 w-full flex justify-between items-center ">
             <h1 className="text-[#151515] text-[20px] font-bold pl-4 hidden lg:block">
               Network{" "}
-              <span className="text-green-500 pl-4">
+              <span className="text-[#348730] pl-4">
                 {filterScreens?.length}
               </span>
             </h1>

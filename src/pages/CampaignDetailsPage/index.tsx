@@ -355,13 +355,13 @@ export const CampaignDetailsPage: React.FC = () => {
                       : `rounded px-6 bg-gray-100`
                   }
                 >
-                  <h1 className="text-[40px] text-gray-400 font-bold">
+                  <h1 className="text-[40px] text-gray-400 font-bold bg-gray-100 px-4">
                     {campaignCreated?.brandName.split("")[0]}
                   </h1>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <h1 className="text-[14px] font-semibold">
-                    {campaignCreated?.campaignName}
+                <div className="flex flex-col gap-1">
+                  <h1 className="text-[18px] font-semibold">
+                    {campaignCreated?.campaignName || "Campaign Name"}
                   </h1>
                   <h1 className="text-[12px]">
                     {campaignCreated?.brandName}, {campaignCreated?.duration}{" "}
@@ -370,7 +370,7 @@ export const CampaignDetailsPage: React.FC = () => {
                 </div>
               </div>
               {userInfo?.userRole === "primary" && (
-                <div className="flex flex-col px-4">
+                <div className="flex flex-col px-4 justify-center">
                   {loadingStatusChange ? (
                     <Skeleton active paragraph={{ rows: 1 }} />
                   ) : (
@@ -461,19 +461,21 @@ export const CampaignDetailsPage: React.FC = () => {
             </div>
           </div>
           <div className="border rounded my-1 p-4 bg-white">
-            <TabWithoutIcon
-              currentTab={currentTab}
-              setCurrentTab={setCurrentTab}
-              tabData={creativeTypeTab}
-            />
+            <div className="border-b">
+              <TabWithoutIcon
+                currentTab={currentTab}
+                setCurrentTab={setCurrentTab}
+                tabData={creativeTypeTab}
+              />
+            </div>
             <div className="h-[50vh] overflow-scroll no-scrollbar pr-2">
               {campaignCreated?.creatives?.map((c: any, i: any) => (
                 <div key={i}>
                   {c?.[currentTab]?.length > 0 && (
-                    <div className="p-2">
+                    <div className="py-4">
                       <div className="grid grid-cols-3 gap-1 ">
                         {c?.[currentTab]?.map((cs: any, j: any) => (
-                          <div className="col-span-1 p-2 " key={j}>
+                          <div className="col-span-1 " key={j}>
                             <ShowMediaFile
                               url={cs.url}
                               mediaType={cs.type.split("/")[0]}
@@ -517,11 +519,14 @@ export const CampaignDetailsPage: React.FC = () => {
         </div>
       ) : (
         <div className="col-span-4 border rounded bg-white p-4">
-          <h1 className="text-[14px] font-semibold p-1">
-            Playing on {campaignCreated?.screens?.length || 0} screens
+          <h1 className="text-[16px] font-semibold p-1 py-2">
+            Screens Play{" "}
+            <span className="text-[14px]">
+              ({campaignCreated?.screens?.length || 0})
+            </span>
           </h1>
 
-          <div className="mt-2">
+          <div className="my-2 ">
             <SearchInputField
               placeholder="Search screens by name"
               height="h-8"
@@ -532,7 +537,7 @@ export const CampaignDetailsPage: React.FC = () => {
           {loadingScreens ? (
             <Loading />
           ) : (
-            <div className="h-[70vh] overflow-scroll no-scrollbar py-2">
+            <div className="h-[70vh] overflow-scroll no-scrollbar py-2  flex flex-col gap-4">
               {campaigns?.length === 0 && <NoDataView />}
               {campaigns?.map((camp: any, k: any) => (
                 <div

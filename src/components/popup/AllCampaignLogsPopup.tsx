@@ -178,7 +178,7 @@ export const AllCampaignLogsPopup = ({
         <div className="flex justify-between">
           <h1 className="text-[16px] font-bold">
             Download All Campaigns Logs
-            <span className="text-green-500 pl-4">{campaigns?.length}</span>
+            <span className="text-[#348730] pl-4">{campaigns?.length}</span>
           </h1>
           <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
         </div>
@@ -191,7 +191,7 @@ export const AllCampaignLogsPopup = ({
         />
         {isDownloading && (
           <>
-            <h1 className="text-green-500 bg-green-200 p-4 mt-4">
+            <h1 className="text-[#348730] bg-green-200 p-4 mt-4">
               Total campaign Downloaded{" "}
               <span className="text-green-700">{count}</span>
             </h1>
@@ -269,7 +269,7 @@ export const AllCampaignLogsPopup = ({
                   />
                 </div>
                 {recentlyDownloadedScreens?.includes(screen?._id) ? (
-                  <h1 className="text-green-500 pt-4">Downloaded</h1>
+                  <h1 className="text-[#348730] pt-4">Downloaded</h1>
                 ) : (
                   <h1 className="text-red-500 pt-4">Not Download</h1>
                 )}

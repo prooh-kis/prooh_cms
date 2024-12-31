@@ -68,12 +68,7 @@ export const CampaignMonitoring = (props: any) => {
     }
   }, [campaign, screenId]);
 
-  const handleClick = useCallback(
-    (value: boolean) => {
-      setShow(value);
-    },
-    [isShow]
-  );
+  const handleClick = useCallback(() => setShow((pre: any) => !pre), [isShow]);
 
   useEffect(() => {
     if (campaign && screenId) {
@@ -106,18 +101,12 @@ export const CampaignMonitoring = (props: any) => {
           />
         </div>
       )}
-      <div className="flex justify-between">
+      <div className="flex justify-between" onClick={handleClick}>
         <h1 className="text-[16px] font-semibold">Campaign Monitoring</h1>
         {isShow ? (
-          <i
-            className="fi fi-br-angle-small-down"
-            onClick={() => handleClick(false)}
-          ></i>
+          <i className="fi fi-br-angle-small-down" onClick={handleClick}></i>
         ) : (
-          <i
-            className="fi fi-rr-angle-small-up"
-            onClick={() => handleClick(true)}
-          ></i>
+          <i className="fi fi-rr-angle-small-up" onClick={handleClick}></i>
         )}
       </div>
       {isShow && (

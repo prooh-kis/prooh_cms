@@ -22,7 +22,7 @@ export const MonitoringPictures = ({
   setFileType,
 }: MonitoringPicturesProps) => {
   return (
-    <div className="w-full p-2">
+    <div className="w-full">
       <h1 className="text-[12px] font-semibold">
         Upload {time.toUpperCase()} Pictures
       </h1>

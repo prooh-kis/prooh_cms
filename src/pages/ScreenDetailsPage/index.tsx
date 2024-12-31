@@ -200,7 +200,7 @@ export const ScreenDetailsPage: React.FC = () => {
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
       if (getTimeDifferenceInMin(screen?.lastActive) < 10)
-        return "border w-3 h-3 bg-green-500 rounded-full justify-end";
+        return "border w-3 h-3 bg-[#348730] rounded-full justify-end";
       else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
     } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
   };
@@ -419,7 +419,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         )}
                       </div>
                       <div
-                        className="text-gray-500 hover:text-green-500"
+                        className="text-gray-500 hover:text-[#348730]"
                         onClick={() => {
                           if (
                             confirm(
@@ -531,7 +531,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </h1>
                 <div className="flex gap-1">
                   <div
-                    className="text-gray-500 hover:text-green-500"
+                    className="text-gray-500 hover:text-[#348730]"
                     onClick={() => {
                       if (
                         confirm(`Are you sure you want to edit the campaign???`)
@@ -572,7 +572,7 @@ export const ScreenDetailsPage: React.FC = () => {
                     <i className="fi fi-sr-trash"></i>
                   </div>
                   <div
-                    className="text-gray-500 hover:text-green-500"
+                    className="text-gray-500 hover:text-[#348730]"
                     onClick={() =>
                       navigate(
                         `/campaigns-details/${
@@ -626,12 +626,12 @@ export const ScreenDetailsPage: React.FC = () => {
                   <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
                     <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
                       <div
-                        className="text-white hover:text-green-500"
+                        className="text-white hover:text-[#348730]"
                         onClick={handleCreativeEdit}
                       >
                         <i className="fi fi-sr-file-edit"></i>
                       </div>
-                      <div className="text-white hover:text-green-500">
+                      <div className="text-white hover:text-[#348730]">
                         <i className="fi fi-sr-trash"></i>
                       </div>
                     </div>

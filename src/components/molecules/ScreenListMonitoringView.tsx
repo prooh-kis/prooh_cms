@@ -31,7 +31,7 @@ export function ScreenListMonitoringView({
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
       if (getTimeDifferenceInMin(screen?.lastActive) < 15)
-        return "border w-3 h-3 bg-green-500 rounded-full justify-end";
+        return "border w-3 h-3 bg-[#348730] rounded-full justify-end";
       else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
     } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
   };
@@ -39,9 +39,9 @@ export function ScreenListMonitoringView({
   const getClassNameByStatus = () => {
     let className = "text-[12px] truncate";
     if (campaign?.status === "Active") {
-      className += " text-green-500";
+      className += "text-[#348730]";
     } else if (campaign?.status === "Pause") {
-      className += " text-orange-500";
+      className += " text-[#FF6E3E]";
     } else if (campaign?.status === "Deleted") {
       className += " text-yellow-500";
     } else {
@@ -91,7 +91,7 @@ export function ScreenListMonitoringView({
                 {screen?.location?.city || screen?.city}
               </h1>
             </div>
-            <div className="flex gap-2 text-[12px] text-[#CE5F3A]">
+            <div className="flex gap-2 text-[12px] text-[#6B8494]">
               <i className="fi fi-sr-megaphone"></i>
               <h1 className="truncate">
                 Ends In:{" "}
@@ -106,7 +106,7 @@ export function ScreenListMonitoringView({
           <div className="relative inline-block ml-auto">
             {showOption && (
               <i
-                className="fi fi-bs-menu-dots cursor-pointer"
+                className="fi fi-bs-menu-dots cursor-pointer text-[#6B8494]"
                 onClick={() => setShowMenu(true)}
               ></i>
             )}

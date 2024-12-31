@@ -67,7 +67,7 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
                     <td
                       className={
                         c.screenStatus === "online"
-                          ? "border p-2 bg-green-500 text-white font-bold"
+                          ? "border p-2 bg-[#348730] text-white font-bold"
                           : "border p-2 bg-red-500 text-white font-bold"
                       }
                     >

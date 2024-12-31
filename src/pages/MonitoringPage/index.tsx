@@ -184,7 +184,7 @@ export const MonitoringPage: React.FC = () => {
             )}
           </div>
           <div className="col-span-3 rounded bg-white">
-            <div className="w-full p-2">
+            <div className="w-full p-4">
               <h1 className="text-[16px] font-semibold py-2">Campaign List</h1>
 
               <SearchInputField
@@ -234,13 +234,7 @@ export const MonitoringPage: React.FC = () => {
             <div className="col-span-6 bg-white">
               <div className="flex justify-between items-center border-b">
                 <div className="p-4 flex items-end gap-1">
-                  <h1 className="text-[12px]">
-                    {monitoringScreen
-                      ? monitoringScreen?.screenName
-                      : "Screen "}
-                    {">"}
-                  </h1>
-                  <h1 className="text-[12px] font-semibold">
+                  <h1 className="text-[16px] font-semibold">
                     {monitoringCampaign
                       ? ` ${monitoringCampaign?.brandName}`
                       : "Brand"}
@@ -254,7 +248,7 @@ export const MonitoringPage: React.FC = () => {
                   <h1 className="text-[12px]">{allDates.length} Days</h1>
                 </div>
               </div>
-              <div className="border-b p-2 flex justify-between items-center">
+              <div className="border-b px-4 py-2 flex justify-between items-center">
                 <h1 className="text-[12px] font-semibold">
                   {moment(monitoringDate).format("MMM DD YY")}
                 </h1>
@@ -270,9 +264,9 @@ export const MonitoringPage: React.FC = () => {
                 />
               </div>
 
-              <div className="h-auto">
+              <div className="h-auto px-4 py-2">
                 {time?.map((t: any, i: any) => (
-                  <div className="w-full" key={i}>
+                  <div className="w-full mt-4" key={i}>
                     <MonitoringPictures
                       isUsedForShow={false}
                       handleUploadClick={handleUploadClick}

@@ -311,7 +311,7 @@ export const UploadCreatives = ({
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1">
                     <i
-                      className={`fi fi-br-check flex items-center text-green-500 text-[12px]`}
+                      className={`fi fi-br-check flex items-center text-[#348730] text-[12px]`}
                     ></i>
                     <h1 className="text text-[12px]">
                       {getUploadedScreensNumber()}
