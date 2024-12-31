@@ -11,15 +11,16 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { DropdownInput } from "../../components/atoms/DropdownInput";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { message } from "antd";
+import { SearchableSelect } from "../../components/atoms/SearchableSelect";
 
 interface ChangeScreenCodePopupProps {
-  openScreenCodePopup?: any;
-  setOpenScreenCodePopup?: any;
+  open?: any;
+  onClose?: any;
 }
 
 export function ChangeScreenCodePopup({
-  openScreenCodePopup,
-  setOpenScreenCodePopup,
+  open,
+  onClose,
 }: ChangeScreenCodePopupProps) {
   const dispatch = useDispatch<any>();
 
@@ -46,27 +47,16 @@ export function ChangeScreenCodePopup({
   } = screenCodeChange;
 
   useEffect(() => {
-    if (openScreenCodePopup) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [openScreenCodePopup]);
-
-  useEffect(() => {
     if (successChange) {
       message.success("Screen Code updated successfully...");
-      setOpenScreenCodePopup(false);
+      onClose();
     }
     if (userInfo) {
       dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
     }
-  }, [dispatch, userInfo, successChange, setOpenScreenCodePopup]);
+  }, [dispatch, userInfo, successChange, onClose]);
 
-  if (!openScreenCodePopup) {
+  if (!open) {
     return null;
   }
 
@@ -75,7 +65,7 @@ export function ChangeScreenCodePopup({
       <div className="border bg-white rounded-[10px] h-1/2 w-1/2 p-1">
         <div
           className="relative inset-0 flex items-center justify-end gap-4 p-3"
-          onClick={() => setOpenScreenCodePopup(false)}
+          onClick={() => onClose()}
         >
           <i className="fi fi-br-circle-xmark"></i>
         </div>
@@ -101,17 +91,15 @@ export function ChangeScreenCodePopup({
             {loadingAllScreens ? (
               <h1>Loading Screens</h1>
             ) : (
-              <DropdownInput
-                inputType="text"
-                placeHolder="Select Screens"
-                height="h-12"
+              <SearchableSelect
+                placeholder="Select Screens"
                 options={getDataFromLocalStorage(ALL_SCREENS_LIST)
                   ?.list?.sort((a: any, b: any) => a.screenName - b.screenName)
                   ?.map((screen: any) => {
                     return { label: screen.screenName, value: screen._id };
                   })}
-                selectedOption={selectedOption}
-                setSelectedOption={(e: any) => setSelectedOption(e)}
+                value={selectedOption}
+                onChange={(e: any) => setSelectedOption(e)}
               />
             )}
           </div>

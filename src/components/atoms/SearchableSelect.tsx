@@ -20,7 +20,7 @@ export const SearchableSelect: React.FC<{
     searchTerm?.length == 0
       ? []
       : options?.filter((option) =>
-          option.value.toLowerCase().includes(searchTerm.toLowerCase())
+          option?.label?.toLowerCase().includes(searchTerm?.toLowerCase())
         );
 
   const handleOptionClick = (value: string) => {

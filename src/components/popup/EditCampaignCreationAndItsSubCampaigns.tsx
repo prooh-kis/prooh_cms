@@ -1,5 +1,6 @@
 import { PrimaryButton, CalendarInput } from "../../components";
 import React, { useEffect, useState } from "react";
+import { format, toZonedTime } from "date-fns-tz";
 
 interface ShowMediaPopupProps {
   openShowMedia?: boolean;
@@ -16,9 +17,15 @@ export function EditCampaignCreationAndItsSubCampaigns({
   isLoading,
   handleNext,
 }: ShowMediaPopupProps) {
-  const [endDate, setEndDate] = useState<any>(
-    campaignCreation?.endDate?.split(".")[0]
-  );
+  const originalDate = campaignCreation?.endDate || new Date();
+
+  const timeZone = "Asia/Kolkata"; // UTC+5:30
+  // Convert the UTC date string to the target timezone
+  const zonedDate = toZonedTime(originalDate, timeZone);
+  // Format the zoned date into the desired string format
+  const formattedDate = format(zonedDate, "yyyy-MM-dd HH:mm:ss", { timeZone });
+  const [endDate, setEndDate] = useState<any>(formattedDate);
+
   useEffect(() => {
     if (openShowMedia) {
       document.body.classList.add("overflow-hidden");

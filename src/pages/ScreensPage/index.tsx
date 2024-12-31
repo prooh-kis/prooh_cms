@@ -1,15 +1,20 @@
 import { message } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllScreensDetailsAction } from "../../actions/screenAction";
 import { ScreenListThumbnail } from "../../components/molecules/ScreenListThumbnail";
 import { Loading } from "../../components/Loading";
-import { ReloadButton, SearchInputField } from "../../components";
+import {
+  PrimaryButton,
+  ReloadButton,
+  SearchInputField,
+} from "../../components";
 import { SIGN_IN } from "../../routes/routes";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
 import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
+import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 
 export const ScreensPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -18,6 +23,8 @@ export const ScreensPage: React.FC = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [showNetwork, setShowNetwork] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
+
   const [selectedNetwork, setSelectedNetwork] = useState<string[]>([]);
   const [selectedScreensViaNetwork, setSelectedScreensViaNetwork] = useState<
     string[]
@@ -93,11 +100,30 @@ export const ScreensPage: React.FC = () => {
     }
     setSelectedNetwork(newValue);
   };
+
+  const toggleOpen = useCallback(() => {
+    setOpen((pre: boolean) => !pre);
+  }, [open]);
+
   return (
     <div className="flex flex-col gap-1">
+      {open && <ChangeScreenCodePopup open={open} onClose={toggleOpen} />}
       <div className="bg-white   sm:p-4 p-2 w-full font-bold text-[20px] sm:text-[24px] flex justify-between items-center ">
-        My Screens
-        <ReloadButton onClick={reLoad} />
+        <div className="flex gap-2">
+          My Screens
+          <ReloadButton onClick={reLoad} />
+        </div>
+        <PrimaryButton
+          action={toggleOpen}
+          title="Set Screen Code"
+          rounded="rounded-full"
+          height="h-10"
+          width="w-32"
+          textSize="text-[12px]"
+          reverse={true}
+          loading={false}
+          loadingText="Saving..."
+        />
       </div>
       <div className="flex gap-1">
         {userInfo?.userRole === USER_ROLE_PRIMARY && (
@@ -174,17 +200,21 @@ export const ScreensPage: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-1 flex-wrap h-[85vh] overflow-scroll bg-gray-100">
-            {filterScreens?.map((data: any, index: any) => (
-              <div key={index} className="">
-                <ScreenListThumbnail
-                  isSelected={data._id === selectedCard}
-                  color={""}
-                  handleCardClick={() => handleCardClick(data._id)}
-                  // navigate={() => navigate(`/screens-details/${data._id}`)}
-                  data={data}
-                />
-              </div>
-            ))}
+            {loading ? (
+              <Loading />
+            ) : (
+              filterScreens?.map((data: any, index: any) => (
+                <div key={index} className="">
+                  <ScreenListThumbnail
+                    isSelected={data._id === selectedCard}
+                    color={""}
+                    handleCardClick={() => handleCardClick(data._id)}
+                    // navigate={() => navigate(`/screens-details/${data._id}`)}
+                    data={data}
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
