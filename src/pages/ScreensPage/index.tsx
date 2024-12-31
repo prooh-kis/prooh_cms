@@ -173,7 +173,7 @@ export const ScreensPage: React.FC = () => {
               />
             </div>
           </div>
-          <div className="flex gap-1 flex-wrap h-[70vh] overflow-scroll bg-gray-100">
+          <div className="flex gap-1 flex-wrap h-[85vh] overflow-scroll bg-gray-100">
             {filterScreens?.map((data: any, index: any) => (
               <div key={index} className="">
                 <ScreenListThumbnail

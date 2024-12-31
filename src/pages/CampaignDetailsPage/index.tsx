@@ -149,9 +149,15 @@ export const CampaignDetailsPage: React.FC = () => {
 
   const campaigns =
     screens?.length > 0
-      ? campaignCreated?.campaigns?.filter((camp: any) =>
-          campaignCreated?.screens?.includes(camp.screenId)
-        )
+      ? campaignCreated?.campaigns
+          ?.filter((camp: any) =>
+            campaignCreated?.screens?.includes(camp.screenId)
+          )
+          ?.filter((camp: any) =>
+            camp?.screenName
+              ?.toLowerCase()
+              ?.includes(searchQuery?.toLowerCase())
+          )
       : [];
 
   useEffect(() => {
@@ -334,35 +340,33 @@ export const CampaignDetailsPage: React.FC = () => {
         <div className="col-span-8">
           <div className="w-full border rounded py-4 bg-white">
             <div className="flex justify-between pb-2 mx-1 border-b">
-              <div className="flex">
+              <div className="flex items-center">
                 <i
                   className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
                   onClick={() => navigate(-1)}
                 ></i>
-                <div className="flex justify-center items-center">
-                  <div
-                    className={
-                      campaignCreated
-                        ? `rounded px-6 bg-[${generateColorFromAlphabet(
-                            campaignCreated?.brandName.split("")[0],
-                            0
-                          )}]`
-                        : `rounded px-6 bg-gray-100`
-                    }
-                  >
-                    <h1 className="text-[40px] text-gray-400 font-black">
-                      {campaignCreated?.brandName.split("")[0]}
-                    </h1>
-                  </div>
+                <div
+                  className={
+                    campaignCreated
+                      ? `rounded px-6 bg-[${generateColorFromAlphabet(
+                          campaignCreated?.brandName.split("")[0],
+                          0
+                        )}]`
+                      : `rounded px-6 bg-gray-100`
+                  }
+                >
+                  <h1 className="text-[40px] text-gray-400 font-bold">
+                    {campaignCreated?.brandName.split("")[0]}
+                  </h1>
                 </div>
-                <div className="px-2 pb-1 flex flex-col justify-between">
+                <div className="flex flex-col gap-2">
                   <h1 className="text-[14px] font-semibold">
                     {campaignCreated?.campaignName}
                   </h1>
-                  <h2 className="text-[12px]">
+                  <h1 className="text-[12px]">
                     {campaignCreated?.brandName}, {campaignCreated?.duration}{" "}
                     days
-                  </h2>
+                  </h1>
                 </div>
               </div>
               {userInfo?.userRole === "primary" && (

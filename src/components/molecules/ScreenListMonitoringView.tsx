@@ -190,22 +190,19 @@ export function ScreenListMonitoringView({
           </div>
         </div>
       ) : (
-        <div className="flex gap-2 p-1 hover:bg-gray-100 hover:rounded text-[#9AADB9]">
+        <div className="flex gap-4 p-1 hover:bg-gray-100 hover:rounded text-[#9AADB9]">
           {!noImages && (
             <div className="flex justify-center items-center">
-              <img
-                className="rounded h-24 w-32"
-                src={screen?.images[0]}
-                alt={screen?._id}
-              />
               <Tooltip
                 title={`${
                   convertIntoDateAndTime(screen?.lastActive) || "Not Available"
                 }`}
               >
-                <div className="h-full flex justify-end items-end ml-[-8px]">
-                  <div className="border w-3 h-3 rounded-full justify-end bg-[#9AADB9]" />
-                </div>
+                <img
+                  className="rounded h-24 w-32 saturate-0 opacity-50"
+                  src={screen?.images[0]}
+                  alt={screen?._id}
+                />
               </Tooltip>
             </div>
           )}
@@ -228,7 +225,9 @@ export function ScreenListMonitoringView({
                 Days
               </h1>
             </div>
-            <h1 className="">{campaign?.status ?? "No Creatives"}</h1>
+            <h1 className="text-[12px]">
+              {campaign?.status ?? "No Creatives"}
+            </h1>
           </div>
           <div className="relative inline-block ml-auto">
             {showOption && (
