@@ -1,11 +1,12 @@
 export { PageNotFound } from "./PageNotFound";
 
 export {
-  AuthPage,
+  SignIn,
+  SignUp,
   VerifyEmail,
   UpdatePassword,
   ForgetPassword,
-} from "./AuthPage";
+} from "./AuthPage/index";
 export { CreateCampaignPage } from "./CreateCampaignPage";
 
 export { ScreensPage } from "./ScreensPage";

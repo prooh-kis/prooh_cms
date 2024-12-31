@@ -8,7 +8,7 @@ export const UpdatePassword = (props: any) => {
   const [password, setPassword] = useState<any>("");
   const [confirmPassword, setConfirmPassword] = useState<any>("");
   const dispatch = useDispatch<any>();
-  const naviaget = useNavigate();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userUpdatePassword = useSelector(
     (state: any) => state.userUpdatePassword
@@ -23,7 +23,7 @@ export const UpdatePassword = (props: any) => {
     if (success) {
       alert(data);
       dispatch({ type: USER_UPDATE_PASSWORD_RESET });
-      naviaget("/signin");
+      navigate("/signin");
     }
   }, [error, success]);
 

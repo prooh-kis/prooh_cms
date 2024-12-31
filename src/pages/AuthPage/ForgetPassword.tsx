@@ -84,7 +84,7 @@ export function ForgetPassword(props: any) {
 
             <Form.Item>
               <button
-                className="w-full  border-2 border-[#6A0572]  bg-[#6A0572] text-[#ffffff] text-xl py-2 rounded-md hover:bg-[#ffffff] hover:text-[#6A0572] "
+                className="w-full  border-2 border-[#129BFF]  bg-[#129BFF] text-[#ffffff] text-xl py-2 rounded-md hover:bg-[#ffffff] hover:text-[#129BFF] "
                 type={"submit"}
               >
                 {loading ? "Please wait" : "Send Email"}

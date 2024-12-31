@@ -124,7 +124,7 @@ export const SignIn: React.FC = () => {
             <Form.Item style={{ marginBottom: "0", paddingTop: "20px" }}>
               <div className="pt-2 flex flex-col gap-4">
                 <button
-                  className="w-full bg-[#6A0572] text-[#ffffff] text-xl py-2 rounded-md"
+                  className="w-full bg-[#129BFF] text-[#ffffff] text-xl py-2 rounded-md"
                   type={"submit"}
                 >
                   {loading ? "Please wait..." : "Sign In"}
