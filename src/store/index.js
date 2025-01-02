@@ -34,6 +34,7 @@ import {
 import {
   allScreensDataGetReducer,
   changeCampaignCreativeEndDateReducer,
+  changeDefaultIncludedReducer,
   getScreenCampaignMonitoringReducer,
   screenCampaignMonitoringReducer,
   screenCampaignsDetailsGetReducer,
@@ -103,6 +104,7 @@ const store = configureStore({
     screenCampaignMonitoring: screenCampaignMonitoringReducer,
     getScreenCampaignMonitoring: getScreenCampaignMonitoringReducer,
     screenCodeChange: screenCodeChangeReducer,
+    changeDefaultIncluded : changeDefaultIncludedReducer,
     screenRefresh: screenRefreshReducer,
     screenDataUpdateRedis: screenDataUpdateRedisReducer,
     screenLogsGet: screenLogsGetReducer,

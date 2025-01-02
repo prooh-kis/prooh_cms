@@ -42,6 +42,10 @@ import {
   GET_SCREEN_CAMPAIGN_MONITORING_SUCCESS,
   GET_SCREEN_CAMPAIGN_MONITORING_FAIL,
   GET_SCREEN_CAMPAIGN_MONITORING_RESET,
+  CHANGE_DEFAULT_INCLUDED_REQUEST,
+  CHANGE_DEFAULT_INCLUDED_SUCCESS,
+  CHANGE_DEFAULT_INCLUDED_FAIL,
+  CHANGE_DEFAULT_INCLUDED_RESET,
 } from "../constants/screenConstants";
 import { ALL_SCREENS_LIST } from "../constants/localStorageConstants";
 
@@ -158,6 +162,21 @@ export function screenCodeChangeReducer(state = {}, action) {
     case SCREEN_CODE_CHANGE_FAIL:
       return { loading: false, error: action.payload };
     case SCREEN_CODE_CHANGE_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function changeDefaultIncludedReducer(state = {}, action) {
+  switch (action.type) {
+    case CHANGE_DEFAULT_INCLUDED_REQUEST:
+      return { loading: true };
+    case CHANGE_DEFAULT_INCLUDED_SUCCESS:
+      return { loading: false, success: true, data: action.payload };
+    case CHANGE_DEFAULT_INCLUDED_FAIL:
+      return { loading: false, error: action.payload };
+    case CHANGE_DEFAULT_INCLUDED_RESET:
       return {};
     default:
       return state;

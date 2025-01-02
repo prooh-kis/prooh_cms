@@ -36,85 +36,89 @@ import {
   GET_SCREEN_CAMPAIGN_MONITORING_REQUEST,
   GET_SCREEN_CAMPAIGN_MONITORING_SUCCESS,
   GET_SCREEN_CAMPAIGN_MONITORING_FAIL,
+  CHANGE_DEFAULT_INCLUDED_REQUEST,
+  CHANGE_DEFAULT_INCLUDED_SUCCESS,
+  CHANGE_DEFAULT_INCLUDED_FAIL,
+  CHANGE_DEFAULT_INCLUDED_RESET,
 } from "../constants/screenConstants";
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
 export const getAllScreensDetailsAction =
   ({ userId }) =>
-  async (dispatch) => {
-    dispatch({
-      type: GET_ALL_SCREENS_DATA_REQUEST,
-      payload: userId,
-    });
-    try {
-      const { data } = await axios.post(`${screenV2}/all`, { userId });
+    async (dispatch) => {
       dispatch({
-        type: GET_ALL_SCREENS_DATA_SUCCESS,
-        payload: data,
+        type: GET_ALL_SCREENS_DATA_REQUEST,
+        payload: userId,
       });
-    } catch (error) {
-      dispatch({
-        type: GET_ALL_SCREENS_DATA_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      try {
+        const { data } = await axios.post(`${screenV2}/all`, { userId });
+        dispatch({
+          type: GET_ALL_SCREENS_DATA_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_ALL_SCREENS_DATA_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const getScreenDetailsAction =
   ({ screenId }) =>
-  async (dispatch) => {
-    dispatch({
-      type: GET_SCREEN_DATA_REQUEST,
-      payload: screenId,
-    });
-    try {
-      const { data } = await axios.post(`${screenV2}/screenDetails`, {
-        screenId,
-      });
+    async (dispatch) => {
       dispatch({
-        type: GET_SCREEN_DATA_SUCCESS,
-        payload: data,
+        type: GET_SCREEN_DATA_REQUEST,
+        payload: screenId,
       });
-    } catch (error) {
-      dispatch({
-        type: GET_SCREEN_DATA_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      try {
+        const { data } = await axios.post(`${screenV2}/screenDetails`, {
+          screenId,
+        });
+        dispatch({
+          type: GET_SCREEN_DATA_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_SCREEN_DATA_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const getScreenCampaignsDetailsAction =
   ({ screenId, status }) =>
-  async (dispatch) => {
-    dispatch({
-      type: GET_SCREEN_CAMPAIGNS_DATA_REQUEST,
-      payload: { screenId, status },
-    });
-    try {
-      const { data } = await axios.post(`${screenV2}/screenCampaignsDetails`, {
-        screenId,
-        status,
-      });
+    async (dispatch) => {
       dispatch({
-        type: GET_SCREEN_CAMPAIGNS_DATA_SUCCESS,
-        payload: data,
+        type: GET_SCREEN_CAMPAIGNS_DATA_REQUEST,
+        payload: { screenId, status },
       });
-    } catch (error) {
-      dispatch({
-        type: GET_SCREEN_CAMPAIGNS_DATA_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      try {
+        const { data } = await axios.post(`${screenV2}/screenCampaignsDetails`, {
+          screenId,
+          status,
+        });
+        dispatch({
+          type: GET_SCREEN_CAMPAIGNS_DATA_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_SCREEN_CAMPAIGNS_DATA_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const setCampaignsLoopForScreenAction = (input) => async (dispatch) => {
   dispatch({
@@ -260,22 +264,24 @@ export const screenRefreshAction = (input) => async (dispatch, getState) => {
   }
 };
 
-export const screenDataUpdateRedisAction =
-  ({ ids }) =>
-  async (dispatch, getState) => {
+export const changeDefaultIncludedAction =
+  (input) => async (dispatch, getState) => {
     dispatch({
-      type: UPDATE_SCREENS_DATA_IN_REDIS_REQUEST,
-      payload: { ids },
+      type: CHANGE_DEFAULT_INCLUDED_REQUEST,
+      payload: input,
     });
     try {
-      const { data } = await axios.post(`${screenV2}/updateRedisData`, { ids });
+      const { data } = await axios.post(`${screenV2}/changeDefaultIncluded`, input);
       dispatch({
-        type: UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS,
+        type: CHANGE_DEFAULT_INCLUDED_SUCCESS,
         payload: data,
       });
+      setTimeout(() => {
+        dispatch({ type: CHANGE_DEFAULT_INCLUDED_RESET });
+      }, 3000);
     } catch (error) {
       dispatch({
-        type: UPDATE_SCREENS_DATA_IN_REDIS_FAIL,
+        type: CHANGE_DEFAULT_INCLUDED_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
@@ -284,31 +290,55 @@ export const screenDataUpdateRedisAction =
     }
   };
 
+export const screenDataUpdateRedisAction =
+  ({ ids }) =>
+    async (dispatch, getState) => {
+      dispatch({
+        type: UPDATE_SCREENS_DATA_IN_REDIS_REQUEST,
+        payload: { ids },
+      });
+      try {
+        const { data } = await axios.post(`${screenV2}/updateRedisData`, { ids });
+        dispatch({
+          type: UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: UPDATE_SCREENS_DATA_IN_REDIS_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
+
 export const getScreenLogsAction =
   ({ screenId, start, limit }) =>
-  async (dispatch, getState) => {
-    dispatch({
-      type: GET_SCREEN_LOGS_REQUEST,
-      payload: { screenId, start, limit },
-    });
-    try {
-      const { data } = await axios.get(
-        `${analyticsV1}/getScreenlogs?screenId=${screenId}&start=${start}&limit=${limit}?`
-      );
+    async (dispatch, getState) => {
       dispatch({
-        type: GET_SCREEN_LOGS_SUCCESS,
-        payload: data,
+        type: GET_SCREEN_LOGS_REQUEST,
+        payload: { screenId, start, limit },
       });
-    } catch (error) {
-      dispatch({
-        type: GET_SCREEN_LOGS_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      try {
+        const { data } = await axios.get(
+          `${analyticsV1}/getScreenlogs?screenId=${screenId}&start=${start}&limit=${limit}?`
+        );
+        dispatch({
+          type: GET_SCREEN_LOGS_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_SCREEN_LOGS_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const changeDefaultScreenMedia =
   (input) => async (dispatch, getState) => {

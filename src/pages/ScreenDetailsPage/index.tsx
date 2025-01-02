@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  changeDefaultIncludedAction,
   getScreenCampaignsDetailsAction,
   getScreenDetailsAction,
   getScreenLogsAction,
@@ -34,8 +35,9 @@ import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstan
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { ScreenLogReportPopup } from "../../components/popup/ScreenLogReportPopup";
 import SearchInputField from "../../components/molecules/SearchInputField";
-import { CampaignMonitoring } from "../../components/index";
+import { CampaignMonitoring, SwitchInput } from "../../components/index";
 import { campaignTypeTabs } from "../../constants/tabDataConstant";
+import { SwitchInputCenter } from "../../components/atoms/SwitchInput";
 
 export const ScreenDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -52,6 +54,7 @@ export const ScreenDetailsPage: React.FC = () => {
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [currentCampaign, setCurrentCampaign] = useState<any>(null);
   const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
+  const [isDefaultIncluded, setIsDefaultIncluded] = useState<boolean>(true);
 
   const [campaignIds, setCampaignIds] = useState<any>([]);
 
@@ -67,7 +70,7 @@ export const ScreenDetailsPage: React.FC = () => {
   const { userInfo } = auth;
 
   const screenDetailsGet = useSelector((state: any) => state.screenDetailsGet);
-  const { loading, error, data: screen } = screenDetailsGet;
+  const { loading, error, data: screen , success : successGetScreenDetails } = screenDetailsGet;
 
   const screenCampaignsDetailsGet = useSelector(
     (state: any) => state.screenCampaignsDetailsGet
@@ -121,6 +124,13 @@ export const ScreenDetailsPage: React.FC = () => {
     success: successScreenRefresh,
   } = screenRefresh;
 
+  const changeDefaultIncluded = useSelector((state : any) => state.changeDefaultIncluded);
+  const {
+    loading : loadingChangeDefaultIncluded,
+    error : errorChangeDefaultIncluded,
+    success : successChangeDefaultIncluded
+  } = changeDefaultIncluded;
+
   const screenDataUpdateRedis = useSelector(
     (state: any) => state.screenDataUpdateRedis
   );
@@ -144,6 +154,10 @@ export const ScreenDetailsPage: React.FC = () => {
 
     if (successScreenDataUpdateRedis) {
       message.success("Screen DB updated successfully...");
+    }
+
+    if ( successChangeDefaultIncluded ){
+      message.success("Default Included Value updated Successfully. Click On Update Redis Button to reflect changes...")
     }
 
     if (successScreenRefresh) {
@@ -189,13 +203,19 @@ export const ScreenDetailsPage: React.FC = () => {
     successChange,
     successScreenRefresh,
     successScreenDataUpdateRedis,
+    successChangeDefaultIncluded,
   ]);
 
   useEffect(() => {
     if (screenDataUploadCreative) {
       setScreenCreativeUpload(screenDataUploadCreative);
     }
-  }, [screenDataUploadCreative]);
+
+    if ( successGetScreenDetails ){
+      setIsDefaultIncluded(screen.defaultIncluded)
+    }
+
+  }, [screenDataUploadCreative , successGetScreenDetails]);
 
   const getScreenClassName = (screen: any) => {
     if (screen?.screenCode) {
@@ -225,8 +245,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-          (c: any) => c._id === selectedCampaign
-        )[0].creatives.standardDayTimeCreatives,
+            (c: any) => c._id === selectedCampaign
+          )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -374,6 +394,23 @@ export const ScreenDetailsPage: React.FC = () => {
                 <h1 className="flex  justify-center items-bottom text-[12px] text-gray-500">
                   {screen?.screenCode}
                 </h1>
+                <SwitchInputCenter
+                  isEnabled={isDefaultIncluded}
+                  onToggle={() => {
+                    if (
+                      confirm(
+                        `Do you want to change the default video included value?`
+                      )
+                    ) {
+                      dispatch(
+                        changeDefaultIncludedAction({ id: screenId, defaultIncluded: !isDefaultIncluded })
+                      );
+                      setIsDefaultIncluded(!isDefaultIncluded)
+                    }
+                  }}
+                  onColor="bg-[#348730]"
+                  offColor="bg-red-500"
+                />
               </div>
             </div>
             <div className=" my-1 bg-white">
@@ -398,10 +435,8 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${
-                                campaignIds?.length
-                              } campaigns status to ${
-                                currentTab === "1" ? "Pause" : "Active"
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to ${currentTab === "1" ? "Pause" : "Active"
                               }???`
                             )
                           ) {
@@ -423,10 +458,8 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${
-                                campaignIds?.length
-                              } campaigns status to ${
-                                currentTab === "1" ? "Pause" : "Active"
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to ${currentTab === "1" ? "Pause" : "Active"
                               }???`
                             )
                           ) {
@@ -575,10 +608,9 @@ export const ScreenDetailsPage: React.FC = () => {
                     className="text-gray-500 hover:text-[#348730]"
                     onClick={() =>
                       navigate(
-                        `/campaigns-details/${
-                          campaigns?.filter(
-                            (c: any) => c._id === selectedCampaign
-                          )[0]?.campaignCreationId
+                        `/campaigns-details/${campaigns?.filter(
+                          (c: any) => c._id === selectedCampaign
+                        )[0]?.campaignCreationId
                         }`
                       )
                     }
@@ -603,13 +635,13 @@ export const ScreenDetailsPage: React.FC = () => {
                   ) < 0
                     ? "Already Ended"
                     : getNumberOfDaysBetweenTwoDates(
-                        new Date(),
-                        campaigns?.filter(
-                          (c: any) => c._id === selectedCampaign
-                        )[0]?.endDate
-                      ) === 0
-                    ? "Ending Today"
-                    : `${getNumberOfDaysBetweenTwoDates(
+                      new Date(),
+                      campaigns?.filter(
+                        (c: any) => c._id === selectedCampaign
+                      )[0]?.endDate
+                    ) === 0
+                      ? "Ending Today"
+                      : `${getNumberOfDaysBetweenTwoDates(
                         new Date(),
                         campaigns?.filter(
                           (c: any) => c._id === selectedCampaign
@@ -622,22 +654,22 @@ export const ScreenDetailsPage: React.FC = () => {
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives?.standardDayTimeCreatives?.length === 0 && (
-                <div className="p-1 relative  h-32 z-100">
-                  <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
-                    <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
-                      <div
-                        className="text-white hover:text-[#348730]"
-                        onClick={handleCreativeEdit}
-                      >
-                        <i className="fi fi-sr-file-edit"></i>
-                      </div>
-                      <div className="text-white hover:text-[#348730]">
-                        <i className="fi fi-sr-trash"></i>
+                  <div className="p-1 relative  h-32 z-100">
+                    <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
+                      <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
+                        <div
+                          className="text-white hover:text-[#348730]"
+                          onClick={handleCreativeEdit}
+                        >
+                          <i className="fi fi-sr-file-edit"></i>
+                        </div>
+                        <div className="text-white hover:text-[#348730]">
+                          <i className="fi fi-sr-trash"></i>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
               {campaigns
                 ?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives.standardDayTimeCreatives?.map(
@@ -653,7 +685,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       <h1 className="text-[14px] truncate">
                         {
                           creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                          creative?.url?.split("_")?.length - 1
                           ]
                         }
                       </h1>
