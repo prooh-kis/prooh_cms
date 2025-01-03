@@ -124,7 +124,7 @@ export function EditCreativeEndDatePopup({
     });
 
     creativeDataToUpload = {
-      creativeDuration: parseInt(scrData.creativeDuration, 10),
+      creativeDuration: parseInt(scrData?.creativeDuration || 10),
       standardDayTimeCreatives: standardDayTimeCreatives,
       standardNightTimeCreatives: [],
       triggerCreatives: [],
