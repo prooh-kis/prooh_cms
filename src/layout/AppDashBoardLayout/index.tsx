@@ -96,8 +96,8 @@ export const AppDashBoardLayout = (props: any) => {
               }}
               className={
                 current === ""
-                  ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                  : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
+                  ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1 text-[14px]"
+                  : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1 text-[14px]"
               }
             >
               <div className="flex items-center gap-6">
@@ -110,7 +110,7 @@ export const AppDashBoardLayout = (props: any) => {
                 ></div>
                 <i className="fi fi-sr-time-fast "></i>
               </div>
-              <h1 className="text-[14px]">Quick Upload</h1>
+              <h1 className="">Quick Upload</h1>
             </div>
             <div className="flex flex-col pt-6 justify-between h-[85vh]">
               <div className="flex flex-col gap-4">
@@ -120,8 +120,8 @@ export const AppDashBoardLayout = (props: any) => {
                     onClick={() => handleClick(index)}
                     className={
                       current === d.option
-                        ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                        : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
+                        ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1 text-[14px]"
+                        : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1 text-[14px]"
                     }
                   >
                     <div className="flex items-center gap-6">
@@ -134,7 +134,7 @@ export const AppDashBoardLayout = (props: any) => {
                       ></div>
                       <i className={d.icon}></i>
                     </div>
-                    <h1 className="text-[14px]">{d.value}</h1>
+                    <h1 className="">{d.value}</h1>
                   </div>
                 ))}
               </div>

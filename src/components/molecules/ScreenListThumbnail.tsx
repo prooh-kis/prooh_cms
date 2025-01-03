@@ -29,7 +29,7 @@ export const ScreenListThumbnail = ({
       onClick={handleCardClick}
       // onDoubleClick={navigate}
       className={clsx(
-        "rounded-[12px] w-[300px] h-[300px] p-4 transition-colors cursor-pointer bg-white",
+        "rounded-[12px] w-[300px] h-[280px] p-4 transition-colors cursor-pointer bg-white",
         {
           [`hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
           [``]: isSelected, // Apply border color if clicked
@@ -47,17 +47,22 @@ export const ScreenListThumbnail = ({
         />
       </div>
 
-      <div className="flex flex-col justify-center truncate pt-1 gap-1">
+      <div className="flex flex-col justify-center truncate mt-4 gap-1">
         <div className="flex flex-col justify-start items-center">
-          <h1 className="text text-[14px] font-semibold w-full truncate text-wrap">
+          <h1 className="text text-[14px] font-semibold w-full truncate text-ellipsis overflow-hidden">
             {data.screenName}
           </h1>
         </div>
-        <div className="flex gap-2 text-[12px] text-[#6B8494] truncate w-full">
-          <i className="fi fi-sr-marker"></i>
-          <h1 className="truncate text-wrap">
-            {data?.location?.city || data?.city}
-          </h1>
+        <div className="flex justify-between">
+          <div className="flex gap-2 text-[12px] items-center text-[#6B8494] truncate w-full">
+            <i className="fi fi-sr-marker"></i>
+            <h1 className="truncate text-wrap">
+              {data?.location?.city || data?.city}
+            </h1>
+          </div>
+          <div className="flex flex-row gap-2 items-center text-[12px] text-secondaryText">
+            <i className="fi fi-sr-megaphone"></i> <h1>{data?.campaigns}</h1>
+          </div>
         </div>
         {/* <div className="px-0 flex justify-between items-center truncate">
               <p className="text text-[12px] text-secondaryText text-center text-wrap truncate">

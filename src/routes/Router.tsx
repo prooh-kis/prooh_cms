@@ -103,18 +103,11 @@ const Routers: React.FC = () => {
             </AppDashBoardLayout>
           }
         />
-        <Route
-          path={SCREENS_LIST_FOR_SECONDARY_USER}
-          element={
-            <PublicRoute>
-              <ScreensPage />
-            </PublicRoute>
-          }
-        />
+
         <Route
           path={SCREENS_DETAILS}
           element={
-            <AppDashBoardLayout value="Users">
+            <AppDashBoardLayout value="Screens">
               <ScreenDetailsPage />
             </AppDashBoardLayout>
           }
@@ -158,18 +151,9 @@ const Routers: React.FC = () => {
         <Route
           path={HOME}
           element={
-            <AppDashBoardLayout value="Dashboard">
+            <AppDashBoardLayout value="Screens">
               <ScreensPage />
             </AppDashBoardLayout>
-          }
-        />
-
-        <Route
-          path={EDIT_CAMPAIGN}
-          element={
-            <PublicRoute>
-              <CreateCampaignPage />
-            </PublicRoute>
           }
         />
 
@@ -187,6 +171,15 @@ const Routers: React.FC = () => {
             <AppDashBoardLayout value="Monitoring">
               <MonitoringPage />
             </AppDashBoardLayout>
+          }
+        />
+
+        <Route
+          path={SCREENS_LIST_FOR_SECONDARY_USER}
+          element={
+            <PublicRoute>
+              <ScreensPage />
+            </PublicRoute>
           }
         />
 

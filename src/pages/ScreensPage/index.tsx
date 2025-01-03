@@ -15,6 +15,7 @@ import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
 import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
+import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
 
 export const ScreensPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -43,6 +44,17 @@ export const ScreensPage: React.FC = () => {
   );
   const { loading, error, data: allScreens } = allScreensDataGet;
 
+  const getAllScreensForScreenOwnerCampaignCreation = useSelector(
+    (state: any) => state.getAllScreensForScreenOwnerCampaignCreation
+  );
+  const {
+    loading: loadingNetworkList,
+    error: errorNetworkList,
+    data: allNetworkData,
+  } = getAllScreensForScreenOwnerCampaignCreation;
+
+  // getAllScreensForScreenOwnerCampaignCreation;
+
   const filterScreens =
     selectedScreensViaNetwork?.length > 0
       ? allScreens
@@ -66,6 +78,11 @@ export const ScreensPage: React.FC = () => {
     if (!allScreens)
       dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
   }, [dispatch, userInfo]);
+
+  useEffect(() => {
+    if (!loadingNetworkList && !allNetworkData)
+      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
+  }, [dispatch]);
 
   const handleCardClick = (id: any) => {
     if (userInfo && userInfo?.isMaster && userInfo?.userRole === "primary") {
@@ -166,6 +183,7 @@ export const ScreensPage: React.FC = () => {
                 ></i>
               )}
             </div>
+            {loadingNetworkList && <div>Loading..., please wait</div>}
             {showNetwork && (
               <div className="mt-1 h-[70vh] overflow-scroll no-scrollbar">
                 {Object.keys(networks)?.map((network: string) => (
@@ -196,24 +214,22 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="w-full h-[85vh] flex flex-col gap-1">
-          <div className="flex gap-2 flex-wrap h-[85vh] overflow-scroll bg-gray-100">
-            {loading ? (
-              <Loading />
-            ) : (
-              filterScreens?.map((data: any, index: any) => (
-                <div key={index} className="">
-                  <ScreenListThumbnail
-                    isSelected={data._id === selectedCard}
-                    color={""}
-                    handleCardClick={() => handleCardClick(data._id)}
-                    // navigate={() => navigate(`/screens-details/${data._id}`)}
-                    data={data}
-                  />
-                </div>
-              ))
-            )}
-          </div>
+        <div className="flex gap-2 flex-wrap w-[80vw] h-[85vh] overflow-scroll bg-gray-100">
+          {loading ? (
+            <Loading />
+          ) : (
+            filterScreens?.map((data: any, index: any) => (
+              <div key={index} className="">
+                <ScreenListThumbnail
+                  isSelected={data._id === selectedCard}
+                  color={""}
+                  handleCardClick={() => handleCardClick(data._id)}
+                  // navigate={() => navigate(`/screens-details/${data._id}`)}
+                  data={data}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

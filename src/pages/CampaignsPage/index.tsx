@@ -111,7 +111,7 @@ export const CampaignsPage: React.FC = () => {
         </div>
       </div>
       {loading ? (
-        <div className="w-full h-full">
+        <div className="w-full">
           <Loading />
         </div>
       ) : (
@@ -121,7 +121,7 @@ export const CampaignsPage: React.FC = () => {
               <NoDataView />
             </div>
           )}
-          <div className="h-[82vh] overflow-scroll mt-1">
+          <div className="h-[80vh] overflow-scroll mt-1">
             {allCampaigns
               ?.filter(
                 (campaign: any) =>
