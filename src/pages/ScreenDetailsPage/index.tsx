@@ -156,6 +156,13 @@ export const ScreenDetailsPage: React.FC = () => {
   } = screenLogsGet;
 
   useEffect(() => {
+    if (campaigns && campaigns?.length > 0) {
+      setSelectedCampaign(campaigns[0]._id);
+      setCurrentCampaign(campaigns[0]);
+    }
+  }, [campaigns]);
+
+  useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
     }

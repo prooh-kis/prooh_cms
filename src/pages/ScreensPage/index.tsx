@@ -214,7 +214,7 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="flex gap-2 flex-wrap w-[80vw] h-[85vh] overflow-scroll bg-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-6 gap-2  w-[80vw] h-[85vh] overflow-scroll  pr-2">
           {loading ? (
             <Loading />
           ) : (

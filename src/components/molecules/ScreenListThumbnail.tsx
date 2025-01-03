@@ -29,7 +29,7 @@ export const ScreenListThumbnail = ({
       onClick={handleCardClick}
       // onDoubleClick={navigate}
       className={clsx(
-        "rounded-[12px] w-[300px] h-[280px] p-4 transition-colors cursor-pointer bg-white",
+        "rounded-[12px] h-[280px] p-4 transition-colors cursor-pointer bg-white",
         {
           [`hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
           [``]: isSelected, // Apply border color if clicked
