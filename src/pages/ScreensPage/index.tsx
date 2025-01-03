@@ -171,7 +171,7 @@ export const ScreensPage: React.FC = () => {
             </div>
             <div className="flex justify-between mt-4">
               <h1>Network</h1>
-              {showNetwork ? (
+              {/* {showNetwork ? (
                 <i
                   className="fi fi-br-angle-up text-[14px]"
                   onClick={() => setShowNetwork((pre: boolean) => !pre)}
@@ -181,14 +181,18 @@ export const ScreensPage: React.FC = () => {
                   className="fi fi-br-angle-down text-[14px]"
                   onClick={() => setShowNetwork((pre: boolean) => !pre)}
                 ></i>
-              )}
+              )} */}
             </div>
-            {loadingNetworkList && <div>Loading..., please wait</div>}
+            {loadingNetworkList && (
+              <div>
+                <Loading />
+              </div>
+            )}
             {showNetwork && (
               <div className="mt-1 h-[70vh] overflow-scroll no-scrollbar">
                 {Object.keys(networks)?.map((network: string) => (
                   <div
-                    className="flex justify-between text-sm pt-2"
+                    className="flex justify-between text-sm pt-4"
                     key={network}
                     onChange={() => handleSelectNetwork(network)}
                   >
@@ -200,11 +204,11 @@ export const ScreensPage: React.FC = () => {
                         onChange={() => handleSelectNetwork(network)}
                         className="form-checkbox rounded text-[#129BFF] text-[12px] border-sky-500"
                       />
+
                       <span>
                         {network}{" "}
-                        <span className="font-bold">
-                          {" "}
-                          {networks?.[network]?.length}
+                        <span className="text-[12px] text-[#68879C] ">
+                          ({networks?.[network]?.length})
                         </span>
                       </span>
                     </label>

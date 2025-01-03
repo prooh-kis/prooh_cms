@@ -346,7 +346,7 @@ export const ScreenDetailsPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="px-2 pb-1 flex flex-col justify-between">
-                  <h1 className="text-[14px] font-semibold">
+                  <h1 className="text-[20px] font-semibold">
                     {screen?.screenName}
                   </h1>
                   <h2 className="text-[12px]">
@@ -436,7 +436,12 @@ export const ScreenDetailsPage: React.FC = () => {
             </div>
             <div className=" my-1 bg-white">
               <div className="px-4 pt-4 pb-2 flex justify-between">
-                <h1 className="text-[16px] font-semibold">Campaigns</h1>
+                <h1 className="text-[16px] font-semibold">
+                  Campaigns{" "}
+                  <span className="text-[14px] text-secondaryText">
+                    ({campaigns?.length})
+                  </span>
+                </h1>
                 <div className="flex gap-4 items-center">
                   <PrimaryButton
                     action={handleLoopSettingClick}
@@ -501,16 +506,12 @@ export const ScreenDetailsPage: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="flex items-center justify-between px-4">
+              <div className="flex items-center justify-between px-2 border-b">
                 <TabWithoutIcon
                   currentTab={currentTab}
                   setCurrentTab={handleGetCampaignByStatus}
                   tabData={campaignTypeTabs}
                 />
-
-                <h1 className="text-[10px] truncate">
-                  {campaigns?.length} campaigns
-                </h1>
               </div>
               <div className="flex items-center p-4">
                 <SearchInputField
@@ -578,10 +579,10 @@ export const ScreenDetailsPage: React.FC = () => {
         {loadingCampaigns ? (
           <Loading />
         ) : campaigns && selectedCampaign ? (
-          <div className="col-span-4  bg-white p-4 ">
-            <div className="">
+          <div className="col-span-4 bg-white p-4 ">
+            <div className="border-b-2 pb-12">
               <div className="flex justify-between items-center">
-                <h1 className="text-[16px] font-semibold">
+                <h1 className="text-[16px] font-semibold mt-4">
                   {
                     campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                       ?.name
@@ -646,13 +647,13 @@ export const ScreenDetailsPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <h1 className="text-[14px]">
+                <h1 className="text-[14px] mt-1">
                   {
                     campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                       ?.brandName
                   }
                 </h1>
-                <h1 className="text-[12px]">
+                <h1 className="text-[12px] mt-1">
                   Ends in:{" "}
                   {getNumberOfDaysBetweenTwoDates(
                     new Date(),
@@ -676,7 +677,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </h1>
               </div>
             </div>
-            <div className="bg-white h-[80vh] overflow-scroll no-scrollbar mt-2">
+            <div className="bg-white h-[75vh] overflow-scroll no-scrollbar mt-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives?.standardDayTimeCreatives?.length === 0 && (

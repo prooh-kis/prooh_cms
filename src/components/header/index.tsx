@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
         {userInfo ? (
           <div className="h-10 w-auto flex items-center space-x-2 pr-10">
             <div className="h-10 flex items-center gap-1">
-              <img src={userImage} alt="userImage" className="h-10" />
+              <img src={userImage} alt="userImage" className="h-8" />
               <div className="justify-center w-30 truncate">
                 <h3 className="text-lg">{userInfo.name}</h3>
                 <p className="text-xs font-semibold text-gray-700">

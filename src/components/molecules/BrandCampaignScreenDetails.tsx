@@ -1,3 +1,4 @@
+import { Tooltip } from "antd";
 import { generateColorFromAlphabet } from "../../utils/colorUtils";
 
 export function BrandCampaignScreenDetails({
@@ -22,12 +23,15 @@ export function BrandCampaignScreenDetails({
             {brandName.split("")[0]}
           </h1>
         </div>
-        <div className="truncate">
+        <div className="truncate flex flex-col gap-1">
           <h1 className="text-[14px] font-semibold truncate">
             {campaign?.name}
           </h1>
           <p className="text-[10px] truncate">{brandName}</p>
           <p className="text-[10px] truncate">
+            <Tooltip title="Campaign duration">
+              <i className="fi fi-rr-calendar-clock pr-1"></i>
+            </Tooltip>
             {campaign?.campaignDuration} days
           </p>
         </div>

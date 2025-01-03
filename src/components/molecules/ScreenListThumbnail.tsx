@@ -37,14 +37,21 @@ export const ScreenListThumbnail = ({
       )}
     >
       <div
-        className="rounded w-full h-40 flex justify-center items-center"
+        className="relative rounded w-full h-40"
         style={{ backgroundColor: `${color}10` }} // Use inline styles for dynamic background color
       >
         <img
-          className="h-40 w-full rounded-lg"
+          className="h-40 w-full rounded-lg object-cover"
           src={data.images[0]}
           alt={data._id}
         />
+        <div
+          className="absolute bottom-2 left-2 flex flex-row gap-2 items-center text-[12px] px-4 py-1 rounded-2xl"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} // Transparent black background
+        >
+          <i className="fi fi-sr-megaphone text-[#ffffff]"></i>
+          <h1 className="text-[#ffffff]">{data?.campaigns}</h1>
+        </div>
       </div>
 
       <div className="flex flex-col justify-center truncate mt-4 gap-1">
@@ -59,9 +66,6 @@ export const ScreenListThumbnail = ({
             <h1 className="truncate text-wrap">
               {data?.location?.city || data?.city}
             </h1>
-          </div>
-          <div className="flex flex-row gap-2 items-center text-[12px] text-secondaryText">
-            <i className="fi fi-sr-megaphone"></i> <h1>{data?.campaigns}</h1>
           </div>
         </div>
         {/* <div className="px-0 flex justify-between items-center truncate">
