@@ -89,60 +89,13 @@ export const AppDashBoardLayout = (props: any) => {
       <ConformationModel open={open} onClose={toggleOpen} />
       <div className="flex gap-1 mt-1">
         <div className="h-[92vh] w-[15vw] overflow-scroll no-scrollbar flex flex-col bg-white">
-          <div className="flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"></div>
-          <div className="flex flex-col pt-8 justify-between h-[90vh] px-2">
-            <div className="flex flex-col gap-4">
-              <div
-                onClick={() => {
-                  setCurrent("Dashboard");
-                  toggleOpen();
-                }}
-                className={
-                  current === "Dashboard"
-                    ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                    : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
-                }
-              >
-                <div className="flex items-center gap-6">
-                  <div
-                    className={
-                      current === "Dashboard"
-                        ? "h-[24px] w-[3px] bg-[#129BFF]"
-                        : "h-[24px] w-[3px]"
-                    }
-                  ></div>
-                  <i className="fi fi-sr-time-fast text-xl"></i>
-                </div>
-                <h1 className="text-[14px]">Quick Upload</h1>
-              </div>
-              {data?.map((d: any, index: number) => (
-                <div
-                  key={index}
-                  onClick={() => handleClick(index)}
-                  className={
-                    current === d.option
-                      ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                      : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
-                  }
-                >
-                  <div className="flex items-center gap-6">
-                    <div
-                      className={
-                        current === d.option
-                          ? "h-[24px] w-[3px] bg-[#129BFF]"
-                          : "h-[24px] w-[3px]"
-                      }
-                    ></div>
-                    <i className={d.icon}></i>
-                  </div>
-                  <h1 className="text-[14px]">{d.value}</h1>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-col px-2 mt-4">
             <div
-              onClick={signOutHandler}
+              onClick={() => {
+                toggleOpen();
+              }}
               className={
-                current === "logOut"
+                current === ""
                   ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
                   : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
               }
@@ -150,14 +103,61 @@ export const AppDashBoardLayout = (props: any) => {
               <div className="flex items-center gap-6">
                 <div
                   className={
-                    current === "logOut"
+                    current === ""
                       ? "h-[24px] w-[3px] bg-[#129BFF]"
                       : "h-[24px] w-[3px]"
                   }
                 ></div>
-                <i className="fi fi-br-power text-xl"></i>
+                <i className="fi fi-sr-time-fast text-xl"></i>
               </div>
-              <h1 className="text-[14px]">Log out</h1>
+              <h1 className="text-[14px]">Quick Upload</h1>
+            </div>
+            <div className="flex flex-col pt-6 justify-between h-[85vh]">
+              <div className="flex flex-col gap-4">
+                {data?.map((d: any, index: number) => (
+                  <div
+                    key={index}
+                    onClick={() => handleClick(index)}
+                    className={
+                      current === d.option
+                        ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
+                        : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
+                    }
+                  >
+                    <div className="flex items-center gap-6">
+                      <div
+                        className={
+                          current === d.option
+                            ? "h-[24px] w-[3px] bg-[#129BFF]"
+                            : "h-[24px] w-[3px]"
+                        }
+                      ></div>
+                      <i className={d.icon}></i>
+                    </div>
+                    <h1 className="text-[14px]">{d.value}</h1>
+                  </div>
+                ))}
+              </div>
+              <div
+                onClick={signOutHandler}
+                className={
+                  current === "logOut"
+                    ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
+                    : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
+                }
+              >
+                <div className="flex items-center gap-6">
+                  <div
+                    className={
+                      current === "logOut"
+                        ? "h-[24px] w-[3px] bg-[#129BFF]"
+                        : "h-[24px] w-[3px]"
+                    }
+                  ></div>
+                  <i className="fi fi-br-power text-xl"></i>
+                </div>
+                <h1 className="text-[14px]">Log out</h1>
+              </div>
             </div>
           </div>
         </div>
