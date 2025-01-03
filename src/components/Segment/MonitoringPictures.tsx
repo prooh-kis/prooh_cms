@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 interface MonitoringPicturesProps {
   handleUploadClick: any;
   time?: any;
@@ -21,6 +23,7 @@ export const MonitoringPictures = ({
   isUsedForShow = false,
   setFileType,
 }: MonitoringPicturesProps) => {
+  const videoRef = useRef(null);
   return (
     <div className="w-full">
       <h1 className="text-[12px] font-semibold">
@@ -39,12 +42,13 @@ export const MonitoringPictures = ({
           >
             {monitoringData?.timeWiseMonitoringData?.[time]?.["video"]?.length >
             0 ? (
-              <video
-                className="w-full h-full"
-                src={
-                  monitoringData?.timeWiseMonitoringData?.[time]?.["video"][0]
-                }
-              />
+              <video ref={videoRef} className="h-full w-full rounded" controls>
+                <source
+                  src={
+                    monitoringData?.timeWiseMonitoringData?.[time]?.["video"][0]
+                  }
+                ></source>
+              </video>
             ) : isUsedForShow ? (
               <i className="fi flex items-center text-[20px] text-gray-300"></i>
             ) : (

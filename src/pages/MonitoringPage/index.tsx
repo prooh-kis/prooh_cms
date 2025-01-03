@@ -1,16 +1,20 @@
 import { message } from "antd";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import {
   getAllScreensDetailsAction,
   getScreenCampaignsDetailsAction,
+  getScreenCampaignsMonitoringAction,
   screenCampaignsMonitoringAction,
 } from "../../actions/screenAction";
 import { Loading } from "../../components/Loading";
-import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
+import {
+  getDataFromLocalStorage,
+  removeDataFromLocalStorage,
+} from "../../utils/localStorageUtils";
 import {
   ALL_SCREENS_LIST,
   SCREEN_CAMPAIGN_MONITORING_PICS,
@@ -20,14 +24,13 @@ import { CalendarPopup } from "../../components/popup/CalendarPopup";
 import { MonitoringPictures } from "../../components/Segment/MonitoringPictures";
 import { UploadMonitoringPicturesPopup } from "../../components/popup/UploadMonitoringPicturesPopup";
 import { NoDataView, SearchInputField } from "../../components";
+import { GET_SCREEN_CAMPAIGN_MONITORING_RESET } from "../../constants/screenConstants";
 
 const time = ["day", "night", "misc"];
 const pictures = ["images", "video", "geoTag", "newspaper"];
 
 export const MonitoringPage: React.FC = () => {
   const dispatch = useDispatch<any>();
-  const navigate = useNavigate();
-  const targetDivRef = useRef<HTMLDivElement>(null);
 
   const [allDates, setAllDates] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<any>("");
@@ -74,6 +77,16 @@ export const MonitoringPage: React.FC = () => {
     data: screenCampaignMonitoringData,
   } = screenCampaignMonitoring;
 
+  const getScreenCampaignMonitoring = useSelector(
+    (state: any) => state.getScreenCampaignMonitoring
+  );
+  const {
+    loading: loadingGetScreenCampaignMonitoring,
+    error: errorGetScreenCampaignMonitoring,
+    success: successGetScreenCampaignMonitoring,
+    data: monitoringData1,
+  } = getScreenCampaignMonitoring;
+
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
@@ -83,6 +96,7 @@ export const MonitoringPage: React.FC = () => {
 
   const handleScreenClick = ({ screen }: any) => {
     setMonitoringScreen(screen);
+    setMonitoringCampaign(null);
     dispatch(
       getScreenCampaignsDetailsAction({
         screenId: screen._id,
@@ -93,10 +107,34 @@ export const MonitoringPage: React.FC = () => {
 
   const handleCampaignClick = ({ campaign }: any) => {
     setMonitoringCampaign(campaign);
+    dispatch({ type: GET_SCREEN_CAMPAIGN_MONITORING_RESET });
+    removeDataFromLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS);
     setAllDates(() => {
       return getAllDatesBetween(campaign.startDate, campaign.endDate);
     });
   };
+
+  const handleCallGetScreenCampaignMonitoring = useCallback(() => {
+    if (monitoringCampaign?._id && monitoringScreen) {
+      dispatch(
+        getScreenCampaignsMonitoringAction({
+          screenId: monitoringScreen?._id,
+          campaignId: monitoringCampaign?._id,
+          date: monitoringDate,
+        })
+      );
+    }
+  }, [monitoringCampaign, monitoringScreen]);
+
+  useEffect(() => {
+    if (monitoringCampaign && monitoringScreen) {
+      handleCallGetScreenCampaignMonitoring();
+    }
+  }, [monitoringCampaign, monitoringScreen]);
+
+  useEffect(() => {
+    if (successGetScreenCampaignMonitoring) setMonitoringData(monitoringData1);
+  }, [successGetScreenCampaignMonitoring]);
 
   const handleUploadClick = () => {
     setOpenUploadPopup(!openUploadPopup);

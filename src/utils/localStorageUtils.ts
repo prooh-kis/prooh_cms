@@ -27,6 +27,10 @@ export const getDataFromLocalStorage = (key: string) => {
   }
 };
 
+export const removeDataFromLocalStorage = (key: string) => {
+  localStorage.removeItem(key);
+};
+
 export const removeAllKeyFromLocalStorage = () => {
   window.localStorage.clear();
 };

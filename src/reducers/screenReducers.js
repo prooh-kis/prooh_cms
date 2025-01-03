@@ -47,7 +47,10 @@ import {
   CHANGE_DEFAULT_INCLUDED_FAIL,
   CHANGE_DEFAULT_INCLUDED_RESET,
 } from "../constants/screenConstants";
-import { ALL_SCREENS_LIST } from "../constants/localStorageConstants";
+import {
+  ALL_SCREENS_LIST,
+  SCREEN_CAMPAIGN_MONITORING_PICS,
+} from "../constants/localStorageConstants";
 
 export function allScreensDataGetReducer(state = {}, action) {
   switch (action.type) {
@@ -143,6 +146,7 @@ export function getScreenCampaignMonitoringReducer(state = {}, action) {
     case GET_SCREEN_CAMPAIGN_MONITORING_REQUEST:
       return { loading: true };
     case GET_SCREEN_CAMPAIGN_MONITORING_SUCCESS:
+      saveDataOnLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS, action.payload);
       return { loading: false, success: true, data: action.payload };
     case GET_SCREEN_CAMPAIGN_MONITORING_FAIL:
       return { loading: false, error: action.payload };
