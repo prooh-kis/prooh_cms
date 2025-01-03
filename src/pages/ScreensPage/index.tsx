@@ -108,56 +108,69 @@ export const ScreensPage: React.FC = () => {
   return (
     <div className="flex flex-col gap-1">
       {open && <ChangeScreenCodePopup open={open} onClose={toggleOpen} />}
-      <div className="bg-white   sm:p-4 p-2 w-full font-bold text-[20px] sm:text-[24px] flex justify-between items-center ">
-        <div className="flex gap-2">
-          My Screens
+
+      <div className="flex justify-between pr-8 border-b bg-white">
+        <div className="flex gap-4 items-center p-4 ">
+          <h1 className="text-[16px] font-semibold">
+            My Screens{" "}
+            <span className="text-[18px] text-[#68879C] ">
+              ({filterScreens?.length})
+            </span>
+          </h1>
           <ReloadButton onClick={reLoad} />
         </div>
-        <PrimaryButton
-          action={toggleOpen}
-          title="Set Screen Code"
-          rounded="rounded-full"
-          height="h-10"
-          width="w-32"
-          textSize="text-[12px]"
-          reverse={true}
-          loading={false}
-          loadingText="Saving..."
-        />
+        <div className="flex items-center mt-1 w-96 flex gap-4">
+          <SearchInputField
+            value={searchText}
+            onChange={setSearchText}
+            placeholder="Search by screen name"
+          />
+          <PrimaryButton
+            action={toggleOpen}
+            title="+ Screen Code"
+            rounded="rounded-lg"
+            height="h-10"
+            width="w-32"
+            textSize="text-[12px] font-semibold"
+            reverse={true}
+            loading={false}
+            loadingText="Saving..."
+          />
+        </div>
       </div>
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         {userInfo?.userRole === USER_ROLE_PRIMARY && (
-          <div className="w-[17vw] h-[80vh] overflow-scroll no-scrollbar bg-white  p-4 ">
-            <div className="flex justify-between items-center">
+          <div className="w-[17vw] bg-white  p-4 ">
+            <div className="flex justify-between items-center border-b pb-4">
               <h1 className="text-[#151515] text-[16px] font-semibold">
                 Filter
               </h1>
               <h1
-                className="text-[#092A41] text-[14px] "
+                className="text-secondaryText text-[14px]"
                 onClick={handleClearAll}
               >
                 Clear All
               </h1>
             </div>
-            <div className="flex justify-between mt-1">
+            <div className="flex justify-between mt-4">
               <h1>Network</h1>
               {showNetwork ? (
                 <i
-                  className="fi fi-br-angle-up"
+                  className="fi fi-br-angle-up text-[14px]"
                   onClick={() => setShowNetwork((pre: boolean) => !pre)}
                 ></i>
               ) : (
                 <i
-                  className="fi fi-br-angle-down"
+                  className="fi fi-br-angle-down text-[14px]"
                   onClick={() => setShowNetwork((pre: boolean) => !pre)}
                 ></i>
               )}
             </div>
             {showNetwork && (
-              <div className="mt-1">
+              <div className="mt-1 h-[70vh] overflow-scroll no-scrollbar">
                 {Object.keys(networks)?.map((network: string) => (
                   <div
-                    className="flex justify-between text-sm pt-1"
+                    className="flex justify-between text-sm pt-2"
                     key={network}
                     onChange={() => handleSelectNetwork(network)}
                   >
@@ -167,7 +180,7 @@ export const ScreensPage: React.FC = () => {
                         value={network}
                         checked={selectedNetwork.includes(network)}
                         onChange={() => handleSelectNetwork(network)}
-                        className="form-checkbox rounded text-[#129BFF]"
+                        className="form-checkbox rounded text-[#129BFF] text-[12px] border-sky-500"
                       />
                       <span>
                         {network}{" "}
@@ -183,23 +196,8 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="w-full h-[80vh] flex flex-col gap-1">
-          <div className="bg-white  p-2 w-full flex justify-between items-center ">
-            <h1 className="text-[#151515] text-[20px] font-bold pl-4 hidden lg:block">
-              Network{" "}
-              <span className="text-[#348730] pl-4">
-                {filterScreens?.length}
-              </span>
-            </h1>
-            <div className="w-96">
-              <SearchInputField
-                value={searchText}
-                onChange={setSearchText}
-                placeholder="Search by screen name"
-              />
-            </div>
-          </div>
-          <div className="flex gap-1 flex-wrap h-[85vh] overflow-scroll bg-gray-100">
+        <div className="w-full h-[85vh] flex flex-col gap-1">
+          <div className="flex gap-2 flex-wrap h-[85vh] overflow-scroll bg-gray-100">
             {loading ? (
               <Loading />
             ) : (

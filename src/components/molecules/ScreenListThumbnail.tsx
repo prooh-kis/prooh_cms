@@ -29,55 +29,46 @@ export const ScreenListThumbnail = ({
       onClick={handleCardClick}
       // onDoubleClick={navigate}
       className={clsx(
-        "border rounded-[12px] w-[240px] h-[260px] p-2 flex justify-center items-center transition-colors cursor-pointer bg-white",
+        "rounded-[12px] w-[300px] h-[300px] p-4 transition-colors cursor-pointer bg-white",
         {
-          [`hover:border-primaryButton hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
-          [`border-primaryButton`]: isSelected, // Apply border color if clicked
+          [`hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
+          [``]: isSelected, // Apply border color if clicked
         }
       )}
     >
-      <div className="py-0">
-        <div className="w-full flex justify-center">
-          <div
-            className="rounded w-auto h-40 flex justify-center items-center"
-            style={{ backgroundColor: `${color}10` }} // Use inline styles for dynamic background color
-          >
-            <img
-              className="h-full rounded"
-              src={data.images[0]}
-              alt={data._id}
-            />
-          </div>
-        </div>
+      <div
+        className="rounded w-full h-40 flex justify-center items-center"
+        style={{ backgroundColor: `${color}10` }} // Use inline styles for dynamic background color
+      >
+        <img
+          className="h-40 w-full rounded-lg"
+          src={data.images[0]}
+          alt={data._id}
+        />
+      </div>
 
-        <div className="flex justify-center truncate pt-1">
-          <div className="px-1 w-full truncate">
-            <div className="flex justify-start items-center">
-              <h1 className="text text-[12px] font-semibold">
-                {data.screenName}
-              </h1>
-            </div>
-            <div className="px-0 flex justify-between items-center truncate">
+      <div className="flex flex-col justify-center truncate pt-1 gap-1">
+        <div className="flex flex-col justify-start items-center">
+          <h1 className="text text-[14px] font-semibold w-full truncate text-wrap">
+            {data.screenName}
+          </h1>
+        </div>
+        <div className="flex gap-2 text-[12px] text-[#6B8494] truncate w-full">
+          <i className="fi fi-sr-marker"></i>
+          <h1 className="truncate text-wrap">
+            {data?.location?.city || data?.city}
+          </h1>
+        </div>
+        {/* <div className="px-0 flex justify-between items-center truncate">
               <p className="text text-[12px] text-secondaryText text-center text-wrap truncate">
-                {data.location.split(",")[0]}
-              </p>
-              <p className="text text-[12px] text-secondaryText text-center text-wrap truncate">
-                {data.city}
-              </p>
-            </div>
-            <div className="px-0 flex justify-between items-center truncate">
-              <p className="text text-[12px] text-[#348730] text-center text-wrap truncate">
                 {data.campaigns} Active Campaigns
               </p>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row gap-1 items-center px-1">
-          <h1 className="text-[10px] text-[#129BFF]">
-            Last Active:{" "}
-            {convertIntoDateAndTime(data?.lastActive) || "Not Available"}
-          </h1>
+            </div> */}
+        <div className="h-0.5 w-full bg-[#F1F1F1]"></div>
+
+        <div className="flex flex-row gap-1 items-center text-[12px] text-secondaryText">
           <div className={getScreenClassName(data)} />
+          <h1>{convertIntoDateAndTime(data?.lastActive) || "Not available"}</h1>
         </div>
       </div>
     </div>

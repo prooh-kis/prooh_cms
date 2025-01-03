@@ -41,31 +41,31 @@ export const AppDashBoardLayout = (props: any) => {
     {
       value: "My Screens",
       path: SCREENS_LIST,
-      icon: "fi fi-sr-screen text-xl",
+      icon: "fi fi-sr-screen ",
       option: "Screens",
     },
     {
       value: "Campaigns",
       path: CAMPAIGNS_LIST,
-      icon: "fi fi-sr-megaphone text-xl",
+      icon: "fi fi-sr-megaphone ",
       option: "Campaigns",
     },
     {
       value: "Creatives",
       path: MY_CREATIVES,
-      icon: "fi fi-sr-photo-video text-xl",
+      icon: "fi fi-sr-photo-video ",
       option: "Creatives",
     },
     {
       value: "Monitoring",
       path: SCREEN_CAMPAIGN_MONITORING,
-      icon: "fi fi-br-camera-movie text-xl",
+      icon: "fi fi-br-camera-movie ",
       option: "Monitoring",
     },
     {
       value: "Users",
       path: USERS,
-      icon: "fi fi-sr-users-alt text-xl",
+      icon: "fi fi-sr-users-alt ",
       option: "Users",
     },
   ];
@@ -108,7 +108,7 @@ export const AppDashBoardLayout = (props: any) => {
                       : "h-[24px] w-[3px]"
                   }
                 ></div>
-                <i className="fi fi-sr-time-fast text-xl"></i>
+                <i className="fi fi-sr-time-fast "></i>
               </div>
               <h1 className="text-[14px]">Quick Upload</h1>
             </div>
@@ -142,7 +142,7 @@ export const AppDashBoardLayout = (props: any) => {
                 onClick={signOutHandler}
                 className={
                   current === "logOut"
-                    ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
+                    ? "flex gap-4 items-center  text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
                     : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
                 }
               >
@@ -154,7 +154,7 @@ export const AppDashBoardLayout = (props: any) => {
                         : "h-[24px] w-[3px]"
                     }
                   ></div>
-                  <i className="fi fi-br-power text-xl"></i>
+                  <i className="fi fi-br-power "></i>
                 </div>
                 <h1 className="text-[14px]">Log out</h1>
               </div>

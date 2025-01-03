@@ -433,7 +433,7 @@ export const ScreenDetailsPage: React.FC = () => {
                     title="Set Loop"
                     rounded="rounded-full"
                     height="h-8"
-                    width="w-32"
+                    width="w-24"
                     textSize="text-[12px]"
                     reverse={true}
                     loading={false}
