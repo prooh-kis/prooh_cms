@@ -12,6 +12,8 @@ import { CalendarInput } from "../../components/atoms/CalendarInput";
 import { editCampaignCreativesEndDateAction } from "../../actions/screenAction";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
+import SearchInputField from "../../components/molecules/SearchInputField";
+import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 
 interface EditCreativeEndDatePopupProps {
   onClose?: any;
@@ -38,7 +40,8 @@ export function EditCreativeEndDatePopup({
   const [duration, setDuration] = useState<any>(
     campaign?.creatives?.creativeDuration
   );
-
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [currentTab, setCurrentTab] = useState<number>(0);
   const [creativesMedia, setCreativesMedia] = useState<any>([]);
 
   const auth = useSelector((state: any) => state.auth);
@@ -81,7 +84,6 @@ export function EditCreativeEndDatePopup({
 
   const handelDiscard = () => {
     setMediaFiles([]);
-
     setUrl("");
     setIsLoading(false);
     onClose();
@@ -267,33 +269,59 @@ export function EditCreativeEndDatePopup({
                   </div>
                 </div>
 
-                <h1 className="text-[14px] font-semibold">
+                <h1 className="text-[14px] font-semibold py-1">
                   Select from creatives
                 </h1>
+                <SearchInputField
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Search Creative by creative name"
+                />
                 {loadingCreatives ? (
                   <Loading />
                 ) : (
-                  <div>
-                    {creativesMedia &&
-                      creativesMedia?.map((f: any, k: any) => (
-                        <div key={k} className="h-[45vh] overflow-auto">
-                          {Object.keys(f)
-                            ?.filter((c: any) => c !== "network")
-                            ?.map((m: any, i: any) => (
-                              <div key={i}>
-                                <h1 className="text-[12px] font-semibold border-b">
-                                  {`${m}s`.toUpperCase()}
-                                </h1>
+                  <div className="pt-2">
+                    <div className="py-1">
+                      <TabWithoutIcon
+                        tabData={creativesMedia?.map(
+                          (data: any, index: any) => {
+                            return {
+                              id: index,
+                              label: data?.network,
+                            };
+                          }
+                        )}
+                        setCurrentTab={setCurrentTab}
+                        currentTab={currentTab}
+                      />
+                    </div>
+                    {creativesMedia && (
+                      <div className="h-[40vh] overflow-auto">
+                        {Object.keys(creativesMedia?.[currentTab] || {})
+                          ?.filter((c: any) => c !== "network")
+                          ?.map((m: any, i: any) => (
+                            <div key={i}>
+                              <h1 className="text-[12px] font-semibold border-b">
+                                {`${m}s`.toUpperCase()}
+                              </h1>
 
-                                {Object.keys(f[m])
-                                  ?.filter((c: any) => c !== "network")
-                                  ?.map((g: any, j: any) => (
-                                    <div key={j} className="py-2">
-                                      <h1 className="text-[10px] py-1">
-                                        Resolution: {g}
-                                      </h1>
-                                      <div className="grid grid-cols-3 gap-1">
-                                        {f?.[m]?.[g]?.map((l: any, y: any) => (
+                              {Object.keys(creativesMedia?.[currentTab][m])
+                                ?.filter((c: any) => c !== "network")
+                                ?.map((g: any, j: any) => (
+                                  <div key={j} className="py-2">
+                                    <h1 className="text-[10px] py-1">
+                                      Resolution: {g}
+                                    </h1>
+                                    <div className="grid grid-cols-3 gap-1">
+                                      {creativesMedia?.[currentTab]?.[m]?.[g]
+                                        ?.filter((l: any) =>
+                                          l?.creativeName
+                                            ?.toUpperCase()
+                                            .includes(
+                                              searchQuery?.toUpperCase()
+                                            )
+                                        )
+                                        ?.map((l: any, y: any) => (
                                           <div
                                             key={y}
                                             className="w-full border rounded"
@@ -344,13 +372,13 @@ export function EditCreativeEndDatePopup({
                                             </div>
                                           </div>
                                         ))}
-                                      </div>
                                     </div>
-                                  ))}
-                              </div>
-                            ))}
-                        </div>
-                      ))}
+                                  </div>
+                                ))}
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

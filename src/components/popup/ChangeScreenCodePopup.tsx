@@ -12,6 +12,7 @@ import { DropdownInput } from "../../components/atoms/DropdownInput";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { message } from "antd";
 import { SearchableSelect } from "../../components/atoms/SearchableSelect";
+import { SCREEN_CODE_CHANGE_RESET } from "../../constants/screenConstants";
 
 interface ChangeScreenCodePopupProps {
   open?: any;
@@ -49,6 +50,7 @@ export function ChangeScreenCodePopup({
   useEffect(() => {
     if (successChange) {
       message.success("Screen Code updated successfully...");
+      dispatch({ type: SCREEN_CODE_CHANGE_RESET });
       onClose();
     }
     if (userInfo) {
