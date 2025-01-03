@@ -73,7 +73,10 @@ export const ScreenListThumbnail = ({
 
         <div className="flex flex-row gap-1 items-center text-[12px] text-secondaryText">
           <div className={getScreenClassName(data)} />
-          <h1>{convertIntoDateAndTime(data?.lastActive) || "Not available"}</h1>
+          <h1>
+            {getTimeDifferenceInMin(data?.lastActive)} minutes ago{", "}
+            {convertIntoDateAndTime(data?.lastActive) || "Not available"}
+          </h1>
         </div>
       </div>
     </div>

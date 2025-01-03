@@ -13,6 +13,7 @@ import {
 } from "../../actions/screenAction";
 import { Loading } from "../../components/Loading";
 import {
+  convertIntoDateAndTime,
   getNumberOfDaysBetweenTwoDates,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
@@ -345,8 +346,10 @@ export const ScreenDetailsPage: React.FC = () => {
                     {screen?.location}, {screen?.city}
                   </h2>
                   <p className="text-[12px]">
-                    Last Active {getTimeDifferenceInMin(screen?.lastActive)}{" "}
-                    minutes ago
+                    Last Active: {getTimeDifferenceInMin(screen?.lastActive)}{" "}
+                    minutes ago {", "}
+                    {convertIntoDateAndTime(screen?.lastActive) ||
+                      "Not available"}
                   </p>
                 </div>
               </div>
