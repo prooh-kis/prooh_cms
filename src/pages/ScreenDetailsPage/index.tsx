@@ -590,7 +590,7 @@ export const ScreenDetailsPage: React.FC = () => {
           <Loading />
         ) : campaigns && selectedCampaign ? (
           <div className="col-span-4 bg-white p-4 ">
-            <div className="border-b-2 pb-12">
+            <div className="border-b-2 pb-10">
               <div className="flex justify-between items-center">
                 <h1 className="text-[16px] font-semibold mt-4">
                   {
