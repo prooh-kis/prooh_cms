@@ -329,233 +329,239 @@ export const EnterCampaignBasicDetails = ({
   };
 
   return (
-    <div className="w-full py-3 px-20">
+    <div className="w-full px-4 py-1 w-full h-full overflow-scroll scrollbar-minimal ">
       <EnterTimeTriggerPopup
         open={open}
         onClose={handleOpenCloseAddTimeTrigger}
         handleSave={handleSave}
         data={timeTriggers}
       />
-      <div className="">
+      <div className="bg-white p-4 flex gap-1 ">
+        <i
+          className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
+          onClick={() => navigate(-1)}
+        ></i>
+        <h1 className="text-[20px] font-semibold">Quick Upload</h1>
+      </div>
+      <div className="bg-white p-4 mt-1">
         <h1 className="text-[24px] text-primaryText font-semibold flex items-center">
           {purpose === "Edit" ? "Edit " : "Add "} Basic Details{" "}
           <span className="pl-8">
             <ReloadButton onClick={() => window.location.reload()} />
           </span>
         </h1>
-        <p className="text-[14px] text-secondaryText">
-          Enter your basic details for the campaigns to proceed further
-        </p>
-      </div>
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-8">
-          <div className="grid grid-cols-2 gap-8 pt-2">
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Campaign Name
-              </label>
-              <PrimaryInput
-                inputType="text"
-                placeholder="Campaign Name"
-                value={campaignName}
-                action={setCampaignName}
-              />
-            </div>
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Brand Name
-              </label>
-              <SearchableSelect
-                onChange={(value: string) => setBrandName(value?.toUpperCase())}
-                options={getDataFromLocalStorage(ALL_BRAND_LIST)?.map(
-                  (value: string) => {
-                    return { label: value, value: value };
-                  }
-                )}
-                placeholder="Search by brand Name"
-                value={brandName}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-8 pt-2">
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Client Name
-              </label>
-              <PrimaryInput
-                inputType="text"
-                placeholder="Client Name"
-                value={clientName}
-                action={setClientName}
-              />
-            </div>
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Industry
-              </label>
-              <PrimaryInput
-                inputType="text"
-                placeholder="Industry"
-                value={industry}
-                action={setIndustry}
-              />
-            </div>
-          </div>
-          {/* priority and screens */}
-          <div className="grid grid-cols-2 gap-8 pt-2">
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Screens
-              </label>
 
-              {loadingAllScreens ? (
-                <h1>Loading Screens</h1>
-              ) : (
-                <SelectScreensViaNetwork
-                  screenList={
-                    getDataFromLocalStorage(
-                      ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-                    )?.screensList || []
-                  }
-                  setSelectedOptions={handleScreenSelection}
-                  selectedOptions={screenIds}
-                  placeHolder="Select screens"
-                  networkWithScreens={
-                    getDataFromLocalStorage(
-                      ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-                    )?.networkWithScreens || []
-                  }
-                />
-              )}
-            </div>
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Priority
-              </label>
-              <MultiSelectInput
-                options={allIndexs?.map((data: any) => {
-                  return {
-                    label: data.label,
-                    value: data.value,
-                  };
-                })}
-                selectedOptions={atIndex}
-                placeHolder="Select Priority"
-                setSelectedOptions={handleSettingAtIndex}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-8 pt-2">
-            <div className="col-span-1 py-1">
-              <label className="block text-secondaryText text-[14px] mb-2">
-                Start Date
-              </label>
-              {purpose === "Edit" ? (
-                <div
-                  className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                  // onClick={() => {
-                  //   alert("You can't edit start date");
-                  // }}
-                >
-                  <h1 className="text-[14px]">
-                    {new Date(startDate).toLocaleDateString()}
-                  </h1>
-                </div>
-              ) : (
-                <CalendarInput
-                  placeholder="Start Date"
-                  value={startDate}
-                  action={handleStartDateChange}
-                  disabled={false}
-                  minDate={new Date()}
-                />
-              )}
-            </div>
-            <div className="col-span-1 py-1">
-              <div className="flex justify-between">
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-8">
+            <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1">
                 <label className="block text-secondaryText text-[14px] mb-2">
-                  {!enterDuration ? "End Date" : "Duration"}
+                  Campaign Name
                 </label>
+                <PrimaryInput
+                  inputType="text"
+                  placeholder="Campaign Name"
+                  value={campaignName}
+                  action={setCampaignName}
+                />
               </div>
-              {purpose === "Edit" ? (
-                <div
-                  className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                  onClick={() => {
-                    // setEnterDate(true);
-                  }}
-                >
-                  <h1 className="text-[14px]">
-                    {endDate === ""
-                      ? "dd/mm/yyyy"
-                      : new Date(endDate).toLocaleDateString()}
-                  </h1>
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Brand Name
+                </label>
+                <SearchableSelect
+                  onChange={(value: string) =>
+                    setBrandName(value?.toUpperCase())
+                  }
+                  options={getDataFromLocalStorage(ALL_BRAND_LIST)?.map(
+                    (value: string) => {
+                      return { label: value, value: value };
+                    }
+                  )}
+                  placeholder="Search by brand Name"
+                  value={brandName}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Client Name
+                </label>
+                <PrimaryInput
+                  inputType="text"
+                  placeholder="Client Name"
+                  value={clientName}
+                  action={setClientName}
+                />
+              </div>
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Industry
+                </label>
+                <PrimaryInput
+                  inputType="text"
+                  placeholder="Industry"
+                  value={industry}
+                  action={setIndustry}
+                />
+              </div>
+            </div>
+            {/* priority and screens */}
+            <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Screens
+                </label>
+
+                {loadingAllScreens ? (
+                  <h1>Loading Screens</h1>
+                ) : (
+                  <SelectScreensViaNetwork
+                    screenList={
+                      getDataFromLocalStorage(
+                        ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                      )?.screensList || []
+                    }
+                    setSelectedOptions={handleScreenSelection}
+                    selectedOptions={screenIds}
+                    placeHolder="Select screens"
+                    networkWithScreens={
+                      getDataFromLocalStorage(
+                        ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                      )?.networkWithScreens || []
+                    }
+                  />
+                )}
+              </div>
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Priority
+                </label>
+                <MultiSelectInput
+                  options={allIndexs?.map((data: any) => {
+                    return {
+                      label: data.label,
+                      value: data.value,
+                    };
+                  })}
+                  selectedOptions={atIndex}
+                  placeHolder="Select Priority"
+                  setSelectedOptions={handleSettingAtIndex}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Start Date
+                </label>
+                {purpose === "Edit" ? (
+                  <div
+                    className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
+                    // onClick={() => {
+                    //   alert("You can't edit start date");
+                    // }}
+                  >
+                    <h1 className="text-[14px]">
+                      {new Date(startDate).toLocaleDateString()}
+                    </h1>
+                  </div>
+                ) : (
+                  <CalendarInput
+                    placeholder="Start Date"
+                    value={startDate}
+                    action={handleStartDateChange}
+                    disabled={false}
+                    minDate={new Date()}
+                  />
+                )}
+              </div>
+              <div className="col-span-1 py-1">
+                <div className="flex justify-between">
+                  <label className="block text-secondaryText text-[14px] mb-2">
+                    {!enterDuration ? "End Date" : "Duration"}
+                  </label>
                 </div>
-              ) : (
-                <CalendarInput
-                  placeholder={!enterDuration ? "End Date" : "0"}
-                  value={endDate}
-                  action={handelEndDateChange}
-                  minDate={startDate || new Date()}
-                  disabled={false}
+                {purpose === "Edit" ? (
+                  <div
+                    className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
+                    onClick={() => {
+                      // setEnterDate(true);
+                    }}
+                  >
+                    <h1 className="text-[14px]">
+                      {endDate === ""
+                        ? "dd/mm/yyyy"
+                        : new Date(endDate).toLocaleDateString()}
+                    </h1>
+                  </div>
+                ) : (
+                  <CalendarInput
+                    placeholder={!enterDuration ? "End Date" : "0"}
+                    value={endDate}
+                    action={handelEndDateChange}
+                    minDate={startDate || new Date()}
+                    disabled={false}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1 text-[14px]">
+                <label className="block text-secondaryText  mb-2">
+                  Schedule Time{" "}
+                </label>
+                <div
+                  onClick={handleOpenCloseAddTimeTrigger}
+                  className="flex gap-1 w-full px-4 py-2 text-left bg-white border  focus:outline-none focus:ring focus:ring-indigo-300 items-center cursor-pointer"
+                >
+                  <i className="fi fi-rr-clock text-gray-400"></i>
+                  <h1>Set Ad Play Time</h1>
+                </div>
+              </div>
+              <div className="col-span-1 py-1"></div>
+            </div>
+            <div className="flex py-4">
+              {!loadingCampaignsCreations && (
+                <PrimaryButton
+                  loading={loadingCampaignsCreations}
+                  loadingText="Creating campaign..."
+                  rounded="rounded-[6px]"
+                  title="Continue"
+                  action={() => {
+                    if (validateForm()) {
+                      saveCampaignDetails();
+                      message.success("Campaign initiated successfully");
+                    }
+                  }}
                 />
               )}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-8 pt-2">
-            <div className="col-span-1 py-1 text-[14px]">
-              <label className="block text-secondaryText  mb-2">
-                Schedule Time{" "}
-              </label>
-              <div
-                onClick={handleOpenCloseAddTimeTrigger}
-                className="flex gap-1 w-full px-4 py-2 text-left bg-white border  focus:outline-none focus:ring focus:ring-indigo-300 items-center cursor-pointer"
-              >
-                <i className="fi fi-rr-clock text-gray-400"></i>
-                <h1>Set Ad Play Time</h1>
+          <div className="col-span-4">
+            <div className="border rounded-[12px] p-1 my-1">
+              <div className="flex justify-between items-center py-1">
+                <h1 className="px-2 text-[14px]">Priority</h1>
+                <SwitchInput
+                  isEnabled={isEnabled}
+                  onToggle={() => {
+                    setIsEnable((pre) => !pre);
+                    if (!isEnabled) {
+                      setAtIndex([]);
+                    } else {
+                      setAtIndex([0]);
+                    }
+                  }}
+                  onColor="bg-[#348730]"
+                  offColor="bg-red-500"
+                />
               </div>
-            </div>
-            <div className="col-span-1 py-1"></div>
-          </div>
-          <div className="flex py-4">
-            {!loadingCampaignsCreations && (
-              <PrimaryButton
-                loading={loadingCampaignsCreations}
-                loadingText="Creating campaign..."
-                rounded="rounded-[6px]"
-                title="Continue"
-                action={() => {
-                  if (validateForm()) {
-                    saveCampaignDetails();
-                    message.success("Campaign initiated successfully");
-                  }
-                }}
-              />
-            )}
-          </div>
-        </div>
-        <div className="col-span-4">
-          <div className="border rounded-[12px] p-1 my-1">
-            <div className="flex justify-between items-center py-1">
-              <h1 className="px-2 text-[14px]">Priority</h1>
-              <SwitchInput
-                isEnabled={isEnabled}
-                onToggle={() => {
-                  setIsEnable((pre) => !pre);
-                  if (!isEnabled) {
-                    setAtIndex([]);
-                  } else {
-                    setAtIndex([0]);
-                  }
-                }}
-                onColor="bg-[#348730]"
-                offColor="bg-red-500"
-              />
-            </div>
-            <div className="grid grid-cols-6 gap-1 justify-center px-1">
-              {allIndexs?.map((index: any, i: any) => (
-                <div
-                  key={i}
-                  className={`
+              <div className="grid grid-cols-6 gap-1 justify-center px-1">
+                {allIndexs?.map((index: any, i: any) => (
+                  <div
+                    key={i}
+                    className={`
                       ${
                         atIndex.includes(index.value)
                           ? "bg-[#129BFF] text-white"
@@ -563,54 +569,55 @@ export const EnterCampaignBasicDetails = ({
                       }
                       border rounded-[8px] w-[40px] flex justify-center py-1
                     `}
-                  onClick={() => {
-                    if (atIndex?.includes(index.value)) {
-                      handleSettingAtIndex(
-                        atIndex?.filter((data: any) => data != index.value)
-                      );
-                    } else {
-                      handleSettingAtIndex([...atIndex, index.value]);
-                      // message.info(
-                      //   "Please deselect auto-set priority switch first..."
-                      // );
-                    }
-                  }}
-                >
-                  <h1 className="text-[12px]">{index.value}</h1>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="border rounded-[12px]">
-            <div className="flex justify-between">
-              <h1 className="my-1 px-2 text-[14px]">
-                Screens ({screenIds?.length})
-              </h1>
-              <button
-                className="text-[12px] px-2"
-                onClick={() => setScreenIds([])}
-              >
-                Clear All
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1 justify-center px-1 py-1">
-              {getDataFromLocalStorage(
-                ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-              )
-                ?.screensList?.filter((s: any) => screenIds.includes(s.value))
-                ?.map((screen: any, i: any) => (
-                  <div
-                    key={i}
-                    className="border rounded-[8px] flex justify-center gap-1 px-2 py-1"
+                    onClick={() => {
+                      if (atIndex?.includes(index.value)) {
+                        handleSettingAtIndex(
+                          atIndex?.filter((data: any) => data != index.value)
+                        );
+                      } else {
+                        handleSettingAtIndex([...atIndex, index.value]);
+                        // message.info(
+                        //   "Please deselect auto-set priority switch first..."
+                        // );
+                      }
+                    }}
                   >
-                    <h1 className="text-[12px] truncate">{screen.label}</h1>
-                    <i
-                      className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}
-                      onClick={() => handleRemoveScreenIds(screen.value)}
-                    ></i>
+                    <h1 className="text-[12px]">{index.value}</h1>
                   </div>
                 ))}
+              </div>
+            </div>
+            <div className="border rounded-[12px]">
+              <div className="flex justify-between">
+                <h1 className="my-1 px-2 text-[14px]">
+                  Screens ({screenIds?.length})
+                </h1>
+                <button
+                  className="text-[12px] px-2"
+                  onClick={() => setScreenIds([])}
+                >
+                  Clear All
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-1 justify-center px-1 py-1">
+                {getDataFromLocalStorage(
+                  ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                )
+                  ?.screensList?.filter((s: any) => screenIds.includes(s.value))
+                  ?.map((screen: any, i: any) => (
+                    <div
+                      key={i}
+                      className="border rounded-[8px] flex justify-center gap-1 px-2 py-1"
+                    >
+                      <h1 className="text-[12px] truncate">{screen.label}</h1>
+                      <i
+                        className={`fi fi-br-cross flex items-center text-red-500 text-[10px]`}
+                        onClick={() => handleRemoveScreenIds(screen.value)}
+                      ></i>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>

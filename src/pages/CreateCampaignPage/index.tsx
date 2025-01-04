@@ -60,7 +60,7 @@ export const CreateCampaignPage: React.FC = () => {
   }, [dispatch, campaignId]);
 
   return (
-    <div className="w-full h-full items-center">
+    <div className="w-full h-full items-center ">
       {step === 1 ? (
         <EnterCampaignBasicDetails
           userInfo={userInfo}

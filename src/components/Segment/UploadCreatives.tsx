@@ -252,7 +252,7 @@ export const UploadCreatives = ({
   };
 
   return (
-    <div className="w-full py-3">
+    <div className="w-full py-1 px-4">
       {isBucketPopupOpen && (
         <UploadCreativesFromBucketPopup
           onClose={closePopup}
@@ -282,7 +282,7 @@ export const UploadCreatives = ({
           />
         </div>
       )}
-      <div className="border rounded-[12px] py-4 px-2">
+      <div className="border rounded-[12px] py-4 px-2 bg-white">
         <div className="w-full flex justify-between ">
           <div className="flex gap-1 items-center">
             <i
@@ -362,7 +362,7 @@ export const UploadCreatives = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-1 py-4">
+      <div className="grid grid-cols-12 gap-1 p-4 bg-white mt-1 rounded-lg">
         {/* <div className="col-span-2 border rounded-[12px] p-2">
           <div className="flex justify-between items-center border-b py-1">
             <h1 className="text text-[12px] font-semibold">Filter</h1>
@@ -396,7 +396,7 @@ export const UploadCreatives = ({
             </div>
           </div>
         </div> */}
-        <div className="col-span-12 border rounded-[12px] py-2 px-4">
+        <div className="col-span-12 rounded-[12px]">
           <div className="flex justify-between items-center border-b py-1">
             <div className="py-2 px-4 w-96">
               <SearchInputField

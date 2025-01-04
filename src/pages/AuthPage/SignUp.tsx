@@ -76,8 +76,8 @@ export const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10">
+    <div className="flex flex-col justify-center items-center bg-gray-100 h-full">
+      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10 shadow-lg">
         <div className="flex flex-col gap-4">
           <h1 className="items-center text-xl font-bold">Welcome Planner</h1>
 

@@ -146,7 +146,7 @@ export const MyCreativesPage: React.FC = () => {
         />
 
         <div className="grid grid-cols-12 gap-1 py-1">
-          <div className="col-span-4 bg-white px-4">
+          <div className="col-span-3 bg-white px-4">
             <div className="flex justify-between items-center py-4">
               <h1 className="text-[14px] font-semibold">Brand</h1>
               <div
@@ -198,7 +198,7 @@ export const MyCreativesPage: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="col-span-8 bg-white px-4">
+          <div className="col-span-9 bg-white px-4">
             {brandName && (
               <div className="p-2">
                 <div className="border-b py-1 pb-4 flex items-center justify-between pr-8">
@@ -281,7 +281,7 @@ export const MyCreativesPage: React.FC = () => {
                       ]}
                     />
                   </div>
-                  <div className="pt-1 h-[60vh] overflow-scroll">
+                  <div className="pt-1 h-[60vh] overflow-scroll no-scrollbar">
                     {getJSXValue(currentTab == "1" ? "video" : "image")}
                   </div>
                 </div>

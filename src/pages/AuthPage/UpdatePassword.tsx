@@ -49,8 +49,8 @@ export const UpdatePassword = (props: any) => {
     }
   };
   return (
-    <div className="flex justify-center pt-16">
-      <div className="border border-solid p-8 gap-1 w-full max-w-96 ">
+    <div className="flex flex-col justify-center items-center bg-gray-100 h-full">
+      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10 shadow-lg">
         <div className="flex flex-col gap-1">
           <h1 className="text-xl py-2 text-[#129BFF] font-bold">
             Set New Password

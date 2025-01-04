@@ -47,11 +47,10 @@ export const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10">
+    <div className="flex flex-col justify-center items-center h-full bg-gray-100">
+      <div className="w-[90%] lg:w-[400px] rounded-[15px] bg-white px-5 lg:px-8 py-6 lg:py-10 shadow-lg">
         <div className="flex flex-col gap-4">
           <h1 className="items-center text-xl font-bold"> Welcome Back</h1>
-
           <Form
             layout="vertical"
             initialValues={{ remember: true }}
@@ -74,7 +73,6 @@ export const SignIn: React.FC = () => {
               ]}
             >
               <Input
-                // addonBefore={<AiOutlineUser color="#555555" />}
                 value={email}
                 placeholder="Enter username or email"
                 onChange={(e) => setEmail(e.target.value)}
