@@ -6,6 +6,7 @@ export function BrandCampaignScreenDetails({
   brandName,
   campaign,
   campaignIds,
+  showTimer,
 }: any) {
   return (
     <div className="group relative my-1">
@@ -28,12 +29,14 @@ export function BrandCampaignScreenDetails({
             {campaign?.name}
           </h1>
           <p className="text-[10px] truncate">{brandName}</p>
-          <p className="text-[10px] truncate">
-            <Tooltip title="Campaign duration">
-              <i className="fi fi-rr-calendar-clock pr-1"></i>
-            </Tooltip>
-            {campaign?.campaignDuration} days
-          </p>
+          {showTimer && (
+            <p className="text-[10px] truncate">
+              <Tooltip title="Campaign duration">
+                <i className="fi fi-rr-calendar-clock pr-1"></i>
+              </Tooltip>
+              {campaign?.campaignDuration} days
+            </p>
+          )}
         </div>
       </div>
       {showIcons && (

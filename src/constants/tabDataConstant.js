@@ -37,39 +37,40 @@ export const creativeTypeTab = [
 export const campaignTypeTabs = [
   {
     id: "1",
-    label: "Active",
-    value: "Active",
-  },
-  {
-    id: "2",
-    label: "Upcoming",
-    value: "Pending",
-  },
-  {
-    id: "3",
-    label: "Paused",
-    value: "Pause",
-  },
-  {
-    id: "4",
-    label: "Completed",
-    value: "Completed",
-  },
-  {
-    id: "5",
-    label: "Deleted",
-    value: "Deleted",
-  },
-  {
-    id: "6",
     label: "Live",
     value: "Live",
   },
   {
+    id: "2",
+    label: "Active",
+    value: "Active",
+  },
+  {
+    id: "3",
+    label: "Upcoming",
+    value: "Pending",
+  },
+  {
+    id: "4",
+    label: "Paused",
+    value: "Pause",
+  },
+  {
+    id: "5",
+    label: "Completed",
+    value: "Completed",
+  },
+  {
+    id: "6",
+    label: "Deleted",
+    value: "Deleted",
+  },
+
+  {
     id: "7",
     label: "Default",
     value: "Default",
-  }
+  },
 ];
 
 export const campaignCreationTypeTabs = [
