@@ -329,7 +329,7 @@ export const EnterCampaignBasicDetails = ({
   };
 
   return (
-    <div className="w-full px-4 py-1 w-full h-full overflow-scroll scrollbar-minimal ">
+    <div className="w-full px-4 py-1 w-full h-full overflow-y-auto scrollbar-minimal ">
       <EnterTimeTriggerPopup
         open={open}
         onClose={handleOpenCloseAddTimeTrigger}

@@ -146,7 +146,7 @@ export const ScreensPage: React.FC = () => {
             action={toggleOpen}
             title="+ Screen Code"
             rounded="rounded-lg"
-            height="h-10"
+            height="h-8"
             width="w-32"
             textSize="text-[12px] font-semibold"
             reverse={true}
@@ -186,7 +186,7 @@ export const ScreensPage: React.FC = () => {
             {loadingNetworkList ? (
               <Loading />
             ) : (
-              <div className="mt-1 h-[70vh] overflow-scroll no-scrollbar">
+              <div className="mt-1 h-[70vh] overflow-y-auto no-scrollbar">
                 {Object.keys(networks)?.map((network: string) => (
                   <div
                     className="flex justify-between text-sm pt-4"
@@ -215,7 +215,7 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-[80vw] h-[85vh] overflow-scroll scrollbar-minimal pr-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-[80vw] h-[85vh] overflow-y-auto scrollbar-minimal pr-2">
           {loading ? (
             <Loading />
           ) : (
@@ -225,7 +225,6 @@ export const ScreensPage: React.FC = () => {
                   isSelected={data._id === selectedCard}
                   color={""}
                   handleCardClick={() => handleCardClick(data._id)}
-                  // navigate={() => navigate(`/screens-details/${data._id}`)}
                   data={data}
                 />
               </div>

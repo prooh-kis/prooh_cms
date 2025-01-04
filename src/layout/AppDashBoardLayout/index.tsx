@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   CAMPAIGNS_LIST,
@@ -13,31 +13,40 @@ import {
 } from "../../routes/routes";
 import userImage from "../../assets/userImage.png";
 import { Menu } from "../../components/header/Menu";
-import { useDispatch } from "react-redux";
 import { signout } from "../../actions/userAction";
 import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
 import { message } from "antd";
 import { Header } from "../../components/header";
 import { ConformationModel } from "../../components/popup/ConformationModel";
 
-export const AppDashBoardLayout = (props: any) => {
-  const { children } = props;
+interface AppDashBoardLayoutProps {
+  children: React.ReactNode;
+  value: string;
+}
+
+export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
+  children,
+  value,
+}) => {
   const dispatch = useDispatch<any>();
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(props.value);
-  const [open, setOpen] = useState<boolean>(false);
+  const [current, setCurrent] = useState<string>(value);
+
+  useEffect(() => {
+    setCurrent(value);
+  }, [value]);
+
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else if (userInfo?.userRole !== USER_ROLE_PRIMARY) {
-      // message.error("You have no access");
       navigate(SCREENS_LIST_FOR_SECONDARY_USER);
     }
-  }, []);
+  }, [userInfo, navigate]);
 
-  const data = [
+  const menuItems = [
     {
       value: "My Screens",
       path: SCREENS_LIST,
@@ -70,98 +79,71 @@ export const AppDashBoardLayout = (props: any) => {
     },
   ];
 
-  const handleClick = (index: number) => {
-    setCurrent(data[index].option);
-    navigate(data[index].path);
-  };
-  const signOutHandler = () => {
-    dispatch(signout());
-    navigate(SIGN_IN);
+  const handleMenuClick = (index: number) => {
+    setCurrent(menuItems[index].option);
+    navigate(menuItems[index].path);
   };
 
-  const toggleOpen = () => {
-    setOpen(!open);
+  const handleSignOut = () => {
+    if (window.confirm("Do you want to log out?")) {
+      dispatch(signout());
+      navigate(SIGN_IN);
+    }
   };
 
   return (
-    <div className="h-[100vh] w-[100vw] p-0 m-0 bg-gray-100">
+    <div className="h-screen w-screen bg-gray-100 ">
       <Header />
-      <ConformationModel open={open} onClose={toggleOpen} />
-      <div className="flex gap-1 mt-1">
-        <div className="h-[92vh] w-[15vw] overflow-scroll no-scrollbar flex flex-col bg-white">
-          <div className="flex flex-col px-2 mt-4">
+      <div className="flex mt-1 gap-1">
+        {/* Sidebar */}
+        <div className="h-[92vh] w-[15vw] bg-white overflow-y-auto flex flex-col">
+          <div className="flex flex-col justify-between h-full pt-2 px-2">
+            {/* Menu Items */}
+            <div className="space-y-4">
+              {menuItems.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleMenuClick(index)}
+                  className={`flex items-center gap-2 px-2 rounded-lg text-md  py-2 ${
+                    current === item.option
+                      ? "text-[#129BFF] font-bold bg-[#ECF7FF]"
+                      : "text-[#8D9DA7] font-semibold"
+                  }`}
+                >
+                  <div className="flex items-center gap-6">
+                    <div
+                      className={`h-6 w-[3px] ${
+                        current === item.option ? "bg-[#129BFF]" : ""
+                      }`}
+                    ></div>
+                    <i className={item.icon}></i>
+                  </div>
+                  <span>{item.option}</span>
+                </div>
+              ))}
+            </div>
+            {/* Logout */}
             <div
-              onClick={() => {
-                toggleOpen();
-              }}
-              className={
-                current === ""
-                  ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1 text-[14px]"
-                  : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1 text-[14px]"
-              }
+              onClick={handleSignOut}
+              className={`flex items-center gap-4 px-2 py-1 rounded-lg text-md cursor-pointer ${
+                current === "Log out"
+                  ? "text-[#129BFF] font-bold bg-[#ECF7FF]"
+                  : "text-[#8D9DA7] font-semibold"
+              }`}
             >
               <div className="flex items-center gap-6">
                 <div
-                  className={
-                    current === ""
-                      ? "h-[24px] w-[3px] bg-[#129BFF]"
-                      : "h-[24px] w-[3px]"
-                  }
+                  className={`h-6 w-[3px] ${
+                    current === "Log out" ? "bg-[#129BFF]" : ""
+                  }`}
                 ></div>
-                <i className="fi fi-sr-time-fast "></i>
+                <i className="fi fi-br-power"></i>
               </div>
-              <h1 className="">Quick Upload</h1>
-            </div>
-            <div className="flex flex-col pt-6 justify-between h-[85vh]">
-              <div className="flex flex-col gap-4">
-                {data?.map((d: any, index: number) => (
-                  <div
-                    key={index}
-                    onClick={() => handleClick(index)}
-                    className={
-                      current === d.option
-                        ? "flex gap-4 items-center text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1 text-[14px]"
-                        : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1 text-[14px]"
-                    }
-                  >
-                    <div className="flex items-center gap-6">
-                      <div
-                        className={
-                          current === d.option
-                            ? "h-[24px] w-[3px] bg-[#129BFF]"
-                            : "h-[24px] w-[3px]"
-                        }
-                      ></div>
-                      <i className={d.icon}></i>
-                    </div>
-                    <h1 className="">{d.value}</h1>
-                  </div>
-                ))}
-              </div>
-              <div
-                onClick={signOutHandler}
-                className={
-                  current === "logOut"
-                    ? "flex gap-4 items-center  text-[#129BFF] font-bold bg-[#ECF7FF]  w-[14vw]  px-2 py-1"
-                    : "flex gap-4 items-center text-[#8D9DA7] font-semibold w-[14vw] px-2 py-1"
-                }
-              >
-                <div className="flex items-center gap-6">
-                  <div
-                    className={
-                      current === "logOut"
-                        ? "h-[24px] w-[3px] bg-[#129BFF]"
-                        : "h-[24px] w-[3px]"
-                    }
-                  ></div>
-                  <i className="fi fi-br-power "></i>
-                </div>
-                <h1 className="text-[14px]">Log out</h1>
-              </div>
+              <span>Log out</span>
             </div>
           </div>
         </div>
-        {/* container */}
+        {/* Content */}
         <div className="h-[92vh] w-[85vw]">{children}</div>
       </div>
     </div>

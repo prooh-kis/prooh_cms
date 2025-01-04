@@ -167,7 +167,7 @@ export const MonitoringPage: React.FC = () => {
         fileType={fileType}
       />
       {openCalendarPopup && (
-        <div className="overflow-scroll no-scrollbar">
+        <div className="overflow-y-auto no-scrollbar">
           <CalendarPopup
             onClose={() => setOpenCalendarPopup(false)}
             dates={allDates}
@@ -199,7 +199,7 @@ export const MonitoringPage: React.FC = () => {
             {loading ? (
               <Loading />
             ) : (
-              <div className="p-1 overflow-scroll no-scrollbar h-[75vh] bg-white">
+              <div className="p-1 overflow-y-auto scrollbar-minimal h-[75vh] bg-white">
                 {getDataFromLocalStorage(ALL_SCREENS_LIST)
                   ?.list?.filter((screen: any) =>
                     screen?.screenName
@@ -243,7 +243,7 @@ export const MonitoringPage: React.FC = () => {
             {loadingCampaigns ? (
               <Loading />
             ) : (
-              <div className="p-1 overflow-scroll no-scrollbar h-[75vh] bg-white">
+              <div className="p-1 overflow-y-auto scrollbar-minimal h-[75vh] bg-white">
                 {campaigns ? (
                   campaigns
                     ?.filter((campaign: any) =>

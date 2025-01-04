@@ -103,9 +103,9 @@ export function AddDefaultMediaPopup({
           className="relative inset-0 flex items-center justify-end gap-4 p-3"
           onClick={() => setOpenAddDefaultMediaPopup(false)}
         >
-          <i className="fi fi-br-circle-xmark"></i>
+          <i className="fi fi-rr-cross-small"></i>
         </div>
-        <div className="p-2 overflow-scroll no-scrollbar h-[60vh]">
+        <div className="p-2 overflow-y-auto no-scrollbar h-[60vh]">
           {loadingCreatives ? (
             <Loading />
           ) : (
@@ -125,7 +125,7 @@ export function AddDefaultMediaPopup({
                         Reset
                       </button>
                     </div>
-                    <div className="flex flex-wrap justify-center overflow-scroll no-scrollbar h-[30vh] gap-4">
+                    <div className="flex flex-wrap justify-center overflow-y-auto no-scrollbar h-[30vh] gap-4">
                       {mediaFiles?.map((media: any, index: any) => (
                         <ShowMediaFile
                           url={media.awsURL || media.url}

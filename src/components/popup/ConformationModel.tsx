@@ -12,7 +12,7 @@ export function ConformationModel({ open, onClose }: any) {
           className="relative inset-0 flex items-center justify-end gap-4 p-3"
           onClick={onClose}
         >
-          <i className="fi fi-br-circle-xmark"></i>
+          <i className="fi fi-rr-cross-small"></i>
         </div>
         <div className="flex flex-col justify-center items-center  p-2">
           <img

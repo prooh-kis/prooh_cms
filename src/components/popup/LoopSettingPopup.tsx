@@ -193,7 +193,7 @@ export function LoopSettingPopup({
               className="relative inset-0 flex items-center justify-end gap-4 p-3"
               onClick={() => onClose(false)}
             >
-              <i className="fi fi-br-circle-xmark"></i>
+              <i className="fi fi-rr-cross-small"></i>
             </div>
           </div>
         </div>
@@ -209,7 +209,7 @@ export function LoopSettingPopup({
                 action={setCampaignName}
               />
             </div>
-            <div className="my-1 h-[58vh] overflow-scroll no-scrollbar">
+            <div className="my-1 h-[58vh] overflow-y-auto no-scrollbar">
               {campaigns &&
                 campaigns?.map((camp: Campaign, i: number) => (
                   <div
@@ -232,7 +232,7 @@ export function LoopSettingPopup({
           </div>
 
           {/* Right Section */}
-          <div className="col-span-8 px-8 mt-8 h-[60vh] overflow-scroll no-scrollbar">
+          <div className="col-span-8 px-8 mt-8 h-[60vh] overflow-y-auto no-scrollbar">
             {totalSlots?.map((_, j) => (
               <div
                 key={j}

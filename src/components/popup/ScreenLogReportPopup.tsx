@@ -17,37 +17,27 @@ export const ScreenLogReportPopup = React.memo(function ScreenLogReport(
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4  shadow-lg w-9/12 max-w-full relative overflow-auto max-h-auto no-scrollbar"
+        className="bg-white p-4   px-8 shadow-lg w-9/12 max-w-full relative max-h-auto rounded-[20px] "
         style={{ height: "70vh", width: "80vw" }}
       >
-        <div className="flex justify-between">
-          <h1 className="py-4 text-lg font-bold">
+        <div className="flex items-center justify-between">
+          <h1 className="py-4 text-lg font-bold text-[20px]">
             Screen logs report{" "}
-            <span className="text-[#348730]">{screenLogs?.length}</span>
+            <span className="text-[16px] text-[#348730]">
+              ({screenLogs?.length})
+            </span>
           </h1>
           <i
             onClick={() => onClose(false)}
-            className="fi fi-br-circle-xmark"
+            className="fi fi-rr-cross-small text-[20px]"
           ></i>
         </div>
 
         {loading ? (
           <Skeleton active={true} />
         ) : (
-          <div className="auto">
-            {/* <FileExporter
-              excelData={screenLogs?.map((c: any, i: any) => {
-                return {
-                  "SN.": i + 1,
-                  "Time of playback": convertDataTimeToLocale(c.time),
-                  "Device Status": c.screenStatus,
-                  "Campaign Name": c?.campaignName || "N/A",
-                  "Brand Name": c?.brandName || "N/A",
-                };
-              })}
-              fileName={`${screenName}`}
-            /> */}
-            <table className="auto ">
+          <div className="h-[60vh] overflow-y-auto scrollbar-minimal">
+            <table className="auto  w-full ">
               <thead>
                 <tr>
                   <th className="border px-4">Sl. No</th>

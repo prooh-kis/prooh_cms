@@ -73,7 +73,7 @@ export const EnterTimeTriggerPopup = ({
       <div className="border bg-white rounded-[10px] h-1/2 w-1/2 p-8">
         <div className="flex justify-between">
           <h1 className="text-[24px] font-bold">Schedule Ad Play Time</h1>
-          <i className="fi fi-br-circle-xmark" onClick={onClose}></i>
+          <i className="fi fi-rr-cross-small" onClick={onClose}></i>
         </div>
         <div className="pt-4">
           <div className="flex gap-12 border-b text-[14px]">

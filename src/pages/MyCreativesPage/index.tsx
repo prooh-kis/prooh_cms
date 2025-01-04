@@ -149,13 +149,12 @@ export const MyCreativesPage: React.FC = () => {
           <div className="col-span-3 bg-white px-4">
             <div className="flex justify-between items-center py-4">
               <h1 className="text-[14px] font-semibold">Brand</h1>
-              <div
-                className="flex gap-1 items-center text-[#129BFF]"
+              <button
                 onClick={() => handleOpenCreateCreativePopup("New")}
+                className="w-24 h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4"
               >
-                <i className="fi fi-br-plus-small flex items-center"></i>
-                <h1 className="text-[12px] ">Folder</h1>
-              </div>
+                + Folder
+              </button>
             </div>
             <SearchInputField
               placeholder="Search By brand name"
@@ -168,7 +167,7 @@ export const MyCreativesPage: React.FC = () => {
               {loadingCreatives ? (
                 <Loading />
               ) : (
-                <div className="h-[75vh] overflow-scroll scrollbar-minimal  ">
+                <div className="h-[70vh] overflow-y-auto scrollbar-minimal  ">
                   {creatives &&
                     Object.keys(creatives)
                       ?.filter((brand: string) =>
@@ -209,13 +208,12 @@ export const MyCreativesPage: React.FC = () => {
                   ></i> */}
                     <h1 className="text-[14px] font-semibold">{brandName}</h1>
                   </div>
-                  <div
-                    className="flex gap-1 items-center text-[#129BFF]"
+                  <button
                     onClick={() => handleOpenCreateCreativePopup("Old")}
+                    className="w-40 h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4"
                   >
-                    <i className="fi fi-br-plus-small flex items-center"></i>
-                    <h1 className="text-[12px]">Creative Media</h1>
-                  </div>
+                    + Creative Media
+                  </button>
                 </div>
                 <div className="grid grid-cols-3 gap-1 py-2">
                   <div className="col-span-1 py-1">
@@ -281,7 +279,7 @@ export const MyCreativesPage: React.FC = () => {
                       ]}
                     />
                   </div>
-                  <div className="pt-1 h-[60vh] overflow-scroll no-scrollbar">
+                  <div className="pt-1 h-[60vh] overflow-y-auto scrollbar-minimal">
                     {getJSXValue(currentTab == "1" ? "video" : "image")}
                   </div>
                 </div>

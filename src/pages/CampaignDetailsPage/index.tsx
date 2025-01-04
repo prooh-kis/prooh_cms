@@ -489,7 +489,7 @@ export const CampaignDetailsPage: React.FC = () => {
                 tabData={creativeTypeTab}
               />
             </div>
-            <div className="h-[40vh] overflow-scroll no-scrollbar pr-2">
+            <div className="h-[40vh] overflow-y-auto no-scrollbar pr-2">
               {campaignCreated?.creatives?.map((c: any, i: any) => (
                 <div key={i}>
                   {c?.[currentTab]?.length > 0 && (
@@ -558,7 +558,7 @@ export const CampaignDetailsPage: React.FC = () => {
           {loadingScreens ? (
             <Loading />
           ) : (
-            <div className="h-[79vh] overflow-scroll no-scrollbar py-2  flex flex-col gap-4">
+            <div className="h-[79vh] overflow-y-auto no-scrollbar py-2  flex flex-col gap-4">
               {campaigns?.length === 0 && <NoDataView />}
               {campaigns?.map((camp: any, k: any) => (
                 <div

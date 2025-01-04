@@ -48,7 +48,7 @@ export function EditCampaignCreationAndItsSubCampaigns({
           className="relative inset-0 flex items-center justify-end gap-4"
           onClick={() => onClose()}
         >
-          <i className="fi fi-br-circle-xmark"></i>
+          <i className="fi fi-rr-cross-small"></i>
         </div>
         <h1>Edit Campaign: {campaignCreation?.campaignName}</h1>
 

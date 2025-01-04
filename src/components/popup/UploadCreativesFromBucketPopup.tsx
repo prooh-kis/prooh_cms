@@ -272,7 +272,7 @@ export function UploadCreativesFromBucketPopup({
           <h1 className="text-[20px] text-[#092A41] font-bold">
             Choose Creatives
           </h1>
-          <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
+          <i className="fi fi-rr-cross-small" onClick={() => onClose()}></i>
         </div>
         <div className="flex pt-4">
           <div className="w-[80%] border border-1">

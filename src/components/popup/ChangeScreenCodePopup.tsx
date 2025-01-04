@@ -69,7 +69,7 @@ export function ChangeScreenCodePopup({
           className="relative inset-0 flex items-center justify-end gap-4 p-3"
           onClick={() => onClose()}
         >
-          <i className="fi fi-br-circle-xmark"></i>
+          <i className="fi fi-rr-cross-small"></i>
         </div>
         <div className="p-2">
           <h1 className="text-[14px]">Change screen code to play campaigns</h1>
