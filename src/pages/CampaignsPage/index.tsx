@@ -121,7 +121,7 @@ export const CampaignsPage: React.FC = () => {
               <NoDataView />
             </div>
           )}
-          <div className="h-[80vh] overflow-scroll mt-1">
+          <div className="h-[80vh] overflow-scroll scrollbar-minimal mt-1">
             {allCampaigns
               ?.filter(
                 (campaign: any) =>

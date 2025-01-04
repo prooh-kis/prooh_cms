@@ -130,7 +130,7 @@ export const ScreensPage: React.FC = () => {
         <div className="flex gap-4 items-center p-4 ">
           <h1 className="text-[16px] font-semibold">
             My Screens{" "}
-            <span className="text-[18px] text-[#68879C] ">
+            <span className="text-[14px] text-[#68879C] ">
               ({filterScreens?.length})
             </span>
           </h1>

@@ -249,7 +249,7 @@ export const AllCampaignLogsPopup = ({
         {loadingScreens ? (
           <Loading />
         ) : (
-          <div className="h-[70vh] overflow-scroll px-4">
+          <div className="h-[70vh] overflow-scroll scrollbar-minimal px-4">
             {filteredScreens?.map((screen: any, k: any) => (
               <div className="flex justify-between " key={k}>
                 <div

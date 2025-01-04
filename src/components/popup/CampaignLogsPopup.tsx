@@ -40,8 +40,8 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
         {loading ? (
           <Skeleton active paragraph={{ rows: 12 }} />
         ) : logs?.logs?.length > 0 ? (
-          <div className="p-2 overflow-scroll h-[60vh]">
-            <table className="auto overflow-scroll  h-[20rem] ">
+          <div className="p-2 overflow-scroll h-[60vh] scrollbar-minimal">
+            <table className="auto overflow-scroll  h-[20rem] scrollbar-minimal ">
               <thead>
                 <tr className="gap-4">
                   <th className="border p-2 ">Sl. No</th>
