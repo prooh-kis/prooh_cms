@@ -183,12 +183,9 @@ export const ScreensPage: React.FC = () => {
                 ></i>
               )} */}
             </div>
-            {loadingNetworkList && (
-              <div>
-                <Loading />
-              </div>
-            )}
-            {showNetwork && (
+            {loadingNetworkList ? (
+              <Loading />
+            ) : (
               <div className="mt-1 h-[70vh] overflow-scroll no-scrollbar">
                 {Object.keys(networks)?.map((network: string) => (
                   <div
@@ -218,7 +215,7 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-6 gap-2  w-[80vw] h-[85vh] overflow-scroll  pr-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-[80vw] h-[85vh] overflow-scroll scrollbar-minimal pr-2">
           {loading ? (
             <Loading />
           ) : (

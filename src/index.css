@@ -42,3 +42,30 @@ code {
   scrollbar-width: none;
   /* Firefox */
 }
+
+/* Minimal-width scrollbar */
+.scrollbar-minimal {
+  scrollbar-width: thin;
+  /* For Firefox */
+  scrollbar-color: "#55758B" transparent;
+  /* Thumb and track colors */
+}
+
+.scrollbar-minimal::-webkit-scrollbar {
+  width: 2px;
+  /* Width of the scrollbar for vertical scroll */
+  height: 4px;
+  /* Height of the scrollbar for horizontal scroll */
+}
+
+.scrollbar-minimal::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.7);
+  /* Thumb color */
+  border-radius: 8px;
+  /* Rounded corners for thumb */
+}
+
+.scrollbar-minimal::-webkit-scrollbar-track {
+  background: transparent;
+  /* Transparent track */
+}
