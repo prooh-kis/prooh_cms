@@ -2,12 +2,12 @@ import React, { useRef, ChangeEvent, useEffect, useState } from "react";
 
 interface FileUploaderProps {
   handleFilesUploader: (files: FileList) => void;
-  fileType : string
+  fileType: string;
 }
 
 export const MultipleFileUploader: React.FC<FileUploaderProps> = ({
   handleFilesUploader,
-  fileType = "all"
+  fileType = "all",
 }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -35,7 +35,7 @@ export const MultipleFileUploader: React.FC<FileUploaderProps> = ({
   return (
     <div className="py-2">
       <button
-        className="p-2 w-full border rounded h-20 bg-sky-400 text-white"
+        className="p-2 w-full border rounded h-20 bg-[#129BFF] text-white"
         onClick={handleClick}
       >
         Upload multiple files

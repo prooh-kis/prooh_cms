@@ -36,6 +36,7 @@ import {
   CampaignLogsPopup,
   NoDataView,
   AllCampaignLogsPopup,
+  PrimaryButton,
 } from "../../components";
 import {
   getDataFromLocalStorage,
@@ -48,6 +49,7 @@ import {
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { creativeTypeTab } from "../../constants/tabDataConstant";
+import { MY_CREATIVES } from "../../routes/routes";
 
 export const CampaignDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -340,19 +342,19 @@ export const CampaignDetailsPage: React.FC = () => {
         <div className="col-span-8">
           <div className="w-full border rounded py-4 bg-white">
             <div className="flex justify-between pb-2 mx-1 border-b">
-              <div className="flex items-center">
+              <div className="flex items-center gap-4">
                 <i
-                  className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
+                  className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
                   onClick={() => navigate(-1)}
                 ></i>
                 <div
                   className={
                     campaignCreated
-                      ? `rounded px-6 bg-[${generateColorFromAlphabet(
+                      ? `rounded  bg-[${generateColorFromAlphabet(
                           campaignCreated?.brandName.split("")[0],
                           0
                         )}]`
-                      : `rounded px-6 bg-gray-100`
+                      : `rounded bg-gray-100`
                   }
                 >
                   <h1 className="text-[40px] text-gray-400 font-bold bg-gray-100 px-4">
@@ -445,22 +447,41 @@ export const CampaignDetailsPage: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="px-4 p-2">
-              <div className="grid grid-cols-8 gap-4">
-                <h1 className="col-span-2 text-[12px]">Start Date</h1>
-                <h1 className="col-span-3 text-[12px]">
+            <h1 className="px-9 text-[#092A41] text-[15px] font-normal mt-2">
+              Basic Details
+            </h1>
+            <div className="px-9 p-2 flex gap-8">
+              <div className="flex flex-col gap-2">
+                <h1 className=" text-[12px]">Start Date</h1>
+                <h1 className=" text-[12px]">End Date</h1>
+              </div>
+              <div className="flex flex-col gap-2">
+                <h1 className=" text-[12px]">
                   {convertDataTimeToLocale(campaignCreated?.startDate)}
                 </h1>
-              </div>
-              <div className="grid grid-cols-8 gap-4">
-                <h1 className="col-span-2 text-[12px]">End Date</h1>
-                <h1 className="col-span-3 text-[12px]">
+                <h1 className="text-[12px]">
                   {convertDataTimeToLocale(campaignCreated?.endDate)}
                 </h1>
               </div>
             </div>
           </div>
           <div className="border rounded my-1 p-4 bg-white">
+            <div className="flex justify-between">
+              <h1 className="text-[#092A41] text-[16px] font-semibold mt-2 px-1">
+                Campaign Creatives
+              </h1>
+              <PrimaryButton
+                action={() => navigate(MY_CREATIVES)}
+                title="+ Creatives"
+                rounded="rounded-full"
+                height="h-10"
+                width="w-28"
+                textSize="text-[12px] font-semibold"
+                reverse={true}
+                loading={false}
+                loadingText="Saving..."
+              />
+            </div>
             <div className="border-b">
               <TabWithoutIcon
                 currentTab={currentTab}
@@ -468,7 +489,7 @@ export const CampaignDetailsPage: React.FC = () => {
                 tabData={creativeTypeTab}
               />
             </div>
-            <div className="h-[50vh] overflow-scroll no-scrollbar pr-2">
+            <div className="h-[40vh] overflow-scroll no-scrollbar pr-2">
               {campaignCreated?.creatives?.map((c: any, i: any) => (
                 <div key={i}>
                   {c?.[currentTab]?.length > 0 && (
@@ -537,13 +558,16 @@ export const CampaignDetailsPage: React.FC = () => {
           {loadingScreens ? (
             <Loading />
           ) : (
-            <div className="h-[70vh] overflow-scroll no-scrollbar py-2  flex flex-col gap-4">
+            <div className="h-[79vh] overflow-scroll no-scrollbar py-2  flex flex-col gap-4">
               {campaigns?.length === 0 && <NoDataView />}
               {campaigns?.map((camp: any, k: any) => (
                 <div
                   key={k}
                   className="p-0 m-0"
                   onClick={() => handelSelectScreen(camp?._id)}
+                  onDoubleClick={() =>
+                    navigate(`/screens-details/${camp?.screenId}`)
+                  }
                 >
                   <ScreenListMonitoringView
                     handleChangeCampaignStatus={handleChangeCampaignStatus}

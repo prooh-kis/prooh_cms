@@ -8,7 +8,7 @@ export const PageNotFound: React.FC = () => {
         <span className="font-bold">404</span> | Page Not Found
       </p>
       <Link to="/">
-        <p className="mt-1 text-sm underline text-blue-600"></p>
+        <p className="mt-1 text-sm underline text-[#129BFF]"></p>
         Go Home
       </Link>
     </div>

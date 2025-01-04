@@ -58,7 +58,7 @@ export const EnterTimeTriggerPopup = ({
         (data: any) => data.day === currentTab && data.startTime === time
       )
     ) {
-      return "p-4 border border-1  bg-sky-500 text-[#ffffff] font-bold text-[16px]";
+      return "p-4 border border-1  bg-[#129BFF] text-[#ffffff] font-bold text-[16px]";
     } else {
       return "text-[16px] p-4 border border-1 ";
     }
@@ -85,11 +85,11 @@ export const EnterTimeTriggerPopup = ({
               >
                 <h1
                   className={
-                    currentTab === data.id ? "text-sky-500 font-bold" : ""
+                    currentTab === data.id ? "text-[#129BFF] font-bold" : ""
                   }
                 >
                   {data?.label}{" "}
-                  <span className="text-sky-400 pl-8">
+                  <span className="text-[#129BFF] pl-8">
                     {values?.find((data1: any) => data1.day === data.id) && (
                       <i className="fi fi-br-check "></i>
                     )}
@@ -98,7 +98,7 @@ export const EnterTimeTriggerPopup = ({
                 <div
                   className={
                     currentTab === data?.id
-                      ? "border border-2 border-sky-400"
+                      ? "border border-2 border-[#129BFF]"
                       : ""
                   }
                 />
@@ -156,7 +156,7 @@ export const EnterTimeTriggerPopup = ({
                 handleSave(values);
                 onClose();
               }}
-              className="border-2 p-2 px-8 border-sky-500 text-[#ffffff]  bg-sky-500 hover:text-sky-500 hover:bg-[#ffffff]  hover:text-sky-500 "
+              className="border-2 p-2 px-8 border-[#129BFF] text-[#ffffff]  bg-[#129BFF] hover:text-[#129BFF] hover:bg-[#ffffff]  hover:text-[#129BFF] "
             >
               Done
             </button>

@@ -199,7 +199,7 @@ export const ScreensPage: React.FC = () => {
                         value={network}
                         checked={selectedNetwork.includes(network)}
                         onChange={() => handleSelectNetwork(network)}
-                        className="form-checkbox rounded text-[#129BFF] text-[12px] border-sky-500"
+                        className="form-checkbox rounded text-[#129BFF] text-[12px] border-[#129BFF]"
                       />
 
                       <span>

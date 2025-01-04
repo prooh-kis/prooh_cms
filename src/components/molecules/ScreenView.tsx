@@ -57,7 +57,7 @@ export function ScreenView({
                 onClick={() => {
                   handleEditCampaign(screen._id);
                 }}
-                className="px-2 py-1 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                className="px-2 py-1 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
               >
                 Edit Campaign
               </div>
@@ -66,7 +66,7 @@ export function ScreenView({
                   onClick={() => {
                     handleChangeCampaignStatus("Pause", screen._id);
                   }}
-                  className="px-2 py-1 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                  className="px-2 py-1 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                 >
                   Pause campaign
                 </div>
@@ -76,7 +76,7 @@ export function ScreenView({
                   onClick={() => {
                     handleChangeCampaignStatus("Delete", screen._id);
                   }}
-                  className="px-2 py-1 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                  className="px-2 py-1 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                 >
                   Delete campaign
                 </div>
@@ -86,7 +86,7 @@ export function ScreenView({
                   onClick={() => {
                     handleChangeCampaignStatus("Active", screen._id);
                   }}
-                  className="px-2 py-1 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                  className="px-2 py-1 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                 >
                   Activate Again
                 </div>

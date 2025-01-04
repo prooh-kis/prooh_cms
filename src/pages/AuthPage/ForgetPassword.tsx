@@ -106,7 +106,7 @@ export function ForgetPassword(props: any) {
               Already have an account?
             </p>
             <p
-              className="text-sm font-semibold text-blue-600 cursor-pointer underline"
+              className="text-sm font-semibold text-[#129BFF] cursor-pointer underline"
               onClick={() => navigate(SIGN_IN)}
             >
               Login Now

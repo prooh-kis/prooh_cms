@@ -74,14 +74,14 @@ export const Menu = (props: any) => {
                 toggleDropdown();
                 navigate(data.path);
               }}
-              className="px-4 py-2  text-gray-700 hover:bg-sky-600 hover:text-white  hover:font-semibold  hover:text-md cursor-pointer"
+              className="px-4 py-2  text-gray-700 hover:bg-[#129BFF] hover:text-white  hover:font-semibold  hover:text-md cursor-pointer"
             >
               {data?.label}
             </div>
           ))}
           <div
             onClick={signOutHandler}
-            className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+            className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
           >
             Log out
           </div>

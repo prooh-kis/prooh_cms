@@ -183,14 +183,18 @@ export const MonitoringPage: React.FC = () => {
         </div>
         <div className="grid grid-cols-12 gap-1 mt-1">
           <div className="col-span-3 bg-white">
-            <div className="w-full py-2 px-4">
-              <h1 className="text-[16px] font-semibold py-2">Screen List</h1>
-              <SearchInputField
-                placeholder="Screen Name"
-                value={searchQuery}
-                onChange={setSearchQuery}
-                height="h-8"
-              />
+            <div className="w-full px-4">
+              <h1 className="text-[16px] font-semibold py-4 border-b">
+                Screen List
+              </h1>
+              <div className="mt-2">
+                <SearchInputField
+                  placeholder="Screen Name"
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  height="h-8"
+                />
+              </div>
             </div>
             {loading ? (
               <Loading />
@@ -210,7 +214,7 @@ export const MonitoringPage: React.FC = () => {
                       <h1
                         className={
                           monitoringScreen?._id === data?._id
-                            ? "border-b py-2 px-4  text-[14px]  text-blue-500"
+                            ? "border-b py-2 px-4  text-[14px]  text-[#129BFF]"
                             : "border-b border-gray-100 py-2 px-4  text-[14px]  hover:bg-gray-100"
                         }
                       >
@@ -221,16 +225,20 @@ export const MonitoringPage: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="col-span-3 rounded bg-white">
-            <div className="w-full p-4">
-              <h1 className="text-[16px] font-semibold py-2">Campaign List</h1>
 
-              <SearchInputField
-                placeholder="Brand Name"
-                value={searchQueryForCampaign}
-                onChange={setSearchQueryForCampaign}
-                height="h-8"
-              />
+          <div className="col-span-3 bg-white">
+            <div className="w-full px-4">
+              <h1 className="text-[16px] font-semibold py-4 border-b">
+                Brand List
+              </h1>
+              <div className="mt-2">
+                <SearchInputField
+                  placeholder="brand Name"
+                  value={searchQueryForCampaign}
+                  onChange={setSearchQueryForCampaign}
+                  height="h-8"
+                />
+              </div>
             </div>
             {loadingCampaigns ? (
               <Loading />
@@ -254,7 +262,7 @@ export const MonitoringPage: React.FC = () => {
                         <h1
                           className={
                             monitoringCampaign?._id === campaign?._id
-                              ? "border-b py-2 px-4  text-[14px]  text-blue-500"
+                              ? "border-b py-2 px-4  text-[14px]  text-[#129BFF]"
                               : "border-b border-gray-100 py-2 px-4  text-[14px]  hover:bg-gray-100"
                           }
                         >

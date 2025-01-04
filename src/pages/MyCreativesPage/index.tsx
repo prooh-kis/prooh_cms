@@ -146,15 +146,15 @@ export const MyCreativesPage: React.FC = () => {
         />
 
         <div className="grid grid-cols-12 gap-1 py-1">
-          <div className="col-span-4 bg-white p-4">
-            <div className="flex justify-between items-center py-2">
+          <div className="col-span-4 bg-white px-4">
+            <div className="flex justify-between items-center py-4">
               <h1 className="text-[14px] font-semibold">Brand</h1>
               <div
-                className="flex gap-1 items-center"
+                className="flex gap-1 items-center text-[#129BFF]"
                 onClick={() => handleOpenCreateCreativePopup("New")}
               >
                 <i className="fi fi-br-plus-small flex items-center"></i>
-                <h1 className="text-[12px]">Folder</h1>
+                <h1 className="text-[12px] ">Folder</h1>
               </div>
             </div>
             <SearchInputField
@@ -164,11 +164,11 @@ export const MyCreativesPage: React.FC = () => {
               onChange={setSearchQuery}
             />
 
-            <div className="h-[70vh] py-2 ">
+            <div className="h-[75vh] py-2 ">
               {loadingCreatives ? (
                 <Loading />
               ) : (
-                <div className="h-[70vh] overflow-scroll">
+                <div className="h-[75vh] overflow-scroll scrollbar-minimal  ">
                   {creatives &&
                     Object.keys(creatives)
                       ?.filter((brand: string) =>
@@ -180,8 +180,8 @@ export const MyCreativesPage: React.FC = () => {
                         <div
                           className={
                             brand === brandName
-                              ? "flex gap-4 items-center p-2 border-b text-blue-400"
-                              : "flex gap-4 items-center p-2 border-b"
+                              ? "flex gap-4 items-center p-2 border-b text-[#129BFF]"
+                              : "flex gap-4 items-center p-2 border-b hover:text-[#129BFF] text-primaryText"
                           }
                           key={i}
                           onClick={() => {
@@ -190,7 +190,7 @@ export const MyCreativesPage: React.FC = () => {
                             setCreativesMedia(creatives[brand][0]);
                           }}
                         >
-                          <i className="fi fi-sr-folder-open flex items-center text-[#D7D7D7]"></i>
+                          <i className="fi fi-sr-folder-open flex items-center text-[#F1BC00] "></i>
                           <h1 className="text-[12px] font-semibold">{brand}</h1>
                         </div>
                       ))}
@@ -198,10 +198,10 @@ export const MyCreativesPage: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="col-span-8 bg-white">
+          <div className="col-span-8 bg-white px-4">
             {brandName && (
               <div className="p-2">
-                <div className="border-b py-1 flex items-center justify-between">
+                <div className="border-b py-1 pb-4 flex items-center justify-between pr-8">
                   <div className="flex gap-1 items-center py-1">
                     {/* <i
                     className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
@@ -210,24 +210,23 @@ export const MyCreativesPage: React.FC = () => {
                     <h1 className="text-[14px] font-semibold">{brandName}</h1>
                   </div>
                   <div
-                    className="flex gap-1 items-center"
+                    className="flex gap-1 items-center text-[#129BFF]"
                     onClick={() => handleOpenCreateCreativePopup("Old")}
                   >
                     <i className="fi fi-br-plus-small flex items-center"></i>
                     <h1 className="text-[12px]">Creative Media</h1>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-1 border-b py-1">
+                <div className="grid grid-cols-3 gap-1 py-2">
                   <div className="col-span-1 py-1">
                     <label className="block text-secondaryText text-[12px] mb-2">
                       Creative Name
                     </label>
-                    <PrimaryInput
-                      inputType="text"
+                    <SearchInputField
+                      placeholder="Search By Creative name"
                       height="h-8"
-                      placeholder="Creative Name"
                       value={creativeName}
-                      action={setCreativeName}
+                      onChange={setCreativeName}
                     />
                   </div>
                   <div className="col-span-1 py-1">
@@ -237,7 +236,7 @@ export const MyCreativesPage: React.FC = () => {
                     <DropdownInput
                       inputType="text"
                       placeHolder="Select Network"
-                      height="h-8"
+                      height="h-9 rounded-md "
                       options={creatives?.[brandName]?.map(
                         (data: any, index: number) => {
                           return {
@@ -257,17 +256,16 @@ export const MyCreativesPage: React.FC = () => {
                     <label className="block text-secondaryText text-[12px] mb-2">
                       Resolution
                     </label>
-                    <PrimaryInput
-                      inputType="text"
+                    <SearchInputField
+                      placeholder="Search By resolution"
                       height="h-8"
-                      placeholder="Enter resolution"
                       value={resolution}
-                      action={setResolution}
+                      onChange={setResolution}
                     />
                   </div>
                 </div>
                 <div>
-                  <div className="flex gap-1 items-center justify-start py-2">
+                  <div className="flex gap-1 items-center justify-start pt-2 border-b">
                     <TabWithoutIcon
                       currentTab={currentTab}
                       setCurrentTab={setCurrentTab}

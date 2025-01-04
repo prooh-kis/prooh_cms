@@ -119,7 +119,7 @@ export function ScreenListMonitoringView({
                 >
                   <ul className="border rounded ">
                     <li
-                      className="px-4 py-2 cursor-pointer hover:bg-sky-600 hover:text-white"
+                      className="px-4 py-2 cursor-pointer hover:bg-[#129BFF] hover:text-white"
                       onClick={() => {
                         if (
                           confirm(
@@ -147,7 +147,7 @@ export function ScreenListMonitoringView({
                         onClick={() => {
                           handleChangeCampaignStatus("Pause", campaign?._id);
                         }}
-                        className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
                         Pause
                       </li>
@@ -158,7 +158,7 @@ export function ScreenListMonitoringView({
                         onClick={() => {
                           handleChangeCampaignStatus("Delete", campaign?._id);
                         }}
-                        className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
                         Delete
                       </li>
@@ -170,7 +170,7 @@ export function ScreenListMonitoringView({
                         onClick={() => {
                           handleChangeCampaignStatus("Active", campaign?._id);
                         }}
-                        className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
                         Activate
                       </li>
@@ -180,7 +180,7 @@ export function ScreenListMonitoringView({
                       onClick={() => {
                         handleGetCampaignLog(campaign?._id);
                       }}
-                      className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                      className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                     >
                       View Log Report
                     </li>
@@ -245,7 +245,7 @@ export function ScreenListMonitoringView({
                 >
                   <ul className="border rounded ">
                     <li
-                      className="px-4 py-2 cursor-pointer hover:bg-sky-600 hover:text-white"
+                      className="px-4 py-2 cursor-pointer hover:bg-[#129BFF] hover:text-white"
                       onClick={() => {
                         if (
                           confirm(
@@ -273,7 +273,7 @@ export function ScreenListMonitoringView({
                         onClick={() => {
                           handleChangeCampaignStatus("Pause", campaign?._id);
                         }}
-                        className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
                         Pause
                       </li>
@@ -284,7 +284,7 @@ export function ScreenListMonitoringView({
                         onClick={() => {
                           handleChangeCampaignStatus("Delete", campaign?._id);
                         }}
-                        className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
                         Delete
                       </li>
@@ -296,7 +296,7 @@ export function ScreenListMonitoringView({
                         onClick={() => {
                           handleChangeCampaignStatus("Active", campaign?._id);
                         }}
-                        className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
                         Activate
                       </li>
@@ -306,7 +306,7 @@ export function ScreenListMonitoringView({
                       onClick={() => {
                         handleGetCampaignLog(campaign?._id);
                       }}
-                      className="px-4 py-2 text-gray-700 hover:bg-sky-600 hover:text-white cursor-pointer"
+                      className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                     >
                       View Log Report
                     </li>

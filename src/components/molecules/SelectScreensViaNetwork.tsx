@@ -137,7 +137,7 @@ export const SelectScreensViaNetwork: React.FC<{
                   type="radio"
                   name="option"
                   onClick={() => setOption("Individual")}
-                  // className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-[#129BFF] dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  // className="w-4 h-4 text-[#129BFF] bg-gray-100 border-gray-300 focus:ring-[#129BFF] dark:focus:ring-[#129BFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
                   htmlFor="Individual"
@@ -155,7 +155,7 @@ export const SelectScreensViaNetwork: React.FC<{
                   id="Select Network"
                   type="radio"
                   name="option"
-                  // className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-[#129BFF] dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  // className="w-4 h-4 text-[#129BFF] bg-gray-100 border-gray-300 focus:ring-[#129BFF] dark:focus:ring-[#129BFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
                   htmlFor="Select Network"

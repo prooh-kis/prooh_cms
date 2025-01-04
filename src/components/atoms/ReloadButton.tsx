@@ -5,7 +5,7 @@ export const ReloadButton = ({ onClick }: any) => {
       onClick={onClick}
       title="Reload page, for latest data"
     >
-      <i className="fi fi-bs-refresh text-[14px] hover:text-sky-600"></i>
+      <i className="fi fi-bs-refresh text-[14px] hover:text-[#129BFF]"></i>
     </div>
   );
 };

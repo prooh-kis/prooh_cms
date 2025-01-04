@@ -230,7 +230,7 @@ export const AllCampaignLogsPopup = ({
             />
             <label htmlFor="Individual">Select All</label>
             <button
-              className="hover:text-sky-500"
+              className="hover:text-[#129BFF]"
               onClick={() => setSelectedScreens([])}
             >
               Reset
