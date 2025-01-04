@@ -46,11 +46,18 @@ export const ScreenListThumbnail = ({
           alt={data._id}
         />
         <div
-          className="absolute bottom-2 left-2 flex flex-row gap-2 items-center text-[12px] px-4 py-1 rounded-2xl"
+          className="absolute bottom-1 left-1 flex flex-row gap-2 items-center text-[12px] px-4 py-1 rounded-2xl"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} // Transparent black background
         >
           <i className="fi fi-sr-megaphone text-[#ffffff]"></i>
           <h1 className="text-[#ffffff]">{data?.campaigns}</h1>
+        </div>
+        <div
+          className="absolute bottom-1 left-16 flex flex-row gap-2 items-center text-[12px] px-4 py-1 rounded-2xl"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} // Transparent black background
+        >
+          <i className="fi fi-sr-duration-alt text-[#ffffff]"></i>
+          <h1 className="text-[#ffffff]">{data?.creativeDuration} s</h1>
         </div>
       </div>
 

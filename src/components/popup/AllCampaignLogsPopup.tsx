@@ -172,15 +172,17 @@ export const AllCampaignLogsPopup = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div
-        className="bg-white p-4 mt-8  shadow-lg w-full max-w-full relative overflow-auto max-h-auto"
+        className="bg-white p-4 px-8 shadow-lg w-9/12 max-w-full relative max-h-auto rounded-[20px] "
         style={{ height: "90vh", width: "60vw" }}
       >
-        <div className="flex justify-between">
-          <h1 className="text-[16px] font-bold">
-            Download All Campaigns Logs
-            <span className="text-[#348730] pl-4">{campaigns?.length}</span>
+        <div className="flex items-center justify-between">
+          <h1 className="py-4 text-lg font-bold text-[20px]">
+            Download All Campaigns Logs{" "}
           </h1>
-          <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
+          <i
+            onClick={() => onClose()}
+            className="fi fi-rr-cross-small text-[20px]"
+          ></i>
         </div>
         <PrimaryButton
           action={handleGetLogData}
@@ -211,7 +213,7 @@ export const AllCampaignLogsPopup = ({
           </div>
         )}
 
-        <div className="flex items-center p-2">
+        <div className="items-center py-4">
           <SearchInputField
             placeholder="Search screens by name"
             height="h-8"
@@ -249,7 +251,7 @@ export const AllCampaignLogsPopup = ({
         {loadingScreens ? (
           <Loading />
         ) : (
-          <div className="h-[70vh] overflow-scroll scrollbar-minimal px-4">
+          <div className="h-[40vh] overflow-y-auto scrollbar-minimal px-4">
             {filteredScreens?.map((screen: any, k: any) => (
               <div className="flex justify-between " key={k}>
                 <div

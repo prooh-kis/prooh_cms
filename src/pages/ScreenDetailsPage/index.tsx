@@ -155,6 +155,8 @@ export const ScreenDetailsPage: React.FC = () => {
     data: screenLogs,
   } = screenLogsGet;
 
+  console.log("campaigns : ", campaigns);
+
   useEffect(() => {
     if (campaigns && campaigns?.length > 0) {
       setSelectedCampaign(campaigns[0]._id);
@@ -523,7 +525,7 @@ export const ScreenDetailsPage: React.FC = () => {
               {loadingCampaigns ? (
                 <Loading />
               ) : (
-                <div className="w-full h-[30vh] overflow-scroll no-scrollbar mb-2">
+                <div className="w-full h-[30vh] overflow-y-auto no-scrollbar mb-2">
                   {campaigns &&
                     campaigns
                       ?.filter(
@@ -677,7 +679,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </h1>
               </div>
             </div>
-            <div className="bg-white h-[75vh] overflow-scroll no-scrollbar mt-2">
+            <div className="bg-white h-[75vh] overflow-y-auto no-scrollbar mt-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives?.standardDayTimeCreatives?.length === 0 && (

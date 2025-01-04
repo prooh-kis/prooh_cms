@@ -91,7 +91,7 @@ export const CampaignMonitoring = (props: any) => {
   return (
     <div className="w-full p-4 bg-white">
       {openCalendarPopup && (
-        <div className="p-1 overflow-scroll no-scrollbar">
+        <div className="p-1 overflow-y-auto no-scrollbar">
           <CalendarPopup
             onClose={() => setOpenCalendarPopup(false)}
             dates={allDates}

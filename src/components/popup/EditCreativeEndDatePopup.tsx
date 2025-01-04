@@ -198,7 +198,7 @@ export function EditCreativeEndDatePopup({
             Edit Campaign{" "}
             <span className="font-bold text-green-600">{campaign?.name}</span>
           </h1>
-          <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
+          <i className="fi fi-rr-cross-small" onClick={() => onClose()}></i>
         </div>
         <div className="flex pt-4">
           <div className="w-[80%] border border-1 p-2">

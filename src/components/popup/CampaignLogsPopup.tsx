@@ -22,15 +22,19 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4  shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
-        style={{ height: "80vh", width: "50vw" }}
+        className="bg-white p-4 px-8 shadow-lg w-9/12 max-w-full relative max-h-auto rounded-[20px] "
+        style={{ height: "80vh", width: "60vw" }}
       >
-        <div className="flex justify-between">
-          <h1 className="text-[16px] font-bold">
+        <div className="flex items-center justify-between">
+          <h1 className="py-4 text-lg font-bold text-[20px]">
             Campaign Logs : <span className="">{logs?.campaign?.name}</span>
           </h1>
-          <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
+          <i
+            onClick={() => onClose(false)}
+            className="fi fi-rr-cross-small text-[20px]"
+          ></i>
         </div>
+
         {!loading && logs?.logs?.length > 0 && (
           <DownLoadCampaignLogReport
             campaignLog={logs?.logs}
@@ -40,8 +44,8 @@ export const CampaignLogsPopup = ({ open, onClose, logs, loading }: any) => {
         {loading ? (
           <Skeleton active paragraph={{ rows: 12 }} />
         ) : logs?.logs?.length > 0 ? (
-          <div className="p-2 overflow-scroll h-[60vh] scrollbar-minimal">
-            <table className="auto overflow-scroll  h-[20rem] scrollbar-minimal ">
+          <div className="p-2 overflow-y-auto h-[60vh] scrollbar-minimal">
+            <table className="auto overflow-y-auto  h-[20rem] scrollbar-minimal w-full">
               <thead>
                 <tr className="gap-4">
                   <th className="border p-2 ">Sl. No</th>

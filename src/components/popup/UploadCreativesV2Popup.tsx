@@ -262,7 +262,7 @@ export function UploadCreativesV2Popup({
                 ? "Add New Creative With New Brand And New Network"
                 : "Add Creatives"}
             </h1>
-            <i className="fi fi-br-circle-xmark" onClick={() => onClose()}></i>
+            <i className="fi fi-rr-cross-small" onClick={() => onClose()}></i>
           </div>
           <div className="p-2">
             <div className="py-1">
@@ -309,7 +309,7 @@ export function UploadCreativesV2Popup({
                     Reset
                   </button>
                 </div>
-                <div className="flex flex-wrap justify-center overflow-scroll no-scrollbar h-[30vh] gap-4">
+                <div className="flex flex-wrap justify-center overflow-y-auto no-scrollbar h-[30vh] gap-4">
                   {mediaFiles?.map((media: any, index: any) => (
                     <ShowMediaFile
                       url={media.awsURL || media.url}

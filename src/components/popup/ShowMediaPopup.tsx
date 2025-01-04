@@ -39,7 +39,7 @@ export function ShowMediaPopup({
           className="relative inset-0 flex items-center justify-end gap-4"
           onClick={() => onClose()}
         >
-          <i className="fi fi-br-circle-xmark"></i>
+          <i className="fi fi-rr-cross-small"></i>
         </div>
         <h1 className="pb-4"> Screen : {screenName}</h1>
         {media?.length === 0 && <NoDataView />}
