@@ -704,7 +704,7 @@ export const ScreenDetailsPage: React.FC = () => {
                     <div key={j} className="p-1">
                       <ShowMediaFile
                         url={creative?.url}
-                        mediaType={creative?.type.split("/")[0]}
+                        mediaType={creative.type != null ? creative?.type.split("/")[0] : creative.fileType}
                         key={j}
                         height="h-full"
                         width="w-full"

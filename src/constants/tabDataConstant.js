@@ -65,6 +65,11 @@ export const campaignTypeTabs = [
     label: "Live",
     value: "Live",
   },
+  {
+    id: "7",
+    label: "Default",
+    value: "Default",
+  }
 ];
 
 export const campaignCreationTypeTabs = [
