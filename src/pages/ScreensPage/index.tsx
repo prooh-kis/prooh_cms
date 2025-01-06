@@ -163,7 +163,7 @@ export const ScreensPage: React.FC = () => {
                 Filter
               </h1>
               <h1
-                className="text-secondaryText text-[14px]"
+                className="text-secondaryText text-[14px] cursor-pointer"
                 onClick={handleClearAll}
               >
                 Clear All
@@ -193,7 +193,7 @@ export const ScreensPage: React.FC = () => {
                     key={network}
                     onChange={() => handleSelectNetwork(network)}
                   >
-                    <label className="flex items-center space-x-2 ">
+                    <label className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="checkbox"
                         value={network}

@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
         <ConformationModel open={open} onClose={toggleOpen} />
 
         <div
-          className="flex flex-col mb-2 -space-y-1 pt-2"
+          className="flex flex-col mb-2 -space-y-1 pt-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
           <h1 className="text-xl font-black">PROOH.AI</h1>
@@ -45,8 +45,7 @@ export const Header: React.FC = () => {
         <div className="flex gap-4 items-center justify-end pr-10">
           <button
             onClick={toggleOpen}
-            className="w-full h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4"
-          >
+            className="w-full h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4 cursor-pointer">
             Quick Upload
           </button>
           <div className="h-10 w-full flex items-center space-x-2 ">

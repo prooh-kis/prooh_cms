@@ -104,7 +104,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                 <div
                   key={index}
                   onClick={() => handleMenuClick(index)}
-                  className={`flex items-center gap-2 px-2 rounded-lg text-md  py-2 ${
+                  className={`flex items-center gap-2 px-2 rounded-lg text-md  py-2 cursor-pointer ${
                     current === item.option
                       ? "text-[#129BFF] font-bold bg-[#ECF7FF]"
                       : "text-[#8D9DA7] font-semibold"
