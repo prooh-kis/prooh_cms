@@ -46,6 +46,10 @@ import {
   CHANGE_DEFAULT_INCLUDED_SUCCESS,
   CHANGE_DEFAULT_INCLUDED_FAIL,
   CHANGE_DEFAULT_INCLUDED_RESET,
+  EDIT_DEFAULT_CREATIVE_REQUEST,
+  EDIT_DEFAULT_CREATIVE_SUCCESS,
+  EDIT_DEFAULT_CREATIVE_FAIL,
+  EDIT_DEFAULT_CREATIVE_RESET,
 } from "../constants/screenConstants";
 import {
   ALL_SCREENS_LIST,
@@ -120,6 +124,21 @@ export function changeCampaignCreativeEndDateReducer(state = {}, action) {
     case EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL:
       return { loading: false, error: action.payload };
     case EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function editDefaultCreativeReducer(state = {}, action) {
+  switch (action.type) {
+    case EDIT_DEFAULT_CREATIVE_REQUEST:
+      return { loading: true };
+    case EDIT_DEFAULT_CREATIVE_SUCCESS:
+      return { loading: false, success: true, data: action.payload };
+    case EDIT_DEFAULT_CREATIVE_FAIL:
+      return { loading: false, error: action.payload };
+    case EDIT_DEFAULT_CREATIVE_RESET:
       return {};
     default:
       return state;

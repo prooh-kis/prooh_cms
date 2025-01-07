@@ -9,7 +9,7 @@ import { Loading } from "../Loading";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { CalendarInput } from "../../components/atoms/CalendarInput";
-import { editCampaignCreativesEndDateAction } from "../../actions/screenAction";
+import { editCampaignCreativesEndDateAction, editDefaultCreativesAction } from "../../actions/screenAction";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
 import SearchInputField from "../../components/molecules/SearchInputField";
@@ -21,6 +21,7 @@ interface EditCreativeEndDatePopupProps {
   mediaFiles?: any;
   setMediaFiles?: any;
   campaign?: any;
+  campaignType?: any;
   screenData?: any;
 }
 export function EditCreativeEndDatePopup({
@@ -29,6 +30,7 @@ export function EditCreativeEndDatePopup({
   mediaFiles,
   setMediaFiles,
   campaign,
+  campaignType,
   screenData,
 }: EditCreativeEndDatePopupProps) {
   const dispatch = useDispatch<any>();
@@ -115,37 +117,58 @@ export function EditCreativeEndDatePopup({
       ...(scrData?.standardDayTimeCreatives || []),
     ]; // Clone the array
 
-    dataToUpload.forEach((data: any) => {
-      if (!standardDayTimeCreatives?.some((f: any) => f.url === data.url)) {
-        standardDayTimeCreatives.push({
-          size: data.size,
-          type: data.type,
+    if (campaignType === "Default") {
+      let creativesForDefault:any = [];
+      dataToUpload.forEach((data: any) => {
+        creativesForDefault.push({
+          fileSize: data.size,
+          fileType: data.type.toString().split("/")[0],
           url: data.url,
-        });
-      }
-    });
+          name:data.url.split("/")[3],
+          mediaId:data.url.split("/")[3].split(".")[0]
+        })
+      });
 
-    creativeDataToUpload = {
-      creativeDuration: parseInt(scrData?.creativeDuration || 10),
-      standardDayTimeCreatives: standardDayTimeCreatives,
-      standardNightTimeCreatives: [],
-      triggerCreatives: [],
-    };
+      dispatch(
+        editDefaultCreativesAction({
+          id : campaign._id,
+          creatives : creativesForDefault
+        })
+      )
+    } else {
+      dataToUpload.forEach((data: any) => {
+        if (!standardDayTimeCreatives?.some((f: any) => f.url === data.url)) {
+          standardDayTimeCreatives.push({
+            size: data.size,
+            type: data.type,
+            url: data.url,
+          });
+        }
+      });
 
-    dispatch(
-      editCampaignCreativesEndDateAction({
-        campaignId: campaign._id,
-        endDate: endDate
-          ? new Date(endDate).toISOString()
-          : new Date(campaign.endDate).toISOString().split(".")[0],
-        // creatives: creativeDataToUpload,
-        duration: duration,
-        creatives:
-          creativeDataToUpload?.standardDayTimeCreatives?.length > 0
-            ? creativeDataToUpload
-            : null,
-      })
-    );
+      creativeDataToUpload = {
+        creativeDuration: parseInt(scrData?.creativeDuration || 10),
+        standardDayTimeCreatives: standardDayTimeCreatives,
+        standardNightTimeCreatives: [],
+        triggerCreatives: [],
+      };
+
+      dispatch(
+        editCampaignCreativesEndDateAction({
+          campaignId: campaign._id,
+          endDate: endDate
+            ? new Date(endDate).toISOString()
+            : new Date(campaign.endDate).toISOString().split(".")[0],
+          // creatives: creativeDataToUpload,
+          duration: duration,
+          creatives:
+            creativeDataToUpload?.standardDayTimeCreatives?.length > 0
+              ? creativeDataToUpload
+              : null,
+        })
+      );
+    }
+
     setIsLoading(false);
     setIsCreativeOpen(false);
 
@@ -158,7 +181,7 @@ export function EditCreativeEndDatePopup({
     setIsLoading(true);
     const campData =
       getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[
-        campaign.campaignCreationId
+      campaign.campaignCreationId
       ];
     setTimeout(() => {
       handelDiscard();

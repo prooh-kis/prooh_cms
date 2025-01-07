@@ -40,6 +40,9 @@ import {
   CHANGE_DEFAULT_INCLUDED_SUCCESS,
   CHANGE_DEFAULT_INCLUDED_FAIL,
   CHANGE_DEFAULT_INCLUDED_RESET,
+  EDIT_DEFAULT_CREATIVE_REQUEST,
+  EDIT_DEFAULT_CREATIVE_SUCCESS,
+  EDIT_DEFAULT_CREATIVE_FAIL,
 } from "../constants/screenConstants";
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
@@ -160,6 +163,32 @@ export const editCampaignCreativesEndDateAction =
     } catch (error) {
       dispatch({
         type: EDIT_CAMPAIGN_CREATIVE_END_DATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  export const editDefaultCreativesAction =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: EDIT_DEFAULT_CREATIVE_REQUEST,
+      payload: input,
+    });
+    try {
+      const { data } = await axios.post(
+        `${screenV2}/editDefaultCreatives`,
+        input
+      );
+      dispatch({
+        type: EDIT_DEFAULT_CREATIVE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: EDIT_DEFAULT_CREATIVE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
