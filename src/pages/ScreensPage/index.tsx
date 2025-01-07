@@ -215,19 +215,18 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-[80vw] h-[85vh] overflow-y-auto scrollbar-minimal pr-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 w-[80vw] h-[85vh] overflow-y-auto scrollbar-minimal pr-2">
           {loading ? (
             <Loading />
           ) : (
             filterScreens?.map((data: any, index: any) => (
-              <div key={index} className="">
-                <ScreenListThumbnail
-                  isSelected={data._id === selectedCard}
-                  color={""}
-                  handleCardClick={() => handleCardClick(data._id)}
-                  data={data}
-                />
-              </div>
+              <ScreenListThumbnail
+                isSelected={data._id === selectedCard}
+                color={""}
+                handleCardClick={() => handleCardClick(data._id)}
+                data={data}
+                key={index}
+              />
             ))
           )}
         </div>
