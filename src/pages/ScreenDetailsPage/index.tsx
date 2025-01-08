@@ -312,7 +312,7 @@ export const ScreenDetailsPage: React.FC = () => {
             campaign={
               campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
             }
-            campaignType ={campaignTypeTabs?.filter((tab: any) => tab.id === "7")[0].value}
+            campaignType ={currentTab === "7" ? "Default" : "None"}
             screenData={screenCreativeUpload}
           />
         )}
