@@ -178,7 +178,7 @@ export const UploadCreatives = ({
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
-      message.success("Campaign saved successfully");
+      message.success("Campaign saved successfully . It would get live in about 4-5 mins");
       // navigate(`/campaigns-list`);
       dispatch(
         getAllCampaignsDetailsAction({
