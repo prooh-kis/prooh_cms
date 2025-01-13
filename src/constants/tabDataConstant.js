@@ -37,13 +37,13 @@ export const creativeTypeTab = [
 export const campaignTypeTabs = [
   {
     id: "1",
-    label: "Live",
-    value: "Live",
+    label: "Active",
+    value: "Active",
   },
   {
     id: "2",
-    label: "Active",
-    value: "Active",
+    label: "Live",
+    value: "Live",
   },
   {
     id: "3",

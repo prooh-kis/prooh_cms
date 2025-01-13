@@ -209,7 +209,7 @@ export const ScreenDetailsPage: React.FC = () => {
     dispatch(
       getScreenCampaignsDetailsAction({
         screenId: screenId,
-        status: "Live",
+        status: "Active",
       })
     );
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
