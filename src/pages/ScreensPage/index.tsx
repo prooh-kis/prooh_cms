@@ -20,14 +20,18 @@ import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions
 export const ScreensPage: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>(
+    getDataFromLocalStorage("screenFilters")?.searchText || ""
+  );
   const [selectedCard, setSelectedCard] = useState<any>(null);
-  const [showNetwork, setShowNetwork] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedNetwork, setSelectedNetwork] = useState<string[]>([]);
+  const [selectedNetwork, setSelectedNetwork] = useState<string[]>(
+    getDataFromLocalStorage("screenFilters")?.selectedNetwork || []
+  );
   const [selectedScreensViaNetwork, setSelectedScreensViaNetwork] = useState<
     string[]
-  >([]);
+  >(getDataFromLocalStorage("screenFilters")?.selectedScreensViaNetwork || []);
+
   const isInitialLoad = useRef(true);
   const location = useLocation();
   const networks =
@@ -71,6 +75,27 @@ export const ScreensPage: React.FC = () => {
           screen.screenName.toLowerCase().includes(searchText?.toLowerCase())
         );
 
+  const handleSaveDataOnLocalStorage = () => {
+    if (!networks || Object.keys(networks).length === 0) return; // Ensure networks are loaded
+    let result: any = [];
+    for (let value of selectedNetwork) {
+      let allScreenIds = networks[value]?.map((data: any) => data.value);
+      result = [...result, ...allScreenIds];
+    }
+    localStorage.setItem(
+      "screenFilters",
+      JSON.stringify({
+        searchText,
+        selectedNetwork,
+        selectedScreensViaNetwork: result,
+      })
+    );
+  };
+
+  useEffect(() => {
+    handleSaveDataOnLocalStorage();
+  }, [searchText, selectedNetwork]);
+
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       message.error("Not a screen owner!!!");
@@ -90,9 +115,7 @@ export const ScreensPage: React.FC = () => {
   const handleCardClick = (id: any) => {
     if (userInfo && userInfo?.isMaster && userInfo?.userRole === "primary") {
       setSelectedCard(id);
-      const newTabUrl = `/screens-details/${id}`;
-      window.open(newTabUrl, "_blank"); // Opens the URL in a new tab
-      // navigate(`/screens-details/${id}`);
+      navigate(`/screens-details/${id}`);
     }
   };
 
