@@ -43,30 +43,27 @@ import { SwitchInputCenter } from "../../components/atoms/SwitchInput";
 export const ScreenDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const targetDivRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
   const screenId =
     pathname?.split("/")?.length > 2
       ? pathname?.split("/")?.splice(2)[0]
       : null;
-
-  const [currentTab, setCurrentTab] = useState<any>("1");
+  // State variables with appropriate types
+  const [currentTab, setCurrentTab] = useState<string>("1");
   const [searchQuery, setSearchQuery] = useState<any>("");
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [currentCampaign, setCurrentCampaign] = useState<any>(null);
   const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
   const [isDefaultIncluded, setIsDefaultIncluded] = useState<boolean>(true);
-
   const [campaignIds, setCampaignIds] = useState<any>([]);
-
   const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
     useState<any>(false);
   const [mediaFiles, setMediaFiles] = useState<any[]>([]);
   const [screenCreativeUpload, setScreenCreativeUpload] = useState<any>(null);
-
   const [isScreenLogReportOpen, setIsScreenLogReportOpen] =
     useState<any>(false);
 
+  // Redux selectors
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
@@ -155,8 +152,6 @@ export const ScreenDetailsPage: React.FC = () => {
     data: screenLogs,
   } = screenLogsGet;
 
-  console.log("campaigns : ", campaigns);
-
   useEffect(() => {
     if (campaigns && campaigns?.length > 0) {
       setSelectedCampaign(campaigns[0]._id);
@@ -209,7 +204,8 @@ export const ScreenDetailsPage: React.FC = () => {
     dispatch(
       getScreenCampaignsDetailsAction({
         screenId: screenId,
-        status: "Active",
+        status: campaignTypeTabs?.find((tab: any) => tab.id === currentTab)
+          ?.value,
       })
     );
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
@@ -263,8 +259,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-            (c: any) => c._id === selectedCampaign
-          )[0].creatives.standardDayTimeCreatives,
+          (c: any) => c._id === selectedCampaign
+        )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -312,7 +308,7 @@ export const ScreenDetailsPage: React.FC = () => {
             campaign={
               campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
             }
-            campaignType ={currentTab === "7" ? "Default" : "None"}
+            campaignType={currentTab === "7" ? "Default" : "None"}
             screenData={screenCreativeUpload}
           />
         )}
@@ -464,10 +460,12 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
@@ -492,10 +490,12 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
@@ -513,11 +513,17 @@ export const ScreenDetailsPage: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between px-2 border-b">
-                <TabWithoutIcon
-                  currentTab={currentTab}
-                  setCurrentTab={handleGetCampaignByStatus}
-                  tabData={campaignTypeTabs}
-                />
+                {loadingCampaigns ? (
+                  <div
+                    className={`p-2 animate-pulse bg-[#D7D7D7] rounded h-8 w-full`}
+                  ></div>
+                ) : (
+                  <TabWithoutIcon
+                    currentTab={currentTab}
+                    setCurrentTab={handleGetCampaignByStatus}
+                    tabData={campaignTypeTabs}
+                  />
+                )}
               </div>
               <div className="flex items-center p-4">
                 <SearchInputField
@@ -600,9 +606,7 @@ export const ScreenDetailsPage: React.FC = () => {
                     className="text-gray-500 hover:text-[#348730]"
                     onClick={() => {
                       if (
-                        confirm(
-                          `Are you sure you want to edit the campaign???`
-                        )
+                        confirm(`Are you sure you want to edit the campaign???`)
                       ) {
                         saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
                           [campaigns?.filter(
@@ -641,23 +645,25 @@ export const ScreenDetailsPage: React.FC = () => {
                       }}
                     >
                       <i className="fi fi-sr-trash"></i>
-                    </div>)}
+                    </div>
+                  )}
                   {currentTab != "7" && (
                     <div
                       className="text-gray-500 hover:text-[#348730]"
                       onClick={() =>
                         navigate(
-                          `/campaigns-details/${campaigns?.filter(
-                            (c: any) => c._id === selectedCampaign
-                          )[0]?.campaignCreationId
+                          `/campaigns-details/${
+                            campaigns?.filter(
+                              (c: any) => c._id === selectedCampaign
+                            )[0]?.campaignCreationId
                           }`
                         )
                       }
                     >
                       <i className="fi fi-sr-eye"></i>
-                    </div>)}
+                    </div>
+                  )}
                 </div>
-
               </div>
               <div>
                 <h1 className="text-[14px] mt-1">
@@ -675,13 +681,13 @@ export const ScreenDetailsPage: React.FC = () => {
                   ) < 0
                     ? "Already Ended"
                     : getNumberOfDaysBetweenTwoDates(
-                      new Date(),
-                      campaigns?.filter(
-                        (c: any) => c._id === selectedCampaign
-                      )[0]?.endDate
-                    ) === 0
-                      ? "Ending Today"
-                      : `${getNumberOfDaysBetweenTwoDates(
+                        new Date(),
+                        campaigns?.filter(
+                          (c: any) => c._id === selectedCampaign
+                        )[0]?.endDate
+                      ) === 0
+                    ? "Ending Today"
+                    : `${getNumberOfDaysBetweenTwoDates(
                         new Date(),
                         campaigns?.filter(
                           (c: any) => c._id === selectedCampaign
@@ -694,22 +700,22 @@ export const ScreenDetailsPage: React.FC = () => {
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives?.standardDayTimeCreatives?.length === 0 && (
-                  <div className="p-1 relative  h-32 z-100">
-                    <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
-                      <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
-                        <div
-                          className="text-white hover:text-[#348730]"
-                          onClick={handleCreativeEdit}
-                        >
-                          <i className="fi fi-sr-file-edit"></i>
-                        </div>
-                        <div className="text-white hover:text-[#348730]">
-                          <i className="fi fi-sr-trash"></i>
-                        </div>
+                <div className="p-1 relative  h-32 z-100">
+                  <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
+                    <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
+                      <div
+                        className="text-white hover:text-[#348730]"
+                        onClick={handleCreativeEdit}
+                      >
+                        <i className="fi fi-sr-file-edit"></i>
+                      </div>
+                      <div className="text-white hover:text-[#348730]">
+                        <i className="fi fi-sr-trash"></i>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
+              )}
               {campaigns
                 ?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives.standardDayTimeCreatives?.map(
@@ -729,7 +735,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       <h1 className="text-[14px] truncate">
                         {
                           creative?.url?.split("_")[
-                          creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                           ]
                         }
                       </h1>

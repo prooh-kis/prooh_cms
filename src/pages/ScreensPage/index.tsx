@@ -1,7 +1,7 @@
 import { message } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAllScreensDetailsAction } from "../../actions/screenAction";
 import { ScreenListThumbnail } from "../../components/molecules/ScreenListThumbnail";
 import { Loading } from "../../components/Loading";
@@ -20,16 +20,19 @@ import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions
 export const ScreensPage: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const targetDivRef = useRef<HTMLDivElement>(null);
   const [searchText, setSearchText] = useState<string>("");
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [showNetwork, setShowNetwork] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
-
   const [selectedNetwork, setSelectedNetwork] = useState<string[]>([]);
   const [selectedScreensViaNetwork, setSelectedScreensViaNetwork] = useState<
     string[]
   >([]);
+  const isInitialLoad = useRef(true);
+  const location = useLocation();
+  const networks =
+    getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
+      ?.networkWithScreens || [];
 
   const handleClearAll = () => {
     setSelectedNetwork([]);
@@ -87,17 +90,15 @@ export const ScreensPage: React.FC = () => {
   const handleCardClick = (id: any) => {
     if (userInfo && userInfo?.isMaster && userInfo?.userRole === "primary") {
       setSelectedCard(id);
-      navigate(`/screens-details/${id}`);
+      const newTabUrl = `/screens-details/${id}`;
+      window.open(newTabUrl, "_blank"); // Opens the URL in a new tab
+      // navigate(`/screens-details/${id}`);
     }
   };
 
   const reLoad = () => {
     dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
   };
-
-  const networks =
-    getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
-      ?.networkWithScreens || [];
 
   const handleSelectNetwork = (value: string) => {
     let newValue;
