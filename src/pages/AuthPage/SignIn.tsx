@@ -36,6 +36,11 @@ export const SignIn: React.FC = () => {
     dispatch(signin(email, password));
   };
 
+  useEffect(() => {
+    localStorage.setItem("myapp-email", email);
+    localStorage.setItem("myapp-password", password);
+  }, [email, password]);
+
   const rememberMe = (e: any) => {
     if (e.target.checked) {
       localStorage.setItem("myapp-email", email);
@@ -106,6 +111,7 @@ export const SignIn: React.FC = () => {
                   type="checkbox"
                   onClick={rememberMe}
                   id="rememberMe"
+                  checked
                 />
                 <label className="text-sm" htmlFor="rememberMe">
                   Remember me
