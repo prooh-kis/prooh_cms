@@ -10,12 +10,12 @@ interface ScreenListThumbnailProps {
   color: string;
   isSelected?: boolean;
   handleCardClick: () => void;
-  navigate?: any;
+  onDoubleClick?: any;
   data: any;
 }
 
 export const CampaignListView = ({
-  navigate,
+  onDoubleClick,
   data,
   color,
   isSelected,
@@ -24,7 +24,7 @@ export const CampaignListView = ({
   return (
     <div
       onClick={handleCardClick}
-      onDoubleClick={navigate}
+      onDoubleClick={onDoubleClick}
       className={clsx(
         "rounded w-full h-auto my-1 p-4 flex items-center transition-colors cursor-pointer bg-white",
         {

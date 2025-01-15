@@ -1,4 +1,3 @@
-import { message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +12,7 @@ import {
 } from "../../components/index";
 import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
 import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
+import { message } from "antd";
 
 export const CampaignsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -44,7 +44,15 @@ export const CampaignsPage: React.FC = () => {
     }
   }, [dispatch, userInfo]);
 
-  // Handle card click, setting the clicked card's index
+  useEffect(() => {
+    // Restore scroll position when coming back to this page
+    const savedScrollPosition =
+      sessionStorage.getItem("campaignsScrollPosition") || "0";
+    if (targetDivRef.current) {
+      targetDivRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+    }
+  }, []);
+
   const handleCardClick = (id: any) => {
     setSelectedCard(id);
   };
@@ -70,14 +78,24 @@ export const CampaignsPage: React.FC = () => {
     );
   };
 
+  const handleDoubleClick = (id: string) => {
+    // Save the current scroll position
+    if (targetDivRef.current) {
+      sessionStorage.setItem(
+        "campaignsScrollPosition",
+        targetDivRef.current.scrollTop.toString()
+      );
+    }
+    navigate(`/campaigns-details/${id}`);
+  };
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <div className="bg-white w-[85vw]">
         <div className="flex justify-between pr-8 border-b">
           <div className="flex gap-4 items-center p-4 ">
             <h1 className="text-[16px] font-semibold">
               My Campaigns{" "}
-              <span className="text-[18px] text-[#68879C] ">
+              <span className="text-[14px] text-[#68879C] ">
                 (
                 {
                   allCampaigns?.filter(
@@ -121,7 +139,10 @@ export const CampaignsPage: React.FC = () => {
               <NoDataView />
             </div>
           )}
-          <div className="h-[80vh] overflow-y-auto scrollbar-minimal mt-1">
+          <div
+            className="h-[80vh] overflow-y-auto scrollbar-minimal mt-1"
+            ref={targetDivRef}
+          >
             {allCampaigns
               ?.filter(
                 (campaign: any) =>
@@ -134,7 +155,7 @@ export const CampaignsPage: React.FC = () => {
                     isSelected={data?._id === selectedCard}
                     color={""}
                     handleCardClick={() => handleCardClick(data._id)}
-                    navigate={() => navigate(`/campaigns-details/${data._id}`)}
+                    onDoubleClick={() => handleDoubleClick(data._id)}
                     data={data}
                   />
                 </div>

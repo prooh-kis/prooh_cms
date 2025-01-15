@@ -20,6 +20,7 @@ import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions
 export const ScreensPage: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+  const targetDivRef = useRef<HTMLDivElement>(null);
   const [searchText, setSearchText] = useState<string>(
     getDataFromLocalStorage("screenFilters")?.searchText || ""
   );
@@ -59,8 +60,6 @@ export const ScreensPage: React.FC = () => {
     error: errorNetworkList,
     data: allNetworkData,
   } = getAllScreensForScreenOwnerCampaignCreation;
-
-  // getAllScreensForScreenOwnerCampaignCreation;
 
   const filterScreens =
     selectedScreensViaNetwork?.length > 0
@@ -112,7 +111,22 @@ export const ScreensPage: React.FC = () => {
       dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
   }, [dispatch]);
 
+  useEffect(() => {
+    // Restore scroll position when coming back to this page
+    const savedScrollPosition =
+      sessionStorage.getItem("screensScrollPosition") || "0";
+    if (targetDivRef.current) {
+      targetDivRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+    }
+  }, []);
+
   const handleCardClick = (id: any) => {
+    if (targetDivRef.current) {
+      sessionStorage.setItem(
+        "screensScrollPosition",
+        targetDivRef.current.scrollTop.toString()
+      );
+    }
     if (userInfo && userInfo?.isMaster && userInfo?.userRole === "primary") {
       setSelectedCard(id);
       navigate(`/screens-details/${id}`);
@@ -195,17 +209,6 @@ export const ScreensPage: React.FC = () => {
             </div>
             <div className="flex justify-between mt-4">
               <h1>Network</h1>
-              {/* {showNetwork ? (
-                <i
-                  className="fi fi-br-angle-up text-[14px]"
-                  onClick={() => setShowNetwork((pre: boolean) => !pre)}
-                ></i>
-              ) : (
-                <i
-                  className="fi fi-br-angle-down text-[14px]"
-                  onClick={() => setShowNetwork((pre: boolean) => !pre)}
-                ></i>
-              )} */}
             </div>
             {loadingNetworkList ? (
               <Loading />
@@ -239,7 +242,10 @@ export const ScreensPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 w-[80vw] h-[85vh] overflow-y-auto scrollbar-minimal pr-2">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 w-[80vw] h-[85vh] overflow-y-auto scrollbar-minimal pr-2"
+          ref={targetDivRef}
+        >
           {loading ? (
             <Loading />
           ) : (
