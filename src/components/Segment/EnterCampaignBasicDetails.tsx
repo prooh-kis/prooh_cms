@@ -146,7 +146,7 @@ export const EnterCampaignBasicDetails = ({
       message.error("Please set loop for the campaign");
       return false;
     } else if (screenIds.length === 0) {
-      message.error("Please select atleast one screens");
+      message.error("Please select at least one screens");
       return false;
     } else {
       return true;
@@ -177,6 +177,17 @@ export const EnterCampaignBasicDetails = ({
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
+
+    // Fetching stored start and end dates for edit flow
+    const storedCampaignData =
+      getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
+    const fixedStartDate = storedCampaignData
+      ? new Date(storedCampaignData.startDate).toISOString()
+      : new Date(startDate).toISOString();
+    const fixedEndDate = storedCampaignData
+      ? new Date(storedCampaignData.endDate).toISOString()
+      : new Date(endDate).toISOString();
+
     const data = {
       pageName: "Add Basic Details",
       name: campaignName,
@@ -184,9 +195,9 @@ export const EnterCampaignBasicDetails = ({
       campaignType: campaignType,
       clientName: clientName,
       industry: industry,
-      startDate: new Date(startDate).toISOString(),
-      endDate: new Date(endDate).toISOString(),
-      duration: getNumberOfDaysBetweenTwoDates(startDate, endDate),
+      startDate: fixedStartDate,
+      endDate: fixedEndDate,
+      duration: getNumberOfDaysBetweenTwoDates(fixedStartDate, fixedEndDate),
       campaignPlannerId: userInfo?._id,
       campaignPlannerName: userInfo?.name,
       campaignPlannerEmail: userInfo?.email,
@@ -202,6 +213,7 @@ export const EnterCampaignBasicDetails = ({
         vacantSlots: [],
       },
     };
+
     if (purpose === "Edit") {
       dispatch(
         createCampaignCreationByScreenOwnerAction({
