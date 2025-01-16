@@ -275,7 +275,7 @@ export function EditCreativeEndDatePopup({
                       action={(e: any) => {
                         setEndDate(e);
                       }}
-                      minDate={campaign?.endDate || new Date()}
+                      minDate={campaign?.startDate || new Date()}
                       disabled={false}
                     />
                   </div>
