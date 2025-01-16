@@ -114,7 +114,7 @@ export function UploadCreativesFromBucketPopup({
         url: item.awsURL,
         size: item.fileSize,
         _id: { $oid: item._id },
-        duration: campaignDuration ? campaignDuration : item?.duration,
+        duration: item?.duration ? item?.duration : campaignDuration,
       };
       dataToUpload.push(mediaData);
     });
