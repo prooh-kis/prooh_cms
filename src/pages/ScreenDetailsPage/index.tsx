@@ -699,7 +699,11 @@ export const ScreenDetailsPage: React.FC = () => {
             <div className="bg-white h-[73vh] overflow-y-auto no-scrollbar mt-2">
               <h1 className="text-[16px] font-semibold">Creatives</h1>
               {campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
-                ?.creatives?.standardDayTimeCreatives?.length === 0 && (
+                ?.creatives?.standardDayTimeCreatives?.length === 0 &&
+                campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                ?.creatives?.standardNightTimeCreatives?.length === 0 &&
+                campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
+                ?.creatives?.triggerCreatives?.length === 0 && (
                 <div className="p-1 relative  h-32 z-100">
                   <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
                     <div className="flex justify-end  p-1 w-16 gap-4 bg-[#D7D7D750]">
@@ -719,6 +723,76 @@ export const ScreenDetailsPage: React.FC = () => {
               {campaigns
                 ?.filter((c: any) => c._id === selectedCampaign)[0]
                 ?.creatives.standardDayTimeCreatives?.map(
+                  (creative: any, j: any) => (
+                    <div key={j} className="p-1">
+                      <ShowMediaFile
+                        url={creative?.url}
+                        mediaType={
+                          creative.type != null
+                            ? creative?.type.split("/")[0]
+                            : creative.fileType
+                        }
+                        key={j}
+                        height="h-full"
+                        width="w-full"
+                      />
+                      <h1 className="text-[14px] truncate">
+                        {
+                          creative?.url?.split("_")[
+                            creative?.url?.split("_")?.length - 1
+                          ]
+                        }
+                      </h1>
+                      <p className="text-[12px]">
+                        {creative?.type?.split("/")[0] === "image" &&
+                          campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.creatives.creativeDuration}{" "}
+                        {creative?.type?.split("/")[0] === "image" &&
+                          "seconds, "}{" "}
+                        {creative?.type}
+                      </p>
+                    </div>
+                  )
+                )}
+                {campaigns
+                ?.filter((c: any) => c._id === selectedCampaign)[0]
+                ?.creatives.standardNightTimeCreatives?.map(
+                  (creative: any, j: any) => (
+                    <div key={j} className="p-1">
+                      <ShowMediaFile
+                        url={creative?.url}
+                        mediaType={
+                          creative.type != null
+                            ? creative?.type.split("/")[0]
+                            : creative.fileType
+                        }
+                        key={j}
+                        height="h-full"
+                        width="w-full"
+                      />
+                      <h1 className="text-[14px] truncate">
+                        {
+                          creative?.url?.split("_")[
+                            creative?.url?.split("_")?.length - 1
+                          ]
+                        }
+                      </h1>
+                      <p className="text-[12px]">
+                        {creative?.type?.split("/")[0] === "image" &&
+                          campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.creatives.creativeDuration}{" "}
+                        {creative?.type?.split("/")[0] === "image" &&
+                          "seconds, "}{" "}
+                        {creative?.type}
+                      </p>
+                    </div>
+                  )
+                )}
+                {campaigns
+                ?.filter((c: any) => c._id === selectedCampaign)[0]
+                ?.creatives.triggerCreatives?.map(
                   (creative: any, j: any) => (
                     <div key={j} className="p-1">
                       <ShowMediaFile
