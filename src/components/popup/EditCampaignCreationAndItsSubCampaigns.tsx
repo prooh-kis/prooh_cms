@@ -62,7 +62,7 @@ export function EditCampaignCreationAndItsSubCampaigns({
             action={(e: any) => {
               setEndDate(e);
             }}
-            minDate={campaignCreation?.endDate || new Date()}
+            minDate={campaignCreation?.startDate || new Date()}
             disabled={false}
           />
         </div>
