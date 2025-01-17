@@ -176,10 +176,10 @@ export function UploadCreativesFromBucketPopup({
     }
 
     const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
-    for (const creative of campData.creatives) {
-      creative.screenIds = creative.screenIds.filter((id: string) => !selectedScreenIds.includes(id))
-    }
-    campData.creatives = campData.creatives.filter(((screenIds : [string]) => screenIds.length > 0))
+    // for (const creative of campData.creatives) {
+    //   creative.screenIds = creative.screenIds.filter((id: string) => !selectedScreenIds.includes(id))
+    // }
+    // campData.creatives = campData.creatives.filter(((screenIds : [string]) => screenIds.length > 0))
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives?.length > 0) {
         campData.creatives.push(cd);
