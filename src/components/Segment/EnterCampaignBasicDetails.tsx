@@ -213,8 +213,8 @@ export const EnterCampaignBasicDetails = ({
         vacantSlots: [],
       },
     };
-
-    if (purpose === "Edit") {
+    console.log("purpose : ", purpose, { id: campaignId, ...data });
+    if (purpose === "Edit" && campaignId) {
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           id: campaignId,
