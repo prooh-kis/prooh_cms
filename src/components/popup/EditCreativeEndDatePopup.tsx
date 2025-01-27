@@ -9,11 +9,15 @@ import { Loading } from "../Loading";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { CalendarInput } from "../../components/atoms/CalendarInput";
-import { editCampaignCreativesEndDateAction, editDefaultCreativesAction } from "../../actions/screenAction";
+import {
+  editCampaignCreativesEndDateAction,
+  editDefaultCreativesAction,
+} from "../../actions/screenAction";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
 import SearchInputField from "../../components/molecules/SearchInputField";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
+import { format, toZonedTime } from "date-fns-tz";
 
 interface EditCreativeEndDatePopupProps {
   onClose?: any;
@@ -38,7 +42,7 @@ export function EditCreativeEndDatePopup({
   const [url, setUrl] = useState<any>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
-  const [endDate, setEndDate] = useState<any>(campaign?.endDate?.split(".")[0]);
+
   const [duration, setDuration] = useState<any>(
     campaign?.creatives?.creativeDuration
   );
@@ -57,6 +61,15 @@ export function EditCreativeEndDatePopup({
     error: errorCreatives,
     data: creatives,
   } = creativesMediaGet;
+
+  const originalDate = campaign?.endDate || new Date();
+
+  const timeZone = "Asia/Kolkata"; // UTC+5:30
+  // Convert the UTC date string to the target timezone
+  const zonedDate = toZonedTime(originalDate, timeZone);
+  // Format the zoned date into the desired string format
+  const formattedDate = format(zonedDate, "yyyy-MM-dd HH:mm:ss", { timeZone });
+  const [endDate, setEndDate] = useState<any>(formattedDate);
 
   useEffect(() => {
     if (creatives && campaign?.brandName) {
@@ -118,23 +131,23 @@ export function EditCreativeEndDatePopup({
     ]; // Clone the array
 
     if (campaignType === "Default") {
-      let creativesForDefault:any = [];
+      let creativesForDefault: any = [];
       dataToUpload.forEach((data: any) => {
         creativesForDefault.push({
           fileSize: data.size,
           fileType: data.type.toString().split("/")[0],
           url: data.url,
-          name:data.url.split("/")[3],
-          mediaId:data.url.split("/")[3].split(".")[0]
-        })
+          name: data.url.split("/")[3],
+          mediaId: data.url.split("/")[3].split(".")[0],
+        });
       });
 
       dispatch(
         editDefaultCreativesAction({
-          id : campaign._id,
-          creatives : creativesForDefault
+          id: campaign._id,
+          creatives: creativesForDefault,
         })
-      )
+      );
     } else {
       dataToUpload.forEach((data: any) => {
         if (!standardDayTimeCreatives?.some((f: any) => f.url === data.url)) {
@@ -152,14 +165,13 @@ export function EditCreativeEndDatePopup({
         standardNightTimeCreatives: [],
         triggerCreatives: [],
       };
-
+      // FFF
       dispatch(
         editCampaignCreativesEndDateAction({
           campaignId: campaign._id,
           endDate: endDate
             ? new Date(endDate).toISOString()
-            : new Date(campaign.endDate).toISOString().split(".")[0],
-          // creatives: creativeDataToUpload,
+            : new Date(campaign.endDate).toISOString(),
           duration: duration,
           creatives:
             creativeDataToUpload?.standardDayTimeCreatives?.length > 0
@@ -181,7 +193,7 @@ export function EditCreativeEndDatePopup({
     setIsLoading(true);
     const campData =
       getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[
-      campaign.campaignCreationId
+        campaign.campaignCreationId
       ];
     setTimeout(() => {
       handelDiscard();
