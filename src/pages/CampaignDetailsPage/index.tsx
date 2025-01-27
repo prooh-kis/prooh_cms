@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 import {
   convertDataTimeToLocale,
-  getNumberOfDaysBetweenTwoDates,
+  getCampaignEndingStatus,
 } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
 import {
@@ -436,14 +436,17 @@ export const CampaignDetailsPage: React.FC = () => {
                       </Tooltip>
                     </div>
                   )}
-                  {getNumberOfDaysBetweenTwoDates(
-                    new Date().toISOString(),
-                    campaignCreated?.endDate
-                  ) <= 0 ? (
-                    <h1 className="text-[12px] text-red-400">
-                      Campaign already ended
-                    </h1>
-                  ) : null}
+                  <h1
+                    className={`text-[12px] ${
+                      getCampaignEndingStatus(
+                        campaignCreated?.endDate
+                      ).includes("Already")
+                        ? "text-[#EF4444]"
+                        : "text-[#22C55E]"
+                    }`}
+                  >
+                    {getCampaignEndingStatus(campaignCreated?.endDate)}
+                  </h1>
                 </div>
               )}
             </div>

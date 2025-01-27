@@ -14,7 +14,7 @@ import {
 import { Loading } from "../../components/Loading";
 import {
   convertIntoDateAndTime,
-  getNumberOfDaysBetweenTwoDates,
+  getCampaignEndingStatus,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
@@ -259,8 +259,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-            (c: any) => c._id === selectedCampaign
-          )[0].creatives.standardDayTimeCreatives,
+          (c: any) => c._id === selectedCampaign
+        )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -460,10 +460,12 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
@@ -488,10 +490,12 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
@@ -648,9 +652,10 @@ export const ScreenDetailsPage: React.FC = () => {
                       className="text-gray-500 hover:text-[#348730]"
                       onClick={() =>
                         navigate(
-                          `/campaigns-details/${campaigns?.filter(
-                            (c: any) => c._id === selectedCampaign
-                          )[0]?.campaignCreationId
+                          `/campaigns-details/${
+                            campaigns?.filter(
+                              (c: any) => c._id === selectedCampaign
+                            )[0]?.campaignCreationId
                           }`
                         )
                       }
@@ -668,26 +673,10 @@ export const ScreenDetailsPage: React.FC = () => {
                   }
                 </h1>
                 <h1 className="text-[12px] mt-1">
-                  Ends in:{" "}
-                  {getNumberOfDaysBetweenTwoDates(
-                    new Date(),
+                  {getCampaignEndingStatus(
                     campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
                       ?.endDate
-                  ) < 0
-                    ? "Already Ended"
-                    : getNumberOfDaysBetweenTwoDates(
-                      new Date(),
-                      campaigns?.filter(
-                        (c: any) => c._id === selectedCampaign
-                      )[0]?.endDate
-                    ) === 0
-                      ? "Ending Today"
-                      : `${getNumberOfDaysBetweenTwoDates(
-                        new Date(),
-                        campaigns?.filter(
-                          (c: any) => c._id === selectedCampaign
-                        )[0]?.endDate
-                      )} days`}{" "}
+                  )}
                 </h1>
               </div>
             </div>
@@ -737,7 +726,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                              creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -775,7 +764,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                              creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -793,42 +782,42 @@ export const ScreenDetailsPage: React.FC = () => {
                   )}
               </div>
               <div className="border-b py-1">
-                <h1 className="text-[12px] mt-1 font-bold">Trigger Creatives</h1>
+                <h1 className="text-[12px] mt-1 font-bold">
+                  Trigger Creatives
+                </h1>
                 {campaigns
                   ?.filter((c: any) => c._id === selectedCampaign)[0]
-                  ?.creatives.triggerCreatives?.map(
-                    (creative: any, j: any) => (
-                      <div key={j} className="p-1">
-                        <ShowMediaFile
-                          url={creative?.url}
-                          mediaType={
-                            creative.type != null
-                              ? creative?.type.split("/")[0]
-                              : creative.fileType
-                          }
-                          key={j}
-                          height="h-full"
-                          width="w-full"
-                        />
-                        <h1 className="text-[14px] truncate">
-                          {
-                            creative?.url?.split("_")[
+                  ?.creatives.triggerCreatives?.map((creative: any, j: any) => (
+                    <div key={j} className="p-1">
+                      <ShowMediaFile
+                        url={creative?.url}
+                        mediaType={
+                          creative.type != null
+                            ? creative?.type.split("/")[0]
+                            : creative.fileType
+                        }
+                        key={j}
+                        height="h-full"
+                        width="w-full"
+                      />
+                      <h1 className="text-[14px] truncate">
+                        {
+                          creative?.url?.split("_")[
                             creative?.url?.split("_")?.length - 1
-                            ]
-                          }
-                        </h1>
-                        <p className="text-[12px]">
-                          {creative?.type?.split("/")[0] === "image" &&
-                            campaigns?.filter(
-                              (c: any) => c._id === selectedCampaign
-                            )[0]?.creatives.creativeDuration}{" "}
-                          {creative?.type?.split("/")[0] === "image" &&
-                            "seconds, "}{" "}
-                          {creative?.type}
-                        </p>
-                      </div>
-                    )
-                  )}
+                          ]
+                        }
+                      </h1>
+                      <p className="text-[12px]">
+                        {creative?.type?.split("/")[0] === "image" &&
+                          campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.creatives.creativeDuration}{" "}
+                        {creative?.type?.split("/")[0] === "image" &&
+                          "seconds, "}{" "}
+                        {creative?.type}
+                      </p>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

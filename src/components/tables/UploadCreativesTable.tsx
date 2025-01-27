@@ -133,7 +133,7 @@ export const UploadCreativesTable = ({
               screen.ratio?.toLowerCase().includes(searchQuery?.toLowerCase())
             )
             ?.map((s: any, i: number) => (
-              <tr key={i}>
+              <tr key={i} className="border-b hover:bg-gray-200">
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                     <CheckboxInput
