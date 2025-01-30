@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { ADD_NEW_USER, SIGN_IN } from "../../routes/routes";
 import {
-  MASTER_USER_ROLE,
+  SCREEN_ADMIN,
   USER_DELETE_RESET,
-  USER_ROLE_PRIMARY,
-  USER_ROLE_SECONDARY,
 } from "../../constants/userConstants";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -51,7 +49,7 @@ export const MyUsers = (props: any) => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else {
-      if (userInfo?.userRole !== USER_ROLE_PRIMARY) {
+      if (userInfo?.userRole !== SCREEN_ADMIN) {
         alert("You have no access to this page");
         navigate(-1);
       } else {
@@ -85,7 +83,7 @@ export const MyUsers = (props: any) => {
                 <td className="border pl-4">{user.email}</td>
                 <td className="border  pl-4">{user?.userRole}</td>
                 <td className="border  flex justify-center">
-                  {user.userRole === USER_ROLE_PRIMARY ? null : (
+                  {user.userRole === SCREEN_ADMIN ? null : (
                     <i
                       className="fi fi-rs-trash text-red-500"
                       title="delete user"

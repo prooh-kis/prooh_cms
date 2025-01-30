@@ -10,10 +10,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { UploadCreatives } from "../../components/Segment/UploadCreatives";
-import {
-  createCampaignCreationByScreenOwnerAction,
-  getScreenDataUploadCreativeAction,
-} from "../../actions/campaignAction";
 import { SIGN_IN } from "../../routes/routes";
 
 export const CreateCampaignPage: React.FC = () => {

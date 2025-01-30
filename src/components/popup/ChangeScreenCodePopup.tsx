@@ -13,6 +13,7 @@ import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { message } from "antd";
 import { SearchableSelect } from "../../components/atoms/SearchableSelect";
 import { SCREEN_CODE_CHANGE_RESET } from "../../constants/screenConstants";
+import { SCREEN_CODE_UPDATE_CMS } from "../../constants/userConstants";
 
 interface ChangeScreenCodePopupProps {
   open?: any;
@@ -119,6 +120,8 @@ export function ChangeScreenCodePopup({
                 screenCodeChangeAction({
                   id: selectedOption,
                   screenCode: screenCode,
+                  campaignCreationIds: [selectedOption],
+                  event: SCREEN_CODE_UPDATE_CMS,
                 })
               )
             }

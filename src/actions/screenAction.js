@@ -123,13 +123,19 @@ export const getScreenCampaignsDetailsAction =
       }
     };
 
-export const setCampaignsLoopForScreenAction = (input) => async (dispatch) => {
+export const setCampaignsLoopForScreenAction = (input) => async (dispatch , getState) => {
   dispatch({
     type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST,
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${campaignV2}/changeLoopIndex`, input);
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const { data } = await axios.post(`${campaignV2}/changeLoopIndex`, input ,
+      { headers: { authorization: `Bearer ${userInfo.token}` }, }
+    );
     dispatch({
       type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_SUCCESS,
       payload: data,
@@ -171,7 +177,7 @@ export const editCampaignCreativesEndDateAction =
     }
   };
 
-  export const editDefaultCreativesAction =
+export const editDefaultCreativesAction =
   (input) => async (dispatch, getState) => {
     dispatch({
       type: EDIT_DEFAULT_CREATIVE_REQUEST,
@@ -205,9 +211,14 @@ export const screenCampaignsMonitoringAction =
       payload: input,
     });
     try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
       const { data } = await axios.post(
         `${campaignV2}/addCampaignMonitoringData`,
-        input
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
       );
       dispatch({
         type: SCREEN_CAMPAIGN_MONITORING_SUCCESS,
@@ -255,7 +266,13 @@ export const screenCodeChangeAction = (input) => async (dispatch, getState) => {
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${screenV2}/changeScreenCode`, input);
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const { data } = await axios.post(`${screenV2}/changeScreenCode`, input,
+      { headers: { authorization: `Bearer ${userInfo.token}` }, }
+    );
     dispatch({
       type: SCREEN_CODE_CHANGE_SUCCESS,
       payload: data,
@@ -277,7 +294,13 @@ export const screenRefreshAction = (input) => async (dispatch, getState) => {
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${screenV2}/restartScreen`, input);
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const { data } = await axios.post(`${screenV2}/restartScreen`, input,
+      { headers: { authorization: `Bearer ${userInfo.token}` }, }
+    );
     dispatch({
       type: SCREEN_REFRESH_SUCCESS,
       payload: data,
@@ -300,7 +323,13 @@ export const changeDefaultIncludedAction =
       payload: input,
     });
     try {
-      const { data } = await axios.post(`${screenV2}/changeDefaultIncluded`, input);
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(`${screenV2}/changeDefaultIncluded`, input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+      );
       dispatch({
         type: CHANGE_DEFAULT_INCLUDED_SUCCESS,
         payload: data,
@@ -320,14 +349,20 @@ export const changeDefaultIncludedAction =
   };
 
 export const screenDataUpdateRedisAction =
-  ({ ids }) =>
+  (input) =>
     async (dispatch, getState) => {
       dispatch({
         type: UPDATE_SCREENS_DATA_IN_REDIS_REQUEST,
-        payload: { ids },
+        payload: input,
       });
       try {
-        const { data } = await axios.post(`${screenV2}/updateRedisData`, { ids });
+        const {
+          auth: { userInfo },
+        } = getState();
+
+        const { data } = await axios.post(`${screenV2}/updateRedisData`, input,
+          { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        );
         dispatch({
           type: UPDATE_SCREENS_DATA_IN_REDIS_SUCCESS,
           payload: data,

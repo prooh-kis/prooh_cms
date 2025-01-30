@@ -14,7 +14,7 @@ import {
 import userImage from "../../assets/userImage.png";
 import { Menu } from "../../components/header/Menu";
 import { signout } from "../../actions/userAction";
-import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
+import { SCREEN_MONITORING_USER } from "../../constants/userConstants";
 import { message } from "antd";
 import { Header } from "../../components/header";
 import { ConformationModel } from "../../components/popup/ConformationModel";
@@ -41,7 +41,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
-    } else if (userInfo?.userRole !== USER_ROLE_PRIMARY) {
+    } else if (userInfo?.userRole === SCREEN_MONITORING_USER) {
       navigate(SCREENS_LIST_FOR_SECONDARY_USER);
     }
   }, [userInfo, navigate]);

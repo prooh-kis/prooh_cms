@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UploadCreatives } from "../../components/Segment/UploadCreatives";
 import {
-  createCampaignCreationByScreenOwnerAction,
   getFullCampaignDetailsAction,
 } from "../../actions/campaignAction";
 import { SIGN_IN } from "../../routes/routes";

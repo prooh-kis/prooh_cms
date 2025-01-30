@@ -14,13 +14,12 @@ import {
 } from "../../constants/localStorageConstants";
 import {
   createCampaignCreationByScreenOwnerAction,
-  editCampaignCreationByScreenOwnerAction,
   getAllCampaignsDetailsAction,
   getScreenDataUploadCreativeAction,
 } from "../../actions/campaignAction";
 import { CheckboxInput } from "../atoms/CheckboxInput";
 import { UploadCreativesTable } from "../tables/UploadCreativesTable";
-import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
+import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, SCREEN_ADMIN, SCREEN_OWNER } from "../../constants/userConstants";
 import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBucketPopup";
 import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
@@ -122,7 +121,7 @@ export const UploadCreatives = ({
   };
 
   const handleSetOpenBucketModel = () => {
-    if (userInfo?.userRole === USER_ROLE_PRIMARY) {
+    if (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER) {
       setIsBucketPopupOpen(true);
     } else {
       message.error("You have no access");
@@ -146,6 +145,8 @@ export const UploadCreatives = ({
           pageName: "Upload Creatives",
           id: campaignId,
           creatives: immutableCreatives,
+          campaignCreationIds: [campaignId],
+          event: CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
         })
       );
     } else {
@@ -278,7 +279,7 @@ export const UploadCreatives = ({
               )
               ?.flatMap((c: any) => c.standardDayTimeCreatives)}
             removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
-            // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+          // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
           />
         </div>
       )}

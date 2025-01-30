@@ -33,6 +33,7 @@ import {
 } from "../../components";
 import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
 import { SelectScreensViaNetwork } from "../../components/molecules/SelectScreensViaNetwork";
+import { CAMPAIGN_CREATION_CMS, CAMPAIGN_CREATION_EDIT_CREATIVE_CMS } from "../../constants/userConstants";
 
 interface EnterCampaignBasicDetailsProps {
   userInfo?: any;
@@ -95,19 +96,19 @@ export const EnterCampaignBasicDetails = ({
   const [startDate, setStartDate] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
       ? new Date(
-          getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate
-        )
-          ?.toISOString()
-          ?.slice(0, 16)
+        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate
+      )
+        ?.toISOString()
+        ?.slice(0, 16)
       : ""
   );
   const [endDate, setEndDate] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
       ? new Date(
-          getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate
-        )
-          ?.toISOString()
-          ?.slice(0, 16)
+        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate
+      )
+        ?.toISOString()
+        ?.slice(0, 16)
       : ""
   );
 
@@ -218,11 +219,17 @@ export const EnterCampaignBasicDetails = ({
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           id: campaignId,
+          campaignCreationIds: [campaignId],
+          event: CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
           ...data,
         })
       );
     } else {
-      dispatch(createCampaignCreationByScreenOwnerAction(data));
+      dispatch(createCampaignCreationByScreenOwnerAction({
+        campaignCreationIds: [],
+        event: CAMPAIGN_CREATION_CMS,
+        ...data
+      }));
     }
   }, [
     handleSetNewDuration,
@@ -471,9 +478,9 @@ export const EnterCampaignBasicDetails = ({
                 {purpose === "Edit" ? (
                   <div
                     className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                    // onClick={() => {
-                    //   alert("You can't edit start date");
-                    // }}
+                  // onClick={() => {
+                  //   alert("You can't edit start date");
+                  // }}
                   >
                     <h1 className="text-[14px]">
                       {new Date(startDate).toLocaleDateString()}
@@ -574,10 +581,9 @@ export const EnterCampaignBasicDetails = ({
                   <div
                     key={i}
                     className={`
-                      ${
-                        atIndex.includes(index.value)
-                          ? "bg-[#129BFF] text-white"
-                          : ""
+                      ${atIndex.includes(index.value)
+                        ? "bg-[#129BFF] text-white"
+                        : ""
                       }
                       border rounded-[8px] w-[40px] flex justify-center py-1
                     `}

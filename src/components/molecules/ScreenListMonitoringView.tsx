@@ -12,6 +12,7 @@ import {
 } from "../../utils/dateAndTimeUtils";
 import { useSelector } from "react-redux";
 import { Tooltip } from "antd";
+import { SCREEN_ADMIN } from "../../constants/userConstants";
 
 export function ScreenListMonitoringView({
   screen,
@@ -112,7 +113,7 @@ export function ScreenListMonitoringView({
             )}
             {campaignCreated &&
               showMenu &&
-              userInfo?.userRole === "primary" && (
+              (userInfo?.userRole === SCREEN_ADMIN ) && (
                 <div
                   onMouseLeave={() => setShowMenu(false)}
                   className="absolute z-10 mt-1 w-[150px] bg-white border border-gray-300  shadow-lg right-0 text-sm text-black-1000"

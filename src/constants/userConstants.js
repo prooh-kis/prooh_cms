@@ -63,3 +63,24 @@ export const SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR =
   "SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR";
 export const SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET =
   "SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET";
+
+export const SCREEN_ADMIN = "screenAdmin"
+export const SCREEN_OWNER = "screenOwner"
+export const SCREEN_MANAGER = "screenManager"
+export const SCREEN_MONITORING_USER = "screenMonitoring"
+
+export const CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS = "campaignStatusChangedToActiveCms"
+export const CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS = "campaignStatusChangedToPausedCms"
+export const CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS = "campaignStatusChangedToDeletedCms"
+export const CAMPAIGN_MONITORING_DATA_CMS = "campaignMonitoringDataCms"
+export const SCREEN_LOOP_CHANGED_CMS = "screenLoopChangedCms"
+export const SCREEN_RESTARTED_CMS = "screenRestartedCms"
+export const SCREEN_CODE_UPDATE_CMS = "screenCodeUpdateCms"
+export const SCREEN_REDIS_UPDATE_CMS = "screenRedisUpdateCms"
+export const SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS = "screenChangeDefaultIncludedStatusCms"
+export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreativeCms"
+export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"
+
+// not in use as of now
+export const ADD_CREATIVE_CMS = "addCreativeCms"
+export const CAMPAIGN_CREATION_CMS = "campaignCreationCms"

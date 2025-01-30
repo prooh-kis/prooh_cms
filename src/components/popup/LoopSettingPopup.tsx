@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { useDispatch } from "react-redux";
 import { setCampaignsLoopForScreenAction } from "../../actions/screenAction";
+import { SCREEN_LOOP_CHANGED_CMS } from "../../constants/userConstants";
 
 interface Campaign {
   _id: string;
@@ -168,6 +169,8 @@ export function LoopSettingPopup({
       setCampaignsLoopForScreenAction({
         screeId: screenId,
         data: formattedData,
+        screenIds: [screenId],
+        event: SCREEN_LOOP_CHANGED_CMS,
       })
     );
     onClose();

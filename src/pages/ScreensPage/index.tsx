@@ -13,7 +13,7 @@ import {
 import { SIGN_IN } from "../../routes/routes";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
-import { USER_ROLE_PRIMARY } from "../../constants/userConstants";
+import { SCREEN_ADMIN, SCREEN_OWNER } from "../../constants/userConstants";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
 
@@ -64,15 +64,15 @@ export const ScreensPage: React.FC = () => {
   const filterScreens =
     selectedScreensViaNetwork?.length > 0
       ? allScreens
-          ?.filter((screen: any) =>
-            screen.screenName.toLowerCase().includes(searchText?.toLowerCase())
-          )
-          ?.filter((screen: any) =>
-            selectedScreensViaNetwork.includes(screen?._id)
-          )
-      : allScreens?.filter((screen: any) =>
+        ?.filter((screen: any) =>
           screen.screenName.toLowerCase().includes(searchText?.toLowerCase())
-        );
+        )
+        ?.filter((screen: any) =>
+          selectedScreensViaNetwork.includes(screen?._id)
+        )
+      : allScreens?.filter((screen: any) =>
+        screen.screenName.toLowerCase().includes(searchText?.toLowerCase())
+      );
 
   const handleSaveDataOnLocalStorage = () => {
     if (!networks || Object.keys(networks).length === 0) return; // Ensure networks are loaded
@@ -127,7 +127,7 @@ export const ScreensPage: React.FC = () => {
         targetDivRef.current.scrollTop.toString()
       );
     }
-    if (userInfo && userInfo?.isMaster && userInfo?.userRole === "primary") {
+    if (userInfo && userInfo?.isMaster && userInfo?.userRole === SCREEN_ADMIN) {
       setSelectedCard(id);
       navigate(`/screens-details/${id}`);
     }
@@ -194,7 +194,7 @@ export const ScreensPage: React.FC = () => {
         </div>
       </div>
       <div className="flex gap-2">
-        {userInfo?.userRole === USER_ROLE_PRIMARY && (
+        {(userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER) && (
           <div className="w-[17vw] bg-white  p-4 ">
             <div className="flex justify-between items-center border-b pb-4">
               <h1 className="text-[#151515] text-[16px] font-semibold">

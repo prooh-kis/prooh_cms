@@ -25,6 +25,7 @@ import { MonitoringPictures } from "../../components/Segment/MonitoringPictures"
 import { UploadMonitoringPicturesPopup } from "../../components/popup/UploadMonitoringPicturesPopup";
 import { NoDataView, SearchInputField } from "../../components";
 import { GET_SCREEN_CAMPAIGN_MONITORING_RESET } from "../../constants/screenConstants";
+import { CAMPAIGN_MONITORING_DATA_CMS } from "../../constants/userConstants";
 
 const time = ["day", "night", "misc"];
 const pictures = ["images", "video", "geoTag", "newspaper"];
@@ -141,9 +142,14 @@ export const MonitoringPage: React.FC = () => {
   };
 
   const monitoringPicturesSaveHandler = () => {
+    const data = getDataFromLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS)
     dispatch(
       screenCampaignsMonitoringAction(
-        getDataFromLocalStorage(SCREEN_CAMPAIGN_MONITORING_PICS)
+        {
+          campaignIds: [data.campaignId],
+          event: CAMPAIGN_MONITORING_DATA_CMS,
+          ...data
+        }
       )
     );
   };
