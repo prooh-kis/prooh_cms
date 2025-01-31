@@ -22,3 +22,5 @@ export const CAMPAIGNS_DETAILS = "/campaigns-details/:id?";
 export const MY_CREATIVES = "/my-creatives";
 
 export const SCREEN_CAMPAIGN_MONITORING = "/screen-campaign-monitoring";
+
+export const PLAY_LIVE_URL = "/play-live-url"

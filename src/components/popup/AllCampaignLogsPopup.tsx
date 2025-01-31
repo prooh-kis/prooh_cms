@@ -224,6 +224,7 @@ export const AllCampaignLogsPopup = ({
         <div className="flex justify-between p-2">
           <div className="flex gap-4">
             <input
+              title="q"
               type="checkbox"
               value="Checked All"
               id="Select All"
@@ -260,6 +261,7 @@ export const AllCampaignLogsPopup = ({
                   onClick={() => handelSelectScreen(screen?._id)}
                 >
                   <input
+                    title="q"
                     type="checkbox"
                     checked={selectedScreens?.includes(screen?._id)}
                   />
