@@ -80,7 +80,10 @@ export const SCREEN_REDIS_UPDATE_CMS = "screenRedisUpdateCms"
 export const SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS = "screenChangeDefaultIncludedStatusCms"
 export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreativeCms"
 export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"
+export const USERS_GET_CMS = "usersGetCms"
+export const USERS_DELETE_CMS = "usersDeleteCms"
+export const CREATIVE_GET_CMS = "creativeGetCms"
+export const CREATIVE_ADD_CMS = "creativeAddCms"
 
 // not in use as of now
-export const ADD_CREATIVE_CMS = "addCreativeCms"
 export const CAMPAIGN_CREATION_CMS = "campaignCreationCms"

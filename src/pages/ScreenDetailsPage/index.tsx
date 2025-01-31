@@ -162,7 +162,7 @@ export const ScreenDetailsPage: React.FC = () => {
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a screen owner!!!");
+      // message.error("Not a screen owner!!!");
     }
 
     if (successScreenDataUpdateRedis) {

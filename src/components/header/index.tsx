@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
               <div className="justify-center w-full truncate">
                 <h3 className="text-lg pr-2">{userInfo.name}</h3>
                 <p className="text-xs font-semibold text-gray-700">
-                  {userInfo.isBrand && "Campaign Planner"}
+                  {userInfo.userRole}
                 </p>
               </div>
               <div>

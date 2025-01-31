@@ -33,11 +33,11 @@ export const CampaignsPage: React.FC = () => {
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a screen owner!!!");
+      // message.error("Not a screen owner!!!");
     } else if (!allCampaigns) {
       dispatch(
         getAllCampaignsDetailsAction({
-          userId: userInfo?.primaryUserId,
+          userId: userInfo?._id,
           status: CAMPAIGN_STATUS_ACTIVE,
         })
       );
@@ -61,7 +61,7 @@ export const CampaignsPage: React.FC = () => {
     setCurrentTab(status);
     dispatch(
       getAllCampaignsDetailsAction({
-        userId: userInfo?.primaryUserId,
+        userId: userInfo?._id,
         status: campaignCreationTypeTabs?.filter(
           (tab: any) => tab.id === status
         )[0]?.value,
@@ -72,7 +72,7 @@ export const CampaignsPage: React.FC = () => {
   const reset = () => {
     dispatch(
       getAllCampaignsDetailsAction({
-        userId: userInfo?.primaryUserId,
+        userId: userInfo?._id,
         status: CAMPAIGN_STATUS_ACTIVE,
       })
     );

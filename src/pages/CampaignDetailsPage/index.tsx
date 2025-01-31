@@ -12,7 +12,6 @@ import {
   campaignLogsByCampaignIdAction,
   changeCampaignStatusAction,
   editAllSubCampaignsAction,
-  getAllCampaignsDetailsAction,
   getCampaignCreatedScreensDetailsAction,
   getCampaignDetailsAction,
 } from "../../actions/campaignAction";
@@ -50,7 +49,7 @@ import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { creativeTypeTab } from "../../constants/tabDataConstant";
 import { MY_CREATIVES } from "../../routes/routes";
-import { CAMPAIGN_CREATION_EDIT_END_DATE_CMS, CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS } from "../../constants/userConstants";
+import { CAMPAIGN_CREATION_EDIT_END_DATE_CMS, CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS, SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 
 export const CampaignDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -222,9 +221,9 @@ export const CampaignDetailsPage: React.FC = () => {
   }, [dispatch, successStatusChange, errorStatusChange, successChange]);
 
   useEffect(() => {
-    if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a screen owner!!!");
-    }
+    // if (userInfo && !userInfo?.isMaster) {
+    //   message.error("Not a screen owner!!!");
+    // }
     dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   }, [campaignId, dispatch, userInfo]);
@@ -377,7 +376,7 @@ export const CampaignDetailsPage: React.FC = () => {
                   </h1>
                 </div>
               </div>
-              {userInfo?.userRole === "primary" && (
+              {(userInfo?.userRole === SCREEN_ADMIN ||userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER ) && (
                 <div className="flex flex-col px-4 justify-center">
                   {loadingStatusChange ? (
                     <Skeleton active paragraph={{ rows: 1 }} />

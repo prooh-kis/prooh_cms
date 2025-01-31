@@ -26,7 +26,7 @@ import {
   ALL_NETWORK_LIST,
   ALL_PACKAGE_LIST,
 } from "../../constants/localStorageConstants";
-import { SearchableSelect } from "../../components/atoms/SearchableSelect";
+import { CREATIVE_ADD_CMS } from "../../constants/userConstants";
 
 interface UploadCreativesV2PopupProps {
   onClose?: any;
@@ -216,6 +216,7 @@ export function UploadCreativesV2Popup({
           brand: brandName?.toUpperCase(),
           network: network?.toUpperCase(),
           creatives: myData,
+          event : CREATIVE_ADD_CMS
         })
       );
     } catch (error) {

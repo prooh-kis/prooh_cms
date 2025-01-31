@@ -13,7 +13,7 @@ import {
 import { SIGN_IN } from "../../routes/routes";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
-import { SCREEN_ADMIN, SCREEN_OWNER } from "../../constants/userConstants";
+import { SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
 
@@ -97,7 +97,7 @@ export const ScreensPage: React.FC = () => {
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a screen owner!!!");
+      // message.error("Not a screen owner!!!");
     }
     if (!userInfo) {
       navigate(SIGN_IN);
@@ -127,7 +127,7 @@ export const ScreensPage: React.FC = () => {
         targetDivRef.current.scrollTop.toString()
       );
     }
-    if (userInfo && userInfo?.isMaster && userInfo?.userRole === SCREEN_ADMIN) {
+    if (userInfo && (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER ) ) {
       setSelectedCard(id);
       navigate(`/screens-details/${id}`);
     }
@@ -194,7 +194,7 @@ export const ScreensPage: React.FC = () => {
         </div>
       </div>
       <div className="flex gap-2">
-        {(userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER) && (
+        {(userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER) && (
           <div className="w-[17vw] bg-white  p-4 ">
             <div className="flex justify-between items-center border-b pb-4">
               <h1 className="text-[#151515] text-[16px] font-semibold">

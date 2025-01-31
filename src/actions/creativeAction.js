@@ -12,6 +12,7 @@ import {
 } from "../constants/creativeConstants";
 
 import { screenV2, creativeV2 } from "../constants/urlConsent";
+import { CREATIVE_GET_CMS } from "../constants/userConstants";
 
 export const uploadCreativesMediaAction =
   (requestBody) => async (dispatch, getState) => {
@@ -44,38 +45,39 @@ export const uploadCreativesMediaAction =
 
 export const getCreativesMediaAction =
   ({ userId }) =>
-  async (dispatch, getState) => {
-    dispatch({
-      type: GET_CREATIVES_REQUEST,
-      payload: userId,
-    });
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-      const { data } = await axios.post(
-        `${creativeV2}/getCreatives`,
-        { userId },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+    async (dispatch, getState) => {
+      dispatch({
+        type: GET_CREATIVES_REQUEST,
+        payload: userId,
+      });
+      try {
+        const {
+          auth: { userInfo },
+        } = getState();
+        const { data } = await axios.post(
+          `${creativeV2}/getCreatives`,
+          { userId },
+          {
+            params: { event: CREATIVE_GET_CMS },
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
 
-      dispatch({
-        type: GET_CREATIVES_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({
-        type: GET_CREATIVES_ERROR,
-        payload: message,
-      });
-    }
-  };
+        dispatch({
+          type: GET_CREATIVES_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        const message =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+        dispatch({
+          type: GET_CREATIVES_ERROR,
+          payload: message,
+        });
+      }
+    };
 
 export const getAllBrandAndNetworkAction = () => async (dispatch, getState) => {
   dispatch({

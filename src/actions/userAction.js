@@ -25,6 +25,8 @@ import {
   USER_LIST_ERROR,
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
+  USERS_DELETE_CMS,
+  USER_DELETE_ERROR,
 } from "../constants/userConstants";
 import store from "../store";
 import { login, logout } from "../store/authSlice";
@@ -225,40 +227,40 @@ export const updateUserPassword =
 
 export const googleSignupSignin =
   ({ name, email, avatar }) =>
-  async (dispatch) => {
-    dispatch({
-      type: USER_SIGNIN_REQUEST,
-      payload: { name, email, avatar },
-    });
-    try {
-      const { data } = await Axios.post(`${userV1}/googleSignupSignin`, {
-        name,
-        email,
-        avatar,
-      });
+    async (dispatch) => {
       dispatch({
-        type: USER_SIGNIN_SUCCESS,
-        payload: data,
+        type: USER_SIGNIN_REQUEST,
+        payload: { name, email, avatar },
       });
-      // localStorage.setItem("userInfo", JSON.stringify(data));
+      try {
+        const { data } = await Axios.post(`${userV1}/googleSignupSignin`, {
+          name,
+          email,
+          avatar,
+        });
+        dispatch({
+          type: USER_SIGNIN_SUCCESS,
+          payload: data,
+        });
+        // localStorage.setItem("userInfo", JSON.stringify(data));
 
-      const loginTime = new Date().getTime();
-      const loginData = {
-        userInfo: data,
-        loginTime,
-      };
-      localStorage.setItem("user", JSON.stringify(loginData));
-      store.dispatch(login(loginData));
-    } catch (error) {
-      dispatch({
-        type: USER_SIGNIN_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+        const loginTime = new Date().getTime();
+        const loginData = {
+          userInfo: data,
+          loginTime,
+        };
+        localStorage.setItem("user", JSON.stringify(loginData));
+        store.dispatch(login(loginData));
+      } catch (error) {
+        dispatch({
+          type: USER_SIGNIN_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const sendEmailForConfirmation =
   (formData) => async (dispatch, getState) => {
@@ -322,18 +324,20 @@ export const sendEmailForVendorConfirmation =
     }
   };
 
-export const getUserList = () => async (dispatch, getState) => {
+export const getUserList = (input) => async (dispatch, getState) => {
   dispatch({
     type: USER_LIST_REQUEST,
-    payload: {},
+    payload: input,
   });
   try {
     const {
       auth: { userInfo },
     } = getState();
-    const { data } = await Axios.get(`${userV1}/users`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(`${userV1}/users`,
+      {
+        params: input,
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
@@ -359,11 +363,12 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
     const {
       auth: { userInfo },
     } = getState();
-    const { data } = await Axios.delete(`${USER_URL}/deleteUser`, {
+    const { data } = await Axios.delete(`${userV1}/deleteUser`, {
       params: {
         userId: userId,
+        event: USERS_DELETE_CMS
       },
-      headers: { Authorization: `Bearer ${userInfo.token}` },
+      headers: { authorization: `Bearer ${userInfo.token}` },
     });
     dispatch({
       type: USER_DELETE_SUCCESS,
@@ -375,7 +380,7 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({
-      type: USER_LIST_ERROR,
+      type: USER_DELETE_ERROR,
       payload: message,
     });
   }

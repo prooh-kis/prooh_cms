@@ -47,14 +47,14 @@ import {
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
 export const getAllScreensDetailsAction =
-  ({ userId }) =>
+  (input) =>
     async (dispatch) => {
       dispatch({
         type: GET_ALL_SCREENS_DATA_REQUEST,
-        payload: userId,
+        payload: input,
       });
       try {
-        const { data } = await axios.post(`${screenV2}/all`, { userId });
+        const { data } = await axios.post(`${screenV2}/all`, input);
         dispatch({
           type: GET_ALL_SCREENS_DATA_SUCCESS,
           payload: data,

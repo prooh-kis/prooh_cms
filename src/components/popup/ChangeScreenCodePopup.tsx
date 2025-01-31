@@ -120,7 +120,7 @@ export function ChangeScreenCodePopup({
                 screenCodeChangeAction({
                   id: selectedOption,
                   screenCode: screenCode,
-                  campaignCreationIds: [selectedOption],
+                  screenIds: [selectedOption],
                   event: SCREEN_CODE_UPDATE_CMS,
                 })
               )

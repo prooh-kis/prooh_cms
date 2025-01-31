@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { ADD_NEW_USER, SIGN_IN } from "../../routes/routes";
 import {
   SCREEN_ADMIN,
+  SCREEN_OWNER,
   USER_DELETE_RESET,
+  USERS_GET_CMS,
 } from "../../constants/userConstants";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -28,13 +30,13 @@ export const MyUsers = (props: any) => {
     if (success) {
       alert(userDeleteMessage);
       dispatch({ type: USER_DELETE_RESET });
-      dispatch(getUserList());
+      dispatch(getUserList({event : USERS_GET_CMS}));
     }
     if (errorUserDelete) {
       alert(errorUserDelete);
       dispatch({ type: USER_DELETE_RESET });
     }
-  }, [errorUserDelete, errorUserDelete]);
+  }, [errorUserDelete, errorUserDelete , success]);
 
   const handleDeleteUser = (userId: string) => {
     dispatch(deleteUser(userId));
@@ -49,11 +51,11 @@ export const MyUsers = (props: any) => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else {
-      if (userInfo?.userRole !== SCREEN_ADMIN) {
+      if (userInfo?.userRole !== SCREEN_ADMIN && userInfo?.userRole !== SCREEN_OWNER ) {
         alert("You have no access to this page");
         navigate(-1);
       } else {
-        dispatch(getUserList());
+        dispatch(getUserList({event : USERS_GET_CMS}));
       }
     }
   }, [userInfo]);
@@ -83,7 +85,7 @@ export const MyUsers = (props: any) => {
                 <td className="border pl-4">{user.email}</td>
                 <td className="border  pl-4">{user?.userRole}</td>
                 <td className="border  flex justify-center">
-                  {user.userRole === SCREEN_ADMIN ? null : (
+                  {user.userRole != SCREEN_ADMIN ? null : (
                     <i
                       className="fi fi-rs-trash text-red-500"
                       title="delete user"

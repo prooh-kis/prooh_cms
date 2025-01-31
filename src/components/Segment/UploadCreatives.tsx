@@ -19,7 +19,7 @@ import {
 } from "../../actions/campaignAction";
 import { CheckboxInput } from "../atoms/CheckboxInput";
 import { UploadCreativesTable } from "../tables/UploadCreativesTable";
-import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, SCREEN_ADMIN, SCREEN_OWNER } from "../../constants/userConstants";
+import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBucketPopup";
 import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
@@ -121,7 +121,7 @@ export const UploadCreatives = ({
   };
 
   const handleSetOpenBucketModel = () => {
-    if (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER) {
+    if (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER) {
       setIsBucketPopupOpen(true);
     } else {
       message.error("You have no access");

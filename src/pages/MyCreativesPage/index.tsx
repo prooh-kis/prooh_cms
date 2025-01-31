@@ -114,7 +114,7 @@ export const MyCreativesPage: React.FC = () => {
 
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      message.error("Not a user or master!!!");
+      // message.error("Not a user or master!!!");
     }
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   }, [dispatch, userInfo]);
