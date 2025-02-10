@@ -55,10 +55,12 @@ interface EnterCampaignBasicDetailsProps {
   purpose?: string;
 }
 
-const allIndex = Array.from({ length: 3 }, (_, i) => ({
-  label: (i + 1).toString(),
-  value: i + 1,
-}));
+const allIndex = [1, 2, 3, 6].map((value) => {
+  return {
+    label: value.toString(),
+    value: value,
+  }
+})
 
 export const EnterCampaignBasicDetails = ({
   userInfo,
