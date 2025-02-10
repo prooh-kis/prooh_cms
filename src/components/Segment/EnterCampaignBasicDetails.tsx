@@ -40,7 +40,10 @@ import {
   getAllClientAgencyNames,
 } from "../../actions/clientAgencyAction";
 import { ADD_CLIENT_AGENCY_DETAILS_RESET } from "../../constants/clientAgencyConstants";
-import { CAMPAIGN_CREATION_CMS, CAMPAIGN_CREATION_EDIT_CREATIVE_CMS } from "../../constants/userConstants";
+import {
+  CAMPAIGN_CREATION_CMS,
+  CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
+} from "../../constants/userConstants";
 
 interface EnterCampaignBasicDetailsProps {
   userInfo?: any;
@@ -59,8 +62,8 @@ const allIndex = [1, 2, 3, 6].map((value) => {
   return {
     label: value.toString(),
     value: value,
-  }
-})
+  };
+});
 
 export const EnterCampaignBasicDetails = ({
   userInfo,
@@ -108,19 +111,19 @@ export const EnterCampaignBasicDetails = ({
   const [startDate, setStartDate] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
       ? new Date(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate
-      )
-        ?.toISOString()
-        ?.slice(0, 16)
+          getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate
+        )
+          ?.toISOString()
+          ?.slice(0, 16)
       : ""
   );
   const [endDate, setEndDate] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
       ? new Date(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate
-      )
-        ?.toISOString()
-        ?.slice(0, 16)
+          getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate
+        )
+          ?.toISOString()
+          ?.slice(0, 16)
       : ""
   );
 
@@ -266,11 +269,13 @@ export const EnterCampaignBasicDetails = ({
         })
       );
     } else {
-      dispatch(createCampaignCreationByScreenOwnerAction({
-        campaignCreationIds: [],
-        event: CAMPAIGN_CREATION_CMS,
-        ...data
-      }));
+      dispatch(
+        createCampaignCreationByScreenOwnerAction({
+          campaignCreationIds: [],
+          event: CAMPAIGN_CREATION_CMS,
+          ...data,
+        })
+      );
     }
   }, [
     handleSetNewDuration,
@@ -292,17 +297,6 @@ export const EnterCampaignBasicDetails = ({
     userInfo?.primaryUserId,
     userInfo?.primaryUserEmail,
   ]);
-
-  useEffect(() => {
-    if (errorClientAgencyNamesAdd) {
-      message.error(errorClientAgencyNamesAdd);
-      dispatch({ type: ADD_CLIENT_AGENCY_DETAILS_RESET });
-    }
-    if (dataAdd) {
-      dispatch({ type: ADD_CLIENT_AGENCY_DETAILS_RESET });
-      dispatch(getAllClientAgencyNames());
-    }
-  }, [dataAdd, errorClientAgencyNamesAdd]);
 
   useEffect(() => {
     if (errorCampaignsCreations) {
@@ -517,12 +511,7 @@ export const EnterCampaignBasicDetails = ({
                   SOV
                 </label>
                 <DropdownInput
-                  options={allIndex?.map((data: any) => {
-                    return {
-                      label: data.label,
-                      value: data.value,
-                    };
-                  })}
+                  options={allIndex}
                   selectedOptions={sov}
                   placeHolder="Select SOV"
                   setSelectedOption={setSov}
@@ -537,9 +526,9 @@ export const EnterCampaignBasicDetails = ({
                 {purpose === "Edit" ? (
                   <div
                     className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                  // onClick={() => {
-                  //   alert("You can't edit start date");
-                  // }}
+                    // onClick={() => {
+                    //   alert("You can't edit start date");
+                    // }}
                   >
                     <h1 className="text-[14px]">
                       {new Date(startDate).toLocaleDateString()}
