@@ -263,7 +263,7 @@ export const CampaignDetailsPage: React.FC = () => {
     }
   };
 
-  const handleChangeCampaignStatus = (status: string, campaignId: string) => {
+  const handleChangeCampaignStatus = (status: string, campaignId: string , event : string) => {
     if (confirm(confirmData[status])) {
       let data = campaignCreated?.campaigns
         ?.filter((campaign: any) => campaign._id == campaignId)
@@ -273,6 +273,7 @@ export const CampaignDetailsPage: React.FC = () => {
           changeCampaignStatusAction({
             campaignIds: data,
             status: status,
+            event : event
           })
         );
       } else {

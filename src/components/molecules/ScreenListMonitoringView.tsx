@@ -12,7 +12,7 @@ import {
 } from "../../utils/dateAndTimeUtils";
 import { useSelector } from "react-redux";
 import { Tooltip } from "antd";
-import { SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import { CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS, SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 
 export function ScreenListMonitoringView({
   screen,
@@ -146,7 +146,7 @@ export function ScreenListMonitoringView({
                     {campaign?.status === "Active" && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Pause", campaign?._id);
+                          handleChangeCampaignStatus("Pause", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS);
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -157,7 +157,7 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Pause") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Delete", campaign?._id);
+                          handleChangeCampaignStatus("Delete", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS);
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -169,7 +169,7 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Completed") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Active", campaign?._id);
+                          handleChangeCampaignStatus("Active", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS);
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -272,7 +272,7 @@ export function ScreenListMonitoringView({
                     {campaign?.status === "Active" && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Pause", campaign?._id);
+                          handleChangeCampaignStatus("Pause", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS);
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -283,7 +283,7 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Pause") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Delete", campaign?._id);
+                          handleChangeCampaignStatus("Delete", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS);
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -295,7 +295,7 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Completed") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Active", campaign?._id);
+                          handleChangeCampaignStatus("Active", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS);
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >

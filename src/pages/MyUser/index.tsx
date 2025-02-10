@@ -30,13 +30,13 @@ export const MyUsers = (props: any) => {
     if (success) {
       alert(userDeleteMessage);
       dispatch({ type: USER_DELETE_RESET });
-      dispatch(getUserList({event : USERS_GET_CMS}));
+      dispatch(getUserList({ event: USERS_GET_CMS }));
     }
     if (errorUserDelete) {
       alert(errorUserDelete);
       dispatch({ type: USER_DELETE_RESET });
     }
-  }, [errorUserDelete, errorUserDelete , success]);
+  }, [errorUserDelete, errorUserDelete, success]);
 
   const handleDeleteUser = (userId: string) => {
     dispatch(deleteUser(userId));
@@ -51,11 +51,11 @@ export const MyUsers = (props: any) => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else {
-      if (userInfo?.userRole !== SCREEN_ADMIN && userInfo?.userRole !== SCREEN_OWNER ) {
+      if (userInfo?.userRole != SCREEN_ADMIN && userInfo?.userRole != SCREEN_OWNER) {
         alert("You have no access to this page");
         navigate(-1);
       } else {
-        dispatch(getUserList({event : USERS_GET_CMS}));
+        dispatch(getUserList({ event: USERS_GET_CMS }));
       }
     }
   }, [userInfo]);
@@ -74,7 +74,7 @@ export const MyUsers = (props: any) => {
               <th className="border ">Name</th>
               <th className="border ">Email</th>
               <th className="border ">User Role</th>
-              <th className="border ">Actions</th>
+              {userInfo?.userRole != SCREEN_ADMIN ? null : <th className="border ">Actions</th>}
             </tr>
           </thead>
           <tbody className="overflow-auto mt-4">
@@ -84,15 +84,17 @@ export const MyUsers = (props: any) => {
                 <td className="border  pl-4">{user?.name}</td>
                 <td className="border pl-4">{user.email}</td>
                 <td className="border  pl-4">{user?.userRole}</td>
-                <td className="border  flex justify-center">
-                  {user.userRole != SCREEN_ADMIN ? null : (
-                    <i
-                      className="fi fi-rs-trash text-red-500"
-                      title="delete user"
-                      onClick={() => handleDeleteUser(user?._id)}
-                    ></i>
-                  )}
-                </td>
+                {userInfo?.userRole != SCREEN_ADMIN ? null :
+                  <td className="border  flex justify-center">
+                    {user.userRole === SCREEN_ADMIN ? null : (
+                      <i
+                        className="fi fi-rs-trash text-red-500"
+                        title="delete user"
+                        onClick={() => handleDeleteUser(user?._id)}
+                      ></i>
+                    )}
+                  </td>
+                }
               </tr>
             ))}
           </tbody>
