@@ -25,14 +25,21 @@ import {
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
 } from "../../constants/campaignConstants";
 import {
+  DropdownInput,
   EnterTimeTriggerPopup,
   MultiSelectInput,
   ReloadButton,
   SearchableSelect,
+  SuggestionInput,
   SwitchInput,
 } from "../../components";
 import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
 import { SelectScreensViaNetwork } from "../../components/molecules/SelectScreensViaNetwork";
+import {
+  addClientAgencyDetails,
+  getAllClientAgencyNames,
+} from "../../actions/clientAgencyAction";
+import { ADD_CLIENT_AGENCY_DETAILS_RESET } from "../../constants/clientAgencyConstants";
 import { CAMPAIGN_CREATION_CMS, CAMPAIGN_CREATION_EDIT_CREATIVE_CMS } from "../../constants/userConstants";
 
 interface EnterCampaignBasicDetailsProps {
@@ -48,10 +55,9 @@ interface EnterCampaignBasicDetailsProps {
   purpose?: string;
 }
 
-const allIndexs = Array.from({ length: 18 }, (_, i) => ({
+const allIndex = Array.from({ length: 3 }, (_, i) => ({
   label: (i + 1).toString(),
   value: i + 1,
-  status: false,
 }));
 
 export const EnterCampaignBasicDetails = ({
@@ -93,6 +99,10 @@ export const EnterCampaignBasicDetails = ({
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex || [0]
   );
 
+  const [sov, setSov] = useState<number>(
+    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov || 1
+  );
+
   const [startDate, setStartDate] = useState<any>(
     getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
       ? new Date(
@@ -130,6 +140,26 @@ export const EnterCampaignBasicDetails = ({
     data: allScreens,
   } = getAllScreensForScreenOwnerCampaignCreation;
 
+  const allClientAgencyNamesListGet = useSelector(
+    (state: any) => state.allClientAgencyNamesListGet
+  );
+  const {
+    loading: loadingClientAgencyNames,
+    error: errorClientAgencyNames,
+    data: clientAgencyNamesList,
+  } = allClientAgencyNamesListGet;
+
+  const clientAgencyDetailsAdd = useSelector(
+    (state: any) => state.clientAgencyDetailsAdd
+  );
+  const {
+    loading: loadingClientAgencyNamesAdd,
+    error: errorClientAgencyNamesAdd,
+    data: dataAdd,
+  } = clientAgencyDetailsAdd;
+
+  // console.log("clientAgencyNamesList : ", clientAgencyNamesList);
+
   const validateForm = () => {
     if (campaignName.length === 0) {
       message.error("Please enter campaign name");
@@ -143,9 +173,6 @@ export const EnterCampaignBasicDetails = ({
     } else if (endDate === "") {
       message.error("Please enter endData ");
       return false;
-    } else if (atIndex?.length === 0) {
-      message.error("Please set loop for the campaign");
-      return false;
     } else if (screenIds.length === 0) {
       message.error("Please select at least one screens");
       return false;
@@ -154,7 +181,19 @@ export const EnterCampaignBasicDetails = ({
     }
   };
 
-  // Function to handle duration change and update the end date
+  const handleAddNewClient = (value: string) => {
+    if (
+      !clientAgencyNamesList?.find(
+        (data: any) => data.clientAgencyName === value
+      )
+    ) {
+      dispatch(
+        addClientAgencyDetails({ clientAgencyName: value?.toUpperCase() })
+      );
+      console.log("calling to save new client name");
+    }
+  };
+
   const updateEndDateBasedOnDuration = useCallback(
     (newDuration: number) => {
       if (startDate) {
@@ -173,13 +212,12 @@ export const EnterCampaignBasicDetails = ({
   const handleSetNewDuration = useCallback(() => {
     setDuration(getNumberOfDaysBetweenTwoDates(startDate, endDate));
     updateEndDateBasedOnDuration(duration);
-    // else message.error("Please enter first start , end Date");
   }, [duration, endDate, startDate, updateEndDateBasedOnDuration]);
 
   const saveCampaignDetails = useCallback(() => {
     handleSetNewDuration();
+    handleAddNewClient(clientName);
 
-    // Fetching stored start and end dates for edit flow
     const storedCampaignData =
       getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     const fixedStartDate = storedCampaignData
@@ -204,7 +242,8 @@ export const EnterCampaignBasicDetails = ({
       campaignPlannerEmail: userInfo?.email,
       campaignManagerId: userInfo?.primaryUserId,
       campaignManagerEmail: userInfo?.primaryUserEmail,
-      atIndex: atIndex,
+      sov: sov,
+      atIndex,
       screenIds: screenIds,
       creatives: campaignsCreated?.creatives || [],
       triggers: {
@@ -239,7 +278,7 @@ export const EnterCampaignBasicDetails = ({
     brandName,
     campaignType,
     screenIds,
-    atIndex,
+    sov,
     clientName,
     industry,
     startDate,
@@ -251,6 +290,17 @@ export const EnterCampaignBasicDetails = ({
     userInfo?.primaryUserId,
     userInfo?.primaryUserEmail,
   ]);
+
+  useEffect(() => {
+    if (errorClientAgencyNamesAdd) {
+      message.error(errorClientAgencyNamesAdd);
+      dispatch({ type: ADD_CLIENT_AGENCY_DETAILS_RESET });
+    }
+    if (dataAdd) {
+      dispatch({ type: ADD_CLIENT_AGENCY_DETAILS_RESET });
+      dispatch(getAllClientAgencyNames());
+    }
+  }, [dataAdd, errorClientAgencyNamesAdd]);
 
   useEffect(() => {
     if (errorCampaignsCreations) {
@@ -294,6 +344,7 @@ export const EnterCampaignBasicDetails = ({
     } else {
       dispatch(getAllBrandAndNetworkAction());
     }
+    dispatch(getAllClientAgencyNames());
     if (
       !allScreens &&
       !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
@@ -316,10 +367,10 @@ export const EnterCampaignBasicDetails = ({
     });
   };
 
-  const handleSettingAtIndex = (index: any) => {
-    if (isEnabled) setAtIndex(index);
-    else message.error("please enable set screen priority");
-  };
+  // const handleSettingAtIndex = (index: any) => {
+  //   if (isEnabled) setAtIndex(index);
+  //   else message.error("please enable set screen priority");
+  // };
 
   const validateEndDate = (selectedDate: any) => {
     if (new Date(selectedDate) <= new Date(startDate)) {
@@ -345,6 +396,10 @@ export const EnterCampaignBasicDetails = ({
 
   const handleSave = (data: any) => {
     setTimeTriggers(data);
+  };
+
+  const handleAddClientName = (value: string) => {
+    setClientName(value);
   };
 
   return (
@@ -407,11 +462,13 @@ export const EnterCampaignBasicDetails = ({
                 <label className="block text-secondaryText text-[14px] mb-2">
                   Client Name
                 </label>
-                <PrimaryInput
-                  inputType="text"
-                  placeholder="Client Name"
-                  value={clientName}
-                  action={setClientName}
+                <SuggestionInput
+                  suggestions={clientAgencyNamesList?.map(
+                    (value: any) => value.clientAgencyName
+                  )}
+                  placeholder="Client/Agency Name"
+                  onChange={handleAddClientName}
+                  value={clientName || ""}
                 />
               </div>
               <div className="col-span-1 py-1">
@@ -455,18 +512,18 @@ export const EnterCampaignBasicDetails = ({
               </div>
               <div className="col-span-1 py-1">
                 <label className="block text-secondaryText text-[14px] mb-2">
-                  Priority
+                  SOV
                 </label>
-                <MultiSelectInput
-                  options={allIndexs?.map((data: any) => {
+                <DropdownInput
+                  options={allIndex?.map((data: any) => {
                     return {
                       label: data.label,
                       value: data.value,
                     };
                   })}
-                  selectedOptions={atIndex}
-                  placeHolder="Select Priority"
-                  setSelectedOptions={handleSettingAtIndex}
+                  selectedOptions={sov}
+                  placeHolder="Select SOV"
+                  setSelectedOption={setSov}
                 />
               </div>
             </div>
@@ -559,52 +616,7 @@ export const EnterCampaignBasicDetails = ({
             </div>
           </div>
           <div className="col-span-4">
-            <div className="border rounded-[12px] p-1 my-1">
-              <div className="flex justify-between items-center py-1">
-                <h1 className="px-2 text-[14px]">Priority</h1>
-                <SwitchInput
-                  isEnabled={isEnabled}
-                  onToggle={() => {
-                    setIsEnable((pre) => !pre);
-                    if (!isEnabled) {
-                      setAtIndex([]);
-                    } else {
-                      setAtIndex([0]);
-                    }
-                  }}
-                  onColor="bg-[#348730]"
-                  offColor="bg-red-500"
-                />
-              </div>
-              <div className="grid grid-cols-6 gap-1 justify-center px-1">
-                {allIndexs?.map((index: any, i: any) => (
-                  <div
-                    key={i}
-                    className={`
-                      ${atIndex.includes(index.value)
-                        ? "bg-[#129BFF] text-white"
-                        : ""
-                      }
-                      border rounded-[8px] w-[40px] flex justify-center py-1
-                    `}
-                    onClick={() => {
-                      if (atIndex?.includes(index.value)) {
-                        handleSettingAtIndex(
-                          atIndex?.filter((data: any) => data != index.value)
-                        );
-                      } else {
-                        handleSettingAtIndex([...atIndex, index.value]);
-                        // message.info(
-                        //   "Please deselect auto-set priority switch first..."
-                        // );
-                      }
-                    }}
-                  >
-                    <h1 className="text-[12px]">{index.value}</h1>
-                  </div>
-                ))}
-              </div>
-            </div>
+            SuggestionInput{" "}
             <div className="border rounded-[12px]">
               <div className="flex justify-between">
                 <h1 className="my-1 px-2 text-[14px]">

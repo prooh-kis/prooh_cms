@@ -47,6 +47,11 @@ import {
   screenRefreshReducer,
   setCampaignsLoopForScreenReducer,
 } from "../reducers/screenReducers";
+import {
+  allClientAgencyNamesListGetReducer,
+  clientAgencyDetailsAddGetReducer,
+  clientAgencyDetailsGetReducer,
+} from "../reducers/clientReducers";
 
 const initialState = {
   userSignin: {
@@ -105,12 +110,17 @@ const store = configureStore({
     screenCampaignMonitoring: screenCampaignMonitoringReducer,
     getScreenCampaignMonitoring: getScreenCampaignMonitoringReducer,
     screenCodeChange: screenCodeChangeReducer,
-    changeDefaultIncluded : changeDefaultIncludedReducer,
-    editDefaultCreative : editDefaultCreativeReducer,
+    changeDefaultIncluded: changeDefaultIncludedReducer,
+    editDefaultCreative: editDefaultCreativeReducer,
     screenRefresh: screenRefreshReducer,
     screenDataUpdateRedis: screenDataUpdateRedisReducer,
     screenLogsGet: screenLogsGetReducer,
     screenDefaultMediaChange: screenDefaultMediaChangeReducer,
+
+    // CLIENT, AGENCY
+    clientAgencyDetailsAdd: clientAgencyDetailsAddGetReducer,
+    allClientAgencyNamesListGet: allClientAgencyNamesListGetReducer,
+    clientAgencyDetailsGet: clientAgencyDetailsGetReducer,
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"

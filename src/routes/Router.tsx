@@ -32,6 +32,7 @@ import {
   SIGN_UP,
   SCREENS_LIST_FOR_SECONDARY_USER,
   USERS,
+  PLAY_LIVE_URL,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
@@ -40,6 +41,7 @@ import { PublicRoute } from "../layout/PublicRoute";
 import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
 import { MyUsers } from "../pages/MyUser";
+import { PlayLiveUrl } from "../pages/PageNotFound/PlayLiveUrl";
 
 const Routers: React.FC = () => {
   return (
@@ -180,6 +182,13 @@ const Routers: React.FC = () => {
             <PublicRoute>
               <ScreensPage />
             </PublicRoute>
+          }
+        />
+
+        <Route
+          path={PLAY_LIVE_URL}
+          element={
+            <PlayLiveUrl />
           }
         />
 

@@ -367,9 +367,18 @@ export const CampaignDetailsPage: React.FC = () => {
                   </h1>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h1 className="text-[18px] font-semibold">
-                    {campaignCreated?.campaignName || "Campaign Name"}
-                  </h1>
+                  <Tooltip title="View Dashboard">
+                    <h1
+                      className="text-[18px] font-semibold cursor-pointer"
+                      onClick={() =>
+                        window.open(
+                          `https://plan.prooh.ai/campaignDetails/${campaignCreated?._id}`
+                        )
+                      }
+                    >
+                      {campaignCreated?.campaignName || "Campaign Name"}
+                    </h1>
+                  </Tooltip>
                   <h1 className="text-[12px]">
                     {campaignCreated?.brandName}, {campaignCreated?.duration}{" "}
                     days

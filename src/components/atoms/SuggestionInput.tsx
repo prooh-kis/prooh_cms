@@ -21,8 +21,8 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
     onChange(inputValue);
 
     if (inputValue.trim() !== "") {
-      const filtered = suggestions.filter((suggestion) =>
-        suggestion.toLowerCase().includes(inputValue.toLowerCase())
+      const filtered = suggestions?.filter((suggestion) =>
+        suggestion?.toLowerCase()?.includes(inputValue?.toLowerCase())
       );
       setFilteredSuggestions(filtered);
       setShowSuggestions(true);

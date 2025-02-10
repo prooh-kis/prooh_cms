@@ -1,7 +1,7 @@
 import React from "react";
 
 export const DropdownInput = ({
-  height = "10",
+  height = "h-[40px]",
   width = "full",
   placeHolder,
   selectedOption,
@@ -22,20 +22,20 @@ export const DropdownInput = ({
         title="dropdown"
         className={`truncate w-full ${dropdownHeight} ${dropdownWidth} text-[14px] border  ${
           height ? "px-1" : "px-3"
-        } py-1 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors appearance-none`}
+        } py-1 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors appearance-none rounded-sm`}
         value={selectedOption}
         onChange={handleSelectChange}
       >
-        <option value="">{placeHolder}</option> {/* Default option */}
+        {/* <option value="">------{placeHolder}-----</option> Default option */}
         {options?.map((opt: any, index: any) => (
           <option key={index} value={opt.value}>
             {opt.label}
           </option>
         ))}
       </select>
-      <div className="absolute inset-y-0 right-1 flex items-center pointer-events-none">
+      <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
         <svg
-          className={height ? "w-3 h-3" : "w-5 h-5 text-gray-500"}
+          className={height ? "w-4 h-4" : "w-5 h-5 text-gray-500"}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
