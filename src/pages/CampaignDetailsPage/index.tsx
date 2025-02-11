@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 import {
   convertDataTimeToLocale,
+  convertIntoDateAndTime,
   getCampaignEndingStatus,
 } from "../../utils/dateAndTimeUtils";
 import { PrimaryInput } from "../../components/atoms/PrimaryInput";
@@ -49,7 +50,15 @@ import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { creativeTypeTab } from "../../constants/tabDataConstant";
 import { MY_CREATIVES } from "../../routes/routes";
-import { CAMPAIGN_CREATION_EDIT_END_DATE_CMS, CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS, SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import {
+  CAMPAIGN_CREATION_EDIT_END_DATE_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
+  SCREEN_ADMIN,
+  SCREEN_MANAGER,
+  SCREEN_OWNER,
+} from "../../constants/userConstants";
 
 export const CampaignDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -146,24 +155,27 @@ export const CampaignDetailsPage: React.FC = () => {
     campaignCreationId: string,
     endDate: any
   ) => {
-    dispatch(editAllSubCampaignsAction({
-      campaignCreationId, endDate,
-      campaignCreationIds: [campaignCreationId],
-      event: CAMPAIGN_CREATION_EDIT_END_DATE_CMS,
-    }));
+    dispatch(
+      editAllSubCampaignsAction({
+        campaignCreationId,
+        endDate,
+        campaignCreationIds: [campaignCreationId],
+        event: CAMPAIGN_CREATION_EDIT_END_DATE_CMS,
+      })
+    );
   };
 
   const campaigns =
     screens?.length > 0
       ? campaignCreated?.campaigns
-        ?.filter((camp: any) =>
-          campaignCreated?.screens?.includes(camp.screenId)
-        )
-        ?.filter((camp: any) =>
-          camp?.screenName
-            ?.toLowerCase()
-            ?.includes(searchQuery?.toLowerCase())
-        )
+          ?.filter((camp: any) =>
+            campaignCreated?.screens?.includes(camp.screenId)
+          )
+          ?.filter((camp: any) =>
+            camp?.screenName
+              ?.toLowerCase()
+              ?.includes(searchQuery?.toLowerCase())
+          )
       : [];
 
   useEffect(() => {
@@ -254,7 +266,7 @@ export const CampaignDetailsPage: React.FC = () => {
           changeCampaignStatusAction({
             campaignIds: data,
             status: status,
-            event: event
+            event: event,
           })
         );
       } else {
@@ -263,7 +275,11 @@ export const CampaignDetailsPage: React.FC = () => {
     }
   };
 
-  const handleChangeCampaignStatus = (status: string, campaignId: string , event : string) => {
+  const handleChangeCampaignStatus = (
+    status: string,
+    campaignId: string,
+    event: string
+  ) => {
     if (confirm(confirmData[status])) {
       let data = campaignCreated?.campaigns
         ?.filter((campaign: any) => campaign._id == campaignId)
@@ -273,7 +289,7 @@ export const CampaignDetailsPage: React.FC = () => {
           changeCampaignStatusAction({
             campaignIds: data,
             status: status,
-            event : event
+            event: event,
           })
         );
       } else {
@@ -357,9 +373,9 @@ export const CampaignDetailsPage: React.FC = () => {
                   className={
                     campaignCreated
                       ? `rounded  bg-[${generateColorFromAlphabet(
-                        campaignCreated?.brandName.split("")[0],
-                        0
-                      )}]`
+                          campaignCreated?.brandName.split("")[0],
+                          0
+                        )}]`
                       : `rounded bg-gray-100`
                   }
                 >
@@ -386,7 +402,9 @@ export const CampaignDetailsPage: React.FC = () => {
                   </h1>
                 </div>
               </div>
-              {(userInfo?.userRole === SCREEN_ADMIN ||userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER ) && (
+              {(userInfo?.userRole === SCREEN_ADMIN ||
+                userInfo?.userRole === SCREEN_OWNER ||
+                userInfo?.userRole === SCREEN_MANAGER) && (
                 <div className="flex flex-col px-4 justify-center">
                   {loadingStatusChange ? (
                     <Skeleton active paragraph={{ rows: 1 }} />
@@ -427,7 +445,10 @@ export const CampaignDetailsPage: React.FC = () => {
                           className="fi fi-ss-pause-circle text-gray-500"
                           title="Pause All"
                           onClick={() =>
-                            handleChangeStatusAll(CAMPAIGN_STATUS_PAUSE, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS)
+                            handleChangeStatusAll(
+                              CAMPAIGN_STATUS_PAUSE,
+                              CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
+                            )
                           }
                         ></i>
                       </Tooltip>
@@ -436,7 +457,10 @@ export const CampaignDetailsPage: React.FC = () => {
                           className="fi fi-sr-play-circle text-gray-500"
                           title="Active All"
                           onClick={() =>
-                            handleChangeStatusAll(CAMPAIGN_STATUS_ACTIVE, CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS)
+                            handleChangeStatusAll(
+                              CAMPAIGN_STATUS_ACTIVE,
+                              CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                            )
                           }
                         ></i>
                       </Tooltip>
@@ -445,19 +469,23 @@ export const CampaignDetailsPage: React.FC = () => {
                           className="fi fi-sr-trash text-gray-500"
                           title="Delete All"
                           onClick={() =>
-                            handleChangeStatusAll(CAMPAIGN_STATUS_DELETED, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS)
+                            handleChangeStatusAll(
+                              CAMPAIGN_STATUS_DELETED,
+                              CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                            )
                           }
                         ></i>
                       </Tooltip>
                     </div>
                   )}
                   <h1
-                    className={`text-[12px] ${getCampaignEndingStatus(
-                      campaignCreated?.endDate
-                    ).includes("Already")
-                      ? "text-[#EF4444]"
-                      : "text-[#22C55E]"
-                      }`}
+                    className={`text-[12px] ${
+                      getCampaignEndingStatus(
+                        campaignCreated?.endDate
+                      ).includes("Already")
+                        ? "text-[#EF4444]"
+                        : "text-[#22C55E]"
+                    }`}
                   >
                     {getCampaignEndingStatus(campaignCreated?.endDate)}
                   </h1>
@@ -474,10 +502,10 @@ export const CampaignDetailsPage: React.FC = () => {
               </div>
               <div className="flex flex-col gap-2">
                 <h1 className=" text-[12px]">
-                  {convertDataTimeToLocale(campaignCreated?.startDate)}
+                  {convertIntoDateAndTime(campaignCreated?.startDate)}
                 </h1>
                 <h1 className="text-[12px]">
-                  {convertDataTimeToLocale(campaignCreated?.endDate)}
+                  {convertIntoDateAndTime(campaignCreated?.endDate)}
                 </h1>
               </div>
             </div>
@@ -520,15 +548,16 @@ export const CampaignDetailsPage: React.FC = () => {
                             />
 
                             <Tooltip
-                              title={`${cs.url?.split("_")[
-                                cs.url?.split("_")?.length - 1
-                              ]
-                                }`}
+                              title={`${
+                                cs.url?.split("_")[
+                                  cs.url?.split("_")?.length - 1
+                                ]
+                              }`}
                             >
                               <h1 className="text-[12px] text-gray-500 truncate">
                                 {
                                   cs.url?.split("_")[
-                                  cs.url?.split("_")?.length - 1
+                                    cs.url?.split("_")?.length - 1
                                   ]
                                 }
                               </h1>

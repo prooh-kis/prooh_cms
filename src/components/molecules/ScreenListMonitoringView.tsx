@@ -7,12 +7,20 @@ import { getScreenDataUploadCreativeAction } from "../../actions/campaignAction"
 import {
   convertDataTimeToLocale,
   convertIntoDateAndTime,
+  getCampaignEndingStatus,
   getNumberOfDaysBetweenTwoDates,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
 import { useSelector } from "react-redux";
 import { Tooltip } from "antd";
-import { CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS, SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import {
+  CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
+  SCREEN_ADMIN,
+  SCREEN_MANAGER,
+  SCREEN_OWNER,
+} from "../../constants/userConstants";
 
 export function ScreenListMonitoringView({
   screen,
@@ -94,10 +102,16 @@ export function ScreenListMonitoringView({
             </div>
             <div className="flex gap-2 text-[12px] text-[#6B8494]">
               <i className="fi fi-sr-megaphone"></i>
-              <h1 className="truncate">
-                Ends In:{" "}
-                {getNumberOfDaysBetweenTwoDates(new Date(), campaign?.endDate)}{" "}
-                Days
+              <h1
+                className={`text-[12px] ${
+                  getCampaignEndingStatus(campaignCreated?.endDate).includes(
+                    "Already"
+                  )
+                    ? "text-[#EF4444]"
+                    : "text-[#22C55E]"
+                }`}
+              >
+                {getCampaignEndingStatus(campaignCreated?.endDate)}
               </h1>
             </div>
             <h1 className={getClassNameByStatus()}>
@@ -113,7 +127,9 @@ export function ScreenListMonitoringView({
             )}
             {campaignCreated &&
               showMenu &&
-              (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER ) && (
+              (userInfo?.userRole === SCREEN_ADMIN ||
+                userInfo?.userRole === SCREEN_OWNER ||
+                userInfo?.userRole === SCREEN_MANAGER) && (
                 <div
                   onMouseLeave={() => setShowMenu(false)}
                   className="absolute z-10 mt-1 w-[150px] bg-white border border-gray-300  shadow-lg right-0 text-sm text-black-1000"
@@ -146,7 +162,11 @@ export function ScreenListMonitoringView({
                     {campaign?.status === "Active" && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Pause", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS);
+                          handleChangeCampaignStatus(
+                            "Pause",
+                            campaign?._id,
+                            CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
+                          );
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -157,7 +177,11 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Pause") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Delete", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS);
+                          handleChangeCampaignStatus(
+                            "Delete",
+                            campaign?._id,
+                            CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                          );
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -169,7 +193,11 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Completed") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Active", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS);
+                          handleChangeCampaignStatus(
+                            "Active",
+                            campaign?._id,
+                            CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                          );
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -272,7 +300,11 @@ export function ScreenListMonitoringView({
                     {campaign?.status === "Active" && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Pause", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS);
+                          handleChangeCampaignStatus(
+                            "Pause",
+                            campaign?._id,
+                            CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
+                          );
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -283,7 +315,11 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Pause") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Delete", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS);
+                          handleChangeCampaignStatus(
+                            "Delete",
+                            campaign?._id,
+                            CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                          );
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
@@ -295,7 +331,11 @@ export function ScreenListMonitoringView({
                       campaign?.status === "Completed") && (
                       <li
                         onClick={() => {
-                          handleChangeCampaignStatus("Active", campaign?._id , CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS);
+                          handleChangeCampaignStatus(
+                            "Active",
+                            campaign?._id,
+                            CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                          );
                         }}
                         className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                       >
