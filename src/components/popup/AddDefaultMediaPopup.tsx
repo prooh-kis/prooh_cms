@@ -223,7 +223,8 @@ export function AddDefaultMediaPopup({
                                             {l.extension?.split("/")[1]},
                                           </h1>
                                           <h1 className="text-[12px] truncate">
-                                            {l.duration} seconds
+                                            {Number(l?.duration)?.toFixed(2)}{" "}
+                                            seconds{" "}
                                           </h1>
                                         </div>
                                       </div>

@@ -177,9 +177,13 @@ export function UploadCreativesFromBucketPopup({
 
     const campData = getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId];
     for (const creative of campData.creatives) {
-      creative.screenIds = creative.screenIds.filter((id: string) => !selectedScreenIds.includes(id))
+      creative.screenIds = creative.screenIds.filter(
+        (id: string) => !selectedScreenIds.includes(id)
+      );
     }
-    campData.creatives = campData.creatives.filter(((creative : any) => creative.screenIds.length > 0))
+    campData.creatives = campData.creatives.filter(
+      (creative: any) => creative.screenIds.length > 0
+    );
     for (const cd of creativeDataToUpload) {
       if (cd.standardDayTimeCreatives?.length > 0) {
         campData.creatives.push(cd);
@@ -298,8 +302,9 @@ export function UploadCreativesFromBucketPopup({
                   </label>
                 </div>
                 <h1
-                  className={`${uniqueResolution?.length > 1 ? "text-red-500" : ""
-                    } text-[12px]`}
+                  className={`${
+                    uniqueResolution?.length > 1 ? "text-red-500" : ""
+                  } text-[12px]`}
                 >
                   Resolution:{" "}
                   {uniqueResolution?.length > 1
@@ -348,7 +353,7 @@ export function UploadCreativesFromBucketPopup({
                   <div>
                     {creativesMedia &&
                       creativesMedia?.map((f: any, k: any) => (
-                        <div className="p-2" key={k} onClick={() => { }}>
+                        <div className="p-2" key={k} onClick={() => {}}>
                           {Object.keys(f)
                             ?.filter((c: any) => c !== "network")
                             ?.map((m: any, i: any) => (
@@ -423,7 +428,10 @@ export function UploadCreativesFromBucketPopup({
                                                     ,
                                                   </h1>
                                                   <h1 className="text-[12px] truncate">
-                                                    {l?.duration} seconds
+                                                    {Number(
+                                                      l?.duration
+                                                    )?.toFixed(2)}{" "}
+                                                    Sec.
                                                   </h1>
                                                 </div>
                                               </div>

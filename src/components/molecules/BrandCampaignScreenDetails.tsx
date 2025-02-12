@@ -11,10 +11,11 @@ export function BrandCampaignScreenDetails({
   return (
     <div className="group relative my-1">
       <div
-        className={`${campaignIds?.includes(campaign?._id)
+        className={`${
+          campaignIds?.includes(campaign?._id)
             ? "border border-red-500 rounded"
             : ""
-          } flex p-2 gap-4 hover:bg-gray-100 hover:rounded`}
+        } flex p-2 gap-4 hover:bg-gray-100 hover:rounded`}
       >
         <div
           className={`border rounded flex justify-center items-center w-20 bg-gray-100`}
@@ -36,7 +37,14 @@ export function BrandCampaignScreenDetails({
               {campaign?.campaignDuration} days
             </p>
           )}
-          <h1 className="text-[12px] text-gray-500 gap-4 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+          {/* group-hover:opacity-0 transition-opacity duration-300 */}
+          <div className="flex gap-2 text-[12px]">
+            <i className="ffi fi-rr-alarm-clock"></i>
+            <h1 className=" text-gray-500 gap-4 opacity-100 ">
+              {campaign?.creatives?.creativeDuration} Sec.
+            </h1>
+
+            <h1 className="text-[12px] text-gray-500 gap-4 opacity-100 ">
               {" "}
               {`@ `}
               {campaign?.atIndex?.map((i: any) => {
@@ -47,6 +55,7 @@ export function BrandCampaignScreenDetails({
                 }
               })}
             </h1>
+          </div>
         </div>
       </div>
       {showIcons && (

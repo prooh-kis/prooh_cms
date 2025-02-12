@@ -39,7 +39,14 @@ import SearchInputField from "../../components/molecules/SearchInputField";
 import { CampaignMonitoring, SwitchInput } from "../../components/index";
 import { campaignTypeTabs } from "../../constants/tabDataConstant";
 import { SwitchInputCenter } from "../../components/atoms/SwitchInput";
-import { CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS, CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS, CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS, SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS, SCREEN_REDIS_UPDATE_CMS, SCREEN_RESTARTED_CMS } from "../../constants/userConstants";
+import {
+  CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
+  CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
+  SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
+  SCREEN_REDIS_UPDATE_CMS,
+  SCREEN_RESTARTED_CMS,
+} from "../../constants/userConstants";
 
 export const ScreenDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -250,7 +257,7 @@ export const ScreenDetailsPage: React.FC = () => {
         changeCampaignStatusAction({
           campaignIds: campaignIds,
           status: status,
-          event: event
+          event: event,
         })
       );
     }
@@ -261,8 +268,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-            (c: any) => c._id === selectedCampaign
-          )[0].creatives.standardDayTimeCreatives,
+          (c: any) => c._id === selectedCampaign
+        )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -285,6 +292,12 @@ export const ScreenDetailsPage: React.FC = () => {
           .value,
       })
     );
+  };
+
+  const getDurationCount = () => {
+    return campaigns?.reduce((total: number, campaign: any) => {
+      return total + (campaign?.creatives?.creativeDuration || 10);
+    }, 0);
   };
 
   return (
@@ -368,11 +381,13 @@ export const ScreenDetailsPage: React.FC = () => {
                     className="flex justify-center items-top"
                     onClick={() => {
                       if (confirm(`Do you want to refresh your screen???`)) {
-                        dispatch(screenRefreshAction({
-                          id: screenId,
-                          screenIds: [screenId],
-                          event: SCREEN_RESTARTED_CMS,
-                        }));
+                        dispatch(
+                          screenRefreshAction({
+                            id: screenId,
+                            screenIds: [screenId],
+                            event: SCREEN_RESTARTED_CMS,
+                          })
+                        );
                       }
                     }}
                   >
@@ -447,12 +462,26 @@ export const ScreenDetailsPage: React.FC = () => {
             </div>
             <div className=" my-1 bg-white">
               <div className="px-4 pt-4 pb-2 flex justify-between">
-                <h1 className="text-[16px] font-semibold">
-                  Campaigns{" "}
-                  <span className="text-[14px] text-secondaryText">
-                    ({campaigns?.length})
-                  </span>
-                </h1>
+                <div className="flex gap-4 items-center">
+                  <h1 className="text-[16px] font-semibold">
+                    Campaigns{" "}
+                    <span className="text-[14px] text-secondaryText">
+                      ({campaigns?.length})
+                    </span>
+                  </h1>
+                  <div className="flex gap-2 text-[14px] items-center">
+                    <i className="ffi fi-rr-alarm-clock"></i>
+                    <h1
+                      className={`${
+                        getDurationCount() > 180
+                          ? `text-[#FF0000]`
+                          : `text-[#24990C]`
+                      } gap-4 opacity-100 `}
+                    >
+                      {getDurationCount()} Sec.
+                    </h1>
+                  </div>
+                </div>
                 <div className="flex gap-4 items-center">
                   <PrimaryButton
                     action={handleLoopSettingClick}
@@ -472,21 +501,25 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
                             changeCampaignStatusHandler({
                               campaignIds: campaignIds,
-                              status: currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active",
-                              event: currentTab === "1" || currentTab === "2"
-                                ? CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
-                                : CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                              status:
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active",
+                              event:
+                                currentTab === "1" || currentTab === "2"
+                                  ? CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
+                                  : CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
                             });
                           }
                         }}
@@ -502,17 +535,19 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
                             changeCampaignStatusHandler({
                               campaignIds: campaignIds,
                               status: "Deleted",
-                              event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                              event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
                             });
                           }
                         }}
@@ -651,7 +686,7 @@ export const ScreenDetailsPage: React.FC = () => {
                           changeCampaignStatusHandler({
                             campaignIds: campaignIds,
                             status: "Deleted",
-                            event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                            event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
                           });
                         }
                       }}
@@ -664,9 +699,10 @@ export const ScreenDetailsPage: React.FC = () => {
                       className="text-gray-500 hover:text-[#348730]"
                       onClick={() =>
                         navigate(
-                          `/campaigns-details/${campaigns?.filter(
-                            (c: any) => c._id === selectedCampaign
-                          )[0]?.campaignCreationId
+                          `/campaigns-details/${
+                            campaigns?.filter(
+                              (c: any) => c._id === selectedCampaign
+                            )[0]?.campaignCreationId
                           }`
                         )
                       }
@@ -737,7 +773,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                              creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -775,7 +811,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                              creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -814,7 +850,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       <h1 className="text-[14px] truncate">
                         {
                           creative?.url?.split("_")[
-                          creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                           ]
                         }
                       </h1>
