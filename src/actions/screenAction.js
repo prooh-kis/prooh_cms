@@ -43,6 +43,10 @@ import {
   EDIT_DEFAULT_CREATIVE_REQUEST,
   EDIT_DEFAULT_CREATIVE_SUCCESS,
   EDIT_DEFAULT_CREATIVE_FAIL,
+  CHANGE_AUTO_LOOP_VALUE_REQUEST,
+  CHANGE_AUTO_LOOP_VALUE_SUCCESS,
+  CHANGE_AUTO_LOOP_VALUE_RESET,
+  CHANGE_AUTO_LOOP_VALUE_FAIL,
 } from "../constants/screenConstants";
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
@@ -340,6 +344,38 @@ export const changeDefaultIncludedAction =
     } catch (error) {
       dispatch({
         type: CHANGE_DEFAULT_INCLUDED_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  export const changeAutoLoopAction =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: CHANGE_AUTO_LOOP_VALUE_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(`${screenV2}/changeAutoLoopValue`, input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+      );
+      dispatch({
+        type: CHANGE_AUTO_LOOP_VALUE_SUCCESS,
+        payload: data,
+      });
+      setTimeout(() => {
+        dispatch({ type: CHANGE_AUTO_LOOP_VALUE_RESET });
+      }, 3000);
+    } catch (error) {
+      dispatch({
+        type: CHANGE_AUTO_LOOP_VALUE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

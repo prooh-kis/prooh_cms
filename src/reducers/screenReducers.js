@@ -50,6 +50,10 @@ import {
   EDIT_DEFAULT_CREATIVE_SUCCESS,
   EDIT_DEFAULT_CREATIVE_FAIL,
   EDIT_DEFAULT_CREATIVE_RESET,
+  CHANGE_AUTO_LOOP_VALUE_REQUEST,
+  CHANGE_AUTO_LOOP_VALUE_SUCCESS,
+  CHANGE_AUTO_LOOP_VALUE_FAIL,
+  CHANGE_AUTO_LOOP_VALUE_RESET,
 } from "../constants/screenConstants";
 import {
   ALL_SCREENS_LIST,
@@ -200,6 +204,21 @@ export function changeDefaultIncludedReducer(state = {}, action) {
     case CHANGE_DEFAULT_INCLUDED_FAIL:
       return { loading: false, error: action.payload };
     case CHANGE_DEFAULT_INCLUDED_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function changeAutoLoopValueVReducer(state = {}, action) {
+  switch (action.type) {
+    case CHANGE_AUTO_LOOP_VALUE_REQUEST:
+      return { loading: true };
+    case CHANGE_AUTO_LOOP_VALUE_SUCCESS:
+      return { loading: false, success: true, data: action.payload };
+    case CHANGE_AUTO_LOOP_VALUE_FAIL:
+      return { loading: false, error: action.payload };
+    case CHANGE_AUTO_LOOP_VALUE_RESET:
       return {};
     default:
       return state;

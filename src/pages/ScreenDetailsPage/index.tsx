@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  changeAutoLoopAction,
   changeDefaultIncludedAction,
   getScreenCampaignsDetailsAction,
   getScreenDetailsAction,
@@ -43,6 +44,7 @@ import {
   CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
+  SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
   SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
   SCREEN_REDIS_UPDATE_CMS,
   SCREEN_RESTARTED_CMS,
@@ -63,6 +65,7 @@ export const ScreenDetailsPage: React.FC = () => {
   const [currentCampaign, setCurrentCampaign] = useState<any>(null);
   const [openLoopSetting, setOpenLoopSetting] = useState<any>(false);
   const [isDefaultIncluded, setIsDefaultIncluded] = useState<boolean>(true);
+  const [autoLoopValue, setAutoLoopValue] = useState<boolean>(true);
   const [campaignIds, setCampaignIds] = useState<any>([]);
   const [openCreativeEndDateChangePopup, setOpenCreativeEndDateChangePopup] =
     useState<any>(false);
@@ -144,6 +147,16 @@ export const ScreenDetailsPage: React.FC = () => {
     success: successChangeDefaultIncluded,
   } = changeDefaultIncluded;
 
+  const changeAutoLoop = useSelector(
+    (state: any) => state.changeAutoLoop
+  );
+
+  const {
+    loading: loadingChangeAutoLoop,
+    error: errorChangeAutoLoop,
+    success: successChangeAutoLoop
+  } = changeAutoLoop;
+
   const screenDataUpdateRedis = useSelector(
     (state: any) => state.screenDataUpdateRedis
   );
@@ -179,6 +192,12 @@ export const ScreenDetailsPage: React.FC = () => {
     if (successChangeDefaultIncluded) {
       message.success(
         "Default Included Value updated Successfully. Click On Update Redis Button to reflect changes..."
+      );
+    }
+
+    if (successChangeAutoLoop) {
+      message.success(
+        "Auto Loop Value updated Successfully."
       );
     }
 
@@ -227,6 +246,7 @@ export const ScreenDetailsPage: React.FC = () => {
     successScreenRefresh,
     successScreenDataUpdateRedis,
     successChangeDefaultIncluded,
+    successChangeAutoLoop
   ]);
 
   useEffect(() => {
@@ -236,6 +256,7 @@ export const ScreenDetailsPage: React.FC = () => {
 
     if (successGetScreenDetails) {
       setIsDefaultIncluded(screen.defaultIncluded);
+      setAutoLoopValue(screen.autoLoop)
     }
   }, [screenDataUploadCreative, successGetScreenDetails]);
 
@@ -268,8 +289,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-          (c: any) => c._id === selectedCampaign
-        )[0].creatives.standardDayTimeCreatives,
+            (c: any) => c._id === selectedCampaign
+          )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -299,7 +320,7 @@ export const ScreenDetailsPage: React.FC = () => {
       return (
         total +
         (campaign?.creatives?.creativeDuration || 10) *
-          (campaign?.atIndex?.length || 1)
+        (campaign?.atIndex?.length || 1)
       );
     }, 0);
   };
@@ -440,28 +461,57 @@ export const ScreenDetailsPage: React.FC = () => {
                 <h1 className="flex  justify-center items-bottom text-[12px] text-gray-500">
                   {screen?.screenCode}
                 </h1>
-                <SwitchInputCenter
-                  isEnabled={isDefaultIncluded}
-                  onToggle={() => {
-                    if (
-                      confirm(
-                        `Do you want to change the default video included value?`
-                      )
-                    ) {
-                      dispatch(
-                        changeDefaultIncludedAction({
-                          id: screenId,
-                          defaultIncluded: !isDefaultIncluded,
-                          screenIds: [screenId],
-                          event: SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
-                        })
-                      );
-                      setIsDefaultIncluded(!isDefaultIncluded);
-                    }
-                  }}
-                  onColor="bg-[#348730]"
-                  offColor="bg-red-500"
-                />
+                <div className="flex flex-row items-center gap-4">
+                  <div title="Change Default Video Included Status">
+                    <SwitchInputCenter
+                      isEnabled={isDefaultIncluded}
+                      onToggle={() => {
+                        if (
+                          confirm(
+                            `Do you want to change the default video included value?`
+                          )
+                        ) {
+                          dispatch(
+                            changeDefaultIncludedAction({
+                              id: screenId,
+                              defaultIncluded: !isDefaultIncluded,
+                              screenIds: [screenId],
+                              event: SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
+                            })
+                          );
+                          setIsDefaultIncluded(!isDefaultIncluded);
+                        }
+                      }}
+                      onColor="bg-[#348730]"
+                      offColor="bg-red-500"
+                    />
+                  </div>
+
+                  <div title="Change Auto Loop Value">
+                    <SwitchInputCenter
+                      isEnabled={autoLoopValue}
+                      onToggle={() => {
+                        if (
+                          confirm(
+                            `Do you want to change the auto loop value?`
+                          )
+                        ) {
+                          dispatch(
+                            changeAutoLoopAction({
+                              id: screenId,
+                              autoLoop: !autoLoopValue,
+                              screenIds: [screenId],
+                              event: SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
+                            })
+                          );
+                          setIsDefaultIncluded(!autoLoopValue);
+                        }
+                      }}
+                      onColor="bg-[#348730]"
+                      offColor="bg-red-500"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div className=" my-1 bg-white">
@@ -476,11 +526,10 @@ export const ScreenDetailsPage: React.FC = () => {
                   <div className="flex gap-2 text-[14px] items-center">
                     <i className="ffi fi-rr-alarm-clock"></i>
                     <h1
-                      className={`${
-                        getDurationCount() > 180
-                          ? `text-[#FF0000]`
-                          : `text-[#24990C]`
-                      } gap-4 opacity-100 `}
+                      className={`${getDurationCount() > 180
+                        ? `text-[#FF0000]`
+                        : `text-[#24990C]`
+                        } gap-4 opacity-100 `}
                     >
                       {getDurationCount()} Sec.
                     </h1>
@@ -505,12 +554,10 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${
-                                campaignIds?.length
-                              } campaigns status to ${
-                                currentTab === "1" || currentTab === "2"
-                                  ? "Pause"
-                                  : "Active"
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to ${currentTab === "1" || currentTab === "2"
+                                ? "Pause"
+                                : "Active"
                               }???`
                             )
                           ) {
@@ -539,12 +586,10 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${
-                                campaignIds?.length
-                              } campaigns status to ${
-                                currentTab === "1" || currentTab === "2"
-                                  ? "Pause"
-                                  : "Active"
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to ${currentTab === "1" || currentTab === "2"
+                                ? "Pause"
+                                : "Active"
                               }???`
                             )
                           ) {
@@ -703,10 +748,9 @@ export const ScreenDetailsPage: React.FC = () => {
                       className="text-gray-500 hover:text-[#348730]"
                       onClick={() =>
                         navigate(
-                          `/campaigns-details/${
-                            campaigns?.filter(
-                              (c: any) => c._id === selectedCampaign
-                            )[0]?.campaignCreationId
+                          `/campaigns-details/${campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.campaignCreationId
                           }`
                         )
                       }
@@ -777,7 +821,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                              creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -815,7 +859,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                              creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -854,7 +898,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       <h1 className="text-[14px] truncate">
                         {
                           creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                          creative?.url?.split("_")?.length - 1
                           ]
                         }
                       </h1>

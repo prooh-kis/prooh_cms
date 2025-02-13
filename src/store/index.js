@@ -33,6 +33,7 @@ import {
 } from "../reducers/creativeReducers";
 import {
   allScreensDataGetReducer,
+  changeAutoLoopValueVReducer,
   changeCampaignCreativeEndDateReducer,
   changeDefaultIncludedReducer,
   editDefaultCreativeReducer,
@@ -111,6 +112,7 @@ const store = configureStore({
     getScreenCampaignMonitoring: getScreenCampaignMonitoringReducer,
     screenCodeChange: screenCodeChangeReducer,
     changeDefaultIncluded: changeDefaultIncludedReducer,
+    changeAutoLoop : changeAutoLoopValueVReducer,
     editDefaultCreative: editDefaultCreativeReducer,
     screenRefresh: screenRefreshReducer,
     screenDataUpdateRedis: screenDataUpdateRedisReducer,
