@@ -37,7 +37,7 @@ export const SwitchInputCenter: React.FC<SwitchProps> = ({
   offColor = "bg-gray-300",
 }) => {
   return (
-    <div className="flex justify-center mt-4">
+    <div className="flex justify-center items-center">
       <button
         onClick={() => onToggle(!isEnabled)}
         className={`relative inline-flex items-center w-11 h-5 rounded-full transition-colors focus:outline-none ${

@@ -461,56 +461,29 @@ export const ScreenDetailsPage: React.FC = () => {
                 <h1 className="flex  justify-center items-bottom text-[12px] text-gray-500">
                   {screen?.screenCode}
                 </h1>
-                <div className="flex flex-row items-center gap-4">
-                  <div title="Change Default Video Included Status">
-                    <SwitchInputCenter
-                      isEnabled={isDefaultIncluded}
-                      onToggle={() => {
-                        if (
-                          confirm(
-                            `Do you want to change the default video included value?`
-                          )
-                        ) {
-                          dispatch(
-                            changeDefaultIncludedAction({
-                              id: screenId,
-                              defaultIncluded: !isDefaultIncluded,
-                              screenIds: [screenId],
-                              event: SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
-                            })
-                          );
-                          setIsDefaultIncluded(!isDefaultIncluded);
-                        }
-                      }}
-                      onColor="bg-[#348730]"
-                      offColor="bg-red-500"
-                    />
-                  </div>
-
-                  <div title="Change Auto Loop Value">
-                    <SwitchInputCenter
-                      isEnabled={autoLoopValue}
-                      onToggle={() => {
-                        if (
-                          confirm(
-                            `Do you want to change the auto loop value?`
-                          )
-                        ) {
-                          dispatch(
-                            changeAutoLoopAction({
-                              id: screenId,
-                              autoLoop: !autoLoopValue,
-                              screenIds: [screenId],
-                              event: SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
-                            })
-                          );
-                          setIsDefaultIncluded(!autoLoopValue);
-                        }
-                      }}
-                      onColor="bg-[#348730]"
-                      offColor="bg-red-500"
-                    />
-                  </div>
+                <div className = "mt-4" title="Change Default Video Included Status">
+                  <SwitchInputCenter
+                    isEnabled={isDefaultIncluded}
+                    onToggle={() => {
+                      if (
+                        confirm(
+                          `Do you want to change the default video included value?`
+                        )
+                      ) {
+                        dispatch(
+                          changeDefaultIncludedAction({
+                            id: screenId,
+                            defaultIncluded: !isDefaultIncluded,
+                            screenIds: [screenId],
+                            event: SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
+                          })
+                        );
+                        setIsDefaultIncluded(!isDefaultIncluded);
+                      }
+                    }}
+                    onColor="bg-[#348730]"
+                    offColor="bg-red-500"
+                  />
                 </div>
               </div>
             </div>
@@ -536,7 +509,7 @@ export const ScreenDetailsPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex gap-4 items-center">
-                  <PrimaryButton
+                  {!autoLoopValue && <PrimaryButton
                     action={handleLoopSettingClick}
                     title="Set Loop"
                     rounded="rounded-full"
@@ -546,7 +519,33 @@ export const ScreenDetailsPage: React.FC = () => {
                     reverse={true}
                     loading={false}
                     loadingText="Saving..."
-                  />
+                  />}
+
+                  <div className = "flex border items-center" title="Change Auto Loop Value">
+                    <SwitchInputCenter
+                      isEnabled={autoLoopValue}
+                      onToggle={() => {
+                        if (
+                          confirm(
+                            `Do you want to change the auto loop value?`
+                          )
+                        ) {
+                          dispatch(
+                            changeAutoLoopAction({
+                              id: screenId,
+                              autoLoop: !autoLoopValue,
+                              screenIds: [screenId],
+                              event: SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
+                            })
+                          );
+                          setAutoLoopValue(!autoLoopValue);
+                        }
+                      }}
+                      onColor="bg-[#348730]"
+                      offColor="bg-red-500"
+                    />
+                  </div>
+
                   {campaignIds?.length > 0 && currentTab != "7" && (
                     <div className="flex items-center gap-4">
                       <div
