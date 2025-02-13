@@ -147,14 +147,12 @@ export const ScreenDetailsPage: React.FC = () => {
     success: successChangeDefaultIncluded,
   } = changeDefaultIncluded;
 
-  const changeAutoLoop = useSelector(
-    (state: any) => state.changeAutoLoop
-  );
+  const changeAutoLoop = useSelector((state: any) => state.changeAutoLoop);
 
   const {
     loading: loadingChangeAutoLoop,
     error: errorChangeAutoLoop,
-    success: successChangeAutoLoop
+    success: successChangeAutoLoop,
   } = changeAutoLoop;
 
   const screenDataUpdateRedis = useSelector(
@@ -196,9 +194,7 @@ export const ScreenDetailsPage: React.FC = () => {
     }
 
     if (successChangeAutoLoop) {
-      message.success(
-        "Auto Loop Value updated Successfully."
-      );
+      message.success("Auto Loop Value updated Successfully.");
     }
 
     if (successScreenRefresh) {
@@ -246,7 +242,7 @@ export const ScreenDetailsPage: React.FC = () => {
     successScreenRefresh,
     successScreenDataUpdateRedis,
     successChangeDefaultIncluded,
-    successChangeAutoLoop
+    successChangeAutoLoop,
   ]);
 
   useEffect(() => {
@@ -256,7 +252,7 @@ export const ScreenDetailsPage: React.FC = () => {
 
     if (successGetScreenDetails) {
       setIsDefaultIncluded(screen.defaultIncluded);
-      setAutoLoopValue(screen.autoLoop)
+      setAutoLoopValue(screen.autoLoop);
     }
   }, [screenDataUploadCreative, successGetScreenDetails]);
 
@@ -289,8 +285,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-            (c: any) => c._id === selectedCampaign
-          )[0].creatives.standardDayTimeCreatives,
+          (c: any) => c._id === selectedCampaign
+        )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -320,7 +316,7 @@ export const ScreenDetailsPage: React.FC = () => {
       return (
         total +
         (campaign?.creatives?.creativeDuration || 10) *
-        (campaign?.atIndex?.length || 1)
+          (campaign?.atIndex?.length || 1)
       );
     }, 0);
   };
@@ -461,7 +457,10 @@ export const ScreenDetailsPage: React.FC = () => {
                 <h1 className="flex  justify-center items-bottom text-[12px] text-gray-500">
                   {screen?.screenCode}
                 </h1>
-                <div className = "mt-4" title="Change Default Video Included Status">
+                <div
+                  className="mt-4"
+                  title="Change Default Video Included Status"
+                >
                   <SwitchInputCenter
                     isEnabled={isDefaultIncluded}
                     onToggle={() => {
@@ -499,35 +498,41 @@ export const ScreenDetailsPage: React.FC = () => {
                   <div className="flex gap-2 text-[14px] items-center">
                     <i className="ffi fi-rr-alarm-clock"></i>
                     <h1
-                      className={`${getDurationCount() > 180
-                        ? `text-[#FF0000]`
-                        : `text-[#24990C]`
-                        } gap-4 opacity-100 `}
+                      className={`${
+                        getDurationCount() > 180
+                          ? `text-[#FF0000]`
+                          : `text-[#24990C]`
+                      } gap-4 opacity-100 `}
                     >
                       {getDurationCount()} Sec.
                     </h1>
                   </div>
                 </div>
                 <div className="flex gap-4 items-center">
-                  {!autoLoopValue && <PrimaryButton
-                    action={handleLoopSettingClick}
-                    title="Set Loop"
-                    rounded="rounded-full"
-                    height="h-8"
-                    width="w-24"
-                    textSize="text-[12px]"
-                    reverse={true}
-                    loading={false}
-                    loadingText="Saving..."
-                  />}
+                  {!autoLoopValue && (
+                    <PrimaryButton
+                      action={handleLoopSettingClick}
+                      title="Set Loop"
+                      rounded="rounded-full"
+                      height="h-8"
+                      width="w-24"
+                      textSize="text-[12px]"
+                      reverse={true}
+                      loading={false}
+                      loadingText="Saving..."
+                    />
+                  )}
 
-                  <div className = "flex border items-center" title="Change Auto Loop Value">
+                  <div
+                    className="flex items-center pr-4"
+                    title="Allow auto loop setting"
+                  >
                     <SwitchInputCenter
                       isEnabled={autoLoopValue}
                       onToggle={() => {
                         if (
                           confirm(
-                            `Do you want to change the auto loop value?`
+                            `Do you want to give permission to give auto loop setting?`
                           )
                         ) {
                           dispatch(
@@ -553,10 +558,12 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
@@ -585,10 +592,12 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${campaignIds?.length
-                              } campaigns status to ${currentTab === "1" || currentTab === "2"
-                                ? "Pause"
-                                : "Active"
+                              `Are you sure you want ${
+                                campaignIds?.length
+                              } campaigns status to ${
+                                currentTab === "1" || currentTab === "2"
+                                  ? "Pause"
+                                  : "Active"
                               }???`
                             )
                           ) {
@@ -747,9 +756,10 @@ export const ScreenDetailsPage: React.FC = () => {
                       className="text-gray-500 hover:text-[#348730]"
                       onClick={() =>
                         navigate(
-                          `/campaigns-details/${campaigns?.filter(
-                            (c: any) => c._id === selectedCampaign
-                          )[0]?.campaignCreationId
+                          `/campaigns-details/${
+                            campaigns?.filter(
+                              (c: any) => c._id === selectedCampaign
+                            )[0]?.campaignCreationId
                           }`
                         )
                       }
@@ -820,7 +830,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                              creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -858,7 +868,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                              creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -897,7 +907,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       <h1 className="text-[14px] truncate">
                         {
                           creative?.url?.split("_")[
-                          creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                           ]
                         }
                       </h1>
