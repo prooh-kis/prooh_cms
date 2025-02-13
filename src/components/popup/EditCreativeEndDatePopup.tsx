@@ -44,7 +44,7 @@ export function EditCreativeEndDatePopup({
   const [isCreativeOpen, setIsCreativeOpen] = useState<boolean>(false);
 
   const [duration, setDuration] = useState<any>(
-    campaign?.creatives?.creativeDuration
+    campaign?.creatives?.creativeDuration || 10
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentTab, setCurrentTab] = useState<number>(0);
@@ -116,6 +116,7 @@ export function EditCreativeEndDatePopup({
         url: item.awsURL,
         size: item.fileSize,
         _id: { $oid: item._id },
+        duration: item?.duration ? item?.duration : duration,
       };
       dataToUpload.push(mediaData);
     });
@@ -149,6 +150,9 @@ export function EditCreativeEndDatePopup({
         })
       );
     } else {
+      let duration1 = Math.max(
+        ...dataToUpload?.map((data: any) => parseInt(data.duration))
+      );
       dataToUpload.forEach((data: any) => {
         if (!standardDayTimeCreatives?.some((f: any) => f.url === data.url)) {
           standardDayTimeCreatives.push({
@@ -159,8 +163,9 @@ export function EditCreativeEndDatePopup({
         }
       });
 
+      // console.log("duration1 : ", duration1);
       creativeDataToUpload = {
-        creativeDuration: parseInt(scrData?.creativeDuration || 10),
+        creativeDuration: duration1,
         standardDayTimeCreatives: standardDayTimeCreatives,
         standardNightTimeCreatives: [],
         triggerCreatives: [],
@@ -172,7 +177,7 @@ export function EditCreativeEndDatePopup({
           endDate: endDate
             ? new Date(endDate).toISOString()
             : new Date(campaign.endDate).toISOString(),
-          duration: duration,
+          duration: creativeDataToUpload.creativeDuration,
           creatives:
             creativeDataToUpload?.standardDayTimeCreatives?.length > 0
               ? creativeDataToUpload
