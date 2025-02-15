@@ -165,7 +165,7 @@ export function EditCreativeEndDatePopup({
 
       // console.log("duration1 : ", duration1);
       creativeDataToUpload = {
-        creativeDuration: duration1,
+        creativeDuration: mediaFiles?.length > 0 ? duration1 : duration,
         standardDayTimeCreatives: standardDayTimeCreatives,
         standardNightTimeCreatives: [],
         triggerCreatives: [],
