@@ -52,22 +52,27 @@ export const campaignTypeTabs = [
   },
   {
     id: "4",
+    label: "Hold",
+    value: "Hold",
+  },
+  {
+    id: "5",
     label: "Paused",
     value: "Pause",
   },
   {
-    id: "5",
+    id: "6",
     label: "Completed",
     value: "Completed",
   },
   {
-    id: "6",
+    id: "7",
     label: "Deleted",
     value: "Deleted",
   },
 
   {
-    id: "7",
+    id: "8",
     label: "Default",
     value: "Default",
   },
