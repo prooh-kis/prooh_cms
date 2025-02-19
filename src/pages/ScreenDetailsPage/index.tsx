@@ -344,7 +344,7 @@ export const ScreenDetailsPage: React.FC = () => {
             campaign={
               campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
             }
-            campaignType={currentTab === "7" ? "Default" : "None"}
+            campaignType={currentTab === "8" ? "Default" : "None"}
             screenData={screenCreativeUpload}
           />
         )}
