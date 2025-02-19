@@ -51,7 +51,10 @@ export const MyUsers = (props: any) => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else {
-      if (userInfo?.userRole != SCREEN_ADMIN && userInfo?.userRole != SCREEN_OWNER) {
+      if (
+        userInfo?.userRole != SCREEN_ADMIN &&
+        userInfo?.userRole != SCREEN_OWNER
+      ) {
         alert("You have no access to this page");
         navigate(-1);
       } else {
@@ -63,10 +66,12 @@ export const MyUsers = (props: any) => {
   return (
     <div className="w-full h-full ">
       <div className="border rounded p-4 w-full bg-white">
-        <h1 className="text-[16px] font-semibold">Users</h1>
+        <h1 className="text-[16px] font-semibold">
+          Users <span className="text-[14px]">({users?.length})</span>
+        </h1>
       </div>
 
-      <div className="w-full mt-1">
+      <div className="w-full mt-1 h-[85vh] overflow-scroll scrollbar-minimal">
         <table className="auto w-full">
           <thead>
             <tr className="bg-sky-200">
@@ -74,7 +79,9 @@ export const MyUsers = (props: any) => {
               <th className="border ">Name</th>
               <th className="border ">Email</th>
               <th className="border ">User Role</th>
-              {userInfo?.userRole != SCREEN_ADMIN ? null : <th className="border ">Actions</th>}
+              {userInfo?.userRole != SCREEN_ADMIN ? null : (
+                <th className="border ">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody className="overflow-auto mt-4">
@@ -84,7 +91,7 @@ export const MyUsers = (props: any) => {
                 <td className="border  pl-4">{user?.name}</td>
                 <td className="border pl-4">{user.email}</td>
                 <td className="border  pl-4">{user?.userRole}</td>
-                {userInfo?.userRole != SCREEN_ADMIN ? null :
+                {userInfo?.userRole != SCREEN_ADMIN ? null : (
                   <td className="border  flex justify-center">
                     {user.userRole === SCREEN_ADMIN ? null : (
                       <i
@@ -94,7 +101,7 @@ export const MyUsers = (props: any) => {
                       ></i>
                     )}
                   </td>
-                }
+                )}
               </tr>
             ))}
           </tbody>
