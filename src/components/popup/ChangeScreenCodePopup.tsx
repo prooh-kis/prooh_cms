@@ -54,10 +54,14 @@ export function ChangeScreenCodePopup({
       dispatch({ type: SCREEN_CODE_CHANGE_RESET });
       onClose();
     }
+    if ( errorChange ){
+      alert(errorChange)
+      dispatch({ type: SCREEN_CODE_CHANGE_RESET });
+    }
     if (userInfo) {
       dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
     }
-  }, [dispatch, userInfo, successChange, onClose]);
+  }, [dispatch, userInfo, successChange, onClose , errorChange]);
 
   if (!open) {
     return null;
