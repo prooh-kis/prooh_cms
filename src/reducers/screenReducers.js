@@ -54,6 +54,10 @@ import {
   CHANGE_AUTO_LOOP_VALUE_SUCCESS,
   CHANGE_AUTO_LOOP_VALUE_FAIL,
   CHANGE_AUTO_LOOP_VALUE_RESET,
+  PLAY_HOLD_CAMPAIGNS_REQUEST,
+  PLAY_HOLD_CAMPAIGNS_SUCCESS,
+  PLAY_HOLD_CAMPAIGNS_FAIL,
+  PLAY_HOLD_CAMPAIGNS_RESET,
 } from "../constants/screenConstants";
 import {
   ALL_SCREENS_LIST,
@@ -246,6 +250,21 @@ export function screenDataUpdateRedisReducer(state = {}, action) {
       return { loading: false, success: true, data: action.payload };
     case UPDATE_SCREENS_DATA_IN_REDIS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export function playHoldCampaignsReducer(state = {}, action) {
+  switch (action.type) {
+    case PLAY_HOLD_CAMPAIGNS_REQUEST:
+      return { loading: true };
+    case PLAY_HOLD_CAMPAIGNS_SUCCESS:
+      return { loading: false, success: true, data: action.payload };
+    case PLAY_HOLD_CAMPAIGNS_FAIL:
+      return { loading: false, error: action.payload };
+    case PLAY_HOLD_CAMPAIGNS_RESET:
+      return {};
     default:
       return state;
   }

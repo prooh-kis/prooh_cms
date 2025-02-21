@@ -38,6 +38,7 @@ import {
   changeDefaultIncludedReducer,
   editDefaultCreativeReducer,
   getScreenCampaignMonitoringReducer,
+  playHoldCampaignsReducer,
   screenCampaignMonitoringReducer,
   screenCampaignsDetailsGetReducer,
   screenCodeChangeReducer,
@@ -116,6 +117,7 @@ const store = configureStore({
     editDefaultCreative: editDefaultCreativeReducer,
     screenRefresh: screenRefreshReducer,
     screenDataUpdateRedis: screenDataUpdateRedisReducer,
+    playHoldCampaigns : playHoldCampaignsReducer,
     screenLogsGet: screenLogsGetReducer,
     screenDefaultMediaChange: screenDefaultMediaChangeReducer,
 

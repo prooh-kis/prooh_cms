@@ -47,6 +47,9 @@ import {
   CHANGE_AUTO_LOOP_VALUE_SUCCESS,
   CHANGE_AUTO_LOOP_VALUE_RESET,
   CHANGE_AUTO_LOOP_VALUE_FAIL,
+  PLAY_HOLD_CAMPAIGNS_REQUEST,
+  PLAY_HOLD_CAMPAIGNS_SUCCESS,
+  PLAY_HOLD_CAMPAIGNS_FAIL,
 } from "../constants/screenConstants";
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
@@ -383,6 +386,36 @@ export const changeDefaultIncludedAction =
       });
     }
   };
+
+  export const playHoldCampaignsAction =
+  (input) =>
+    async (dispatch, getState) => {
+      dispatch({
+        type: PLAY_HOLD_CAMPAIGNS_REQUEST,
+        payload: input,
+      });
+      try {
+        const {
+          auth: { userInfo },
+        } = getState();
+
+        const { data } = await axios.post(`${screenV2}/sendCampaignByWebSocket`, input,
+          { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        );
+        dispatch({
+          type: PLAY_HOLD_CAMPAIGNS_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: PLAY_HOLD_CAMPAIGNS_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const screenDataUpdateRedisAction =
   (input) =>

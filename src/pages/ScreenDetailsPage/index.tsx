@@ -9,6 +9,7 @@ import {
   getScreenCampaignsDetailsAction,
   getScreenDetailsAction,
   getScreenLogsAction,
+  playHoldCampaignsAction,
   screenDataUpdateRedisAction,
   screenRefreshAction,
 } from "../../actions/screenAction";
@@ -27,7 +28,9 @@ import {
 } from "../../actions/campaignAction";
 import { CAMPAIGN_STATUS_CHANGE_RESET } from "../../constants/campaignConstants";
 import {
+  CHANGE_AUTO_LOOP_VALUE_RESET,
   EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET,
+  PLAY_HOLD_CAMPAIGNS_RESET,
   SET_CAMPAIGNS_LOOP_FOR_SCREEN_RESET,
 } from "../../constants/screenConstants";
 import { EditCreativeEndDatePopup } from "../../components/popup/EditCreativeEndDatePopup";
@@ -164,6 +167,16 @@ export const ScreenDetailsPage: React.FC = () => {
     success: successScreenDataUpdateRedis,
   } = screenDataUpdateRedis;
 
+  const playHoldCampaigns = useSelector(
+    (state: any) => state.playHoldCampaigns
+  )
+
+  const {
+    loading: loadPlayHoldCampaigns,
+    error : errorPlayHoldCampaigns,
+    success : successPlayHoldCampaigns
+  } = playHoldCampaigns;
+
   const screenLogsGet = useSelector((state: any) => state.screenLogsGet);
   const {
     loading: loadingScreenLogs,
@@ -185,6 +198,11 @@ export const ScreenDetailsPage: React.FC = () => {
 
     if (successScreenDataUpdateRedis) {
       message.success("Screen DB updated successfully...");
+    }
+
+    if ( successPlayHoldCampaigns ){
+      message.success("Hold Campaigns Started Playing ....");
+      dispatch({ type: PLAY_HOLD_CAMPAIGNS_RESET })
     }
 
     if (successChangeDefaultIncluded) {
@@ -241,6 +259,7 @@ export const ScreenDetailsPage: React.FC = () => {
     successChange,
     successScreenRefresh,
     successScreenDataUpdateRedis,
+    successPlayHoldCampaigns,
     successChangeDefaultIncluded,
     successChangeAutoLoop,
   ]);
@@ -452,6 +471,25 @@ export const ScreenDetailsPage: React.FC = () => {
                     }}
                   >
                     <i className="fi fi-rr-file-medical-alt text-gray-500"></i>
+                  </div>
+                  <div
+                    title="Play Hold Campaigns"
+                    className="flex justify-center items-top"
+                    onClick={() => {
+                      if (
+                        confirm(
+                          `Do you want to play hold campaigns ?`
+                        )
+                      ) {
+                        dispatch(
+                          playHoldCampaignsAction({
+                            screenId: screenId
+                          })
+                        );
+                      }
+                    }}
+                  >
+                    <i className="fi fi-tr-play-circle"></i>
                   </div>
                 </div>
                 <h1 className="flex  justify-center items-bottom text-[12px] text-gray-500">
