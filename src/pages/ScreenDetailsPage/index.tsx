@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -285,8 +285,8 @@ export const ScreenDetailsPage: React.FC = () => {
       saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
         [campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
           ?.campaignCreationId]: campaigns?.filter(
-          (c: any) => c._id === selectedCampaign
-        )[0].creatives.standardDayTimeCreatives,
+            (c: any) => c._id === selectedCampaign
+          )[0].creatives.standardDayTimeCreatives,
       });
       dispatch(
         getScreenDataUploadCreativeAction({
@@ -316,7 +316,7 @@ export const ScreenDetailsPage: React.FC = () => {
       return (
         total +
         (campaign?.creatives?.creativeDuration || 10) *
-          (campaign?.atIndex?.length || 1)
+        (campaign?.atIndex?.length || 1)
       );
     }, 0);
   };
@@ -498,11 +498,10 @@ export const ScreenDetailsPage: React.FC = () => {
                   <div className="flex gap-2 text-[14px] items-center">
                     <i className="ffi fi-rr-alarm-clock"></i>
                     <h1
-                      className={`${
-                        getDurationCount() > 180
-                          ? `text-[#FF0000]`
-                          : `text-[#24990C]`
-                      } gap-4 opacity-100 `}
+                      className={`${getDurationCount() > 180
+                        ? `text-[#FF0000]`
+                        : `text-[#24990C]`
+                        } gap-4 opacity-100 `}
                     >
                       {getDurationCount()} Sec.
                     </h1>
@@ -551,19 +550,17 @@ export const ScreenDetailsPage: React.FC = () => {
                     />
                   </div>
 
-                  {campaignIds?.length > 0 && currentTab != "7" && (
+                  {campaignIds?.length > 0 && currentTab != "8" && (
                     <div className="flex items-center gap-4">
                       <div
                         className="text-gray-500 hover:text-[#129BFF]"
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${
-                                campaignIds?.length
-                              } campaigns status to ${
-                                currentTab === "1" || currentTab === "2"
-                                  ? "Pause"
-                                  : "Active"
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to ${currentTab === "1" || currentTab === "2"
+                                ? "Pause"
+                                : "Active"
                               }???`
                             )
                           ) {
@@ -582,9 +579,13 @@ export const ScreenDetailsPage: React.FC = () => {
                         }}
                       >
                         {currentTab === "1" || currentTab === "2" ? (
-                          <i className="fi fi-sr-pause-circle"></i>
+                          <Tooltip title="Pause Campaign">
+                            <i className="fi fi-sr-pause-circle"></i>
+                          </Tooltip>
                         ) : (
-                          <i className="fi fi-sr-play-circle"></i>
+                          <Tooltip title="Active Campaign">
+                            <i className="fi fi-sr-play-circle"></i>
+                          </Tooltip>
                         )}
                       </div>
                       <div
@@ -592,13 +593,8 @@ export const ScreenDetailsPage: React.FC = () => {
                         onClick={() => {
                           if (
                             confirm(
-                              `Are you sure you want ${
-                                campaignIds?.length
-                              } campaigns status to ${
-                                currentTab === "1" || currentTab === "2"
-                                  ? "Pause"
-                                  : "Active"
-                              }???`
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to Deleted`
                             )
                           ) {
                             changeCampaignStatusHandler({
@@ -609,7 +605,30 @@ export const ScreenDetailsPage: React.FC = () => {
                           }
                         }}
                       >
-                        <i className="fi fi-sr-trash"></i>
+                        <Tooltip title="Delete Campaign">
+                          <i className="fi fi-sr-trash"></i>
+                        </Tooltip>
+                      </div>
+                      <div
+                        className="text-gray-500 hover:text-[#348730]"
+                        onClick={() => {
+                          if (
+                            confirm(
+                              `Are you sure you want ${campaignIds?.length
+                              } campaigns status to Hold`
+                            )
+                          ) {
+                            changeCampaignStatusHandler({
+                              campaignIds: campaignIds,
+                              status: "Hold",
+                              event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
+                            });
+                          }
+                        }}
+                      >
+                        <Tooltip title="Hold Campaign">
+                          <i className="fi fi-rr-megaphone"></i>
+                        </Tooltip>
                       </div>
                     </div>
                   )}
@@ -756,10 +775,9 @@ export const ScreenDetailsPage: React.FC = () => {
                       className="text-gray-500 hover:text-[#348730]"
                       onClick={() =>
                         navigate(
-                          `/campaigns-details/${
-                            campaigns?.filter(
-                              (c: any) => c._id === selectedCampaign
-                            )[0]?.campaignCreationId
+                          `/campaigns-details/${campaigns?.filter(
+                            (c: any) => c._id === selectedCampaign
+                          )[0]?.campaignCreationId
                           }`
                         )
                       }
@@ -830,7 +848,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                              creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -868,7 +886,7 @@ export const ScreenDetailsPage: React.FC = () => {
                         <h1 className="text-[14px] truncate">
                           {
                             creative?.url?.split("_")[
-                              creative?.url?.split("_")?.length - 1
+                            creative?.url?.split("_")?.length - 1
                             ]
                           }
                         </h1>
@@ -907,7 +925,7 @@ export const ScreenDetailsPage: React.FC = () => {
                       <h1 className="text-[14px] truncate">
                         {
                           creative?.url?.split("_")[
-                            creative?.url?.split("_")?.length - 1
+                          creative?.url?.split("_")?.length - 1
                           ]
                         }
                       </h1>
