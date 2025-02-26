@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CampaignListView } from "../../components/molecules/CampaignListView";
@@ -44,20 +44,12 @@ export const CampaignsPage: React.FC = () => {
     }
   }, [dispatch, userInfo]);
 
-  useEffect(() => {
-    // Restore scroll position when coming back to this page
-    const savedScrollPosition =
-      sessionStorage.getItem("campaignsScrollPosition") || "0";
-    if (targetDivRef.current) {
-      targetDivRef.current.scrollTop = parseInt(savedScrollPosition, 10);
-    }
-  }, []);
 
   const handleCardClick = (id: any) => {
     setSelectedCard(id);
   };
 
-  const handleGetCampaignByStatus = (status: any) => {
+  const handleGetCampaignByStatus = useCallback((status: any) => {
     setCurrentTab(status);
     dispatch(
       getAllCampaignsDetailsAction({
@@ -67,7 +59,7 @@ export const CampaignsPage: React.FC = () => {
         )[0]?.value,
       })
     );
-  };
+  },[dispatch, userInfo]);
 
   const reset = () => {
     dispatch(
@@ -88,6 +80,16 @@ export const CampaignsPage: React.FC = () => {
     }
     navigate(`/campaigns-details/${id}`);
   };
+
+  useEffect(() => {
+    handleGetCampaignByStatus(currentTab);
+    // Restore scroll position when coming back to this page
+    const savedScrollPosition =
+      sessionStorage.getItem("campaignsScrollPosition") || "0";
+    if (targetDivRef.current) {
+      targetDivRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+    }
+  }, [currentTab, handleGetCampaignByStatus]);
   return (
     <div className="w-full">
       <div className="bg-white w-[85vw]">
