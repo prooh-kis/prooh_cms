@@ -11,6 +11,7 @@ export const SearchableSelect: React.FC<{
   placeholder: string;
   value: string;
 }> = ({ options, onChange, placeholder, value }) => {
+  console.log("value", value)
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>(value || "");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -59,7 +60,7 @@ export const SearchableSelect: React.FC<{
           if (!isOpen) setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        placeholder={placeholder}
+        placeholder={value || placeholder}
         className="border h-[48px] w-full pl-5 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
       />
 

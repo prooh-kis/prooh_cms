@@ -316,83 +316,32 @@ export const EnterCampaignBasicDetails = ({
 
   useEffect(() => {
     if (successDetails) {
-      setCampaignName(
-        details?.name
-      );
-      setBrandName(
-        details?.brandName
-      );
-      setClientName(
-        details?.clientName
-      );
-      setIndustry(
-        details?.industry
-      );
-      setScreenIds(
-        details?.screenIds
-      );
-      setAtIndex(
-        details?.atIndex
-      );
+      setCampaignName(details?.name);
+      setBrandName(details?.brandName);
+      setClientName(details?.clientName);
+      setIndustry(details?.industry);
+      setScreenIds(details?.screenIds);
+      setAtIndex(details?.atIndex);
+      setSov(details?.sov);
+      setStartDate(new Date(details?.startDate)?.toISOString()?.slice(0, 16));
+      setEndDate(new Date(details?.endDate)?.toISOString()?.slice(0, 16));
+      setDuration(details?.duration);
+    // } else {
+    //   console.log("2", brandName);
+    //   console.log("2", getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
     
-      setSov(
-        details?.sov
-      );
-      setStartDate(
-        new Date(details?.startDate)
-            ?.toISOString()
-            ?.slice(0, 16)
-      );
-      setEndDate(
-          new Date(details?.endDate)
-              ?.toISOString()
-              ?.slice(0, 16)
-      );
-      setDuration(
-        details?.duration
-      );
-    } else {
-      setCampaignName(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name
-      );
-      setBrandName(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName
-      );
-      setClientName(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.clientName
-      );
-      setIndustry(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.industry
-      );
-      setScreenIds(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds
-      );
-      setAtIndex(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex
-      );
-      setSov(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov
-      );
-      setStartDate(
-        parseValidDate(
-            getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate
-          )
-      )
-      setEndDate(
-        parseValidDate(
-            getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate
-          )
-      );
-    
-      setDuration(
-        getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.duration || "30"
-      );
-    
+    //   setCampaignName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name);
+    //   setBrandName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
+    //   setClientName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.clientName);
+    //   setIndustry(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.industry);
+    //   setScreenIds(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds);
+    //   setAtIndex(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex);
+    //   setSov(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov);
+    //   setStartDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate))
+    //   setEndDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate));
+    //   setDuration(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.duration);
     }
-  },[successDetails]);
-  console.log("start", startDate);
-  console.log("end", endDate);
-
+  },[successDetails, campaignId, details]);
 
   useEffect(() => {
     if (getDataFromLocalStorage(ALL_BRAND_LIST)) {
@@ -457,7 +406,6 @@ export const EnterCampaignBasicDetails = ({
     setClientName(value);
   };
 
-  console.log(brandName);
   return (
     <div className="w-full px-4 py-1 w-full h-full overflow-y-auto scrollbar-minimal ">
       <EnterTimeTriggerPopup
