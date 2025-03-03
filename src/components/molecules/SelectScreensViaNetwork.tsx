@@ -30,7 +30,7 @@ export const SelectScreensViaNetwork: React.FC<{
   const [selectedNetwork, setSelectedNetwork] = useState<string[]>([]);
 
   const toggleOption = (value: string) => {
-    const newValue = selectedOptions.includes(value)
+    const newValue = selectedOptions?.includes(value)
       ? selectedOptions?.filter((option: string) => option !== value)
       : [...selectedOptions, value];
     setSelectedOptions(newValue);
@@ -42,7 +42,7 @@ export const SelectScreensViaNetwork: React.FC<{
 
   const toggleNetworkOption = (value: string) => {
     let newValue;
-    if (selectedNetwork.includes(value)) {
+    if (selectedNetwork?.includes(value)) {
       // here i am updating selected network list
       newValue = selectedNetwork?.filter((option: string) => option !== value);
 
@@ -52,7 +52,7 @@ export const SelectScreensViaNetwork: React.FC<{
       );
 
       let newScreenIds = selectedOptions?.filter(
-        (screenId: string) => !allScreenIds.includes(screenId)
+        (screenId: string) => !allScreenIds?.includes(screenId)
       );
 
       setSelectedOptions(newScreenIds);
@@ -69,24 +69,24 @@ export const SelectScreensViaNetwork: React.FC<{
   };
 
   const filterOptionsForScreens = screenList?.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    option.label.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
   const filterOptionsForNetwork = Object.keys(networkWithScreens)?.filter(
-    (option) => option.toLowerCase().includes(searchTerm.toLowerCase())
+    (option) => option.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
   const isAllSelected =
     filterOptionsForScreens?.length > 0 &&
     filterOptionsForScreens.every((option) =>
-      selectedOptions.includes(option.value)
+      selectedOptions?.includes(option.value)
     );
 
   const toggleSelectAll = () => {
     if (isAllSelected) {
       const remaining = selectedOptions?.filter(
         (value) =>
-          !filterOptionsForScreens?.map((opt) => opt.value).includes(value)
+          !filterOptionsForScreens?.map((opt) => opt.value)?.includes(value)
       );
       setSelectedOptions(remaining);
     } else {
@@ -197,7 +197,7 @@ export const SelectScreensViaNetwork: React.FC<{
                       <input
                         type="checkbox"
                         value={option.value}
-                        checked={selectedOptions.includes(option.value)}
+                        checked={selectedOptions?.includes(option.value)}
                         onChange={() => toggleOption(option.value)}
                         className="form-checkbox rounded"
                       />
@@ -223,7 +223,7 @@ export const SelectScreensViaNetwork: React.FC<{
                           <input
                             type="checkbox"
                             value={option.value}
-                            checked={selectedNetwork.includes(option.value)}
+                            checked={selectedNetwork?.includes(option.value)}
                             onChange={() => toggleNetworkOption(option.value)}
                             className="form-checkbox rounded"
                           />
@@ -255,7 +255,7 @@ export const SelectScreensViaNetwork: React.FC<{
                                 <input
                                   type="checkbox"
                                   value={option.value}
-                                  checked={selectedOptions.includes(
+                                  checked={selectedOptions?.includes(
                                     option.value
                                   )}
                                   onChange={() => toggleOption(option.value)}

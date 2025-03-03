@@ -48,7 +48,7 @@ export const EditCampaign: React.FC = () => {
       navigate(SIGN_IN);
     }
     dispatch(getFullCampaignDetailsAction(campaignId));
-  }, [dispatch, campaignId]);
+  }, [dispatch, campaignId, navigate, userInfo]);
 
   return (
     <div className="w-full h-full items-center">

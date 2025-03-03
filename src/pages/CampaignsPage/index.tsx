@@ -105,7 +105,11 @@ export const CampaignsPage: React.FC = () => {
                       campaign?.campaignName
                         ?.toLowerCase()
                         .includes(searchQuery) ||
-                      campaign?.brandName?.toLowerCase().includes(searchQuery)
+                      campaign?.brandName?.toLowerCase().includes(searchQuery) ||
+                      campaign?.campaignName
+                        ?.toUpperCase()
+                        .includes(searchQuery) ||
+                      campaign?.brandName?.toUpperCase().includes(searchQuery)
                   )?.length
                 }
                 )
