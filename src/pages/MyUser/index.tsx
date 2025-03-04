@@ -7,9 +7,11 @@ import {
   USERS_GET_CMS,
 } from "../../constants/userConstants";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUser, getUserList } from "../../actions/userAction";
+import { AddUserDetails } from "../../components/popup/AddUserDetails";
+import { PrimaryButton } from "../../components/index";
 
 export const MyUsers = (props: any) => {
   const navigate = useNavigate();
@@ -25,6 +27,12 @@ export const MyUsers = (props: any) => {
     success,
     data: userDeleteMessage,
   } = userDelete;
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const toggleOpen = useCallback(() => {
+    setOpen((pre: boolean) => !pre);
+  }, [open]);
 
   useEffect(() => {
     if (success) {
@@ -45,8 +53,6 @@ export const MyUsers = (props: any) => {
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  // console.log("user role : ", userInfo);
-
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
@@ -62,8 +68,22 @@ export const MyUsers = (props: any) => {
 
   return (
     <div className="w-full h-full ">
-      <div className="border rounded p-4 w-full bg-white">
+      {open && <AddUserDetails open={open} onClose={toggleOpen} />}
+      <div className="flex flex-row justify-between border rounded p-4 w-full bg-white">
         <h1 className="text-[16px] font-semibold">Users</h1>
+        <div className="flex items-center w-50">
+          <PrimaryButton
+            action={toggleOpen}
+            title="+ Add User"
+            rounded="rounded-lg"
+            height="h-8"
+            width="w-32"
+            textSize="text-[12px] font-semibold"
+            reverse={true}
+            loading={false}
+            loadingText="Saving..."
+          />
+        </div>
       </div>
 
       <div className="w-full mt-1">

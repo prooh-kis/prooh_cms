@@ -27,6 +27,9 @@ import {
   USER_DELETE_SUCCESS,
   USERS_DELETE_CMS,
   USER_DELETE_ERROR,
+  USER_ADD_NEW_USER_REQUEST,
+  USER_ADD_NEW_USER_SUCCESS,
+  USER_ADD_NEW_USER_FAIL,
 } from "../constants/userConstants";
 import store from "../store";
 import { login, logout } from "../store/authSlice";
@@ -86,6 +89,34 @@ export const createUser = (reqBody) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_SIGNUP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const addNewUser = (input) => async (dispatch, getState) => {
+  dispatch({
+    type: USER_ADD_NEW_USER_REQUEST,
+    payload: input,
+  });
+  try {
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const { data } = await Axios.post(`${userV1}/create`, input, {
+      headers: { authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({
+      type: USER_ADD_NEW_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_ADD_NEW_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

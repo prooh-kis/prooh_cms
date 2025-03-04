@@ -8,6 +8,11 @@ export const USER_SIGNIN_SUCCESS = "USER_SIGNIN_SUCCESS";
 export const USER_SIGNIN_FAIL = "USER_SIGNIN_FAIL";
 export const USER_SIGNIN_RESET = "USER_SIGNIN_RESET";
 
+export const USER_ADD_NEW_USER_REQUEST = "USER_ADD_NEW_USER_REQUEST";
+export const USER_ADD_NEW_USER_SUCCESS = "USER_ADD_NEW_USER_SUCCESS";
+export const USER_ADD_NEW_USER_FAIL = "USER_ADD_NEW_USER_FAIL";
+export const USER_ADD_NEW_USER_RESET = "USER_ADD_NEW_USER_RESET";
+
 export const USER_SIGNOUT = "USER_SIGNOUT";
 
 export const USER_UPDATE_PASSWORD_REQUEST = "USER_UPDATE_PASSWORD_REQUEST";
@@ -83,6 +88,7 @@ export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreative
 export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"
 export const USERS_GET_CMS = "usersGetCms"
 export const USERS_DELETE_CMS = "usersDeleteCms"
+export const USERS_ADD_CMS = "usersAddCms";
 export const CREATIVE_GET_CMS = "creativeGetCms"
 export const CREATIVE_ADD_CMS = "creativeAddCms"
 
