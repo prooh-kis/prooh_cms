@@ -228,6 +228,7 @@ export const AllCampaignLogsPopup = ({
               type="checkbox"
               value="Checked All"
               id="Select All"
+              defaultChecked={false}
               checked={selectedScreens?.length === filteredScreens?.length}
               onChange={(e) => handleSelectAllScreens(e.target.checked)}
             />
@@ -263,6 +264,7 @@ export const AllCampaignLogsPopup = ({
                   <input
                     title="q"
                     type="checkbox"
+                    defaultChecked={false}
                     checked={selectedScreens?.includes(screen?._id)}
                   />
                   <ScreenListMonitoringView

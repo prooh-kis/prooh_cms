@@ -85,55 +85,25 @@ export const EnterCampaignBasicDetails = ({
   const dispatch = useDispatch<any>();
   const [isEnabled, setIsEnable] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
-  const [campaignName, setCampaignName] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name || ""
-  );
-  const [brandName, setBrandName] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName || ""
-  );
-  const [clientName, setClientName] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.clientName || ""
-  );
-  const [industry, setIndustry] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.industry || ""
-  );
-  const [screenIds, setScreenIds] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds || []
-  );
-  const [atIndex, setAtIndex] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex || [0]
-  );
+  const [campaignName, setCampaignName] = useState<any>("");
+  const [brandName, setBrandName] = useState<any>("");
+  const [clientName, setClientName] = useState<any>("");
+  const [industry, setIndustry] = useState<any>("");
+  const [screenIds, setScreenIds] = useState<any>([]);
+  const [atIndex, setAtIndex] = useState<any>([0]);
 
-  const [sov, setSov] = useState<number>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov || 1
-  );
+  const [sov, setSov] = useState<number>(1);
 
-  const [startDate, setStartDate] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
-      ? new Date(
-          getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate
-        )
-          ?.toISOString()
-          ?.slice(0, 16)
-      : ""
-  );
-  const [endDate, setEndDate] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]
-      ? new Date(
-          getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate
-        )
-          ?.toISOString()
-          ?.slice(0, 16)
-      : ""
-  );
+  const [startDate, setStartDate] = useState<any>(new Date()
+  ?.toISOString()
+  ?.slice(0, 10));
+  const [endDate, setEndDate] = useState<any>(new Date()
+  ?.toISOString()
+  ?.slice(0, 10));
 
-  const [duration, setDuration] = useState<any>(
-    getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.duration || "30"
-  );
+  const [duration, setDuration] = useState<any>("30");
 
   const [enterDuration, setEnterDuration] = useState<any>(false);
-
-  const [enterDate, setEnterDate] = useState<any>(false);
 
   const getAllScreensForScreenOwnerCampaignCreation = useSelector(
     (state: any) => state.getAllScreensForScreenOwnerCampaignCreation
@@ -163,6 +133,10 @@ export const EnterCampaignBasicDetails = ({
     data: dataAdd,
   } = clientAgencyDetailsAdd;
 
+  const getCampaignFullDetails = useSelector((state: any) => state.getCampaignFullDetails);
+  const { loading: loadingDetails, success: successDetails, error: errorDetails, data: details } = getCampaignFullDetails;
+
+
   // console.log("clientAgencyNamesList : ", clientAgencyNamesList);
 
   const validateForm = () => {
@@ -184,6 +158,13 @@ export const EnterCampaignBasicDetails = ({
     } else {
       return true;
     }
+  };
+
+  const parseValidDate = (date: any) => {
+    if (!date || isNaN(new Date(date).getTime())) {
+      return new Date().toISOString().slice(0, 16); // Fallback to the current date
+    }
+    return new Date(date).toISOString().slice(0, 16);
   };
 
   const handleAddNewClient = (value: string) => {
@@ -258,7 +239,6 @@ export const EnterCampaignBasicDetails = ({
         vacantSlots: [],
       },
     };
-    console.log("purpose : ", purpose, { id: campaignId, ...data });
     if (purpose === "Edit" && campaignId) {
       dispatch(
         createCampaignCreationByScreenOwnerAction({
@@ -291,11 +271,7 @@ export const EnterCampaignBasicDetails = ({
     startDate,
     endDate,
     timeTriggers,
-    userInfo?._id,
-    userInfo?.name,
-    userInfo?.email,
-    userInfo?.primaryUserId,
-    userInfo?.primaryUserEmail,
+    userInfo
   ]);
 
   useEffect(() => {
@@ -333,7 +309,39 @@ export const EnterCampaignBasicDetails = ({
     allScreens,
     setStep,
     step,
+    purpose,
+    userInfo,
+    successDetails
   ]);
+
+  useEffect(() => {
+    if (successDetails) {
+      setCampaignName(details?.name);
+      setBrandName(details?.brandName);
+      setClientName(details?.clientName);
+      setIndustry(details?.industry);
+      setScreenIds(details?.screenIds);
+      setAtIndex(details?.atIndex);
+      setSov(details?.sov);
+      setStartDate(new Date(details?.startDate)?.toISOString()?.slice(0, 16));
+      setEndDate(new Date(details?.endDate)?.toISOString()?.slice(0, 16));
+      setDuration(details?.duration);
+    // } else {
+    //   console.log("2", brandName);
+    //   console.log("2", getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
+    
+    //   setCampaignName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name);
+    //   setBrandName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
+    //   setClientName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.clientName);
+    //   setIndustry(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.industry);
+    //   setScreenIds(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds);
+    //   setAtIndex(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex);
+    //   setSov(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov);
+    //   setStartDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate))
+    //   setEndDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate));
+    //   setDuration(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.duration);
+    }
+  },[successDetails, campaignId, details]);
 
   useEffect(() => {
     if (getDataFromLocalStorage(ALL_BRAND_LIST)) {
@@ -347,7 +355,7 @@ export const EnterCampaignBasicDetails = ({
     ) {
       dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
     }
-  }, []);
+  }, [dispatch, allScreens]);
 
   const handleScreenSelection = (screens: any) => {
     setScreenIds(screens);
@@ -355,7 +363,7 @@ export const EnterCampaignBasicDetails = ({
 
   const handleRemoveScreenIds = (screen: any) => {
     setScreenIds((pre: any) => {
-      if (pre.find((s: any) => s === screen)) {
+      if (pre?.find((s: any) => s === screen)) {
         return pre?.filter((s: any) => s !== screen);
       } else {
         return pre;
@@ -625,7 +633,7 @@ export const EnterCampaignBasicDetails = ({
                 {getDataFromLocalStorage(
                   ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
                 )
-                  ?.screensList?.filter((s: any) => screenIds.includes(s.value))
+                  ?.screensList?.filter((s: any) => screenIds?.includes(s.value))
                   ?.map((screen: any, i: any) => (
                     <div
                       key={i}

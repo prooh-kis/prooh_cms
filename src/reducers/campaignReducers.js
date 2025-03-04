@@ -31,6 +31,7 @@ import {
   GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
   GET_FULL_CAMPAIGN_DATA_FAIL,
   GET_FULL_CAMPAIGN_DATA_REQUEST,
+  GET_FULL_CAMPAIGN_DATA_RESET,
   GET_FULL_CAMPAIGN_DATA_SUCCESS,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
@@ -186,6 +187,8 @@ export function campaignFullDetailsGetReducer(state = {}, action) {
       return { ...state, loading: false, success: true, data: action.payload };
     case GET_FULL_CAMPAIGN_DATA_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case GET_FULL_CAMPAIGN_DATA_RESET:
+      return {};
     default:
       return state;
   }

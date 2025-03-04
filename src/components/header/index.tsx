@@ -5,12 +5,14 @@ import { Menu } from "./Menu";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { removeAllKeyFromLocalStorage } from "../../utils/localStorageUtils";
+import { removeAllKeyFromLocalStorage, removeDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 // import { ADD_SCREEN_CODE_RESET } from "../../../constants/screenDataConstant";
 import userImage from "../../assets/userImage.png";
 import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { SIGN_IN } from "../../routes/routes";
 import { ConformationModel } from "../../components/popup/ConformationModel";
+import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
+import { GET_FULL_CAMPAIGN_DATA_RESET } from "../../constants/campaignConstants";
 
 // import { getCreatives } from "../../../actions/creativeAction";
 // import { USER_ROLE_PRIMARY } from "../../../constants/userConstants";
@@ -44,7 +46,14 @@ export const Header: React.FC = () => {
       {userInfo ? (
         <div className="flex gap-4 items-center justify-end pr-10">
           <button
-            onClick={toggleOpen}
+            type="button"
+            onClick={() => {
+              dispatch({
+                type: GET_FULL_CAMPAIGN_DATA_RESET
+              });
+              removeDataFromLocalStorage(FULL_CAMPAIGN_PLAN);
+              toggleOpen();
+            }}
             className="w-full h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4 cursor-pointer">
             Quick Upload
           </button>
