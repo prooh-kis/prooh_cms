@@ -53,6 +53,14 @@ export const MyUsers = (props: any) => {
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
+  const roleList = [
+    "screenManager",
+    "screenMonitoring"
+  ]
+  if (userInfo?.userRole == SCREEN_ADMIN) {
+    roleList.push("screenOwner")
+  }
+
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
@@ -68,7 +76,7 @@ export const MyUsers = (props: any) => {
 
   return (
     <div className="w-full h-full ">
-      {open && <AddUserDetails open={open} onClose={toggleOpen} />}
+      {open && <AddUserDetails open={open} onClose={toggleOpen} roleList={roleList} />}
       <div className="flex flex-row justify-between border rounded p-4 w-full bg-white">
         <h1 className="text-[16px] font-semibold">Users</h1>
         <div className="flex items-center w-50">

@@ -9,7 +9,8 @@ import { useSelector } from "react-redux";
 
 export const AddUserDetails = ({
   onClose,
-  open
+  open ,
+  roleList
 }: any) => {
   const dispatch = useDispatch<any>();
   const [name, setName] = useState<any>("");
@@ -19,6 +20,7 @@ export const AddUserDetails = ({
   const [city, setCity] = useState<any>("");
   const [address, setAddress] = useState<any>("");
   const [pinCode, setPinCode] = useState<any>("");
+  const [userRole, setUserRole] = useState<any>("");
 
   const userAddNewUser = useSelector((state: any) => state.userAddNewUser);
   const {
@@ -29,56 +31,24 @@ export const AddUserDetails = ({
   } = userAddNewUser;
 
   useEffect(() => {
-      if (success) {
-        alert(userAddNewUserData.message);
-        dispatch({ type: USER_ADD_NEW_USER_RESET });
-        onClose()
-      }
-      if (error) {
-        alert(error);
-        dispatch({ type: USER_ADD_NEW_USER_RESET });
-      }
-    }, [error , success , userAddNewUserData]);
+    if (success) {
+      alert(userAddNewUserData.message);
+      dispatch({ type: USER_ADD_NEW_USER_RESET });
+      onClose()
+    }
+    if (error) {
+      alert(error);
+      dispatch({ type: USER_ADD_NEW_USER_RESET });
+    }
+  }, [error, success, userAddNewUserData]);
 
   const stateList = [
-    "Andaman and Nicobar Islands",
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chandigarh",
-    "Chhattisgarh",
-    "Dadra and Nagar Haveli and Daman and Diu",
-    "Delhi",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu and Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Ladakh",
-    "Lakshadweep",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Puducherry",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal"
+    "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh",
+    "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir",
+    "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
+    "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
   ];
-
   const validateEmail = (emailData: any) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(emailData);
@@ -116,16 +86,17 @@ export const AddUserDetails = ({
       const password = name.slice(0, 4) + phone.slice(-4);
       dispatch(
         addNewUser({
-        name,
-        email,
-        password,
-        phone,
-        state,
-        city,
-        pinCode,
-        address,
-        event: USERS_ADD_CMS
-      }))
+          name,
+          email,
+          password,
+          phone,
+          state,
+          city,
+          pinCode,
+          address,
+          userRole,
+          event: USERS_ADD_CMS
+        }))
     }
   }
 
@@ -262,6 +233,24 @@ export const AddUserDetails = ({
               placeholder="Address"
               action={setAddress}
               value={address}
+            />
+          </div>
+          <div className="col-span-1 py-1">
+            <div className="block flex justify-between gap-2 items-center mb-2">
+              <label className="block text-secondaryText text-[14px]">
+                User Role
+              </label>
+              <Tooltip title="Enter User's Role">
+                <i className="fi fi-rs-info pr-1 text-[10px] text-gray-400 flex justify-center items-center"></i>
+              </Tooltip>
+            </div>
+            <SuggestionInput
+              suggestions={roleList?.map(
+                (value: any) => value
+              )}
+              placeholder="User Role"
+              onChange={setUserRole}
+              value={userRole || ""}
             />
           </div>
         </div>
