@@ -25,7 +25,7 @@ import { MonitoringPictures } from "../../components/Segment/MonitoringPictures"
 import { UploadMonitoringPicturesPopup } from "../../components/popup/UploadMonitoringPicturesPopup";
 import { NoDataView, SearchInputField } from "../../components";
 import { GET_SCREEN_CAMPAIGN_MONITORING_RESET } from "../../constants/screenConstants";
-import { CAMPAIGN_MONITORING_DATA_CMS } from "../../constants/userConstants";
+import { CAMPAIGN_MONITORING_DATA_CMS, SCREEN_GET_ALL_SCREEN_DATA, SCREEN_GET_SCREEN_CAMPAIGN_DETAILS } from "../../constants/userConstants";
 
 const time = ["day", "night", "misc"];
 const pictures = ["images", "video", "geoTag", "newspaper"];
@@ -92,7 +92,7 @@ export const MonitoringPage: React.FC = () => {
     if (userInfo && !userInfo?.isMaster) {
       // message.error("Not a screen owner!!!");
     }
-    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId }));
+    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId, event: SCREEN_GET_ALL_SCREEN_DATA }));
   }, [dispatch, userInfo]);
 
   const handleScreenClick = ({ screen }: any) => {
@@ -102,6 +102,7 @@ export const MonitoringPage: React.FC = () => {
       getScreenCampaignsDetailsAction({
         screenId: screen._id,
         status: ["Active", "Pause"],
+        event : SCREEN_GET_SCREEN_CAMPAIGN_DETAILS
       })
     );
   };

@@ -78,17 +78,28 @@ export const CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS = "campaignStatusChangedToAct
 export const CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS = "campaignStatusChangedToPausedCms"
 export const CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS = "campaignStatusChangedToDeletedCms"
 export const CAMPAIGN_MONITORING_DATA_CMS = "campaignMonitoringDataCms"
+export const CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS = "campaignChangeDateAndCreativeCms"
+
 export const SCREEN_LOOP_CHANGED_CMS = "screenLoopChangedCms"
 export const SCREEN_RESTARTED_CMS = "screenRestartedCms"
 export const SCREEN_CODE_UPDATE_CMS = "screenCodeUpdateCms"
 export const SCREEN_REDIS_UPDATE_CMS = "screenRedisUpdateCms"
+export const SCREEN_PLAY_HOLD_CAMPAIGNS = "screenPlayHoldCampaigns"
+export const SCREEN_CHANGE_DEFAULT_MEDIA = "screenChangeDefaultMedia"
 export const SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS = "screenChangeDefaultIncludedStatusCms"
 export const SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS = "screenChangeAutoLoopValueCms"
+export const SCREEN_GET_ALL_SCREEN_DATA = "screenGetAllScreenData"
+export const SCREEN_GET_SCREEN_DETAILS = "screenGetScreenDetails"
+export const SCREEN_GET_SCREEN_CAMPAIGN_DETAILS = "screenGetScreenCampaignDetails"
+export const SCREEN_GET_UPLOAD_CREATIVE_DETAILS = "screenGetUploadCreativeDetails"
+
 export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreativeCms"
 export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"
+
 export const USERS_GET_CMS = "usersGetCms"
 export const USERS_DELETE_CMS = "usersDeleteCms"
 export const USERS_ADD_CMS = "usersAddCms";
+
 export const CREATIVE_GET_CMS = "creativeGetCms"
 export const CREATIVE_ADD_CMS = "creativeAddCms"
 

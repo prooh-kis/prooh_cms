@@ -127,16 +127,21 @@ export const getAllScreensForScreenOwnerCampaignCreationAction =
   };
 
 export const getScreenDataUploadCreativeAction =
-  ({ id }) =>
+  (input) =>
     async (dispatch, getState) => {
       dispatch({
         type: GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
-        payload: { id },
+        payload: input,
       });
       try {
+
+        const {
+          auth: { userInfo },
+        } = getState();
+
         const { data } = await axios.post(
-          `${screenV2}/screenDataUploadCreativeForCms`,
-          { id }
+          `${screenV2}/screenDataUploadCreativeForCms`, input,
+          { headers: { authorization: `Bearer ${userInfo.token}` }, }
         );
 
         dispatch({

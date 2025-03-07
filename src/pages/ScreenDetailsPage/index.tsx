@@ -49,6 +49,10 @@ import {
   CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
   SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
   SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS,
+  SCREEN_GET_SCREEN_CAMPAIGN_DETAILS,
+  SCREEN_GET_SCREEN_DETAILS,
+  SCREEN_GET_UPLOAD_CREATIVE_DETAILS,
+  SCREEN_PLAY_HOLD_CAMPAIGNS,
   SCREEN_REDIS_UPDATE_CMS,
   SCREEN_RESTARTED_CMS,
 } from "../../constants/userConstants";
@@ -173,8 +177,8 @@ export const ScreenDetailsPage: React.FC = () => {
 
   const {
     loading: loadPlayHoldCampaigns,
-    error : errorPlayHoldCampaigns,
-    success : successPlayHoldCampaigns
+    error: errorPlayHoldCampaigns,
+    success: successPlayHoldCampaigns
   } = playHoldCampaigns;
 
   const screenLogsGet = useSelector((state: any) => state.screenLogsGet);
@@ -200,7 +204,7 @@ export const ScreenDetailsPage: React.FC = () => {
       message.success("Screen DB updated successfully...");
     }
 
-    if ( successPlayHoldCampaigns ){
+    if (successPlayHoldCampaigns) {
       message.success("Hold Campaigns Started Playing ....");
       dispatch({ type: PLAY_HOLD_CAMPAIGNS_RESET })
     }
@@ -241,12 +245,16 @@ export const ScreenDetailsPage: React.FC = () => {
       window.location.reload();
     }
 
-    dispatch(getScreenDetailsAction({ screenId: screenId }));
+    dispatch(getScreenDetailsAction({
+      screenId: screenId,
+      event: SCREEN_GET_SCREEN_DETAILS
+    }));
     dispatch(
       getScreenCampaignsDetailsAction({
         screenId: screenId,
         status: campaignTypeTabs?.find((tab: any) => tab.id === currentTab)
           ?.value,
+        event: SCREEN_GET_SCREEN_CAMPAIGN_DETAILS
       })
     );
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
@@ -311,6 +319,7 @@ export const ScreenDetailsPage: React.FC = () => {
         getScreenDataUploadCreativeAction({
           id: campaigns?.filter((c: any) => c._id === selectedCampaign)[0]
             ?.campaignCreationId,
+          event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS
         })
       );
       setOpenCreativeEndDateChangePopup(true);
@@ -326,6 +335,7 @@ export const ScreenDetailsPage: React.FC = () => {
         screenId: screenId,
         status: campaignTypeTabs?.filter((tab: any) => tab.id === status)[0]
           .value,
+        event: SCREEN_GET_SCREEN_CAMPAIGN_DETAILS
       })
     );
   };
@@ -483,7 +493,8 @@ export const ScreenDetailsPage: React.FC = () => {
                       ) {
                         dispatch(
                           playHoldCampaignsAction({
-                            screenId: screenId
+                            screenId: screenId,
+                            event : SCREEN_PLAY_HOLD_CAMPAIGNS
                           })
                         );
                       }
@@ -780,6 +791,7 @@ export const ScreenDetailsPage: React.FC = () => {
                             id: campaigns?.filter(
                               (c: any) => c._id === selectedCampaign
                             )[0]?.campaignCreationId,
+                            event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS
                           })
                         );
                         setOpenCreativeEndDateChangePopup(true);

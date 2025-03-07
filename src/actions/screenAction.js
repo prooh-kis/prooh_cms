@@ -54,83 +54,96 @@ import {
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
 
 export const getAllScreensDetailsAction =
-  (input) =>
-    async (dispatch) => {
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_ALL_SCREENS_DATA_REQUEST,
+      payload: input,
+    });
+    try {
+
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(`${screenV2}/all`, input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+      );
       dispatch({
-        type: GET_ALL_SCREENS_DATA_REQUEST,
-        payload: input,
+        type: GET_ALL_SCREENS_DATA_SUCCESS,
+        payload: data,
       });
-      try {
-        const { data } = await axios.post(`${screenV2}/all`, input);
-        dispatch({
-          type: GET_ALL_SCREENS_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_ALL_SCREENS_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_ALL_SCREENS_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const getScreenDetailsAction =
-  ({ screenId }) =>
-    async (dispatch) => {
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_SCREEN_DATA_REQUEST,
+      payload: input,
+    });
+    try {
+
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(`${screenV2}/screenDetails`, input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+      );
       dispatch({
-        type: GET_SCREEN_DATA_REQUEST,
-        payload: screenId,
+        type: GET_SCREEN_DATA_SUCCESS,
+        payload: data,
       });
-      try {
-        const { data } = await axios.post(`${screenV2}/screenDetails`, {
-          screenId,
-        });
-        dispatch({
-          type: GET_SCREEN_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_SCREEN_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_SCREEN_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const getScreenCampaignsDetailsAction =
-  ({ screenId, status }) =>
-    async (dispatch) => {
-      dispatch({
-        type: GET_SCREEN_CAMPAIGNS_DATA_REQUEST,
-        payload: { screenId, status },
-      });
-      try {
-        const { data } = await axios.post(`${screenV2}/screenCampaignsDetails`, {
-          screenId,
-          status,
-        });
-        dispatch({
-          type: GET_SCREEN_CAMPAIGNS_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_SCREEN_CAMPAIGNS_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_SCREEN_CAMPAIGNS_DATA_REQUEST,
+      payload: input,
+    });
+    try {
 
-export const setCampaignsLoopForScreenAction = (input) => async (dispatch , getState) => {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(`${screenV2}/screenCampaignsDetails`, input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+      );
+      dispatch({
+        type: GET_SCREEN_CAMPAIGNS_DATA_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_SCREEN_CAMPAIGNS_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const setCampaignsLoopForScreenAction = (input) => async (dispatch, getState) => {
   dispatch({
     type: SET_CAMPAIGNS_LOOP_FOR_SCREEN_REQUEST,
     payload: input,
@@ -140,7 +153,7 @@ export const setCampaignsLoopForScreenAction = (input) => async (dispatch , getS
       auth: { userInfo },
     } = getState();
 
-    const { data } = await axios.post(`${campaignV2}/changeLoopIndex`, input ,
+    const { data } = await axios.post(`${campaignV2}/changeLoopIndex`, input,
       { headers: { authorization: `Bearer ${userInfo.token}` }, }
     );
     dispatch({
@@ -165,9 +178,15 @@ export const editCampaignCreativesEndDateAction =
       payload: input,
     });
     try {
+
+      const {
+        auth: { userInfo },
+      } = getState();
+
       const { data } = await axios.post(
         `${campaignV2}/changeDateAndCreative`,
-        input
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
       );
       dispatch({
         type: EDIT_CAMPAIGN_CREATIVE_END_DATE_SUCCESS,
@@ -191,9 +210,15 @@ export const editDefaultCreativesAction =
       payload: input,
     });
     try {
+
+      const {
+        auth: { userInfo },
+      } = getState();
+
       const { data } = await axios.post(
         `${screenV2}/editDefaultCreatives`,
-        input
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
       );
       dispatch({
         type: EDIT_DEFAULT_CREATIVE_SUCCESS,
@@ -355,7 +380,7 @@ export const changeDefaultIncludedAction =
     }
   };
 
-  export const changeAutoLoopAction =
+export const changeAutoLoopAction =
   (input) => async (dispatch, getState) => {
     dispatch({
       type: CHANGE_AUTO_LOOP_VALUE_REQUEST,
@@ -387,7 +412,7 @@ export const changeDefaultIncludedAction =
     }
   };
 
-  export const playHoldCampaignsAction =
+export const playHoldCampaignsAction =
   (input) =>
     async (dispatch, getState) => {
       dispatch({

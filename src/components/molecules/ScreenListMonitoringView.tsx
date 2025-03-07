@@ -18,6 +18,7 @@ import {
   CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
   SCREEN_ADMIN,
+  SCREEN_GET_UPLOAD_CREATIVE_DETAILS,
   SCREEN_MANAGER,
   SCREEN_OWNER,
 } from "../../constants/userConstants";
@@ -79,9 +80,8 @@ export function ScreenListMonitoringView({
                 alt={screen?._id}
               />
               <Tooltip
-                title={`${
-                  convertIntoDateAndTime(screen?.lastActive) || "Not Available"
-                }`}
+                title={`${convertIntoDateAndTime(screen?.lastActive) || "Not Available"
+                  }`}
               >
                 <div className="h-full flex justify-end items-end ml-[-8px]">
                   <div className={getScreenClassName(screen)} />
@@ -103,13 +103,12 @@ export function ScreenListMonitoringView({
             <div className="flex gap-2 text-[12px] text-[#6B8494]">
               <i className="fi fi-sr-megaphone"></i>
               <h1
-                className={`text-[12px] ${
-                  getCampaignEndingStatus(campaignCreated?.endDate).includes(
-                    "Already"
-                  )
+                className={`text-[12px] ${getCampaignEndingStatus(campaignCreated?.endDate).includes(
+                  "Already"
+                )
                     ? "text-[#EF4444]"
                     : "text-[#22C55E]"
-                }`}
+                  }`}
               >
                 {getCampaignEndingStatus(campaignCreated?.endDate)}
               </h1>
@@ -150,6 +149,7 @@ export function ScreenListMonitoringView({
                           dispatch(
                             getScreenDataUploadCreativeAction({
                               id: campaignCreated?._id,
+                              event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS
                             })
                           );
                           setOpenCreativeEndDateChangePopup(true);
@@ -175,35 +175,35 @@ export function ScreenListMonitoringView({
                     )}
                     {(campaign?.status === "Active" ||
                       campaign?.status === "Pause") && (
-                      <li
-                        onClick={() => {
-                          handleChangeCampaignStatus(
-                            "Delete",
-                            campaign?._id,
-                            CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
-                          );
-                        }}
-                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
-                      >
-                        Delete
-                      </li>
-                    )}
+                        <li
+                          onClick={() => {
+                            handleChangeCampaignStatus(
+                              "Delete",
+                              campaign?._id,
+                              CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                            );
+                          }}
+                          className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
+                        >
+                          Delete
+                        </li>
+                      )}
                     {(campaign?.status === "Deleted" ||
                       campaign?.status === "Pause" ||
                       campaign?.status === "Completed") && (
-                      <li
-                        onClick={() => {
-                          handleChangeCampaignStatus(
-                            "Active",
-                            campaign?._id,
-                            CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
-                          );
-                        }}
-                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
-                      >
-                        Activate
-                      </li>
-                    )}
+                        <li
+                          onClick={() => {
+                            handleChangeCampaignStatus(
+                              "Active",
+                              campaign?._id,
+                              CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                            );
+                          }}
+                          className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
+                        >
+                          Activate
+                        </li>
+                      )}
 
                     <li
                       onClick={() => {
@@ -223,9 +223,8 @@ export function ScreenListMonitoringView({
           {!noImages && (
             <div className="flex justify-center items-center">
               <Tooltip
-                title={`${
-                  convertIntoDateAndTime(screen?.lastActive) || "Not Available"
-                }`}
+                title={`${convertIntoDateAndTime(screen?.lastActive) || "Not Available"
+                  }`}
               >
                 <img
                   className="rounded h-24 w-32 saturate-0 opacity-50"
@@ -288,6 +287,7 @@ export function ScreenListMonitoringView({
                           dispatch(
                             getScreenDataUploadCreativeAction({
                               id: campaignCreated?._id,
+                              event: SCREEN_GET_UPLOAD_CREATIVE_DETAILS
                             })
                           );
                           setOpenCreativeEndDateChangePopup(true);
@@ -313,35 +313,35 @@ export function ScreenListMonitoringView({
                     )}
                     {(campaign?.status === "Active" ||
                       campaign?.status === "Pause") && (
-                      <li
-                        onClick={() => {
-                          handleChangeCampaignStatus(
-                            "Delete",
-                            campaign?._id,
-                            CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
-                          );
-                        }}
-                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
-                      >
-                        Delete
-                      </li>
-                    )}
+                        <li
+                          onClick={() => {
+                            handleChangeCampaignStatus(
+                              "Delete",
+                              campaign?._id,
+                              CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                            );
+                          }}
+                          className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
+                        >
+                          Delete
+                        </li>
+                      )}
                     {(campaign?.status === "Deleted" ||
                       campaign?.status === "Pause" ||
                       campaign?.status === "Completed") && (
-                      <li
-                        onClick={() => {
-                          handleChangeCampaignStatus(
-                            "Active",
-                            campaign?._id,
-                            CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
-                          );
-                        }}
-                        className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
-                      >
-                        Activate
-                      </li>
-                    )}
+                        <li
+                          onClick={() => {
+                            handleChangeCampaignStatus(
+                              "Active",
+                              campaign?._id,
+                              CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                            );
+                          }}
+                          className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
+                        >
+                          Activate
+                        </li>
+                      )}
 
                     <li
                       onClick={() => {

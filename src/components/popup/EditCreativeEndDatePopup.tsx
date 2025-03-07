@@ -18,6 +18,7 @@ import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
 import SearchInputField from "../../components/molecules/SearchInputField";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { format, toZonedTime } from "date-fns-tz";
+import { CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS, SCREEN_CHANGE_DEFAULT_MEDIA } from "../../constants/userConstants";
 
 interface EditCreativeEndDatePopupProps {
   onClose?: any;
@@ -147,6 +148,7 @@ export function EditCreativeEndDatePopup({
         editDefaultCreativesAction({
           id: campaign._id,
           creatives: creativesForDefault,
+          event : SCREEN_CHANGE_DEFAULT_MEDIA
         })
       );
     } else {
@@ -182,6 +184,7 @@ export function EditCreativeEndDatePopup({
             creativeDataToUpload?.standardDayTimeCreatives?.length > 0
               ? creativeDataToUpload
               : null,
+          event : CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS
         })
       );
     }
