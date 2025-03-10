@@ -43,6 +43,7 @@ import { ADD_CLIENT_AGENCY_DETAILS_RESET } from "../../constants/clientAgencyCon
 import {
   CAMPAIGN_CREATION_CMS,
   CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
+  CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
 } from "../../constants/userConstants";
 
 interface EnterCampaignBasicDetailsProps {
@@ -295,6 +296,7 @@ export const EnterCampaignBasicDetails = ({
         getAllCampaignsDetailsAction({
           userId: userInfo?.primaryUserId,
           status: CAMPAIGN_STATUS_ACTIVE,
+          event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
         })
       );
       setStep(2);

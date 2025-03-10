@@ -18,7 +18,7 @@ import {
   CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
   SCREEN_ADMIN,
-  SCREEN_GET_UPLOAD_CREATIVE_DETAILS,
+  SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
   SCREEN_MANAGER,
   SCREEN_OWNER,
 } from "../../constants/userConstants";
@@ -149,7 +149,7 @@ export function ScreenListMonitoringView({
                           dispatch(
                             getScreenDataUploadCreativeAction({
                               id: campaignCreated?._id,
-                              event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS
+                              event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS
                             })
                           );
                           setOpenCreativeEndDateChangePopup(true);
@@ -287,7 +287,7 @@ export function ScreenListMonitoringView({
                           dispatch(
                             getScreenDataUploadCreativeAction({
                               id: campaignCreated?._id,
-                              event: SCREEN_GET_UPLOAD_CREATIVE_DETAILS
+                              event: SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS
                             })
                           );
                           setOpenCreativeEndDateChangePopup(true);

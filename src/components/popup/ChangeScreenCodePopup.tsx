@@ -13,7 +13,7 @@ import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import { message } from "antd";
 import { SearchableSelect } from "../../components/atoms/SearchableSelect";
 import { SCREEN_CODE_CHANGE_RESET } from "../../constants/screenConstants";
-import { SCREEN_CODE_UPDATE_CMS, SCREEN_GET_ALL_SCREEN_DATA } from "../../constants/userConstants";
+import { SCREEN_CODE_UPDATE_CMS, SCREEN_GET_ALL_SCREEN_DATA_CMS } from "../../constants/userConstants";
 
 interface ChangeScreenCodePopupProps {
   open?: any;
@@ -61,7 +61,7 @@ export function ChangeScreenCodePopup({
     if (userInfo) {
       dispatch(getAllScreensDetailsAction({
         userId: userInfo?.primaryUserId,
-        event: SCREEN_GET_ALL_SCREEN_DATA
+        event: SCREEN_GET_ALL_SCREEN_DATA_CMS
       }));
     }
   }, [dispatch, userInfo, successChange, onClose, errorChange]);

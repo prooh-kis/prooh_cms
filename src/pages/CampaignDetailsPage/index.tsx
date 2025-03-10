@@ -52,6 +52,7 @@ import { creativeTypeTab } from "../../constants/tabDataConstant";
 import { MY_CREATIVES } from "../../routes/routes";
 import {
   CAMPAIGN_CREATION_EDIT_END_DATE_CMS,
+  CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
@@ -185,7 +186,7 @@ export const CampaignDetailsPage: React.FC = () => {
         type: EDIT_ALL_SUB_CAMPAIGNS_RESET,
       });
       setOpenCreateCampaignEndDateChangePopup(false);
-      dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
+      dispatch(getCampaignDetailsAction({ campaignId: campaignId , event : CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS }));
     }
     if (errorEditAllSubCampaigns) {
       message.error(errorEditAllSubCampaigns);
@@ -215,7 +216,7 @@ export const CampaignDetailsPage: React.FC = () => {
       dispatch({
         type: CAMPAIGN_STATUS_CHANGE_RESET,
       });
-      dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
+      dispatch(getCampaignDetailsAction({ campaignId: campaignId , event : CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS }));
     }
     if (errorStatusChange) {
       message.error(errorStatusChange);
@@ -236,7 +237,7 @@ export const CampaignDetailsPage: React.FC = () => {
     // if (userInfo && !userInfo?.isMaster) {
     //   message.error("Not a screen owner!!!");
     // }
-    dispatch(getCampaignDetailsAction({ campaignId: campaignId }));
+    dispatch(getCampaignDetailsAction({ campaignId: campaignId , event : CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   }, [campaignId, dispatch, userInfo]);
 

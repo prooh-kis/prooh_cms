@@ -498,7 +498,7 @@ export const getScreenLogsAction =
       }
     };
 
-export const changeDefaultScreenMedia =
+export const addDefaultScreenMedia =
   (input) => async (dispatch, getState) => {
     dispatch({
       type: CHANGE_DEFAULT_SCREEN_MEDIA_REQUEST,

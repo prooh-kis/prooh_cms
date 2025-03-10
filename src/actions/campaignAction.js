@@ -159,13 +159,20 @@ export const getScreenDataUploadCreativeAction =
       }
     };
 
-export const getAllCampaignsDetailsAction = (input) => async (dispatch) => {
+export const getAllCampaignsDetailsAction = (input) => async (dispatch, getState) => {
   dispatch({
     type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
     payload: input,
   });
   try {
-    const { data } = await axios.post(`${campaignV2}/all`, input);
+
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const { data } = await axios.post(`${campaignV2}/all`, input,
+      { headers: { authorization: `Bearer ${userInfo.token}` }, }
+    );
     dispatch({
       type: GET_ALL_CAMPAIGNS_DATA_SUCCESS,
       payload: data,
@@ -182,16 +189,21 @@ export const getAllCampaignsDetailsAction = (input) => async (dispatch) => {
 };
 
 export const getCampaignDetailsAction =
-  ({ campaignId }) =>
-    async (dispatch) => {
+  (input) =>
+    async (dispatch , getState) => {
       dispatch({
         type: GET_CAMPAIGN_DATA_REQUEST,
-        payload: campaignId,
+        payload: input,
       });
       try {
-        const { data } = await axios.post(`${campaignV2}/campaignDetails`, {
-          campaignId,
-        });
+
+        const {
+          auth: { userInfo },
+        } = getState();
+
+        const { data } = await axios.post(`${campaignV2}/campaignDetails`, input,
+          { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        );
         dispatch({
           type: GET_CAMPAIGN_DATA_SUCCESS,
           payload: data,

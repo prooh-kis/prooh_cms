@@ -19,7 +19,7 @@ import {
 } from "../../actions/campaignAction";
 import { CheckboxInput } from "../atoms/CheckboxInput";
 import { UploadCreativesTable } from "../tables/UploadCreativesTable";
-import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, SCREEN_ADMIN, SCREEN_GET_UPLOAD_CREATIVE_DETAILS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS, SCREEN_ADMIN, SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBucketPopup";
 import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
@@ -185,6 +185,7 @@ export const UploadCreatives = ({
         getAllCampaignsDetailsAction({
           userId: userInfo?.primaryUserId,
           status: CAMPAIGN_STATUS_ACTIVE,
+          event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
         })
       );
     }
@@ -206,7 +207,7 @@ export const UploadCreatives = ({
   }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
 
   useEffect(() => {
-    dispatch(getScreenDataUploadCreativeAction({ id: campaignId , event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS }));
+    dispatch(getScreenDataUploadCreativeAction({ id: campaignId , event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS }));
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   }, [dispatch, userInfo, campaignId]);
 

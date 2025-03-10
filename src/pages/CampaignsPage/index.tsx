@@ -13,6 +13,7 @@ import {
 import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
 import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
 import { message } from "antd";
+import { CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS } from "../../constants/userConstants";
 
 export const CampaignsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -39,6 +40,7 @@ export const CampaignsPage: React.FC = () => {
         getAllCampaignsDetailsAction({
           userId: userInfo?._id,
           status: CAMPAIGN_STATUS_ACTIVE,
+          event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
         })
       );
     }
@@ -57,6 +59,7 @@ export const CampaignsPage: React.FC = () => {
         status: campaignCreationTypeTabs?.filter(
           (tab: any) => tab.id === status
         )[0]?.value,
+        event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
       })
     );
   },[dispatch, userInfo]);
@@ -66,6 +69,7 @@ export const CampaignsPage: React.FC = () => {
       getAllCampaignsDetailsAction({
         userId: userInfo?._id,
         status: CAMPAIGN_STATUS_ACTIVE,
+        event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
       })
     );
   };

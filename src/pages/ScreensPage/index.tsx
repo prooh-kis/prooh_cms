@@ -13,7 +13,7 @@ import {
 import { SIGN_IN } from "../../routes/routes";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
-import { SCREEN_ADMIN, SCREEN_GET_ALL_SCREEN_DATA, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import { SCREEN_ADMIN, SCREEN_GET_ALL_SCREEN_DATA_CMS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
 
@@ -103,7 +103,7 @@ export const ScreensPage: React.FC = () => {
       navigate(SIGN_IN);
     }
     if (!allScreens)
-      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId , event: SCREEN_GET_ALL_SCREEN_DATA }));
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId , event: SCREEN_GET_ALL_SCREEN_DATA_CMS }));
   }, [dispatch, userInfo]);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export const ScreensPage: React.FC = () => {
   };
 
   const reLoad = () => {
-    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId , event: SCREEN_GET_ALL_SCREEN_DATA }));
+    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId , event: SCREEN_GET_ALL_SCREEN_DATA_CMS }));
   };
 
   const handleSelectNetwork = (value: string) => {
