@@ -29,7 +29,7 @@ export function BrandCampaignScreenDetails({
         } flex p-2 gap-4 hover:bg-gray-100 hover:rounded`}
       >
         <div
-          className={`rounded flex justify-center items-center w-20 ${getBgColors(index)}`}
+          className={`rounded flex justify-center items-center w-20 ${getBgColors(campaign?.brandName?.split(" ")[0]?.split("")?.length)}`}
         >
           <h1 className="text-[32px] text-white font-black">
             {brandName.split("")[0]}

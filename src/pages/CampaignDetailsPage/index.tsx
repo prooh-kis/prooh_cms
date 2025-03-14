@@ -378,7 +378,7 @@ export const CampaignDetailsPage: React.FC = () => {
                 <div
                   className={
                     campaignCreated
-                      ? `rounded  ${getBgColors(campaignCreated?.brandName?.split("").length)}`
+                      ? `rounded  ${getBgColors(campaignCreated?.brandName?.split(" ")[0]?.split("").length)}`
                       : `rounded bg-gray-100`
                   }
                 >
