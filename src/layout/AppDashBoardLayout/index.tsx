@@ -132,7 +132,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
             {/* Logout */}
             <div
               onClick={handleSignOut}
-              className={`flex items-center gap-4 px-2 py-1 rounded-lg text-md cursor-pointer ${
+              className={`flex items-center gap-4 px-2 py-4 rounded-lg text-md cursor-pointer ${
                 current === "Log out"
                   ? "text-[#129BFF] font-bold bg-[#ECF7FF]"
                   : "text-[#8D9DA7] font-semibold"
@@ -144,9 +144,9 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                     current === "Log out" ? "bg-[#129BFF]" : ""
                   }`}
                 ></div>
-                <i className="fi fi-br-power"></i>
+                <i className="fi fi-br-power flex items-center justify-center"></i>
               </div>
-              <span>Log out</span>
+              <h1>Log out</h1>
             </div>
           </div>
         </div>
