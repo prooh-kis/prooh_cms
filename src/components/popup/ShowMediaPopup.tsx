@@ -8,6 +8,7 @@ interface ShowMediaPopupProps {
   onClose?: any;
   screenName: string;
   removeAddedCreativeFromCampaign?: any;
+  showDelete?: any
 }
 
 export function ShowMediaPopup({
@@ -16,6 +17,7 @@ export function ShowMediaPopup({
   onClose,
   screenName,
   removeAddedCreativeFromCampaign,
+  showDelete=true
 }: ShowMediaPopupProps) {
   useEffect(() => {
     if (openShowMedia) {
@@ -59,15 +61,18 @@ export function ShowMediaPopup({
                 width="w-full"
                 rounded="rounded-[12px]"
               />
-              <div
-                className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:opacity-[50%] pt-4"
-                onClick={() => {
-                  removeAddedCreativeFromCampaign(l.url);
-                }}
-              >
-                <i className="fi fi-rs-trash"></i>
-                <h1>Delete</h1>
-              </div>
+              {showDelete && (
+                <div
+                  className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:opacity-[50%] pt-4"
+                  onClick={() => {
+                    removeAddedCreativeFromCampaign(l.url);
+                  }}
+                >
+                  <i className="fi fi-rs-trash"></i>
+                  <h1>Delete</h1>
+                </div>
+              )}
+              
             </div>
           ))}
         </div>

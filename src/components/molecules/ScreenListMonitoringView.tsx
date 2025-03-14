@@ -71,25 +71,27 @@ export function ScreenListMonitoringView({
   return (
     <div>
       {isScreenActive() ? (
-        <div className="flex gap-2 p-1 hover:bg-gray-100 hover:rounded">
+        <div className="flex grid grid-cols-12 gap-2 p-1 hover:bg-gray-100 hover:rounded">
           {!noImages && (
-            <div className="flex justify-center items-center">
+            <div className="col-span-4">
               <img
-                className="rounded h-24 w-32"
+                className="rounded h-24 w-full"
                 src={screen?.images[0]}
                 alt={screen?._id}
               />
-              <Tooltip
-                title={`${convertIntoDateAndTime(screen?.lastActive) || "Not Available"
-                  }`}
-              >
-                <div className="h-full flex justify-end items-end ml-[-8px]">
-                  <div className={getScreenClassName(screen)} />
-                </div>
-              </Tooltip>
+              <div className="-mt-2">
+                <Tooltip
+                  title={`${convertIntoDateAndTime(screen?.lastActive) || "Not Available"
+                    }`}
+                >
+                  <div className="h-full flex justify-end items-end ml-[-8px]">
+                    <div className={getScreenClassName(screen)} />
+                  </div>
+                </Tooltip>
+              </div>
             </div>
           )}
-          <div className="truncate flex flex-col gap-1">
+          <div className="col-span-7 truncate flex flex-col gap-1">
             <h1 className="text-[16px] text-[#294558] font-semibold truncate">
               {screen?.screenName}
             </h1>
@@ -117,7 +119,7 @@ export function ScreenListMonitoringView({
               {campaign?.status ?? "No Creatives"}
             </h1>
           </div>
-          <div className="relative inline-block ml-auto">
+          <div className="col-span-1 relative inline-block ml-auto">
             {showOption && (
               <i
                 className="fi fi-bs-menu-dots cursor-pointer text-[#6B8494]"

@@ -20,3 +20,5 @@ export { MyCreativesPage } from "./MyCreativesPage";
 export { MonitoringPage } from "./MonitoringPage";
 
 export { EditCampaign } from "./EditCampaign";
+
+export { MyRequests } from "./MyRequests";

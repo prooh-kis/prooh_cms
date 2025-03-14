@@ -317,6 +317,11 @@ export const CampaignDetailsPage: React.FC = () => {
     setOpenAllCampaignLogsPopup((pre: boolean) => !pre);
   }, [openAllCampaignLogsPopup]);
 
+  const getBgColors = (index: any) => {
+    const colors = ["bg-[#EF444450]", "bg-[#F59E0B50]", "bg-[#EAB30850]", "bg-[#22C55E50]", "bg-[#06B6D450]", "bg-[#3B82F650]", "bg-[#6366F150]", "bg-[#8B5CF650]", "bg-[#78DCCA50]", "bg-[#FF77E950]", "bg-[#3AB7BF50]", "bg-[#3F3CBB50]", "bg-[#22C55E50]", "bg-[#06B6D450]", "bg-[#3B82F650]", "bg-[#6366F150]", "bg-[#EF444450]", "bg-[#F59E0B50]" ];
+    return colors[index];
+  }
+
   return (
     <div className="w-full grid grid-cols-12 gap-1">
       {openCreativeEndDateChangePopup && (
@@ -373,14 +378,11 @@ export const CampaignDetailsPage: React.FC = () => {
                 <div
                   className={
                     campaignCreated
-                      ? `rounded  bg-[${generateColorFromAlphabet(
-                          campaignCreated?.brandName.split("")[0],
-                          0
-                        )}]`
+                      ? `rounded  ${getBgColors(campaignCreated?.brandName?.split("").length)}`
                       : `rounded bg-gray-100`
                   }
                 >
-                  <h1 className="text-[40px] text-gray-400 font-bold bg-gray-100 px-4">
+                  <h1 className="text-[40px] text-white font-bold px-4">
                     {campaignCreated?.brandName.split("")[0]}
                   </h1>
                 </div>

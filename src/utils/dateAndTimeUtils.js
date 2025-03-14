@@ -74,3 +74,19 @@ export function getCampaignEndingStatus(endDate) {
     ? "Ending Today"
     : `Ends In : ${getNumberOfDaysBetweenTwoDates(new Date(), endDate)} days`;
 }
+
+
+export function convertDateIntoDateMonthYear(date) {
+  if (date) {
+    date = new Date(date); // Fri Jan 27 2012 02:21:50 GMT+0530 (India Standard Time)
+    if (date !== "Invalid Date") {
+      date = date.toString();
+      date = date.split(" ");
+      return `${date[2]} ${date[1]} ${date[3]}`; // 24 December 2022
+    }
+  }
+  date = new Date(); // Fri Jan 27 2012 02:21:50 GMT+0530 (India Standard Time)
+  date = date.toString();
+  date = date.split(" ");
+  return `${date[2]} ${date[1]}, ${date[3]}`; // 24 December 2022
+}

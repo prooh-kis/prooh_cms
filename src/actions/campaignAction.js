@@ -33,6 +33,12 @@ import {
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_FAIL,
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_REQUEST,
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_SUCCESS,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
 } from "../constants/campaignConstants";
 
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
@@ -355,3 +361,59 @@ export const campaignLogsByCampaignIdAction =
       });
     }
   };
+
+
+export const getMyCreateCampaignsVendorRequestsList =
+({ id, status }) =>
+async (dispatch, getState) => {
+  dispatch({
+    type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
+    payload: { id, status },
+  });
+  try {
+    const { data } = await axios.post(
+      `${campaignV2}/campaignCreationsScreenVendor`,
+      { id, status }
+    );
+    dispatch({
+      type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
+      payload: {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      },
+    });
+  }
+};
+
+export const changeCampaignStatusAfterVendorApproval =
+({ ids }) =>
+async (dispatch, getState) => {
+  dispatch({
+    type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
+    payload: { ids },
+  });
+  try {
+    const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, {
+      ids,
+    });
+    dispatch({
+      type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
+      payload: {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      },
+    });
+  }
+};

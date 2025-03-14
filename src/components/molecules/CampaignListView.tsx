@@ -12,6 +12,7 @@ interface ScreenListThumbnailProps {
   handleCardClick: () => void;
   onDoubleClick?: any;
   data: any;
+  index?: any;
 }
 
 export const CampaignListView = ({
@@ -20,7 +21,12 @@ export const CampaignListView = ({
   color,
   isSelected,
   handleCardClick,
+  index
 }: ScreenListThumbnailProps): JSX.Element => {
+  const getBgColors = (index: any) => {
+    const colors = ["bg-[#EF444450]", "bg-[#F59E0B50]", "bg-[#EAB30850]", "bg-[#22C55E50]", "bg-[#06B6D450]", "bg-[#3B82F650]", "bg-[#6366F150]", "bg-[#8B5CF650]", "bg-[#78DCCA50]", "bg-[#FF77E950]", "bg-[#3AB7BF50]", "bg-[#3F3CBB50]", "bg-[#22C55E50]", "bg-[#06B6D450]", "bg-[#3B82F650]", "bg-[#6366F150]", "bg-[#EF444450]", "bg-[#F59E0B50]" ];
+    return colors[index];
+  }
   return (
     <div
       onClick={handleCardClick}
@@ -36,12 +42,9 @@ export const CampaignListView = ({
       <div className="py-0 w-full flex justify-between items-center">
         <div className="flex gap-1">
           <div
-            className={`rounded flex justify-center items-center w-20 bg-[#F6F6F6] bg-[${
-              generateColorFromAlphabet(data.brandName.split("")[0], 0) ||
-              "#F6F6F6"
-            }]`}
+            className={`rounded flex justify-center items-center w-20 ${getBgColors(data?.brandName?.split(" ")[0]?.split("")?.length)}`}
           >
-            <h1 className="text-[40px] text-gray-400 font-black">
+            <h1 className="text-[40px] text-white font-black">
               {data.brandName.split("")[0]}
             </h1>
           </div>

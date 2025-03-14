@@ -8,6 +8,7 @@ import {
   ForgetPassword,
   MonitoringPage,
   MyCreativesPage,
+  MyRequests,
   PageNotFound,
   ScreenDetailsPage,
   ScreensPage,
@@ -33,6 +34,7 @@ import {
   SCREENS_LIST_FOR_SECONDARY_USER,
   USERS,
   PLAY_LIVE_URL,
+  MY_REQUESTS,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
@@ -164,6 +166,14 @@ const Routers: React.FC = () => {
           element={
             <AppDashBoardLayout value="Creatives">
               <MyCreativesPage />
+            </AppDashBoardLayout>
+          }
+        />
+        <Route
+          path={MY_REQUESTS}
+          element={
+            <AppDashBoardLayout value="Requests">
+              <MyRequests />
             </AppDashBoardLayout>
           }
         />

@@ -5,6 +5,7 @@ import {
   CAMPAIGNS_LIST,
   CREATE_CAMPAIGN,
   MY_CREATIVES,
+  MY_REQUESTS,
   SCREEN_CAMPAIGN_MONITORING,
   SCREENS_LIST,
   SCREENS_LIST_FOR_SECONDARY_USER,
@@ -72,6 +73,12 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       option: "Monitoring",
     },
     {
+      value: "Requests",
+      path: MY_REQUESTS,
+      icon: "fi fi-ss-bell-notification-social-media",
+      option: "Requests",
+    },
+    {
       value: "Users",
       path: USERS,
       icon: "fi fi-sr-users-alt ",
@@ -92,11 +99,11 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
   };
 
   return (
-    <div className="h-screen w-screen bg-gray-100 ">
+    <div className="h-full border border w-full bg-gray-100 ">
       <Header />
-      <div className="flex mt-1 gap-1">
+      <div className="flex mt-1 gap-1 ml-2 h-auto">
         {/* Sidebar */}
-        <div className="h-[92vh] w-[15vw] bg-white overflow-y-auto flex flex-col">
+        <div className="h-auto w-[15vw] bg-white rounded-[4px] overflow-y-auto flex flex-col">
           <div className="flex flex-col justify-between h-full pt-2 px-2">
             {/* Menu Items */}
             <div className="space-y-4">
@@ -144,7 +151,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
           </div>
         </div>
         {/* Content */}
-        <div className="h-[92vh] w-[85vw]">{children}</div>
+        <div className="h-auto w-[85vw]">{children}</div>
       </div>
     </div>
   );

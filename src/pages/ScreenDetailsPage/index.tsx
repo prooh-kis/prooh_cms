@@ -393,7 +393,7 @@ export const ScreenDetailsPage: React.FC = () => {
           </div>
         ) : (
           <div className="col-span-8">
-            <div className="w-full bg-white flex justify-between py-8 ">
+            <div className="w-full bg-white rounded-[4px] flex justify-between py-8 ">
               <div className="flex gap-1">
                 <i
                   className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center"
@@ -535,7 +535,7 @@ export const ScreenDetailsPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className=" my-1 bg-white">
+            <div className=" my-1 bg-white rounded-[4px]">
               <div className="px-4 pt-4 pb-2 flex justify-between">
                 <div className="flex gap-4 items-center">
                   <h1 className="text-[16px] font-semibold">
@@ -544,20 +544,22 @@ export const ScreenDetailsPage: React.FC = () => {
                       ({campaigns?.length})
                     </span>
                   </h1>
-                  <div className="flex gap-2 text-[14px] items-center">
-                    <i className="ffi fi-rr-alarm-clock"></i>
-                    <h1
-                      className={`${getDurationCount() > 180
-                        ? `text-[#FF0000]`
-                        : `text-[#24990C]`
-                        } gap-4 opacity-100 `}
-                    >
-                      {getDurationCount()} Sec.
-                    </h1>
-                  </div>
+                  {["1","2"].includes(currentTab) && (
+                    <div className="flex gap-2 text-[14px] items-center justify-center">
+                      <i className="fi fi-rr-alarm-clock flex items-center justify-center"></i>
+                      <h1
+                        className={`${getDurationCount() > 180
+                          ? `text-[#FF0000]`
+                          : `text-[#24990C]`
+                          } gap-4 opacity-100 `}
+                      >
+                        {getDurationCount()} Sec.
+                      </h1>
+                    </div>
+                  )}
                 </div>
                 <div className="flex gap-4 items-center">
-                  {!autoLoopValue && (
+                  {currentTab === "1" && !autoLoopValue && (
                     <PrimaryButton
                       action={handleLoopSettingClick}
                       title="Set Loop"
@@ -570,36 +572,36 @@ export const ScreenDetailsPage: React.FC = () => {
                       loadingText="Saving..."
                     />
                   )}
-
-                  <div
-                    className="flex items-center pr-4"
-                    title="Allow auto loop setting"
-                  >
-                    <SwitchInputCenter
-                      isEnabled={autoLoopValue}
-                      onToggle={() => {
-                        if (
-                          confirm(
-                            `Do you want to give permission to give auto loop setting?`
-                          )
-                        ) {
-                          dispatch(
-                            changeAutoLoopAction({
-                              id: screenId,
-                              autoLoop: !autoLoopValue,
-                              screenIds: [screenId],
-                              event: SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
-                            })
-                          );
-                          setAutoLoopValue(!autoLoopValue);
-                        }
-                      }}
-                      onColor="bg-[#348730]"
-                      offColor="bg-red-500"
-                    />
-                  </div>
-
-                  {campaignIds?.length > 0 && currentTab != "8" && (
+                  {currentTab === "1" && (
+                    <div
+                      className="flex items-center pr-4"
+                      title="Allow auto loop setting"
+                    >
+                      <SwitchInputCenter
+                        isEnabled={autoLoopValue}
+                        onToggle={() => {
+                          if (
+                            confirm(
+                              `Do you want to give permission to give auto loop setting?`
+                            )
+                          ) {
+                            dispatch(
+                              changeAutoLoopAction({
+                                id: screenId,
+                                autoLoop: !autoLoopValue,
+                                screenIds: [screenId],
+                                event: SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
+                              })
+                            );
+                            setAutoLoopValue(!autoLoopValue);
+                          }
+                        }}
+                        onColor="bg-[#348730]"
+                        offColor="bg-red-500"
+                      />
+                    </div>
+                  )}
+                  {campaignIds?.length > 0 && (
                     <div className="flex items-center gap-4">
                       <div
                         className="text-gray-500 hover:text-[#129BFF]"
@@ -746,6 +748,9 @@ export const ScreenDetailsPage: React.FC = () => {
                             campaigns={campaigns}
                             showIcons={true}
                             showTimer={currentTab === "7" ? false : true}
+                            downloadedMedia={screen?.downloadedMedia}
+                            index={index}
+                            currentTab={currentTab}
                           />
                         </div>
                       ))}
@@ -763,7 +768,7 @@ export const ScreenDetailsPage: React.FC = () => {
         {loadingCampaigns ? (
           <Loading />
         ) : campaigns && selectedCampaign ? (
-          <div className="col-span-4 bg-white p-4 ">
+          <div className="col-span-4 bg-white p-4 rounded-[4px] mr-2">
             <div className="border-b-2 pb-10">
               <div className="flex justify-between items-center">
                 <h1 className="text-[16px] font-semibold mt-4">

@@ -20,11 +20,13 @@ import {
   campaignDetailsGetReducer,
   campaignFullDetailsGetReducer,
   campaignLogsByCampaignIdReducer,
+  campaignStatusChangeAfterVendorApprovalReducer,
   campaignStatusChangeReducer,
   createCampaignCreationByScreenOwnerReducer,
   editAllSubCampaignsReducer,
   editCampaignCreationByScreenOwnerReducer,
   getAllScreensForScreenOwnerCampaignCreationReducer,
+  myCreateCampaignsVendorRequestsListGetReducer,
   screenDataUploadCreativeGetReducer,
 } from "../reducers/campaignReducers";
 import {
@@ -96,6 +98,10 @@ const store = configureStore({
     campaignCreatedScreensDetailsGet: campaignCreatedScreensDetailsGetReducer,
     editAllSubCampaigns: editAllSubCampaignsReducer,
     getCampaignFullDetails: campaignFullDetailsGetReducer,
+    myCreateCampaignsVendorRequestsListGet:
+    myCreateCampaignsVendorRequestsListGetReducer,
+    campaignStatusChangeAfterVendorApproval:
+    campaignStatusChangeAfterVendorApprovalReducer,
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
 

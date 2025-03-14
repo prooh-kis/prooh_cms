@@ -4,6 +4,10 @@ import {
   CAMPAIGN_STATUS_CHANGE_REQUEST,
   CAMPAIGN_STATUS_CHANGE_RESET,
   CAMPAIGN_STATUS_CHANGE_SUCCESS,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_RESET,
+  CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_FAIL,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_REQUEST,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
@@ -33,6 +37,9 @@ import {
   GET_FULL_CAMPAIGN_DATA_REQUEST,
   GET_FULL_CAMPAIGN_DATA_RESET,
   GET_FULL_CAMPAIGN_DATA_SUCCESS,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
   GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
@@ -246,6 +253,54 @@ export function campaignLogsByCampaignIdReducer(state = {}, action) {
     case GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_FAIL:
       return { ...state, loading: false, error: action.payload };
     case GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+
+export function myCreateCampaignsVendorRequestsListGetReducer(
+  state = [],
+  action
+) {
+  switch (action.type) {
+    case GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST:
+      return { loading: true };
+    case GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        data: action.payload,
+      };
+    case GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+export function campaignStatusChangeAfterVendorApprovalReducer(
+  state = [],
+  action
+) {
+  switch (action.type) {
+    case CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST:
+      return { loading: true };
+    case CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+      };
+    case CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_RESET:
       return {};
     default:
       return state;

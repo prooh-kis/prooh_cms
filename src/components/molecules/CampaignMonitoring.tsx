@@ -89,7 +89,7 @@ export const CampaignMonitoring = (props: any) => {
   };
 
   return (
-    <div className="w-full p-4 bg-white">
+    <div className="w-full p-4 bg-white rounded-[4px]">
       {openCalendarPopup && (
         <div className="p-1 overflow-y-auto no-scrollbar">
           <CalendarPopup

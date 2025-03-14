@@ -6,12 +6,13 @@ import {
   USER_DELETE_RESET,
   USERS_GET_CMS,
 } from "../../constants/userConstants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { deleteUser, getUserList } from "../../actions/userAction";
 import { AddUserDetails } from "../../components/popup/AddUserDetails";
 import { PrimaryButton } from "../../components/index";
+import userImage from "../../assets/userImage.png";
+import { Tooltip } from "antd";
 
 export const MyUsers = (props: any) => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ export const MyUsers = (props: any) => {
   }, [userInfo]);
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-full h-full">
       {open && <AddUserDetails open={open} onClose={toggleOpen} roleList={roleList} />}
       <div className="flex flex-row justify-between border rounded p-4 w-full bg-white">
         <h1 className="text-[16px] font-semibold">Users</h1>
@@ -94,40 +95,80 @@ export const MyUsers = (props: any) => {
         </div>
       </div>
 
-      <div className="w-full mt-1">
-        <table className="auto w-full">
-          <thead>
-            <tr className="bg-sky-200">
-              <th className="border py-2">Sl. No</th>
-              <th className="border ">Name</th>
-              <th className="border ">Email</th>
-              <th className="border ">User Role</th>
-              {userInfo?.userRole != SCREEN_ADMIN ? null : <th className="border ">Actions</th>}
+      <div className="w-full h-[85vh] overflow-scroll mt-1">
+        <table className="w-full ">
+          <thead className="bg-[#EBF6FF]">
+            <tr>
+              <th className="py-2 px-1">
+                <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
+                  Sl No.
+                </div>
+              </th>
+              <th className="py-2 px-1">
+                <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[#129BFF]">
+                  User Name
+                </div>
+              </th>
+              <th className="py-2 px-1">
+                <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[#129BFF]">
+                  User Role
+                </div>
+              </th>
+              <th className="py-2 px-1">
+                <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[#129BFF]">
+                  User Email
+                </div>
+              </th>
+              {userInfo?.userRole != SCREEN_ADMIN ? null : 
+                <th className="py-2 px-1">
+                  <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
+                    Action
+                  </div>
+                </th>
+              }
             </tr>
           </thead>
-          <tbody className="overflow-auto mt-4">
-            {users?.map((user: any, i: any) => (
-              <tr className="bg-white hover:bg-gray-200" key={i}>
-                <td className="border  pl-4 py-1">{i + 1}</td>
-                <td className="border  pl-4">{user?.name}</td>
-                <td className="border pl-4">{user.email}</td>
-                <td className="border  pl-4">{user?.userRole}</td>
-                {userInfo?.userRole != SCREEN_ADMIN ? null :
-                  <td className="border  flex justify-center">
-                    {user.userRole === SCREEN_ADMIN ? null : (
-                      <i
-                        className="fi fi-rs-trash text-red-500"
-                        title="delete user"
-                        onClick={() => handleDeleteUser(user?._id)}
-                      ></i>
-                    )}
+          <tbody className="bg-white">
+            {users
+              ?.map((s: any, i: number) => (
+                <tr key={i} className="border-b hover:bg-gray-200">
+                  <td className="py-2 px-1">
+                    <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
+                      {i+1}
+                    </div>
                   </td>
-                }
-              </tr>
-            ))}
+                  <td className="py-2 px-1">
+                    <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
+                      {s.name}
+                    </div>
+                  </td>
+                  <td className="py-2 px-1">
+                    <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
+                      {s.userRole}
+                    </div>
+                  </td>
+                  <td className="py-2 px-1">
+                    <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
+                      {s.email}
+                    </div>
+                  </td>
+                  {userInfo?.userRole != SCREEN_ADMIN ? null : 
+                    <td className="py-2 px-1">
+                      <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
+                        <i
+                          className="fi fi-rs-trash text-red-500"
+                          title="delete user"
+                          onClick={() => handleDeleteUser(s?._id)}
+                        ></i>
+                      </div>
+                    </td>
+                  }
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
+
     </div>
   );
 };
