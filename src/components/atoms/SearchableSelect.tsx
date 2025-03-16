@@ -14,8 +14,8 @@ export const SearchableSelect: React.FC<{
   console.log("value", value)
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>(value || "");
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(value || null);
 
   const filteredOptions =
     searchTerm.length === 0
@@ -25,7 +25,6 @@ export const SearchableSelect: React.FC<{
         );
 
   const handleOptionClick = (selectedValue: string) => {
-    setSelectedOption(selectedValue);
     setSearchTerm(options?.find((o) => o.value === selectedValue)?.label || "");
     onChange(selectedValue);
     setIsOpen(false);
@@ -41,7 +40,6 @@ export const SearchableSelect: React.FC<{
       }
     };
 
-    setSelectedOption(value || null);
     setSearchTerm(options?.find((o) => o.value === value)?.label || "");
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -49,6 +47,33 @@ export const SearchableSelect: React.FC<{
     };
   }, [value, options]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isOpen) setIsOpen(true);
+    
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setSelectedIndex((prevIndex) =>
+          prevIndex < filteredOptions.length - 1 ? prevIndex + 1 : prevIndex
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setSelectedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (selectedIndex >= 0 && selectedIndex < filteredOptions.length) {
+          handleOptionClick(filteredOptions[selectedIndex].value);
+        }
+        break;
+      case "Escape":
+        setIsOpen(false);
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <div className="relative w-full" ref={dropdownRef}>
       <input
@@ -56,9 +81,10 @@ export const SearchableSelect: React.FC<{
         value={searchTerm}
         onChange={(e) => {
           setSearchTerm(e.target.value.toUpperCase());
-          setSelectedOption(null);
+          setSelectedIndex(-1);
           if (!isOpen) setIsOpen(true);
         }}
+        onKeyDown={handleKeyDown}
         onFocus={() => setIsOpen(true)}
         placeholder={value || placeholder}
         className="border h-[48px] w-full pl-5 py-2 pr-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
@@ -67,11 +93,13 @@ export const SearchableSelect: React.FC<{
       {isOpen && (
         <div className="absolute z-10 w-full bg-white border shadow-md max-h-60 overflow-y-auto">
           {filteredOptions.length > 0 ? (
-            filteredOptions.map((option) => (
+            filteredOptions.map((option, index) => (
               <div
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}
-                className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
+                className={`px-4 py-2 cursor-pointer hover:bg-indigo-100 ${
+                  index === selectedIndex ? "bg-indigo-200" : ""
+                }`}
               >
                 {option.label}
               </div>
