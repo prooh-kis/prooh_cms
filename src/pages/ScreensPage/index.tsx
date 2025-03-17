@@ -164,8 +164,8 @@ export const ScreensPage: React.FC = () => {
     <div className="flex flex-col gap-1 h-full">
       {open && <ChangeScreenCodePopup open={open} onClose={toggleOpen} />}
 
-      <div className="flex justify-between pr-8 mr-2 border-b bg-white rounded-[4px]">
-        <div className="flex gap-4 items-center p-4 ">
+      <div className="flex justify-between pr-8 mr-0 border-b bg-white rounded-[4px]">
+        <div className="flex gap-4 items-center p-4">
           <h1 className="text-[16px] font-semibold">
             My Screens{" "}
             <span className="text-[14px] text-[#68879C] ">
@@ -193,6 +193,7 @@ export const ScreensPage: React.FC = () => {
           />
         </div>
       </div>
+      
       <div className="flex gap-1">
         {(userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER) && (
           <div className="w-[17vw] bg-white rounded-[4px] p-4 ">

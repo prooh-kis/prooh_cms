@@ -45,7 +45,7 @@ export const CampaignsListModel = ({ data, index }: any) => {
             &#8377;{data?.totalCampaignBudget?.toFixed(0)}
           </h1>
           <h1 className="text-[12px] text-[#276F41] font-semibold">
-            On {data?.screenIds?.length} Screens
+            On {data?.screenWiseSlotDetails?.length} Screens
           </h1>
 
           {/* <div className="flex items-center mt-1">

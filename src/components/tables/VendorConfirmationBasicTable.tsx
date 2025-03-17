@@ -37,7 +37,7 @@ export const VendorConfirmationBasicTable = ({
             </div>
             <div className="border py-1 px-4">
               <h1 className="text-[14px]">
-                {vendorConfirmationData?.campaignType}
+                {vendorConfirmationData?.campaignType?.replace(/([A-Z])/g, ' $1').trim()}
               </h1>
             </div>
           </div>

@@ -11,9 +11,9 @@ export const PublicRoute = (props: any) => {
   const { children } = props;
 
   return (
-    <div className="h-[100vh] w-[100vw] p-0 m-0">
+    <div className="h-full w-full p-0 m-0">
       <Header />
-      <div className="h-[93vh] w-[100vw] bg-gray-100">{children}</div>
+      <div className="h-full w-full bg-gray-100">{children}</div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ADD_NEW_USER, SIGN_IN } from "../../routes/routes";
+import { SIGN_IN } from "../../routes/routes";
 import {
   SCREEN_ADMIN,
   SCREEN_OWNER,
@@ -9,14 +9,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { deleteUser, getUserList } from "../../actions/userAction";
-import { AddUserDetails } from "../../components/popup/AddUserDetails";
-import { PrimaryButton, SearchInputField } from "../../components/index";
-import userImage from "../../assets/userImage.png";
-import { Tooltip } from "antd";
-import { getMyCreateCampaignsVendorRequestsList } from "../../actions/campaignAction";
+import { SearchInputField, NoDataView } from "../../components/index";
+import { getMyCreateCampaignsVendorRequestsList, changeCampaignStatusAfterVendorApproval } from "../../actions/campaignAction";
 import { CAMPAIGN_STATUS_PLEA_REQUEST_SCREEN_APPROVAL_SENT } from "../../constants/campaignConstants";
-import { VendorsRequestsList } from "./VendorRequestsList";
 import { Loading } from "../../components/Loading";
+import { message } from "antd";
+import { MyRequestsListTable, VendorConfirmationBasicTable, VendorConfirmationStatusTable } from "../../components/tables";
 
 export const MyRequests = (props: any) => {
   const navigate = useNavigate();
@@ -24,49 +22,8 @@ export const MyRequests = (props: any) => {
 
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const userList = useSelector((state: any) => state.userList);
-  const { loading, error, data: users } = userList;
-
-  const userDelete = useSelector((state: any) => state.userDelete);
-  const {
-    loading: loadingUserDelete,
-    error: errorUserDelete,
-    success,
-    data: userDeleteMessage,
-  } = userDelete;
-
-  const [open, setOpen] = useState<boolean>(false);
-
-  const toggleOpen = useCallback(() => {
-    setOpen((pre: boolean) => !pre);
-  }, [open]);
-
-  useEffect(() => {
-    if (success) {
-      alert(userDeleteMessage);
-      dispatch({ type: USER_DELETE_RESET });
-      dispatch(getUserList({ event: USERS_GET_CMS }));
-    }
-    if (errorUserDelete) {
-      alert(errorUserDelete);
-      dispatch({ type: USER_DELETE_RESET });
-    }
-  }, [errorUserDelete, errorUserDelete, success]);
-
-  const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
-  };
-
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
-
-  const roleList = [
-    "screenManager",
-    "screenMonitoring"
-  ]
-  if (userInfo?.userRole == SCREEN_ADMIN) {
-    roleList.push("screenOwner")
-  }
 
   useEffect(() => {
     if (!userInfo) {
@@ -79,7 +36,7 @@ export const MyRequests = (props: any) => {
         dispatch(getUserList({ event: USERS_GET_CMS }));
       }
     }
-  }, [userInfo]);
+  }, [dispatch, navigate, userInfo]);
 
 //
   const myCreateCampaignsVendorRequestsListGet = useSelector(
@@ -100,14 +57,57 @@ export const MyRequests = (props: any) => {
     );
   },[dispatch, userInfo]);
 
-  const data1 = vendorRequestsList?.campaignCreations?.filter(
-    (campaign: any) =>
-      campaign?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase())
+  const [showDetails, setShowDetails] = useState<any>({
+    show: false,
+    data: {},
+  });
+  
+  const [planRequest, setPlanRequest] = useState<any>([
+    {
+      campaignCreationId: "",
+      campaignName: "",
+      brandName: "",
+      clientName: "",
+      type: "",
+      totalCampaignBudget: 0,
+      startDate: "",
+      endDate: "",
+      duration: "",
+      campaigns: [],
+      screens: [],
+    },
+  ]);
+
+  const [selectedCampaignIds, setSelectedCampaignIds] = useState<any>([]);
+
+  const campaignStatusChangeAfterVendorApproval = useSelector(
+    (state: any) => state.campaignStatusChangeAfterVendorApproval
   );
+  const {
+    loading: loadingVendorApprovalStatus,
+    error: errorVendorApprovalStatus,
+    data: vendorApprovalStatus,
+  } = campaignStatusChangeAfterVendorApproval;
+
+  useEffect(() => {
+    if (vendorApprovalStatus) {
+      message.success("Campaign Approved Successfully...");
+    }
+
+    if (errorVendorApprovalStatus) {
+      message.error("Campaign Approval Failed");
+    }
+
+      setPlanRequest(vendorRequestsList?.campaignCreations?.filter(
+        (campaign: any) =>
+          campaign?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+  }, [vendorRequestsList, vendorApprovalStatus, errorVendorApprovalStatus, searchQuery]);
+
   return (
-    <div className="w-full h-full">
-      <div className="flex flex-row justify-between rounded p-4 w-full bg-white">
+    <div className="w-full">
+      <div className="flex flex-row justify-between rounded p-4 mb-1 w-full bg-white">
         <h1 className="text-[16px] font-semibold">My Requests</h1>
         <div className="flex items-center w-80">
           <SearchInputField
@@ -118,24 +118,108 @@ export const MyRequests = (props: any) => {
         </div>
       </div>
 
-      {loadingVendorRequestsList ? (
-        <Loading />
-      ) : vendorRequestsList ? (
-        <div className="w-full h-[85vh] overflow-scroll mt-1">
-          <VendorsRequestsList
-            userInfo={userInfo}
-            requestsList={data1}
-            campaignsList={vendorRequestsList?.campaigns}
-          />
-        </div>
-      ) : (
-        <div className="h-full flex justify-center">
-          <div className="p-4">
-            <h1 className="text-2xl font-bold">No Campaigns Found</h1>
-            <p className="text-md">Please contact support !!!</p>
+      <div className="flex gap-1">
+        {loadingVendorRequestsList ? (
+          <Loading />
+        ) : vendorRequestsList ? (
+          <div className="h-[80vh] w-full overflow-y-auto scrollbar-minimal mt-1 mr-2">
+            {!showDetails.show ? (
+              <MyRequestsListTable
+                requestsList={planRequest}
+                setShowDetails={setShowDetails}
+                showDetails={showDetails}
+              />
+            ) : (
+              <div className="px-2 bg-white">
+                <div className="flex justify-between py-2">
+                  <div className="px-2">
+                    <h1 className="font-semibold">Request Details</h1>
+                  </div>
+                  <div
+                    className="flex items-center pr-2"
+                    onClick={() =>
+                      setShowDetails({
+                        show: !showDetails.show,
+                        data: {},
+                      })
+                    }
+                  >
+                    <h1 className="text-[16px] text-[#129BFF]">Back</h1>
+                  </div>
+                </div>
+                <VendorConfirmationBasicTable
+                  vendorConfirmationData={showDetails?.data}
+                />
+  
+                <div className="flex justify-between items-start mt-4">
+                  <div className="p-4 shadow-sm rounded-lg">
+                    <h1 className="text-lg font-semibold mb-2">
+                      Screens Selected (
+                      {showDetails?.data?.screenWiseSlotDetails?.length || 0})
+                    </h1>
+                  </div>
+                  <div
+                    className="flex gap-4 pr-2"
+                    onMouseEnter={() => {
+                      if (selectedCampaignIds.length === 0) {
+                        message.info("Please select any one screen...")
+                      }
+                    }}
+                  >
+                    <button
+                      
+                      title="approve"
+                      type="submit"
+                      disabled={loadingVendorApprovalStatus || selectedCampaignIds.length === 0}
+                      className={`${
+                        loadingVendorApprovalStatus
+                          ? "bg-gray text-primaryButton hover:bg-transparent hover:border-primaryButton hover:border-2 hover:text-primaryButton"
+                          : "bg-[#129BFF] text-[#FFFFFF] font-custom rounded-[9px] text-[14px] sm:text-[16px] font-bold hover:bg-[#129BFF90] hover:text-[#FFFFFF] w-[170px] h-[40px]"
+                      }`}
+                      onClick={() => {
+                        dispatch(
+                          changeCampaignStatusAfterVendorApproval({
+                            approvedIds: selectedCampaignIds,
+                            disapprovedIds: vendorRequestsList?.campaigns.filter((camp: any) => camp.campaignCreationId === showDetails?.data._id && !selectedCampaignIds.includes(camp._id))?.map((campaign: any) => campaign?._id)
+                          })
+                        );
+                      }}
+                    >
+                      Approve Campaign
+                    </button>
+                    <button title="reject" type="submit" className="bg-gray-300 text-[#FFFFFF] font-custom rounded-[9px] text-[14px] sm:text-[16px] font-bold hover:bg-[#129BFF90] hover:text-[#FFFFFF] w-[163px] h-[40px]"
+                      disabled={loadingVendorApprovalStatus || selectedCampaignIds.length === 0}
+                      onClick={() => {
+                        dispatch(
+                          changeCampaignStatusAfterVendorApproval({
+                            approvedIds: [],
+                            disapprovedIds: selectedCampaignIds
+                          })
+                        );
+                      }}
+                    >
+                      Reject Campaign
+                    </button>
+                  </div>
+                </div>
+                
+                {showDetails?.data && (
+                  <VendorConfirmationStatusTable
+                    userInfo={userInfo}
+                    campaignCreationStatusTableData={showDetails?.data}
+                    selectedCampaignIds={selectedCampaignIds}
+                    setSelectedCampaignIds={setSelectedCampaignIds}
+                    campaignsList={vendorRequestsList?.campaigns}
+                  />
+                )}
+              
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        ) : (
+          <NoDataView />
+        )}
+      </div>
     </div>
   );
 };

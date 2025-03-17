@@ -17,13 +17,14 @@ export const MyRequestsListTable = ({
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div className="overflow-y-scroll no-scrollbar h-[80vh] rounded-[4px] bg-gray-100 pr-2">
+    <div className="h-full">
+      <div className="rounded-[4px] bg-gray-100">
         {requestsList?.map((campaign: any, i: any) => (
           <div
             key={i}
             className="pointer-cursor"
             onClick={() => {
+              console.log("campaign data", campaign);
               setShowDetails({
                 show: !showDetails.show,
                 data: campaign
@@ -37,7 +38,6 @@ export const MyRequestsListTable = ({
           </div>
         ))}
       </div>
-
     </div>
   );
 };

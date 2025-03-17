@@ -96,7 +96,7 @@ export const CampaignsPage: React.FC = () => {
   }, [currentTab, handleGetCampaignByStatus]);
   return (
     <div className="w-full">
-      <div className="bg-white w-auto rounded-[4px] mr-2">
+      <div className="bg-white w-auto rounded-[4px] mr-0">
         <div className="flex justify-between pr-8 border-b">
           <div className="flex gap-4 items-center p-4 ">
             <h1 className="text-[16px] font-semibold">
