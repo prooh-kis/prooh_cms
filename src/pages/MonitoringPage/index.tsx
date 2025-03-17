@@ -156,7 +156,7 @@ export const MonitoringPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-full">
       <UploadMonitoringPicturesPopup
         openUploadPopup={openUploadPopup}
         mediaFiles={mediaFiles}

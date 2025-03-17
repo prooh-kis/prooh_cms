@@ -123,7 +123,7 @@ export const MyCreativesPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-full">
       <div className="p-4 bg-white">
         <h1 className="text-[16px] font-bold">Creative Bucket</h1>
       </div>
@@ -159,7 +159,7 @@ export const MyCreativesPage: React.FC = () => {
               onChange={setSearchQuery}
             />
 
-            <div className="h-[75vh] py-2 ">
+            <div className="py-2 ">
               {loadingCreatives ? (
                 <Loading />
               ) : (

@@ -104,12 +104,12 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       <Header />
       <div className="flex gap-1 h-full">
         {/* Sidebar */}
-        <div className={`h-auto ${showFull ? "w-[15vw]" : "w-[4vw]"} border mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}>
+        <div className={`h-auto min-w-[5vw] ${showFull ? "w-[15vw]" : "w-[5vw]"} mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}>
           <div className="flex flex-col justify-between h-full pt-2 px-2">
             {/* Menu Items */}
             <div className="space-y-4">
               {!showFull && (
-                <div className="flex justify-center items-center p-2 border rounded"
+                <div className="flex justify-center items-center py-2 px-4 border rounded cursor-pointer"
                   onClick={() => {
                     setShowFull(!showFull);
                   }}
@@ -122,7 +122,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                 <div
                   key={index}
                   onClick={() => handleMenuClick(index)}
-                  className={`flex items-center gap-2 px-2 rounded-lg text-md py-2 cursor-pointer ${
+                  className={`flex justify-start items-center gap-2 py-2 px-4 rounded cursor-pointer ${
                     current === item.option
                       ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
                       : "text-[#8D9DA7] font-semibold"
@@ -132,26 +132,26 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                     <i className={`${item.icon} flex items-center justify-center`}></i>
                   </div>
                   {showFull && (
-                    <span className="truncate">{item.option}</span>
+                    <span className="px-2 truncate">{item.option}</span>
                   )}
                 </div>
               ))}
             </div>
             {/* Logout */}
-            <div className="flex justify-between">
+            <div className="py-12 flex justify-between truncate">
               <div
                 onClick={handleSignOut}
-                className={`flex items-center gap-2 px-2 rounded-lg text-md py-4 cursor-pointer ${
+                className={`flex truncate ${!showFull ? "border border-red-200" : "border border-red-200"} justify-start items-center gap-2 py-2 px-4 rounded cursor-pointer ${
                   current === "Log Out"
                     ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
                     : "text-[#8D9DA7] font-semibold"
                 }`}
               >
-                <div className={`flex items-center px-1`}>
+                <div className={`flex items-center`}>
                   <i className="fi fi-br-power flex items-center justify-center"></i>
                 </div>
                 {showFull && (
-                  <h1 className="truncate">Log out</h1>
+                  <h1 className="px-2 truncate">Log out</h1>
                 )}
               </div>
               <div className="flex items-center px-1"

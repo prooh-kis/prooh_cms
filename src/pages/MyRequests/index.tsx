@@ -7,14 +7,15 @@ import {
   USERS_GET_CMS,
 } from "../../constants/userConstants";
 import { useSelector, useDispatch } from "react-redux";
-import { useCallback, useEffect, useState } from "react";
-import { deleteUser, getUserList } from "../../actions/userAction";
+import { useEffect, useState } from "react";
+import { getUserList } from "../../actions/userAction";
 import { SearchInputField, NoDataView } from "../../components/index";
 import { getMyCreateCampaignsVendorRequestsList, changeCampaignStatusAfterVendorApproval } from "../../actions/campaignAction";
 import { CAMPAIGN_STATUS_PLEA_REQUEST_SCREEN_APPROVAL_SENT } from "../../constants/campaignConstants";
 import { Loading } from "../../components/Loading";
 import { message } from "antd";
-import { MyRequestsListTable, VendorConfirmationBasicTable, VendorConfirmationStatusTable } from "../../components/tables";
+import { VendorConfirmationBasicTable, VendorConfirmationStatusTable } from "../../components/tables";
+import { CampaignsListModel } from "../../components/molecules/CampaignsListModel";
 
 export const MyRequests = (props: any) => {
   const navigate = useNavigate();
@@ -122,13 +123,27 @@ export const MyRequests = (props: any) => {
         {loadingVendorRequestsList ? (
           <Loading />
         ) : vendorRequestsList ? (
-          <div className="h-[80vh] w-full overflow-y-auto scrollbar-minimal mt-1 mr-2">
+          <div className="h-[80vh] w-full overflow-y-auto scrollbar-minimal mr-2">
             {!showDetails.show ? (
-              <MyRequestsListTable
-                requestsList={planRequest}
-                setShowDetails={setShowDetails}
-                showDetails={showDetails}
-              />
+              <div className="rounded-[4px] bg-gray-100">
+              {planRequest?.map((campaign: any, i: any) => (
+                <div
+                  key={i}
+                  className="pointer-cursor"
+                  onClick={() => {
+                    setShowDetails({
+                      show: !showDetails.show,
+                      data: campaign
+                    })
+                  }}
+                >
+                  <CampaignsListModel
+                    index={i}
+                    data={{ ...campaign }}
+                  />
+                </div>
+              ))}
+            </div>
             ) : (
               <div className="px-2 bg-white">
                 <div className="flex justify-between py-2">
