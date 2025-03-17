@@ -111,7 +111,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                 <div
                   key={index}
                   onClick={() => handleMenuClick(index)}
-                  className={`flex items-center gap-2 px-2 rounded-lg text-md  py-2 cursor-pointer ${
+                  className={`flex items-center gap-2 px-2 rounded-lg text-md py-2 cursor-pointer ${
                     current === item.option
                       ? "text-[#129BFF] font-bold bg-[#ECF7FF]"
                       : "text-[#8D9DA7] font-semibold"
@@ -123,9 +123,9 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                         current === item.option ? "bg-[#129BFF]" : ""
                       }`}
                     ></div>
-                    <i className={item.icon}></i>
+                    <i className={`${item.icon} flex items-center justify-center`}></i>
                   </div>
-                  <span>{item.option}</span>
+                  <span className="truncate">{item.option}</span>
                 </div>
               ))}
             </div>

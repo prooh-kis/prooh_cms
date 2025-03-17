@@ -322,6 +322,14 @@ export const CampaignDetailsPage: React.FC = () => {
     return colors[index];
   }
 
+  const getAllCreatives = (campaigns: any) => {
+    return {
+      standardDayTimeCreatives: campaigns?.flatMap((item: any) => item.standardDayTimeCreatives || []),
+      standardNightTimeCreatives: campaigns?.flatMap((item: any) => item.standardNightTimeCreatives || []),
+      triggerCreatives: campaigns?.flatMap((item: any) => item.triggerCreatives || []),
+    };
+  };
+
   return (
     <div className="w-full grid grid-cols-12 gap-1">
       {openCreativeEndDateChangePopup && (
@@ -537,37 +545,34 @@ export const CampaignDetailsPage: React.FC = () => {
                 tabData={creativeTypeTab}
               />
             </div>
-            <div className="h-[40vh] overflow-y-auto no-scrollbar pr-2">
-              {campaignCreated?.creatives?.map((c: any, i: any) => (
-                <div key={i}>
-                  {c?.[currentTab]?.length > 0 && (
-                    <div className="py-4">
-                      <div className="grid grid-cols-3 gap-1 ">
-                        {c?.[currentTab]?.map((cs: any, j: any) => (
-                          <div className="col-span-1 " key={j}>
-                            <ShowMediaFile
-                              url={cs.url}
-                              mediaType={cs.type.split("/")[0]}
-                            />
-
-                            <Tooltip
-                              title={`${
+            <div className="h-[40vh] w-full overflow-y-auto no-scrollbar pr-2">
+              {Object.entries(getAllCreatives(campaignCreated?.campaigns?.map((c: any) => c.creatives)))?.map(([key, entry]: any) => (
+                <div key={key} className="py-4 w-full">
+                  {key === currentTab && (
+                    <div className="flex items-center justify-start gap-8 w-full flex-wrap">
+                      {entry?.map((cs: any, j: any) => (
+                        <div className="" key={j}>
+                          <ShowMediaFile
+                            url={cs.url}
+                            mediaType={cs.type.split("/")[0]}
+                          />
+                          <Tooltip
+                            title={`${
+                              cs.url?.split("_")[
+                                cs.url?.split("_")?.length - 1
+                              ]
+                            }`}
+                          >
+                            <h1 className="text-[12px] text-gray-500 truncate">
+                              {
                                 cs.url?.split("_")[
                                   cs.url?.split("_")?.length - 1
                                 ]
-                              }`}
-                            >
-                              <h1 className="text-[12px] text-gray-500 truncate">
-                                {
-                                  cs.url?.split("_")[
-                                    cs.url?.split("_")?.length - 1
-                                  ]
-                                }
-                              </h1>
-                            </Tooltip>
-                          </div>
-                        ))}
-                      </div>
+                              }
+                            </h1>
+                          </Tooltip>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

@@ -392,15 +392,15 @@ async (dispatch, getState) => {
 };
 
 export const changeCampaignStatusAfterVendorApproval =
-({ ids }) =>
+({ approvedIds, disapprovedIds }) =>
 async (dispatch, getState) => {
   dispatch({
     type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
-    payload: { ids },
+    payload: { approvedIds, disapprovedIds },
   });
   try {
     const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, {
-      ids,
+      approvedIds, disapprovedIds
     });
     dispatch({
       type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,

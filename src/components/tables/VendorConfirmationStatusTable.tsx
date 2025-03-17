@@ -19,18 +19,30 @@ export const VendorConfirmationStatusTable = ({
     screenId: "",
     creatives: [],
   });
+  const [allCampaignsIds, setAllCampaignsIds] = useState<any>([]);
 
   const handleRowCheckboxChange = (e: boolean, campaignId: string) => {
     let updatedIds = [...selectedCampaignIds];
     if (e) {
+      if (!updatedIds.includes(campaignId)) {
+        updatedIds = [...selectedCampaignIds, campaignId];
+      }
       // Add campaignId if row checkbox is checked
-      updatedIds = [...selectedCampaignIds, campaignId];
     } else {
       // Remove campaignId if row checkbox is unchecked
-      updatedIds = updatedIds.filter((id) => id !== campaignId);
+      if (updatedIds.includes(campaignId)) {
+        updatedIds = updatedIds.filter((id) => id !== campaignId);
+      }
     }
     setSelectedCampaignIds(updatedIds); // Update the state with the new selection
   };
+
+  const handleHeaderRowCheckBoxChange = (e: boolean) => {
+    for ( const campaign of campaignsList ){
+      if ( campaign?.campaignCreationId === statusTableData?._id )
+      handleRowCheckboxChange(e, campaign._id.toString())
+    }
+  }
 
   useEffect(() => {
     var campaignIds : any = []
@@ -41,6 +53,9 @@ export const VendorConfirmationStatusTable = ({
     setSelectedCampaignIds(campaignIds);
   }, [setSelectedCampaignIds, statusTableData, campaignsList]);
 
+  // console.log(selectedCampaignIds)
+  // console.log(statusTableData?.screenWiseSlotDetails?.map((s: any) => s.screenId));
+  // console.log(campaignsList?.filter((c: any) => statusTableData?.screenWiseSlotDetails?.map((s: any) => s._id).includes(c.campaignCreationId)));
   return (
     <div className="w-full h-[60vh] overflow-scroll no-scrollbar p-2">
       <ShowMediaPopup
@@ -61,6 +76,20 @@ export const VendorConfirmationStatusTable = ({
       <table className="w-full ">
         <thead className="bg-[#EBF6FF]">
           <tr>
+            <th>
+              <div className="flex items-center justify-center gap-1">
+                <CheckboxInput
+                  label=""
+                  textSize="12px"
+                  color="#129BFF"
+                  onChange={(e) => handleHeaderRowCheckBoxChange(e)}
+                  checked={selectedCampaignIds?.length === statusTableData?.screenWiseSlotDetails?.filter((screen: any) => {
+                    return statusTableData?.screenIds.includes(screen.screenId)
+                  })?.length ? true : false}
+                  // disabled={loading}
+                />
+              </div>
+            </th>
             <th className="py-2 px-1">
               <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                 Sl No.
@@ -116,6 +145,23 @@ export const VendorConfirmationStatusTable = ({
           })
             ?.map((status: any, i: number) => (
               <tr key={i} className="border-b hover:bg-gray-200">
+                <td>
+                  <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
+                    <CheckboxInput
+                      label=""
+                      textSize="12px"
+                      color="#129BFF"
+                      onChange={(e) => {
+                        handleRowCheckboxChange(e, campaignsList?.filter((c: any) => c.campaignCreationId == statusTableData._id && c.screenId == status.screenId)[0]._id);
+                      }}
+                      checked={
+                        selectedCampaignIds?.includes(campaignsList?.filter((c: any) => c.campaignCreationId == statusTableData._id && c.screenId == status.screenId)[0]._id)
+                          ? true
+                          : false
+                      }
+                    />
+                  </div>
+                </td>
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                     {i+1}
@@ -178,7 +224,7 @@ export const VendorConfirmationStatusTable = ({
                       ? "Final Rejected"
                       : status.campaignStatus === "Pending"
                       ? "Approved"
-                      : "Approved"}
+                      : "Pending"}
                   </div>
                 </td>
               </tr>

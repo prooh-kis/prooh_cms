@@ -73,6 +73,12 @@ export const CampaignsListModel = ({ data, index }: any) => {
             : {getCampaignEndingStatus(data?.endDate)}
           </h1>
         </div>
+        <div className="flex gap-1 items-center justify-start">
+          <i className="fi fi-sr-member-list text-[#52A2FF] text-[12px] flex items-center"></i>
+          <h1 className="text-[12px] text-[#52A2FF]">
+            : {data.campaignPlannerName}
+          </h1>
+        </div>
       </div>
     </div>
   );

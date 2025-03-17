@@ -6,32 +6,12 @@ import { changeCampaignStatusAfterVendorApproval } from "../../actions/campaignA
 import { message } from "antd";
 import { MyRequestsListTable, VendorConfirmationBasicTable, VendorConfirmationStatusTable } from "../../components/tables";
 
-const allTabs = [
-  {
-    id: "1",
-    label: "All",
-  },
-  {
-    id: "2",
-    label: "Approved",
-  },
-  {
-    id: "3",
-    label: "Pending",
-  },
-  {
-    id: "4",
-    label: "Rejected",
-  },
-];
-
 export const VendorsRequestsList = ({
   requestsList,
   userInfo,
   campaignsList,
 }: any) => {
   const dispatch = useDispatch<any>();
-  const [currentTab, setCurrentTab] = useState<any>("1");
   const [showDetails, setShowDetails] = useState<any>({
     show: false,
     data: {},
@@ -120,6 +100,8 @@ export const VendorsRequestsList = ({
                 </div>
                 <div className="flex gap-4 pr-2">
                   <button
+                    title="approve"
+                    type="submit"
                     disabled={loadingVendorApprovalStatus}
                     className={`${
                       loadingVendorApprovalStatus
@@ -129,15 +111,26 @@ export const VendorsRequestsList = ({
                     onClick={() => {
                       dispatch(
                         changeCampaignStatusAfterVendorApproval({
-                          ids: selectedCampaignIds,
+                          approvedIds: selectedCampaignIds,
+                          disapprovedIds: campaignsList.map((campaign: any) => campaign._id)?.filter((id: any) => !selectedCampaignIds.includes(id))
                         })
                       );
                     }}
                   >
                     Approve Campaign
                   </button>
-                  <button disabled className="bg-gray-300 text-[#FFFFFF] font-custom rounded-[9px] text-[14px] sm:text-[16px] font-bold hover:bg-[#129BFF90] hover:text-[#FFFFFF] w-[163px] h-[40px]">
-                    Reset
+                  <button title="reject" type="submit" className="bg-gray-300 text-[#FFFFFF] font-custom rounded-[9px] text-[14px] sm:text-[16px] font-bold hover:bg-[#129BFF90] hover:text-[#FFFFFF] w-[163px] h-[40px]"
+                    disabled={loadingVendorApprovalStatus}
+                    onClick={() => {
+                      dispatch(
+                        changeCampaignStatusAfterVendorApproval({
+                          approvedIds: campaignsList.map((campaign: any) => campaign._id)?.filter((id: any) => !selectedCampaignIds.includes(id))                          ,
+                          disapprovedIds: selectedCampaignIds
+                        })
+                      );
+                    }}
+                  >
+                    Reject Campaign
                   </button>
                 </div>
               </div>

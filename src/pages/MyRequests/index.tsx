@@ -107,7 +107,7 @@ export const MyRequests = (props: any) => {
   );
   return (
     <div className="w-full h-full">
-      <div className="flex flex-row justify-between border rounded p-4 w-full bg-white">
+      <div className="flex flex-row justify-between rounded p-4 w-full bg-white">
         <h1 className="text-[16px] font-semibold">My Requests</h1>
         <div className="flex items-center w-80">
           <SearchInputField
