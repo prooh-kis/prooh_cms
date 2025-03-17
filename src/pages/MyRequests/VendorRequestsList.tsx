@@ -93,7 +93,7 @@ export const VendorsRequestsList = ({
             <div className="px-2 bg-white">
               <div className="flex justify-between py-2">
                 <div className="px-2">
-                  <h1 className="font-semibold">Requeset Details</h1>
+                  <h1 className="font-semibold">Request Details</h1>
                 </div>
                 <div
                   className="flex items-center pr-2"
