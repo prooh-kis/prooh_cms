@@ -117,12 +117,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                       : "text-[#8D9DA7] font-semibold"
                   }`}
                 >
-                  <div className="flex items-center gap-6">
-                    <div
-                      className={`h-6 w-[3px] ${
-                        current === item.option ? "bg-[#129BFF]" : ""
-                      }`}
-                    ></div>
+                  <div className={`flex items-center`}>
                     <i className={`${item.icon} flex items-center justify-center`}></i>
                   </div>
                   <span className="truncate">{item.option}</span>

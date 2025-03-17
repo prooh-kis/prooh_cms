@@ -40,7 +40,7 @@ export const VendorConfirmationStatusTable = ({
   const handleHeaderRowCheckBoxChange = (e: boolean) => {
     for ( const campaign of campaignsList ){
       if ( campaign?.campaignCreationId === statusTableData?._id )
-      handleRowCheckboxChange(e, campaign._id.toString())
+      handleRowCheckboxChange(e, campaign?._id.toString())
     }
   }
 
@@ -48,7 +48,7 @@ export const VendorConfirmationStatusTable = ({
     var campaignIds : any = []
     for ( const campaign of campaignsList ){
       if ( campaign?.campaignCreationId === statusTableData?._id )
-        campaignIds.push(campaign._id.toString())
+        campaignIds.push(campaign?._id.toString())
     }
     setSelectedCampaignIds(campaignIds);
   }, [setSelectedCampaignIds, statusTableData, campaignsList]);
@@ -152,10 +152,10 @@ export const VendorConfirmationStatusTable = ({
                       textSize="12px"
                       color="#129BFF"
                       onChange={(e) => {
-                        handleRowCheckboxChange(e, campaignsList?.filter((c: any) => c.campaignCreationId == statusTableData._id && c.screenId == status.screenId)[0]._id);
+                        handleRowCheckboxChange(e, campaignsList?.filter((c: any) => c.campaignCreationId == statusTableData?._id && c.screenId == status.screenId)[0]?._id);
                       }}
                       checked={
-                        selectedCampaignIds?.includes(campaignsList?.filter((c: any) => c.campaignCreationId == statusTableData._id && c.screenId == status.screenId)[0]._id)
+                        selectedCampaignIds?.includes(campaignsList?.filter((c: any) => c.campaignCreationId == statusTableData?._id && c.screenId == status.screenId)[0]?._id)
                           ? true
                           : false
                       }
