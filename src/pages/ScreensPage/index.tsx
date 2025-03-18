@@ -71,7 +71,7 @@ export const ScreensPage: React.FC = () => {
           selectedScreensViaNetwork.includes(screen?._id)
         )
       : allScreens?.filter((screen: any) =>
-        screen.screenName.toLowerCase().includes(searchText?.toLowerCase())
+        screen.screenName.toUpperCase().includes(searchText?.toUpperCase())
       );
 
   const handleSaveDataOnLocalStorage = () => {

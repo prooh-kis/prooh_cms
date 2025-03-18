@@ -200,7 +200,7 @@ export const UploadCreativesTable = ({
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
                     {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
-                      ?.[campaignId]?.creatives?.filter(
+                      ?.[campaignId]?.creatives?.filter((c: any) => c.screenResolution === s.ratio)?.filter(
                         (rb: any) => rb.screenResolution === s.resolution
                       )
                       ?.map((r: any) => r.standardDayTimeCreatives)[0]?.length >
@@ -214,7 +214,7 @@ export const UploadCreativesTable = ({
                     className="flex items-center justify-center gap-1 truncate text-[12px]"
                     onClick={() =>
                       getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
-                        ?.[campaignId]?.creatives.flatMap(
+                        ?.[campaignId]?.creatives?.filter((c: any) => c.screenResolution === s.ratio).flatMap(
                           (r: any) => r.screenIds
                         )
                         ?.includes(s.id) && setOpenShowMedia(s)
@@ -223,7 +223,7 @@ export const UploadCreativesTable = ({
                     <h1
                       className={
                         getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
-                          ?.[campaignId]?.creatives.flatMap(
+                          ?.[campaignId]?.creatives?.filter((c: any) => c.screenResolution === s.ratio).flatMap(
                             (r: any) => r.screenIds
                           )
                           ?.includes(s.id)
@@ -232,7 +232,7 @@ export const UploadCreativesTable = ({
                       }
                     >
                       {getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)
-                        ?.[campaignId]?.creatives.flatMap(
+                        ?.[campaignId]?.creatives?.filter((c: any) => c.screenResolution === s.ratio).flatMap(
                           (r: any) => r.screenIds
                         )
                         ?.includes(s.id) ? (

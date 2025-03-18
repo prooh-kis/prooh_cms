@@ -108,12 +108,12 @@ export const CampaignsPage: React.FC = () => {
                     (campaign: any) =>
                       campaign?.campaignName
                         ?.toLowerCase()
-                        .includes(searchQuery) ||
-                      campaign?.brandName?.toLowerCase().includes(searchQuery) ||
+                        .includes(searchQuery.toLowerCase()) ||
+                      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                       campaign?.campaignName
                         ?.toUpperCase()
-                        .includes(searchQuery) ||
-                      campaign?.brandName?.toUpperCase().includes(searchQuery)
+                        .includes(searchQuery.toLowerCase()) ||
+                      campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
                   )?.length
                 }
                 )
@@ -156,8 +156,10 @@ export const CampaignsPage: React.FC = () => {
             {allCampaigns
               ?.filter(
                 (campaign: any) =>
-                  campaign?.campaignName?.toLowerCase().includes(searchQuery) ||
-                  campaign?.brandName?.toLowerCase().includes(searchQuery)
+                  campaign?.campaignName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  campaign?.campaignName?.toUpperCase().includes(searchQuery.toUpperCase()) ||
+                  campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
               )
               ?.map((data: any, index: any) => (
                 <div key={index} className="h-auto">

@@ -140,6 +140,7 @@ export const UploadCreatives = ({
       const campaignCreationStatus = getDataFromLocalStorage(
         CAMPAIGN_CREATION_STATUS
       );
+
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           pageName: "Upload Creatives",
@@ -204,7 +205,7 @@ export const UploadCreatives = ({
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
     //
-  }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
+  }, [dispatch, campaignId, clearCreatives, userInfo, successCampaignsCreations, successCampaignsEdit, navigate]);
 
   useEffect(() => {
     dispatch(getScreenDataUploadCreativeAction({ id: campaignId , event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS }));
