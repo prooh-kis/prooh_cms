@@ -212,7 +212,9 @@ export const ScreensPage: React.FC = () => {
               <h1>Network</h1>
             </div>
             {loadingNetworkList ? (
-              <Loading />
+              <div className="h-full">
+                <Loading />
+              </div>
             ) : (
               <div className="mt-1 h-[70vh] overflow-y-auto no-scrollbar">
                 {Object.keys(networks)?.map((network: string) => (
@@ -248,16 +250,20 @@ export const ScreensPage: React.FC = () => {
           ref={targetDivRef}
         >
           {loading ? (
-            <Loading />
+            <div className="">
+              <Loading />
+            </div>
           ) : (
             filterScreens?.map((data: any, index: any) => (
-              <ScreenListThumbnail
-                isSelected={data._id === selectedCard}
-                color={""}
-                handleCardClick={() => handleCardClick(data._id)}
-                data={data}
-                key={index}
-              />
+              <div key={index}>
+                <ScreenListThumbnail
+                  isSelected={data._id === selectedCard}
+                  color={""}
+                  handleCardClick={() => handleCardClick(data._id)}
+                  data={data}
+                  key={index}
+                />
+              </div>
             ))
           )}
         </div>

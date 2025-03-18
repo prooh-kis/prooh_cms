@@ -3,7 +3,6 @@ import { SIGN_IN } from "../../routes/routes";
 import {
   SCREEN_ADMIN,
   SCREEN_OWNER,
-  USER_DELETE_RESET,
   USERS_GET_CMS,
 } from "../../constants/userConstants";
 import { useSelector, useDispatch } from "react-redux";

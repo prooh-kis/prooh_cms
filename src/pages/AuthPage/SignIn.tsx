@@ -128,7 +128,7 @@ export const SignIn: React.FC = () => {
             <Form.Item style={{ marginBottom: "0", paddingTop: "20px" }}>
               <div className="pt-2 flex flex-col gap-4">
                 <button
-                  className="w-full bg-[#129BFF] text-[#ffffff] text-xl py-2 "
+                  className="w-full bg-[#129BFF] rounded text-[#ffffff] text-xl py-2 "
                   type={"submit"}
                 >
                   {loading ? "Please wait..." : "Sign In"}
@@ -140,7 +140,7 @@ export const SignIn: React.FC = () => {
                   </h1>
                   <h1
                     className="items-center text-sm text-[#129BFF] underline underline-offset-2  font-bold text-[#555555]"
-                    onClick={() => navigate(SIGN_UP)}
+                    // onClick={() => navigate(SIGN_UP)}
                   >
                     Register Now
                   </h1>

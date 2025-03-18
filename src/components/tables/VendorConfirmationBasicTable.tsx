@@ -25,9 +25,14 @@ export const VendorConfirmationBasicTable = ({
             <div className="border py-1 px-4">
               <h1 className="text-[14px]">
                 &#8377;
-                {formatNumber(
+                {
+                  formatNumber(Number(vendorConfirmationData.screenWiseSlotDetails?.map((d: any) => {
+                    return d.pricePerSlot * d.slotsPerDay * vendorConfirmationData?.duration
+                  })?.reduce((acc: any, val: any) => acc + val, 0)).toFixed(0))
+                }
+                {/* {formatNumber(
                   Number(vendorConfirmationData?.totalCampaignBudget)
-                )}
+                )} */}
               </h1>
             </div>
           </div>
