@@ -64,10 +64,10 @@ export const VendorConfirmationBasicTable = ({
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Plan No.</h1>
+              <h1 className="text-[14px]">Planner Name</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">24/10/12-332-04</h1>
+              <h1 className="text-[14px]">{vendorConfirmationData?.campaignPlannerName == "vinciis" ? "test user" : vendorConfirmationData?.campaignPlannerName?.toUpperCase()}</h1>
             </div>
           </div>
         </div>

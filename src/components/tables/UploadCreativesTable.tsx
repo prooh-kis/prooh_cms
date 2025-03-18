@@ -130,7 +130,7 @@ export const UploadCreativesTable = ({
         <tbody>
           {screens
             ?.filter((screen: any) =>
-              screen.ratio?.toLowerCase().includes(searchQuery?.toLowerCase())
+              screen.ratio.toLowerCase().includes(searchQuery.toLowerCase()) || screen.ratio.toUpperCase().includes(searchQuery.toUpperCase()) || screen.screenName.toUpperCase().includes(searchQuery.toUpperCase()) || screen.screenName.toLowerCase().includes(searchQuery.toLowerCase())
             )
             ?.map((s: any, i: number) => (
               <tr key={i} className="border-b hover:bg-gray-200">

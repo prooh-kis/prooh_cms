@@ -141,11 +141,11 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
             <div className="py-12 flex justify-between truncate">
               <div
                 onClick={handleSignOut}
-                className={`flex truncate ${!showFull ? "border border-red-200" : "border border-red-200"} justify-start items-center gap-2 py-2 px-4 rounded cursor-pointer ${
+                className={`flex truncate ${!showFull ? "border border-red-200" : "border border-red-200"} justify-start items-center gap-2 py-2 rounded cursor-pointer ${
                   current === "Log Out"
                     ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
                     : "text-[#8D9DA7] font-semibold"
-                }`}
+                } px-4`}
               >
                 <div className={`flex items-center`}>
                   <i className="fi fi-br-power flex items-center justify-center"></i>
@@ -154,15 +154,15 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                   <h1 className="px-2 truncate">Log out</h1>
                 )}
               </div>
-              <div className="flex items-center px-1"
-                onClick={() => {
-                  setShowFull(!showFull);
-                }}
-              >
-                {showFull && (
-                  <i className="fi fi-rr-arrow-left-from-line text-gray-500 flex items-center justify-center"></i>
-                )}
-              </div>
+              {showFull && (
+                <div className="flex items-center px-1"
+                  onClick={() => {
+                    setShowFull(!showFull);
+                  }}
+                >
+                    <i className="fi fi-rr-arrow-left-from-line text-gray-500 flex items-center justify-center"></i>
+                </div>
+              )}
             </div>
           </div>
         </div>

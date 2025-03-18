@@ -177,7 +177,6 @@ export const EnterCampaignBasicDetails = ({
       dispatch(
         addClientAgencyDetails({ clientAgencyName: value?.toUpperCase() })
       );
-      console.log("calling to save new client name");
     }
   };
 

@@ -54,6 +54,10 @@ export const Menu = (props: any) => {
             label: "Monitoring",
             path: "/screen-campaign-monitoring",
           },
+          {
+            label: "Requests",
+            path: "/my-requests",
+          },
         ];
 
   return (

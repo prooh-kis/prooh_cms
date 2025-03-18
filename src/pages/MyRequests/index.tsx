@@ -120,7 +120,9 @@ export const MyRequests = (props: any) => {
 
       <div className="flex gap-1">
         {loadingVendorRequestsList ? (
-          <Loading />
+          <div className="">
+            <Loading />
+          </div>
         ) : vendorRequestsList ? (
           <div className="h-[80vh] w-full overflow-y-auto scrollbar-minimal mr-2">
             {!showDetails.show ? (
