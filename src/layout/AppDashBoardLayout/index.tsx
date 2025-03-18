@@ -104,7 +104,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       <Header />
       <div className="flex gap-1 h-full">
         {/* Sidebar */}
-        <div className={`h-auto min-w-[5vw] ${showFull ? "w-[15vw]" : "w-[5vw]"} mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}>
+        <div className={`h-[92vh] min-w-[5vw] ${showFull ? "w-[15vw]" : "w-[5vw]"} mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}>
           <div className="flex flex-col justify-between h-full pt-2 px-2">
             {/* Menu Items */}
             <div className="space-y-4">

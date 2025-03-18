@@ -194,9 +194,9 @@ export const ScreensPage: React.FC = () => {
         </div>
       </div>
       
-      <div className="flex gap-1">
+      <div className="flex gap-1 mb-1">
         {(userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER) && (
-          <div className="w-[17vw] bg-white rounded-[4px] p-4 ">
+          <div className="w-[17vw] h-[85vh] bg-white rounded-[4px] p-4 ">
             <div className="flex justify-between items-center border-b pb-4">
               <h1 className="text-[#151515] text-[16px] font-semibold">
                 Filter

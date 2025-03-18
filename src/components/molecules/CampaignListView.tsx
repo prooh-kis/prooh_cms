@@ -32,7 +32,7 @@ export const CampaignListView = ({
       onClick={handleCardClick}
       onDoubleClick={onDoubleClick}
       className={clsx(
-        "rounded w-full h-auto my-1 p-4 flex items-center transition-colors cursor-pointer bg-white",
+        "rounded w-full h-auto mt-1 p-4 flex items-center transition-colors cursor-pointer bg-white",
         {
           [`hover:border-primaryButton hover:shadow-lg`]: !isSelected, // Apply hover color if not clicked
           [`border-primaryButton`]: isSelected, // Apply border color if clicked

@@ -163,7 +163,7 @@ export const MyCreativesPage: React.FC = () => {
               {loadingCreatives ? (
                 <Loading />
               ) : (
-                <div className="h-[70vh] overflow-y-auto scrollbar-minimal  ">
+                <div className="h-[73vh] overflow-y-auto scrollbar-minimal  ">
                   {creatives &&
                     Object.keys(creatives)
                       ?.filter((brand: string) =>
