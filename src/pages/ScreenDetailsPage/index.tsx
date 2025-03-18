@@ -770,7 +770,7 @@ export const ScreenDetailsPage: React.FC = () => {
               </div>
             </div>
           {loadingCampaigns ? (
-            <div className="">
+            <div className="col-span-4 border rounded">
               <Loading />
             </div>
           ) : campaigns && selectedCampaign ? (
