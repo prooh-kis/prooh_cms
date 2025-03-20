@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { SIGN_IN } from "../../routes/routes";
 import {
+  CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS,
   CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS,
   SCREEN_ADMIN,
   SCREEN_OWNER,
@@ -198,6 +199,7 @@ export const MyRequests = (props: any) => {
                         dispatch(
                           changeCampaignStatusAfterVendorApproval({
                             approvedIds: selectedCampaignIds,
+                            event : CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS,
                             disapprovedIds: vendorRequestsList?.campaigns.filter((camp: any) => camp.campaignCreationId === showDetails?.data._id && !selectedCampaignIds.includes(camp._id))?.map((campaign: any) => campaign?._id)
                           })
                         );
@@ -211,6 +213,7 @@ export const MyRequests = (props: any) => {
                         dispatch(
                           changeCampaignStatusAfterVendorApproval({
                             approvedIds: [],
+                            event : CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS,
                             disapprovedIds: selectedCampaignIds
                           })
                         );
