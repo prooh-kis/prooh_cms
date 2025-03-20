@@ -2,8 +2,8 @@ import {
   convertDataTimeToLocale,
   getCampaignEndingStatus,
 } from "../../utils/dateAndTimeUtils";
-import { generateColorFromAlphabet } from "../../utils/colorUtils";
 import clsx from "clsx";
+import { formatNumber } from "../../utils/formatValue";
 
 export const CampaignsListModel = ({ data, index }: any) => {
   const getBgColors = (index: any) => {
@@ -42,10 +42,16 @@ export const CampaignsListModel = ({ data, index }: any) => {
             </div>
           </div>
           <h1 className="text-[14px] text-[#276F41] font-semibold">
-            &#8377;{data?.totalCampaignBudget?.toFixed(0)}
+            &#8377;
+            {/* {data?.totalCampaignBudget?.toFixed(0)} */}
+            {
+              formatNumber(Number(data.screenWiseSlotDetails?.map((d: any) => {
+                return d.pricePerSlot * d.slotsPerDay * data?.duration
+              })?.reduce((acc: any, val: any) => acc + val, 0)).toFixed(0))
+            }
           </h1>
           <h1 className="text-[12px] text-[#276F41] font-semibold">
-            On {data?.screenIds?.length} Screens
+            On {data?.screenWiseSlotDetails?.length} Screens
           </h1>
 
           {/* <div className="flex items-center mt-1">
@@ -71,6 +77,12 @@ export const CampaignsListModel = ({ data, index }: any) => {
           <i className="fi fi-sr-pending text-[#06B6D4] text-[12px] flex items-center"></i>
           <h1 className="text-[12px] text-[#06B6D4]">
             : {getCampaignEndingStatus(data?.endDate)}
+          </h1>
+        </div>
+        <div className="flex gap-1 items-center justify-start">
+          <i className="fi fi-sr-member-list text-[#52A2FF] text-[12px] flex items-center"></i>
+          <h1 className="text-[12px] text-[#52A2FF]">
+            : {data.campaignPlannerName === "vinciis" ? "test user" : data.campaignPlannerName}
           </h1>
         </div>
       </div>

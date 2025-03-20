@@ -11,7 +11,6 @@ export const SearchableSelect: React.FC<{
   placeholder: string;
   value: string;
 }> = ({ options, onChange, placeholder, value }) => {
-  console.log("value", value)
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>(value || "");
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);

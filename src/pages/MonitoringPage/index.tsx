@@ -156,7 +156,7 @@ export const MonitoringPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-full">
       <UploadMonitoringPicturesPopup
         openUploadPopup={openUploadPopup}
         mediaFiles={mediaFiles}
@@ -189,7 +189,7 @@ export const MonitoringPage: React.FC = () => {
           <h1 className="text-[16px] font-semibold">Campaign Monitoring</h1>
         </div>
         <div className="grid grid-cols-12 gap-1 mt-1">
-          <div className="col-span-3 bg-white">
+          <div className="col-span-3 bg-white h-[85vh]">
             <div className="w-full px-4">
               <h1 className="text-[16px] font-semibold py-4 border-b">
                 Screen List
@@ -206,7 +206,7 @@ export const MonitoringPage: React.FC = () => {
             {loading ? (
               <Loading />
             ) : (
-              <div className="p-1 overflow-y-auto scrollbar-minimal h-[75vh] bg-white">
+              <div className="p-1 overflow-y-auto scrollbar-minimal h-[70vh] bg-white">
                 {getDataFromLocalStorage(ALL_SCREENS_LIST)
                   ?.list?.filter((screen: any) =>
                     screen?.screenName
@@ -233,7 +233,7 @@ export const MonitoringPage: React.FC = () => {
             )}
           </div>
 
-          <div className="col-span-3 bg-white">
+          <div className="col-span-3 bg-white h-[85vh]">
             <div className="w-full px-4">
               <h1 className="text-[16px] font-semibold py-4 border-b">
                 Brand List
@@ -250,7 +250,7 @@ export const MonitoringPage: React.FC = () => {
             {loadingCampaigns ? (
               <Loading />
             ) : (
-              <div className="p-1 overflow-y-auto scrollbar-minimal h-[75vh] bg-white">
+              <div className="p-1 overflow-y-auto scrollbar-minimal h-[70vh] bg-white">
                 {campaigns ? (
                   campaigns
                     ?.filter((campaign: any) =>
@@ -284,7 +284,7 @@ export const MonitoringPage: React.FC = () => {
             )}
           </div>
           {monitoringScreen && monitoringCampaign && (
-            <div className="col-span-6 bg-white">
+            <div className="col-span-6 bg-white h-[85vh]">
               <div className="flex justify-between items-center border-b">
                 <div className="p-4 flex items-end gap-1">
                   <h1 className="text-[16px] font-semibold">
@@ -317,7 +317,7 @@ export const MonitoringPage: React.FC = () => {
                 />
               </div>
 
-              <div className="h-auto px-4 py-2">
+              <div className="px-4 py-4 h-[70vh] overflow-scroll no-scrollbar">
                 {time?.map((t: any, i: any) => (
                   <div className="w-full mt-4" key={i}>
                     <MonitoringPictures

@@ -96,7 +96,7 @@ export const CampaignsPage: React.FC = () => {
   }, [currentTab, handleGetCampaignByStatus]);
   return (
     <div className="w-full">
-      <div className="bg-white w-auto rounded-[4px] mr-2">
+      <div className="bg-white w-auto rounded-[4px]">
         <div className="flex justify-between pr-8 border-b">
           <div className="flex gap-4 items-center p-4 ">
             <h1 className="text-[16px] font-semibold">
@@ -108,12 +108,12 @@ export const CampaignsPage: React.FC = () => {
                     (campaign: any) =>
                       campaign?.campaignName
                         ?.toLowerCase()
-                        .includes(searchQuery) ||
-                      campaign?.brandName?.toLowerCase().includes(searchQuery) ||
+                        .includes(searchQuery.toLowerCase()) ||
+                      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                       campaign?.campaignName
                         ?.toUpperCase()
-                        .includes(searchQuery) ||
-                      campaign?.brandName?.toUpperCase().includes(searchQuery)
+                        .includes(searchQuery.toLowerCase()) ||
+                      campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
                   )?.length
                 }
                 )
@@ -156,8 +156,10 @@ export const CampaignsPage: React.FC = () => {
             {allCampaigns
               ?.filter(
                 (campaign: any) =>
-                  campaign?.campaignName?.toLowerCase().includes(searchQuery) ||
-                  campaign?.brandName?.toLowerCase().includes(searchQuery)
+                  campaign?.campaignName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  campaign?.campaignName?.toUpperCase().includes(searchQuery.toUpperCase()) ||
+                  campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
               )
               ?.map((data: any, index: any) => (
                 <div key={index} className="h-auto">

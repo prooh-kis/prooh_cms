@@ -15,21 +15,26 @@ export function ShowMediaFile(props: any) {
     }
   }, [url, mediaType])
   return (
-    <div className={`border rounded relative flex justify-center items-center ${height ? height : "h-32"} ${width ? width : "w-60"}`}>
+    <div className={`rounded flex justify-center items-center ${height ? height : "h-32"} ${width ? width : "w-60"}`}>
       {mediaType === "video" ? (
-        <div className="relative h-full w-full">
+        <div className="h-full w-full">
           <video ref={videoRef} className="h-full w-full rounded" controls>
             <source src={mediaUrl}></source>
           </video>
         </div>
       ) : mediaType === "image" ? (
-        <img src={mediaUrl} alt="Campaign Image" className="rounded h-full w-full" />
+        <div className="h-full w-full">
+          <img src={mediaUrl} alt="Campaign Image" className="rounded h-full w-full" />
+        </div>
       ) : (
-        <iframe
-          className="h-full w-full rounded"
-          src={mediaUrl}
-          title="description"
-        ></iframe>
+        <div className="relative h-full w-full">
+          <iframe
+            className="h-full w-full rounded"
+            src={mediaUrl}
+            title="description"
+          ></iframe>
+        </div>
+        
       )}
     </div>
   );

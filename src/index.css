@@ -28,6 +28,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: 0.01px;
 }
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

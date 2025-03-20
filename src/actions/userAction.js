@@ -30,6 +30,9 @@ import {
   USER_ADD_NEW_USER_REQUEST,
   USER_ADD_NEW_USER_SUCCESS,
   USER_ADD_NEW_USER_FAIL,
+  USER_UPDATE_PASSWORD_REQUEST,
+  USER_UPDATE_PASSWORD_SUCCESS,
+  USER_UPDATE_PASSWORD_FAIL,
 } from "../constants/userConstants";
 import store from "../store";
 import { login, logout } from "../store/authSlice";

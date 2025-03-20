@@ -140,6 +140,7 @@ export const UploadCreatives = ({
       const campaignCreationStatus = getDataFromLocalStorage(
         CAMPAIGN_CREATION_STATUS
       );
+
       dispatch(
         createCampaignCreationByScreenOwnerAction({
           pageName: "Upload Creatives",
@@ -204,7 +205,7 @@ export const UploadCreatives = ({
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
     //
-  }, [dispatch, successCampaignsCreations, successCampaignsEdit, navigate]);
+  }, [dispatch, campaignId, clearCreatives, userInfo, successCampaignsCreations, successCampaignsEdit, navigate]);
 
   useEffect(() => {
     dispatch(getScreenDataUploadCreativeAction({ id: campaignId , event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS }));
@@ -365,39 +366,6 @@ export const UploadCreatives = ({
       </div>
 
       <div className="grid grid-cols-12 gap-1 p-4 bg-white mt-1 rounded-lg">
-        {/* <div className="col-span-2 border rounded-[12px] p-2">
-          <div className="flex justify-between items-center border-b py-1">
-            <h1 className="text text-[12px] font-semibold">Filter</h1>
-            <p className="text text-[10px] text-[#7C8E9B]">Clear All</p>
-          </div>
-          <div className="py-2">
-            <div className="flex items-center gap-1">
-              <h1 className="text text-[12px]">Network</h1>
-              <i className="fi fi-sr-angle-small-up text-[#7C8E9B] flex items-center"></i>
-            </div>
-            <div className="py-2">
-              <CheckboxInput label={`M3M (23)`} textSize="12px" />
-            </div>
-          </div>
-          <div className="py-2">
-            <div className="flex items-center gap-1">
-              <h1 className="text text-[12px]">Aspect Ratio</h1>
-              <i className="fi fi-sr-angle-small-up text-[#7C8E9B] flex items-center"></i>
-            </div>
-            <div className="py-2">
-              <CheckboxInput label={`16:9 (23)`} textSize="12px" />
-            </div>
-          </div>
-          <div className="py-2">
-            <div className="flex items-center gap-1">
-              <h1 className="text text-[12px]">Resolution</h1>
-              <i className="fi fi-sr-angle-small-up text-[#7C8E9B] flex items-center"></i>
-            </div>
-            <div className="py-2">
-              <CheckboxInput label={`1280 x 768 (23)`} textSize="12px" />
-            </div>
-          </div>
-        </div> */}
         <div className="col-span-12 rounded-[12px]">
           <div className="flex justify-between items-center border-b py-1">
             <div className="py-2 px-4 w-96">

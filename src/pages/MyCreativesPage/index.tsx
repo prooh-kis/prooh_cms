@@ -68,7 +68,7 @@ export const MyCreativesPage: React.FC = () => {
             ?.map((resolution: any, j: any) => (
               <div key={j} className="py-2">
                 <h1 className="text-[10px] py-1">Resolution: {resolution}</h1>
-                <div className="grid grid-cols-3 gap-1">
+                <div className="flex items-center justify-start gap-8 w-full flex-wrap">
                   {creativesMedia?.[contentType]?.[resolution]
                     ?.filter((l: any) =>
                       l?.creativeName
@@ -76,16 +76,12 @@ export const MyCreativesPage: React.FC = () => {
                         .includes(creativeName.toLowerCase())
                     )
                     ?.map((l: any, y: any) => (
-                      <div key={y} className="w-full border">
-                        <div className="w-full">
-                          <ShowMediaFile
-                            url={l?.awsURL}
-                            mediaType={l?.creativeType}
-                            key={y}
-                            height="h-full"
-                            width="w-full"
-                          />
-                        </div>
+                      <div key={y} className="border">
+                        <ShowMediaFile
+                          url={l?.awsURL}
+                          mediaType={l?.creativeType}
+                          key={y}
+                        />
                         <div className="p-1">
                           <Tooltip title={`${l?.creativeName?.toUpperCase()}`}>
                             <h1 className="text-[12px] truncate">
@@ -127,7 +123,7 @@ export const MyCreativesPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-full">
       <div className="p-4 bg-white">
         <h1 className="text-[16px] font-bold">Creative Bucket</h1>
       </div>
@@ -163,11 +159,11 @@ export const MyCreativesPage: React.FC = () => {
               onChange={setSearchQuery}
             />
 
-            <div className="h-[75vh] py-2 ">
+            <div className="py-2 ">
               {loadingCreatives ? (
                 <Loading />
               ) : (
-                <div className="h-[70vh] overflow-y-auto scrollbar-minimal  ">
+                <div className="h-[73vh] overflow-y-auto scrollbar-minimal  ">
                   {creatives &&
                     Object.keys(creatives)
                       ?.filter((brand: string) =>
