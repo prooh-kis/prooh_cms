@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ADD_NEW_USER, SIGN_IN } from "../../routes/routes";
 import {
+  CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS,
   SCREEN_ADMIN,
   SCREEN_OWNER,
   USER_DELETE_RESET,
@@ -96,6 +97,7 @@ export const MyRequests = (props: any) => {
       getMyCreateCampaignsVendorRequestsList({
         id: userInfo?._id,
         status: CAMPAIGN_STATUS_PLEA_REQUEST_SCREEN_APPROVAL_SENT,
+        event : CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS
       })
     );
   },[dispatch, userInfo]);

@@ -364,16 +364,19 @@ export const campaignLogsByCampaignIdAction =
 
 
 export const getMyCreateCampaignsVendorRequestsList =
-({ id, status }) =>
+(input) =>
 async (dispatch, getState) => {
   dispatch({
     type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
-    payload: { id, status },
+    payload: input,
   });
   try {
+    const {
+      auth: { userInfo },
+    } = getState();
     const { data } = await axios.post(
-      `${campaignV2}/campaignCreationsScreenVendor`,
-      { id, status }
+      `${campaignV2}/campaignCreationsScreenVendor`, input , 
+      { headers: { authorization: `Bearer ${userInfo.token}` }, }
     );
     dispatch({
       type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
@@ -392,16 +395,18 @@ async (dispatch, getState) => {
 };
 
 export const changeCampaignStatusAfterVendorApproval =
-({ ids }) =>
+(input) =>
 async (dispatch, getState) => {
   dispatch({
     type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
-    payload: { ids },
+    payload: input,
   });
   try {
-    const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, {
-      ids,
-    });
+    const {
+      auth: { userInfo },
+    } = getState();
+    const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, input , 
+      { headers: { authorization: `Bearer ${userInfo.token}` }, });
     dispatch({
       type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
       payload: data,

@@ -97,6 +97,8 @@ export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreative
 export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"
 export const CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS = "campaignCreationGetAllCampaignDataCms"
 export const CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS = "campaignCreationGetCampaignDetailsCms"
+export const CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS = "campaignCreationGetVendorRequestListCms"
+export const CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS = "campaignCreationApproveCampaignCms"
 
 export const USERS_GET_CMS = "usersGetCms"
 export const USERS_DELETE_CMS = "usersDeleteCms"

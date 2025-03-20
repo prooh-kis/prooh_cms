@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeCampaignStatusAfterVendorApproval } from "../../actions/campaignAction";
 import { message } from "antd";
 import { MyRequestsListTable, VendorConfirmationBasicTable, VendorConfirmationStatusTable } from "../../components/tables";
+import { CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS } from "../../constants/userConstants";
 
 const allTabs = [
   {
@@ -130,6 +131,7 @@ export const VendorsRequestsList = ({
                       dispatch(
                         changeCampaignStatusAfterVendorApproval({
                           ids: selectedCampaignIds,
+                          event : CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS
                         })
                       );
                     }}
