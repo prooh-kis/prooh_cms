@@ -303,15 +303,51 @@ export const CampaignDetailsPage: React.FC = () => {
     setOpenCampaignLogPopup((pre: boolean) => !pre);
   }, [openCampaignLogPopup]);
 
-  const handleShowLogReport = (campaignId: string) => {
-    if (campaignId) {
-      dispatch(campaignLogsByCampaignIdAction(campaignId));
-      handleOpenCloseCampaignLogPopup();
-    } else {
-      message.error("No creative added!");
+  const downloadFileFromUrl = (
+    fileUrl: string,
+    campaignDetails: any,
+    fileName: string
+  ) => {
+    if (!fileUrl) {
+      message.error("You can download logs from tomorrow");
+      return;
     }
+
+    const campaignEndDate = campaignDetails?.endDate
+      ? new Date(campaignDetails.endDate)
+      : null;
+
+    if (campaignEndDate && new Date() > campaignEndDate) {
+      message.info("Downloading all logs, please wait for some time...");
+    } else {
+      message.info(
+        "Logs till yesterday will be downloaded as the campaign is still live today..."
+      );
+    }
+
+    // Create a hidden <a> tag and trigger the download
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
-  // ?.filter((camp: any) => camp?.screenName?.includes(searchQuery))
+
+  const handleShowLogReport = (campaignId: string) => {
+    const campaign = campaigns?.find((camp: any) => camp._id === campaignId);
+
+    if (!campaign) {
+      message.error("Campaign not found!");
+      return;
+    }
+
+    downloadFileFromUrl(
+      campaign.logUrl,
+      campaign,
+      `${campaign.screenName}_${campaign.brandName}`
+    );
+  };
 
   const handleToggleOpenAllCampaignLogsPopup = useCallback(() => {
     setOpenAllCampaignLogsPopup((pre: boolean) => !pre);
