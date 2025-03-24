@@ -213,7 +213,7 @@ export function ScreenListMonitoringView({
                       }}
                       className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                     >
-                      View Log Report
+                      Download logs
                     </li>
                   </ul>
                 </div>
@@ -351,7 +351,7 @@ export function ScreenListMonitoringView({
                       }}
                       className="px-4 py-2 text-gray-700 hover:bg-[#129BFF] hover:text-white cursor-pointer"
                     >
-                      View Log Report
+                      Download logs
                     </li>
                   </ul>
                 </div>

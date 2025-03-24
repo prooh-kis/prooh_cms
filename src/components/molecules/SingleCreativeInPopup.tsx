@@ -12,7 +12,7 @@ export const SingleCreativeInPopup = ({ media, handleDelete }: any) => {
           height="h-[77px]"
         />
       </div>
-      <div>
+      <div className="truncate">
         <h1 className="test-[#0E212E] text-[12px] font-semibold truncate">
           {media?.creativeName}
         </h1>

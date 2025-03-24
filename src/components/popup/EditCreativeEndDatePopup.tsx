@@ -18,7 +18,10 @@ import SingleCreativeInPopup from "../molecules/SingleCreativeInPopup";
 import SearchInputField from "../../components/molecules/SearchInputField";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { format, toZonedTime } from "date-fns-tz";
-import { CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS, SCREEN_CHANGE_DEFAULT_MEDIA_CMS } from "../../constants/userConstants";
+import {
+  CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS,
+  SCREEN_CHANGE_DEFAULT_MEDIA_CMS,
+} from "../../constants/userConstants";
 
 interface EditCreativeEndDatePopupProps {
   onClose?: any;
@@ -148,7 +151,7 @@ export function EditCreativeEndDatePopup({
         editDefaultCreativesAction({
           id: campaign._id,
           creatives: creativesForDefault,
-          event : SCREEN_CHANGE_DEFAULT_MEDIA_CMS
+          event: SCREEN_CHANGE_DEFAULT_MEDIA_CMS,
         })
       );
     } else {
@@ -184,7 +187,7 @@ export function EditCreativeEndDatePopup({
             creativeDataToUpload?.standardDayTimeCreatives?.length > 0
               ? creativeDataToUpload
               : null,
-          event : CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS
+          event: CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS,
         })
       );
     }
@@ -233,15 +236,30 @@ export function EditCreativeEndDatePopup({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4  shadow-lg w-full max-w-full relative overflow-auto max-h-auto "
+        className="bg-white p-4  shadow-lg w-full max-w-full relative max-h-auto rounded-lg "
         style={{ height: "80vh", width: "70vw" }}
       >
-        <div className="flex justify-between">
-          <h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-[20px] font-semibold">
             Edit Campaign{" "}
             <span className="font-bold text-green-600">{campaign?.name}</span>
           </h1>
-          <i className="fi fi-rr-cross-small" onClick={() => onClose()}></i>
+          <div className="flex gap-4 items-center">
+            <PrimaryButton
+              title="Update"
+              rounded="rounded-[12px]"
+              action={handleNext}
+              disabled={isLoading}
+              loading={isLoading}
+              loadingText="uploading..."
+              width="w-[150px]"
+              height="h-[36px]"
+            />
+            <i
+              className="fi fi-rr-cross-small text-[20px] hover:text-[#FF0000]"
+              onClick={() => onClose()}
+            ></i>
+          </div>
         </div>
         <div className="flex pt-4">
           <div className="w-[80%] border border-1 p-2">
@@ -311,15 +329,13 @@ export function EditCreativeEndDatePopup({
                     />
                   </div>
                 </div>
-
-                <h1 className="text-[14px] font-semibold py-1">
-                  Select from creatives
-                </h1>
-                <SearchInputField
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder="Search Creative by creative name"
-                />
+                <div className="mt-2">
+                  <SearchInputField
+                    value={searchQuery}
+                    onChange={setSearchQuery}
+                    placeholder="Search Creative by creative name"
+                  />
+                </div>
                 {loadingCreatives ? (
                   <Loading />
                 ) : (
@@ -457,15 +473,6 @@ export function EditCreativeEndDatePopup({
             )}
           </div>
         </div>
-        <PrimaryButton
-          title="Upload"
-          rounded="rounded-[12px]"
-          action={handleNext}
-          disabled={isLoading}
-          loading={isLoading}
-          loadingText="uploading..."
-          width="w-[100vw]"
-        />
       </div>
     </div>
   );
