@@ -8,6 +8,7 @@ import { signin } from "../../actions/userAction";
 import { useSelector } from "react-redux";
 import { FORGET_PASSWORD, SIGN_UP } from "../../routes/routes";
 import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
+import { SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS } from "../../constants/userConstants";
 
 export const SignIn: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +25,9 @@ export const SignIn: React.FC = () => {
 
   useEffect(() => {
     if (success) {
-      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
+      dispatch(getAllScreensForScreenOwnerCampaignCreationAction({
+        event : SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
+      }));
       navigate("/");
     }
     if (errorSignIn) {

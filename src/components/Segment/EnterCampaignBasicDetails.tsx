@@ -44,6 +44,7 @@ import {
   CAMPAIGN_CREATION_CMS,
   CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
   CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+  SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS,
 } from "../../constants/userConstants";
 
 interface EnterCampaignBasicDetailsProps {
@@ -354,7 +355,9 @@ export const EnterCampaignBasicDetails = ({
       !allScreens &&
       !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
     ) {
-      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
+      dispatch(getAllScreensForScreenOwnerCampaignCreationAction({
+        event : SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
+      }));
     }
   }, [dispatch, allScreens]);
 

@@ -92,6 +92,7 @@ export const SCREEN_GET_ALL_SCREEN_DATA_CMS = "screenGetAllScreenDataCms"
 export const SCREEN_GET_SCREEN_DETAILS_CMS = "screenGetScreenDetailsCms"
 export const SCREEN_GET_SCREEN_CAMPAIGN_DETAILS_CMS = "screenGetScreenCampaignDetailsCms"
 export const SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS = "screenGetUploadCreativeDetailsCms"
+export const SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS = "screenGetAllScreensScreenOwnerCms"
 
 export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreativeCms"
 export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"

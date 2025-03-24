@@ -13,7 +13,7 @@ import {
 import { SIGN_IN } from "../../routes/routes";
 import { getDataFromLocalStorage } from "../../utils/localStorageUtils";
 import { ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER } from "../../constants/localStorageConstants";
-import { SCREEN_ADMIN, SCREEN_GET_ALL_SCREEN_DATA_CMS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import { SCREEN_ADMIN, SCREEN_GET_ALL_SCREEN_DATA_CMS, SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
 import { ChangeScreenCodePopup } from "../../components/popup/ChangeScreenCodePopup";
 import { getAllScreensForScreenOwnerCampaignCreationAction } from "../../actions/campaignAction";
 
@@ -103,12 +103,14 @@ export const ScreensPage: React.FC = () => {
       navigate(SIGN_IN);
     }
     if (!allScreens)
-      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId , event: SCREEN_GET_ALL_SCREEN_DATA_CMS }));
+      dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId, event: SCREEN_GET_ALL_SCREEN_DATA_CMS }));
   }, [dispatch, userInfo]);
 
   useEffect(() => {
     if (!loadingNetworkList && !allNetworkData)
-      dispatch(getAllScreensForScreenOwnerCampaignCreationAction());
+      dispatch(getAllScreensForScreenOwnerCampaignCreationAction({
+        event : SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
+      }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -127,14 +129,14 @@ export const ScreensPage: React.FC = () => {
         targetDivRef.current.scrollTop.toString()
       );
     }
-    if (userInfo && (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER ) ) {
+    if (userInfo && (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER)) {
       setSelectedCard(id);
       navigate(`/screens-details/${id}`);
     }
   };
 
   const reLoad = () => {
-    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId , event: SCREEN_GET_ALL_SCREEN_DATA_CMS }));
+    dispatch(getAllScreensDetailsAction({ userId: userInfo?.primaryUserId, event: SCREEN_GET_ALL_SCREEN_DATA_CMS }));
   };
 
   const handleSelectNetwork = (value: string) => {
@@ -193,7 +195,7 @@ export const ScreensPage: React.FC = () => {
           />
         </div>
       </div>
-      
+
       <div className="flex gap-1 mb-1">
         {(userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER) && (
           <div className="w-[17vw] h-[85vh] bg-white rounded-[4px] p-4 ">

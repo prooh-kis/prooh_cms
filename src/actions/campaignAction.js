@@ -108,13 +108,20 @@ export const editCampaignCreationByScreenOwnerAction =
   };
 
 export const getAllScreensForScreenOwnerCampaignCreationAction =
-  () => async (dispatch, getState) => {
+  (input) => async (dispatch, getState) => {
     dispatch({
       type: GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_REQUEST,
+      payload: input
     });
     try {
-      const { data } = await axios.get(
-        `${campaignV2}/getAllScreensForScreenOwner`
+
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(
+        `${campaignV2}/getAllScreensForScreenOwner`, input,
+        { headers: { authorization: `Bearer ${userInfo.token}` }, }
       );
 
       dispatch({
@@ -196,7 +203,7 @@ export const getAllCampaignsDetailsAction = (input) => async (dispatch, getState
 
 export const getCampaignDetailsAction =
   (input) =>
-    async (dispatch , getState) => {
+    async (dispatch, getState) => {
       dispatch({
         type: GET_CAMPAIGN_DATA_REQUEST,
         payload: input,
@@ -364,61 +371,61 @@ export const campaignLogsByCampaignIdAction =
 
 
 export const getMyCreateCampaignsVendorRequestsList =
-(input) =>
-async (dispatch, getState) => {
-  dispatch({
-    type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
-    payload: input,
-  });
-  try {
-    const {
-      auth: { userInfo },
-    } = getState();
-    const { data } = await axios.post(
-      `${campaignV2}/campaignCreationsScreenVendor`, input , 
-      { headers: { authorization: `Bearer ${userInfo.token}` }, }
-    );
-    dispatch({
-      type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
-      payload: {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data,
-      },
-    });
-  }
-};
+  (input) =>
+    async (dispatch, getState) => {
+      dispatch({
+        type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
+        payload: input,
+      });
+      try {
+        const {
+          auth: { userInfo },
+        } = getState();
+        const { data } = await axios.post(
+          `${campaignV2}/campaignCreationsScreenVendor`, input,
+          { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        );
+        dispatch({
+          type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
+          payload: {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data,
+          },
+        });
+      }
+    };
 
 export const changeCampaignStatusAfterVendorApproval =
-(input) =>
-async (dispatch, getState) => {
-  dispatch({
-    type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
-    payload: input,
-  });
-  try {
-    const {
-      auth: { userInfo },
-    } = getState();
-    const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, input , 
-      { headers: { authorization: `Bearer ${userInfo.token}` }, });
-    dispatch({
-      type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
-      payload: {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data,
-      },
-    });
-  }
-};
+  (input) =>
+    async (dispatch, getState) => {
+      dispatch({
+        type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
+        payload: input,
+      });
+      try {
+        const {
+          auth: { userInfo },
+        } = getState();
+        const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, input,
+          { headers: { authorization: `Bearer ${userInfo.token}` }, });
+        dispatch({
+          type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
+          payload: {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data,
+          },
+        });
+      }
+    };
