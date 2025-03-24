@@ -270,12 +270,19 @@ export function UploadCreativesFromBucketPopup({
       }
     }
   };
+  const isImageAvailable = () => {
+    return mediaFiles.find((media: any) =>
+      media.creativeType?.includes("image")
+    )
+      ? "h-[44vh]"
+      : "h-[58vh]";
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
         className="bg-white p-4  shadow-lg w-full max-w-full rounded-lg"
-        style={{ height: "80vh", width: "70vw" }}
+        style={{ height: "90vh", width: "70vw" }}
       >
         <div className="flex justify-between items-center">
           <h1 className="text-[20px] font-semibold text-[#092A41]">
@@ -397,7 +404,7 @@ export function UploadCreativesFromBucketPopup({
                       />
                     </div>
                     {creativesMedia && (
-                      <div className="h-[42vh] overflow-auto">
+                      <div className={`overflow-auto  ${isImageAvailable()}`}>
                         {Object.keys(creativesMedia?.[currentTab] || {})
                           ?.filter((c: any) => c !== "network")
                           ?.map((m: any, i: any) => (

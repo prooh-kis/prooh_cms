@@ -236,7 +236,7 @@ export function EditCreativeEndDatePopup({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 ">
       <div
-        className="bg-white p-4  shadow-lg w-full max-w-full relative overflow-auto max-h-auto rounded-lg "
+        className="bg-white p-4  shadow-lg w-full max-w-full relative max-h-auto rounded-lg "
         style={{ height: "80vh", width: "70vw" }}
       >
         <div className="flex justify-between items-center">
