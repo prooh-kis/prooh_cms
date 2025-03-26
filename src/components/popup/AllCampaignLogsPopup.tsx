@@ -80,7 +80,7 @@ export const AllCampaignLogsPopup = ({
           try {
             console.log("i : ", i);
             const { data } = await axios.get(
-              `${analyticsV1}/getAllCampaignLogs?campaignId=${campaignIds[i]}`
+              `${analyticsV1}/downloadAllCampaignLogs?campaignId=${campaignIds[i]}`
             );
             console.log("data found", i);
             await downloadExcel({
