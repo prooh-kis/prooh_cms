@@ -110,6 +110,10 @@ export const MyRequests = (props: any) => {
       dispatch({
         type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_RESET,
       });
+      setShowDetails({
+        show: !showDetails.show,
+        data: {},
+      })
       dispatch(
         getMyCreateCampaignsVendorRequestsList({
           id: userInfo?._id,
