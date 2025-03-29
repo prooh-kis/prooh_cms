@@ -170,7 +170,7 @@ export const CampaignDetailsPage: React.FC = () => {
     screens?.length > 0
       ? campaignCreated?.campaigns
           ?.filter((camp: any) =>
-            campaignCreated?.screens?.includes(camp.screenId)
+            campaignCreated?.screenIds?.includes(camp.screenId)
           )
           ?.filter((camp: any) =>
             camp?.screenName
@@ -201,7 +201,7 @@ export const CampaignDetailsPage: React.FC = () => {
     if (campaignCreated) {
       dispatch(
         getCampaignCreatedScreensDetailsAction({
-          screenIds: campaignCreated.screens,
+          screenIds: campaignCreated?.screenIds,
         })
       );
     }
@@ -440,7 +440,7 @@ export const CampaignDetailsPage: React.FC = () => {
                         )
                       }
                     >
-                      {campaignCreated?.campaignName || "Campaign Name"}
+                      {campaignCreated?.name || "Campaign Name"}
                     </h1>
                   </Tooltip>
                   <h1 className="text-[12px]">
@@ -632,7 +632,7 @@ export const CampaignDetailsPage: React.FC = () => {
           <h1 className="text-[16px] font-semibold p-1 py-2">
             Screens Play{" "}
             <span className="text-[14px]">
-              ({campaignCreated?.screens?.length || 0})
+              ({campaignCreated?.screenIds?.length || 0})
             </span>
           </h1>
 
