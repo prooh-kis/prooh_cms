@@ -60,7 +60,7 @@ interface EnterCampaignBasicDetailsProps {
   purpose?: string;
 }
 
-const allIndex = [1, 2, 3, 6].map((value) => {
+const allIndex = [1, 2, 3, 6 , 18].map((value) => {
   return {
     label: value.toString(),
     value: value,
