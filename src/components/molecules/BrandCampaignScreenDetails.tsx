@@ -45,6 +45,10 @@ export function BrandCampaignScreenDetails({
               {campaign?.status === "Delivered" && <h1 className="text-[12px] text-primaryButton truncate">
                 {campaign?.status}
               </h1>}
+
+              {campaign?.extraDelivery && <h1 className="text-[12px] text-primaryButton truncate">
+                {"Adjusted Delivery"}
+              </h1>}
             </div>
             {["1", "2"]?.includes(currentTab) && (
               <div className="flex items-center justify-start gap-2">

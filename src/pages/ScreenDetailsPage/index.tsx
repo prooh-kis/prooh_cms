@@ -342,7 +342,7 @@ export const ScreenDetailsPage: React.FC = () => {
 
   const getDurationCount = () => {
     return campaigns?.reduce((total: number, campaign: any) => {
-      return (
+      return Math.round(
         total +
         (campaign?.creatives?.creativeDuration || 10) *
         (campaign?.atIndex?.length || 1)
