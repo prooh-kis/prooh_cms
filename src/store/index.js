@@ -57,6 +57,13 @@ import {
   clientAgencyDetailsAddGetReducer,
   clientAgencyDetailsGetReducer,
 } from "../reducers/clientReducers";
+import {
+  createCouponReducer,
+  deleteCouponReducer,
+  getCouponListReducer,
+  toggleStatusCouponReducer,
+  updateCouponReducer,
+} from "../reducers/couponReducers";
 
 const initialState = {
   userSignin: {
@@ -73,7 +80,7 @@ const store = configureStore({
     auth: authReducer,
     userSignin: userSigninReducer,
     userSignup: userSignupReducer,
-    userAddNewUser : userAddNewUserReducer,
+    userAddNewUser: userAddNewUserReducer,
     userUpdatePassword: userUpdatePasswordReducer,
     emailVerify: userEmailVerificationReducer,
     userSendEmailToResetPassword: userSendEmailToResetPasswordReducer,
@@ -99,9 +106,9 @@ const store = configureStore({
     editAllSubCampaigns: editAllSubCampaignsReducer,
     getCampaignFullDetails: campaignFullDetailsGetReducer,
     myCreateCampaignsVendorRequestsListGet:
-    myCreateCampaignsVendorRequestsListGetReducer,
+      myCreateCampaignsVendorRequestsListGetReducer,
     campaignStatusChangeAfterVendorApproval:
-    campaignStatusChangeAfterVendorApprovalReducer,
+      campaignStatusChangeAfterVendorApprovalReducer,
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
 
@@ -121,11 +128,11 @@ const store = configureStore({
     getScreenCampaignMonitoring: getScreenCampaignMonitoringReducer,
     screenCodeChange: screenCodeChangeReducer,
     changeDefaultIncluded: changeDefaultIncludedReducer,
-    changeAutoLoop : changeAutoLoopValueVReducer,
+    changeAutoLoop: changeAutoLoopValueVReducer,
     editDefaultCreative: editDefaultCreativeReducer,
     screenRefresh: screenRefreshReducer,
     screenDataUpdateRedis: screenDataUpdateRedisReducer,
-    playHoldCampaigns : playHoldCampaignsReducer,
+    playHoldCampaigns: playHoldCampaignsReducer,
     screenLogsGet: screenLogsGetReducer,
     screenDefaultMediaChange: screenDefaultMediaChangeReducer,
 
@@ -133,6 +140,13 @@ const store = configureStore({
     clientAgencyDetailsAdd: clientAgencyDetailsAddGetReducer,
     allClientAgencyNamesListGet: allClientAgencyNamesListGetReducer,
     clientAgencyDetailsGet: clientAgencyDetailsGetReducer,
+
+    // coupons
+    couponList: getCouponListReducer,
+    createCoupon: createCouponReducer,
+    updateCoupon: updateCouponReducer,
+    deleteCoupon: deleteCouponReducer,
+    toggleStatusCoupon: toggleStatusCouponReducer,
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"

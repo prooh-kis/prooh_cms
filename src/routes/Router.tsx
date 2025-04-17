@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   CampaignDetailsPage,
   CampaignsPage,
+  Coupons,
   CreateCampaignPage,
   EditCampaign,
   ForgetPassword,
@@ -35,6 +36,7 @@ import {
   USERS,
   PLAY_LIVE_URL,
   MY_REQUESTS,
+  MY_COUPONS,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
@@ -96,6 +98,14 @@ const Routers: React.FC = () => {
           element={
             <AppDashBoardLayout value="Users">
               <MyUsers />
+            </AppDashBoardLayout>
+          }
+        />
+        <Route
+          path={MY_COUPONS}
+          element={
+            <AppDashBoardLayout value="Coupons">
+              <Coupons />
             </AppDashBoardLayout>
           }
         />
@@ -195,12 +205,7 @@ const Routers: React.FC = () => {
           }
         />
 
-        <Route
-          path={PLAY_LIVE_URL}
-          element={
-            <PlayLiveUrl />
-          }
-        />
+        <Route path={PLAY_LIVE_URL} element={<PlayLiveUrl />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
