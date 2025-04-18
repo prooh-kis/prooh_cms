@@ -12,7 +12,6 @@ import {
 } from "../../components/index";
 import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
 import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
-import { message } from "antd";
 import { CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS } from "../../constants/userConstants";
 
 export const CampaignsPage: React.FC = () => {
@@ -40,36 +39,38 @@ export const CampaignsPage: React.FC = () => {
         getAllCampaignsDetailsAction({
           userId: userInfo?._id,
           status: CAMPAIGN_STATUS_ACTIVE,
-          event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
+          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
         })
       );
     }
   }, [dispatch, userInfo]);
 
-
   const handleCardClick = (id: any) => {
     setSelectedCard(id);
   };
 
-  const handleGetCampaignByStatus = useCallback((status: any) => {
-    setCurrentTab(status);
-    dispatch(
-      getAllCampaignsDetailsAction({
-        userId: userInfo?._id,
-        status: campaignCreationTypeTabs?.filter(
-          (tab: any) => tab.id === status
-        )[0]?.value,
-        event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
-      })
-    );
-  },[dispatch, userInfo]);
+  const handleGetCampaignByStatus = useCallback(
+    (status: any) => {
+      setCurrentTab(status);
+      dispatch(
+        getAllCampaignsDetailsAction({
+          userId: userInfo?._id,
+          status: campaignCreationTypeTabs?.filter(
+            (tab: any) => tab.id === status
+          )[0]?.value,
+          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+        })
+      );
+    },
+    [dispatch, userInfo]
+  );
 
   const reset = () => {
     dispatch(
       getAllCampaignsDetailsAction({
         userId: userInfo?._id,
         status: CAMPAIGN_STATUS_ACTIVE,
-        event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
+        event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
       })
     );
   };
@@ -94,6 +95,18 @@ export const CampaignsPage: React.FC = () => {
       targetDivRef.current.scrollTop = parseInt(savedScrollPosition, 10);
     }
   }, [currentTab, handleGetCampaignByStatus]);
+
+  const filterResult = allCampaigns?.filter(
+    (campaign: any) =>
+      campaign?.campaignName
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      campaign?.campaignName
+        ?.toUpperCase()
+        .includes(searchQuery.toLowerCase()) ||
+      campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
+  );
   return (
     <div className="w-full">
       <div className="bg-white w-auto rounded-[4px]">
@@ -102,21 +115,7 @@ export const CampaignsPage: React.FC = () => {
             <h1 className="text-[16px] font-semibold">
               My Campaigns{" "}
               <span className="text-[14px] text-[#68879C] ">
-                (
-                {
-                  allCampaigns?.filter(
-                    (campaign: any) =>
-                      campaign?.campaignName
-                        ?.toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      campaign?.campaignName
-                        ?.toUpperCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                      campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
-                  )?.length
-                }
-                )
+                ({filterResult?.length})
               </span>
             </h1>
             <ReloadButton onClick={reset} />
@@ -153,26 +152,18 @@ export const CampaignsPage: React.FC = () => {
             className="h-[80vh] overflow-y-auto scrollbar-minimal mt-1 mr-2"
             ref={targetDivRef}
           >
-            {allCampaigns
-              ?.filter(
-                (campaign: any) =>
-                  campaign?.campaignName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  campaign?.campaignName?.toUpperCase().includes(searchQuery.toUpperCase()) ||
-                  campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
-              )
-              ?.map((data: any, index: any) => (
-                <div key={index} className="h-auto">
-                  <CampaignListView
-                    isSelected={data?._id === selectedCard}
-                    color={""}
-                    handleCardClick={() => handleCardClick(data._id)}
-                    onDoubleClick={() => handleDoubleClick(data._id)}
-                    data={data}
-                    index={index}
-                  />
-                </div>
-              ))}
+            {filterResult?.map((data: any, index: any) => (
+              <div key={index} className="h-auto">
+                <CampaignListView
+                  isSelected={data?._id === selectedCard}
+                  color={""}
+                  handleCardClick={() => handleCardClick(data._id)}
+                  onDoubleClick={() => handleDoubleClick(data._id)}
+                  data={data}
+                  index={index}
+                />
+              </div>
+            ))}
           </div>
         </div>
       )}
