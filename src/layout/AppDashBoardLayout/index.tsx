@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   CAMPAIGNS_LIST,
-  CREATE_CAMPAIGN,
+  MY_COUPONS,
   MY_CREATIVES,
   MY_REQUESTS,
   SCREEN_CAMPAIGN_MONITORING,
@@ -12,13 +12,11 @@ import {
   SIGN_IN,
   USERS,
 } from "../../routes/routes";
-import userImage from "../../assets/userImage.png";
-import { Menu } from "../../components/header/Menu";
+
 import { signout } from "../../actions/userAction";
 import { SCREEN_MONITORING_USER } from "../../constants/userConstants";
-import { message } from "antd";
 import { Header } from "../../components/header";
-import { ConformationModel } from "../../components/popup/ConformationModel";
+import { Tooltip } from "antd";
 
 interface AppDashBoardLayoutProps {
   children: React.ReactNode;
@@ -80,6 +78,12 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       option: "Requests",
     },
     {
+      value: "Coupons",
+      path: MY_COUPONS,
+      icon: "fi fi-bs-ticket",
+      option: "Coupons",
+    },
+    {
       value: "Users",
       path: USERS,
       icon: "fi fi-sr-users-alt ",
@@ -104,12 +108,17 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       <Header />
       <div className="flex gap-1 h-full">
         {/* Sidebar */}
-        <div className={`h-[92vh] min-w-[5vw] ${showFull ? "w-[15vw]" : "w-[5vw]"} mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}>
+        <div
+          className={`h-[92vh] min-w-[5vw] ${
+            showFull ? "w-[15vw]" : "w-[5vw]"
+          } mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}
+        >
           <div className="flex flex-col justify-between h-full pt-2 px-2">
             {/* Menu Items */}
             <div className="space-y-4">
               {!showFull && (
-                <div className="flex justify-center items-center py-2 px-4 border rounded cursor-pointer"
+                <div
+                  className="flex justify-center items-center py-2 px-4 border rounded cursor-pointer"
                   onClick={() => {
                     setShowFull(!showFull);
                   }}
@@ -129,7 +138,11 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                   }`}
                 >
                   <div className={`flex items-center`}>
-                    <i className={`${item.icon} flex items-center justify-center`}></i>
+                    <Tooltip title={item.option}>
+                      <i
+                        className={`${item.icon} flex items-center justify-center`}
+                      ></i>
+                    </Tooltip>
                   </div>
                   {showFull && (
                     <span className="px-2 truncate">{item.option}</span>
@@ -141,7 +154,9 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
             <div className="py-12 flex justify-between truncate">
               <div
                 onClick={handleSignOut}
-                className={`flex truncate ${!showFull ? "border border-red-200" : "border border-red-200"} justify-start items-center gap-2 py-2 rounded cursor-pointer ${
+                className={`flex truncate ${
+                  !showFull ? "border border-red-200" : "border border-red-200"
+                } justify-start items-center gap-2 py-2 rounded cursor-pointer ${
                   current === "Log Out"
                     ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
                     : "text-[#8D9DA7] font-semibold"
@@ -150,17 +165,16 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                 <div className={`flex items-center`}>
                   <i className="fi fi-br-power flex items-center justify-center"></i>
                 </div>
-                {showFull && (
-                  <h1 className="px-2 truncate">Log out</h1>
-                )}
+                {showFull && <h1 className="px-2 truncate">Log out</h1>}
               </div>
               {showFull && (
-                <div className="flex items-center px-1"
+                <div
+                  className="flex items-center px-1"
                   onClick={() => {
                     setShowFull(!showFull);
                   }}
                 >
-                    <i className="fi fi-rr-arrow-left-from-line text-gray-500 flex items-center justify-center"></i>
+                  <i className="fi fi-rr-arrow-left-from-line text-gray-500 flex items-center justify-center"></i>
                 </div>
               )}
             </div>

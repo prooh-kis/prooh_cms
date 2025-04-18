@@ -25,3 +25,4 @@ export const SCREEN_CAMPAIGN_MONITORING = "/screen-campaign-monitoring";
 
 export const PLAY_LIVE_URL = "/play-live-url"
 export const MY_REQUESTS = "/my-requests";
+export const MY_COUPONS = "/my-coupons";
