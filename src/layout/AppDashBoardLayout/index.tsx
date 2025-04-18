@@ -16,6 +16,7 @@ import {
 import { signout } from "../../actions/userAction";
 import { SCREEN_MONITORING_USER } from "../../constants/userConstants";
 import { Header } from "../../components/header";
+import { Tooltip } from "antd";
 
 interface AppDashBoardLayoutProps {
   children: React.ReactNode;
@@ -137,9 +138,11 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                   }`}
                 >
                   <div className={`flex items-center`}>
-                    <i
-                      className={`${item.icon} flex items-center justify-center`}
-                    ></i>
+                    <Tooltip title={item.option}>
+                      <i
+                        className={`${item.icon} flex items-center justify-center`}
+                      ></i>
+                    </Tooltip>
                   </div>
                   {showFull && (
                     <span className="px-2 truncate">{item.option}</span>
