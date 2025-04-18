@@ -35,16 +35,16 @@ export const VendorConfirmationStatusTable = ({
   };
 
   const handleHeaderRowCheckBoxChange = (e: boolean) => {
-    for ( const campaign of campaignsList ){
-      if ( campaign?.campaignCreationId === campaignCreationStatusTableData?._id )
-      handleRowCheckboxChange(e, campaign?._id.toString())
+    for (const campaign of campaignsList) {
+      if (campaign?.campaignCreationId === campaignCreationStatusTableData?._id)
+        handleRowCheckboxChange(e, campaign?._id.toString())
     }
   }
 
   useEffect(() => {
-    var campaignIds : any = []
-    for ( const campaign of campaignsList ){
-      if ( campaign?.campaignCreationId === campaignCreationStatusTableData?._id ) {
+    var campaignIds: any = []
+    for (const campaign of campaignsList) {
+      if (campaign?.campaignCreationId === campaignCreationStatusTableData?._id) {
         campaignIds.push(campaign?._id.toString())
       }
     }
@@ -87,7 +87,7 @@ export const VendorConfirmationStatusTable = ({
                   checked={selectedCampaignIds?.length === campaignCreationStatusTableData?.screenWiseSlotDetails?.filter((screen: any) => {
                     return campaignCreationStatusTableData?.screenIds.includes(screen.screenId)
                   })?.length ? true : false}
-                  // disabled={loading}
+                // disabled={loading}
                 />
               </div>
             </th>
@@ -124,6 +124,11 @@ export const VendorConfirmationStatusTable = ({
             </th>
             <th className="py-2 px-1">
               <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
+                Slot Available
+              </div>
+            </th>
+            <th className="py-2 px-1">
+              <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                 Creative
               </div>
             </th>
@@ -145,7 +150,9 @@ export const VendorConfirmationStatusTable = ({
             return campaignCreationStatusTableData?.screenIds.includes(screen.screenId)
           })
             ?.map((status: any, i: number) => (
-              <tr key={i} className="border-b hover:bg-gray-200">
+              <tr key={i} className={`border-b hover:bg-gray-200 
+              ${status.slotAvailable >= campaignCreationStatusTableData?.sov * Math.ceil(campaignCreationStatusTableData?.creatives[0]?.creativeDuration / 10)
+                  ? "bg-[#20AA7010]" : "bg-[#FF525210]"}`}>
                 <td>
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                     <CheckboxInput
@@ -166,12 +173,12 @@ export const VendorConfirmationStatusTable = ({
                 </td>
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
-                    {i+1}
+                    {i + 1}
                   </div>
                 </td>
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
-                  {status.screenName}
+                    {status.screenName}
                   </div>
                 </td>
                 <td className="py-2 px-1">
@@ -187,6 +194,13 @@ export const VendorConfirmationStatusTable = ({
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
                     {campaignCreationStatusTableData?.sov}
+                  </div>
+                </td>
+                <td className="py-2 px-1">
+                  <div className={`flex items-center justify-center gap-1 truncate text-[12px] 
+                    ${status.slotAvailable >= campaignCreationStatusTableData?.sov * Math.ceil(campaignCreationStatusTableData?.creatives[0]?.creativeDuration / 10)
+                      ? "text-[#20AA70]" : "text-[#FF5252]"}`}>
+                    {status.slotAvailable >= 0 ? Number(status.slotAvailable) : "Not Available"}
                   </div>
                 </td>
                 <td className="py-2 px-1">
@@ -210,24 +224,24 @@ export const VendorConfirmationStatusTable = ({
                       {status.campaignStatus === "PleaRequestBudgetSent"
                         ? "Budget Approval Pending"
                         : status.campaignStatus === "PleaRequestBudgetAccepted"
-                        ? "Budget Approved"
-                        : status.campaignStatus === "PleaRequestBudgetRejected"
-                        ? "Budget Rejected"
-                        : status.campaignStatus === "PleaRequestScreenApprovalSent"
-                        ? "Screen Pending"
-                        : status.campaignStatus === "PleaRequestScreenApprovalAccepted"
-                        ? "Screen Approved"
-                        : status.campaignStatus === "PleaRequestScreenApprovalRejected"
-                        ? "Screen Rejected"
-                        : status.campaignStatus === "PleaRequestFinalApprovalSent"
-                        ? "Final Pending"
-                        : status.campaignStatus === "PleaRequestFinalApprovalAccepted"
-                        ? "Final Approved"
-                        : status.campaignStatus === "PleaRequestFinalApprovalRejected"
-                        ? "Final Rejected"
-                        : status.campaignStatus === "Pending"
-                        ? "Approved"
-                        : "Pending"}
+                          ? "Budget Approved"
+                          : status.campaignStatus === "PleaRequestBudgetRejected"
+                            ? "Budget Rejected"
+                            : status.campaignStatus === "PleaRequestScreenApprovalSent"
+                              ? "Screen Pending"
+                              : status.campaignStatus === "PleaRequestScreenApprovalAccepted"
+                                ? "Screen Approved"
+                                : status.campaignStatus === "PleaRequestScreenApprovalRejected"
+                                  ? "Screen Rejected"
+                                  : status.campaignStatus === "PleaRequestFinalApprovalSent"
+                                    ? "Final Pending"
+                                    : status.campaignStatus === "PleaRequestFinalApprovalAccepted"
+                                      ? "Final Approved"
+                                      : status.campaignStatus === "PleaRequestFinalApprovalRejected"
+                                        ? "Final Rejected"
+                                        : status.campaignStatus === "Pending"
+                                          ? "Approved"
+                                          : "Pending"}
                     </h1>
                   </div>
                 </td>
