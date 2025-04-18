@@ -32,3 +32,8 @@ export { CampaignLogsPopup } from "./popup/CampaignLogsPopup";
 export { AllCampaignLogsPopup } from "./popup/AllCampaignLogsPopup";
 // Segment
 export { MonitoringPictures } from "./Segment/MonitoringPictures";
+
+//
+export { Loading } from "./Loading";
+export { ScreenLogReportPopup } from "./popup/ScreenLogReportPopup";
+export { LoopSettingPopup } from "./popup/LoopSettingPopup";
