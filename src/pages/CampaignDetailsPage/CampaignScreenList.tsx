@@ -30,7 +30,7 @@ const CampaignScreenList = ({
           placeholder="Search screens by name"
           height="h-8"
           value={searchQuery}
-          onChange={setSearchQuery}
+          onChange={(value: string) => setSearchQuery(value?.toLowerCase())}
         />
       </div>
       {loadingScreens ? (
@@ -38,31 +38,35 @@ const CampaignScreenList = ({
       ) : (
         <div className="h-[79vh] overflow-y-auto no-scrollbar py-2  flex flex-col gap-4">
           {campaigns?.length === 0 && <NoDataView />}
-          {campaigns?.map((camp: any, k: any) => (
-            <div
-              key={k}
-              className="p-0 m-0"
-              onClick={() => handelSelectScreen(camp?._id)}
-              onDoubleClick={() =>
-                navigate(`/screens-details/${camp?.screenId}`)
-              }
-            >
-              <ScreenListMonitoringView
-                handleChangeCampaignStatus={handleChangeCampaignStatus}
-                campaignCreated={campaignCreated}
-                setOpenCreativeEndDateChangePopup={
-                  setOpenCreativeEndDateChangePopup
+          {campaigns
+            ?.filter((camp: any) =>
+              camp.screenName?.toLowerCase().includes(searchQuery)
+            )
+            ?.map((camp: any, k: any) => (
+              <div
+                key={k}
+                className="p-0 m-0"
+                onClick={() => handelSelectScreen(camp?._id)}
+                onDoubleClick={() =>
+                  navigate(`/screens-details/${camp?.screenId}`)
                 }
-                screen={screens?.find(
-                  (screen: any) => screen?.screenId == camp?.screenId
-                )}
-                campaign={camp}
-                noImages={false}
-                showOption={true}
-                handleGetCampaignLog={handleShowLogReport}
-              />
-            </div>
-          ))}
+              >
+                <ScreenListMonitoringView
+                  handleChangeCampaignStatus={handleChangeCampaignStatus}
+                  campaignCreated={campaignCreated}
+                  setOpenCreativeEndDateChangePopup={
+                    setOpenCreativeEndDateChangePopup
+                  }
+                  screen={screens?.find(
+                    (screen: any) => screen?.screenId == camp?.screenId
+                  )}
+                  campaign={camp}
+                  noImages={false}
+                  showOption={true}
+                  handleGetCampaignLog={handleShowLogReport}
+                />
+              </div>
+            ))}
         </div>
       )}
     </div>
