@@ -3,10 +3,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { downloadExcel } from "../../utils/ExcelUtils";
 import { analyticsV1 } from "../../constants/urlConsent";
-import { PrimaryButton } from "../../components/atoms/PrimaryButton";
 import SearchInputField from "../../components/molecules/SearchInputField";
-import { ScreenListMonitoringView } from "../../components/molecules/ScreenListMonitoringView";
 import { Loading } from "../../components/Loading";
+import ButtonInput from "../../components/atoms/ButtonInput";
 
 export const AllCampaignLogsPopup = ({
   open,
@@ -14,18 +13,20 @@ export const AllCampaignLogsPopup = ({
   campaigns,
   screens,
   loadingScreens,
-  campaignCreated,
 }: any) => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [count, setCount] = useState<number>(0);
   const [isStop, setIsStop] = useState<boolean>(false);
-  const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
   const [selectedScreens, setSelectedScreens] = useState<string[]>([]);
   const [recentlyDownloadedScreens, setRecentlyDownloadedScreens] = useState<
     string[]
   >([]);
+  const [downloadProgress, setDownloadProgress] = useState<{
+    [key: string]: number;
+  }>({});
+  const [currentDownloading, setCurrentDownloading] = useState<string>("");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -42,10 +43,10 @@ export const AllCampaignLogsPopup = ({
 
   const startInterval = () => {
     const id = setInterval(() => {
-      setTime((prevTime) => prevTime + 1); // Increase time by 1 second
-    }, 1000); // Update every second
+      setTime((prevTime) => prevTime + 1);
+    }, 1000);
 
-    setIntervalId(id); // Store the interval ID to clear later
+    setIntervalId(id);
 
     return () => {
       if (id) {
@@ -71,50 +72,69 @@ export const AllCampaignLogsPopup = ({
       if (!isStop) {
         setIsDownloading(true);
         startInterval();
+        setDownloadProgress({});
+        setCount(0);
 
         const campaignIds = campaigns
           ?.filter((camp: any) => selectedScreens?.includes(camp.screenId))
           ?.map((camp: any) => camp?._id);
 
         for (let i = 0; i < campaignIds.length; i++) {
+          const campaignId = campaignIds[i];
+          const screenId = campaigns.find(
+            (camp: any) => camp?._id === campaignId
+          )?.screenId;
+
           try {
-            console.log("i : ", i);
+            setCurrentDownloading(screenId);
+            setDownloadProgress((prev) => ({ ...prev, [screenId]: 0 }));
+
             const { data } = await axios.get(
-              `${analyticsV1}/downloadAllCampaignLogs?campaignId=${campaignIds[i]}`
+              `${analyticsV1}/downloadAllCampaignLogs?campaignId=${campaignId}`,
+              {
+                onDownloadProgress: (progressEvent) => {
+                  if (progressEvent.total) {
+                    const percentCompleted = Math.round(
+                      (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    setDownloadProgress((prev) => ({
+                      ...prev,
+                      [screenId]: percentCompleted,
+                    }));
+                  }
+                },
+              }
             );
-            console.log("data found", i);
+
             await downloadExcel({
               campaign: data?.campaign,
               campaignLog: data?.logs,
             });
+
             setCount((pre: number) => pre + 1);
-            const screenId = campaigns.find(
-              (camp: any) => camp?._id === campaignIds[i]
-            )?.screenId;
             setRecentlyDownloadedScreens((pre: any) =>
               Array.from(new Set([...pre, screenId]))
             );
-            console.log("file downloaded", i);
+            setDownloadProgress((prev) => ({ ...prev, [screenId]: 100 }));
           } catch (error: any) {
             message.error(error);
+            setDownloadProgress((prev) => ({ ...prev, [screenId]: -1 })); // -1 indicates error
+          } finally {
+            setCurrentDownloading("");
           }
         }
         message.success("All files downloaded");
         setIsDownloading(false);
         stopTimer();
-        setSelectedScreens([]);
       }
-    } else {
     }
   };
 
   function formatTime(seconds: number) {
-    // Calculate hours, minutes, and remaining seconds
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
 
-    // Format time as HH:MM:SS
     return `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
       .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
@@ -169,6 +189,13 @@ export const AllCampaignLogsPopup = ({
     }
   };
 
+  const getProgressBarColor = (progress: number) => {
+    if (progress === -1) return "bg-red-500"; // Error state
+    if (progress < 30) return "bg-blue-500";
+    if (progress < 70) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div
@@ -176,41 +203,63 @@ export const AllCampaignLogsPopup = ({
         style={{ height: "90vh", width: "60vw" }}
       >
         <div className="flex items-center justify-between">
-          <h1 className="py-4 text-lg font-bold text-[20px]">
+          <h1 className="text-lg font-bold text-[20px]">
             Download All Campaigns Logs{" "}
           </h1>
-          <i
-            onClick={() => onClose()}
-            className="fi fi-rr-cross-small text-[20px]"
-          ></i>
+          <div className="flex gap-2">
+            <ButtonInput
+              onClick={handleGetLogData}
+              loading={isDownloading}
+              loadingText="Downloading , please wait......"
+            >
+              Download logs
+            </ButtonInput>
+            <i
+              onClick={() => onClose()}
+              className="fi fi-rr-cross-small text-[20px]"
+            ></i>{" "}
+          </div>
         </div>
-        <PrimaryButton
-          action={handleGetLogData}
-          title="Download logs"
-          loading={isDownloading}
-          loadingText="Downloading , please wait......"
-          width="w-full"
-        />
         {isDownloading && (
           <>
-            <h1 className="text-[#348730] bg-green-200 p-4 mt-4">
-              Total campaign Downloaded{" "}
-              <span className="text-green-700">{count}</span>
-            </h1>
-            <h1>Time take to complete task : {formatTime(time)}</h1>
+            <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+              <h1 className="text-[#348730] font-semibold">
+                Total campaign Downloaded:{" "}
+                <span className="text-green-700">{count}</span> /{" "}
+                {selectedScreens.length}
+              </h1>
+              <h1 className="mt-2">Time taken: {formatTime(time)}</h1>
+              {currentDownloading && (
+                <div className="mt-4">
+                  <h2 className="text-sm font-medium mb-1">
+                    Currently downloading:{" "}
+                    {screens.find((s: any) => s._id === currentDownloading)
+                      ?.screenName || currentDownloading}
+                  </h2>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className={`h-2.5 rounded-full ${getProgressBarColor(
+                        downloadProgress[currentDownloading] || 0
+                      )}`}
+                      style={{
+                        width: `${downloadProgress[currentDownloading] || 0}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <p className="text-right text-xs mt-1">
+                    {downloadProgress[currentDownloading] === -1
+                      ? "Download failed"
+                      : `${downloadProgress[currentDownloading] || 0}%`}
+                  </p>
+                </div>
+              )}
+            </div>
             {campaigns?.length === 0 && (
-              <h1 className="text-lg text-red-600 bg-red-200 p-4">
+              <h1 className="text-lg text-red-600 bg-red-200 p-4 mt-4">
                 No Campaign to download report
               </h1>
             )}
           </>
-        )}
-
-        {isDownloading && (
-          <div className="flex flex-col justify-center items-center">
-            <div className="animate-spin border-t-4 border-[#129BFF] border-solid rounded-full w-16 h-16 mb-4"></div>
-            <span className="text-xl text-gray-700">Downloading...</span>
-          </div>
         )}
 
         <div className="items-center py-4">
@@ -258,7 +307,7 @@ export const AllCampaignLogsPopup = ({
               <div className="flex justify-between " key={k}>
                 <div
                   className="p-0 m-0 flex gap-4"
-                  title="Click to select screen to view monitoring data"
+                  title="Click to select screen to view monitoring data hover:border"
                   onClick={() => handelSelectScreen(screen?._id)}
                 >
                   <input
@@ -267,12 +316,42 @@ export const AllCampaignLogsPopup = ({
                     defaultChecked={false}
                     checked={selectedScreens?.includes(screen?._id)}
                   />
-                  <ScreenListMonitoringView
-                    screen={screen}
-                    noImages={false}
-                    showOption={false}
-                    campaignCreated={campaignCreated}
-                  />
+                  <div className="col-span-7 truncate flex flex-col gap-1">
+                    <h1 className="text-[16px] text-[#294558] font-semibold truncate">
+                      {screen?.screenName}
+                    </h1>
+                    <div className="flex gap-2 text-[12px] text-[#6B8494]">
+                      <i className="fi fi-sr-marker"></i>
+                      <h1 className="truncate">
+                        {screen?.location?.address || screen?.location},{" "}
+                        {screen?.location?.city || screen?.city}
+                      </h1>
+                    </div>
+                    {downloadProgress[screen._id] !== undefined && (
+                      <div className="w-full mt-1">
+                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                          <div
+                            className={`h-1.5 rounded-full ${getProgressBarColor(
+                              downloadProgress[screen._id]
+                            )}`}
+                            style={{
+                              width: `${Math.max(
+                                0,
+                                downloadProgress[screen._id]
+                              )}%`,
+                            }}
+                          ></div>
+                        </div>
+                        <p className="text-xs text-right">
+                          {downloadProgress[screen._id] === -1
+                            ? "Failed"
+                            : downloadProgress[screen._id] === 100
+                            ? "Completed"
+                            : `${downloadProgress[screen._id]}%`}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 {recentlyDownloadedScreens?.includes(screen?._id) ? (
                   <h1 className="text-[#348730] pt-4">Downloaded</h1>
