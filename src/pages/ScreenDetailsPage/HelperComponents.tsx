@@ -153,50 +153,126 @@ export const CampaignActions = ({
   </div>
 );
 
+interface Creative {
+  url: string;
+  type?: string;
+  fileType?: string;
+}
+
+interface Campaign1 {
+  creatives?: {
+    standardDayTimeCreatives?: Creative[];
+    standardNightTimeCreatives?: Creative[];
+    triggerCreatives?: Creative[];
+    creativeDuration?: string;
+  };
+}
+
+interface CreativeSectionProps {
+  title: string;
+  creatives: Creative[];
+  campaign?: Campaign1;
+  handleDelete: (creative: Creative) => void;
+  showIcons?: boolean;
+  downloadedMedia?: string[];
+}
+
 export const CreativeSection = ({
   title,
   creatives,
   campaign,
   handleDelete,
   showIcons = false,
-}: any) => (
-  <div className="border-b py-1">
-    <h1 className="text-[12px] mt-1 font-bold">{title}</h1>
-    {creatives?.map((creative: any, j: number) => (
-      <div key={j} className="hover:border border-[#129BFF] p-1 rounded-md">
-        <ShowMediaFile
-          url={creative?.url}
-          mediaType={creative.type?.split("/")[0] || creative.fileType}
-          height="h-full"
-          width="w-full"
-        />
-        <div className="flex justify-between items-center pt-2">
-          <h1 className="text-[14px] truncate">
-            {creative?.url?.split("_")?.pop()}
-          </h1>
-          {showIcons && (
-            <div
-              className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:text-[#FF0B55]"
-              onClick={() => {
-                handleDelete(creative);
-              }}
-            >
-              <i className="fi fi-rs-trash"></i>
-              <h1>Remove</h1>
-            </div>
-          )}
-        </div>
+  downloadedMedia = [],
+}: CreativeSectionProps) => {
+  const getCreativeName = (creative?: Creative) => {
+    return creative?.url.split("/").pop() ?? "";
+  };
 
-        <p className="text-[12px]">
-          {creative?.type?.split("/")[0] === "image" &&
-            campaign?.creatives.creativeDuration}
-          {creative?.type?.split("/")[0] === "image" && "seconds, "}
-          {creative?.type}
-        </p>
-      </div>
-    ))}
-  </div>
-);
+  const creativeNameDay = getCreativeName(
+    campaign?.creatives?.standardDayTimeCreatives?.[0]
+  );
+  const creativeNameNight = getCreativeName(
+    campaign?.creatives?.standardNightTimeCreatives?.[0]
+  );
+  const creativeNameTrigger = getCreativeName(
+    campaign?.creatives?.triggerCreatives?.[0]
+  );
+
+  const getMediaType = (creative: Creative) => {
+    return creative.type?.split("/")[0] || creative.fileType || "unknown";
+  };
+
+  const getFileName = (url: string) => {
+    return url?.split("_").pop() || "";
+  };
+
+  const renderDownloadIcon = (name: string | undefined, type: string) => {
+    if (!name) return null;
+
+    const isDownloaded = downloadedMedia.includes(name);
+    return (
+      <Tooltip
+        title={`${type} Creative ${
+          isDownloaded ? "Downloaded" : "Not Downloaded"
+        }`}
+      >
+        <i
+          className={`fi fi-sr-folder-download ${
+            isDownloaded ? "text-[#22C55E]" : "text-[#EF4444]"
+          } flex items-center justify-center`}
+        />
+      </Tooltip>
+    );
+  };
+
+  return (
+    <div className="border-b py-1">
+      <h1 className="text-[12px] mt-1 font-bold">{title}</h1>
+      {creatives?.map((creative, index) => (
+        <div
+          key={index}
+          className="hover:border border-[#129BFF] p-1 rounded-md"
+        >
+          <ShowMediaFile
+            url={creative.url}
+            mediaType={getMediaType(creative)}
+            height="h-full"
+            width="w-full"
+          />
+
+          <div className="flex justify-between items-center pt-2">
+            <h1 className="text-[14px] truncate">
+              {getFileName(creative.url)}
+            </h1>
+            {showIcons && (
+              <button
+                className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:text-[#FF0B55]"
+                onClick={() => handleDelete(creative)}
+                aria-label="Remove creative"
+              >
+                <i className="fi fi-rs-trash" />
+                <span>Remove</span>
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center justify-start gap-2">
+            <p className="text-[12px]">
+              {getMediaType(creative) === "image" &&
+                campaign?.creatives?.creativeDuration &&
+                `${campaign.creatives.creativeDuration} seconds, `}
+              {creative.type}
+            </p>
+            {renderDownloadIcon(creativeNameDay, "Day")}
+            {renderDownloadIcon(creativeNameNight, "Night")}
+            {renderDownloadIcon(creativeNameTrigger, "Trigger")}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 // Helper Components for better readability
 export const DurationCounter: React.FC<{ duration: number }> = ({

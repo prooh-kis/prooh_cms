@@ -162,7 +162,7 @@ const ScreenPlayList: React.FC<ScreenPlayListProps> = ({
       {loadingCampaigns ? (
         <Loading />
       ) : (
-        <div className="w-full h-[30vh] overflow-y-auto no-scrollbar mb-2">
+        <div className="w-full h-[50vh] overflow-y-auto no-scrollbar mb-2">
           {filteredCampaigns?.map((campaign, index) => (
             <CampaignItem
               key={campaign._id}

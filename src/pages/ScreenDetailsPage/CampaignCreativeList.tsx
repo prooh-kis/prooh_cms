@@ -19,6 +19,7 @@ const CampaignCreativeList = ({
   campaignIds,
   handleDeleteCreative,
   handleCreativeEdit,
+  downloadedMedia,
 }: any) => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
@@ -115,18 +116,25 @@ const CampaignCreativeList = ({
           campaign={currentCampaign}
           showIcons={true}
           handleDelete={handleDeleteCreative}
+          downloadedMedia={downloadedMedia}
         />
 
         <CreativeSection
           title="Night Creatives"
           creatives={currentCampaign?.creatives.standardNightTimeCreatives}
           campaign={currentCampaign}
+          downloadedMedia={downloadedMedia}
+          showIcons={true}
+          handleDelete={handleDeleteCreative}
         />
 
         <CreativeSection
           title="Trigger Creatives"
           creatives={currentCampaign?.creatives.triggerCreatives}
           campaign={currentCampaign}
+          downloadedMedia={downloadedMedia}
+          showIcons={true}
+          handleDelete={handleDeleteCreative}
         />
       </div>
     </div>

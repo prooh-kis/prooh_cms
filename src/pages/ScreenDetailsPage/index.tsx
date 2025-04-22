@@ -447,12 +447,12 @@ export const ScreenDetailsPage: React.FC = () => {
               setCampaignIds={setCampaignIds}
               screen={screen}
             />
-            <div className="my-1">
+            {/* <div className="my-1">
               <CampaignMonitoring
                 campaign={currentCampaign}
                 screenId={screenId}
               />
-            </div>
+            </div> */}
           </div>
           {loadingCampaigns ? (
             <div className="col-span-4 border rounded">
@@ -469,6 +469,7 @@ export const ScreenDetailsPage: React.FC = () => {
               campaignIds={campaignIds}
               handleDeleteCreative={handleDeleteCreative}
               handleCreativeEdit={handleCreativeEdit}
+              downloadedMedia={screen?.downloadedMedia}
             />
           ) : null}
         </div>
