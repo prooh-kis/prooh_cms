@@ -15,6 +15,7 @@ import {
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
 import {
+  addCampaignMonitoringDataReducer,
   allCampaignsDataGetReducer,
   campaignCreatedScreensDetailsGetReducer,
   campaignDetailsGetReducer,
@@ -26,6 +27,7 @@ import {
   editAllSubCampaignsReducer,
   editCampaignCreationByScreenOwnerReducer,
   getAllScreensForScreenOwnerCampaignCreationReducer,
+  getCampaignMonitoringDataReducer,
   myCreateCampaignsVendorRequestsListGetReducer,
   screenDataUploadCreativeGetReducer,
 } from "../reducers/campaignReducers";
@@ -147,6 +149,10 @@ const store = configureStore({
     updateCoupon: updateCouponReducer,
     deleteCoupon: deleteCouponReducer,
     toggleStatusCoupon: toggleStatusCouponReducer,
+
+    // MONETORING
+    addCampaignMonitoring: addCampaignMonitoringDataReducer,
+    getCampaignMonitoring: getCampaignMonitoringDataReducer,
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"

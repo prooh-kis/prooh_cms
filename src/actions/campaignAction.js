@@ -39,9 +39,16 @@ import {
   CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
   CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
   CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
+  GET_CAMPAIGN_MONITORING_DATA_REQUEST,
+  GET_CAMPAIGN_MONITORING_DATA_SUCCESS,
+  GET_CAMPAIGN_MONITORING_DATA_FAIL,
+  ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
+  ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
+  ADD_CAMPAIGN_MONITORING_DATA_FAIL,
 } from "../constants/campaignConstants";
 
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
+import { CAMPAIGN_MONITORING_DATA_ADD_CMS } from "../constants/userConstants";
 
 export const createCampaignCreationByScreenOwnerAction =
   (input) => async (dispatch, getState) => {
@@ -57,7 +64,7 @@ export const createCampaignCreationByScreenOwnerAction =
       const { data } = await axios.post(
         `${campaignV2}/createCampaignByScreenOwner`,
         input,
-        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
 
       dispatch({
@@ -89,7 +96,7 @@ export const editCampaignCreationByScreenOwnerAction =
       const { data } = await axios.post(
         `${campaignV2}/editCampaignByScreenOwner`,
         input,
-        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
 
       dispatch({
@@ -111,17 +118,17 @@ export const getAllScreensForScreenOwnerCampaignCreationAction =
   (input) => async (dispatch, getState) => {
     dispatch({
       type: GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_REQUEST,
-      payload: input
+      payload: input,
     });
     try {
-
       const {
         auth: { userInfo },
       } = getState();
 
       const { data } = await axios.post(
-        `${campaignV2}/getAllScreensForScreenOwner`, input,
-        { headers: { authorization: `Bearer ${userInfo.token}` }, }
+        `${campaignV2}/getAllScreensForScreenOwner`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
 
       dispatch({
@@ -140,97 +147,96 @@ export const getAllScreensForScreenOwnerCampaignCreationAction =
   };
 
 export const getScreenDataUploadCreativeAction =
-  (input) =>
-    async (dispatch, getState) => {
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(
+        `${screenV2}/screenDataUploadCreativeForCms`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+
       dispatch({
-        type: GET_SCREEN_DATA_UPLOAD_CREATIVE_REQUEST,
-        payload: input,
+        type: GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
+        payload: data,
       });
-      try {
+    } catch (error) {
+      dispatch({
+        type: GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
-        const {
-          auth: { userInfo },
-        } = getState();
-
-        const { data } = await axios.post(
-          `${screenV2}/screenDataUploadCreativeForCms`, input,
-          { headers: { authorization: `Bearer ${userInfo.token}` }, }
-        );
-
-        dispatch({
-          type: GET_SCREEN_DATA_UPLOAD_CREATIVE_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_SCREEN_DATA_UPLOAD_CREATIVE_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
-
-export const getAllCampaignsDetailsAction = (input) => async (dispatch, getState) => {
-  dispatch({
-    type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
-    payload: input,
-  });
-  try {
-
-    const {
-      auth: { userInfo },
-    } = getState();
-
-    const { data } = await axios.post(`${campaignV2}/all`, input,
-      { headers: { authorization: `Bearer ${userInfo.token}` }, }
-    );
+export const getAllCampaignsDetailsAction =
+  (input) => async (dispatch, getState) => {
     dispatch({
-      type: GET_ALL_CAMPAIGNS_DATA_SUCCESS,
-      payload: data,
+      type: GET_ALL_CAMPAIGNS_DATA_REQUEST,
+      payload: input,
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ALL_CAMPAIGNS_DATA_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(`${campaignV2}/all`, input, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      dispatch({
+        type: GET_ALL_CAMPAIGNS_DATA_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_ALL_CAMPAIGNS_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const getCampaignDetailsAction =
-  (input) =>
-    async (dispatch, getState) => {
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_CAMPAIGN_DATA_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(
+        `${campaignV2}/campaignDetails`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
       dispatch({
-        type: GET_CAMPAIGN_DATA_REQUEST,
-        payload: input,
+        type: GET_CAMPAIGN_DATA_SUCCESS,
+        payload: data,
       });
-      try {
-
-        const {
-          auth: { userInfo },
-        } = getState();
-
-        const { data } = await axios.post(`${campaignV2}/campaignDetails`, input,
-          { headers: { authorization: `Bearer ${userInfo.token}` }, }
-        );
-        dispatch({
-          type: GET_CAMPAIGN_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_CAMPAIGN_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGN_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 export const getFullCampaignDetailsAction =
   (campaignId) => async (dispatch) => {
     dispatch({
@@ -258,91 +264,92 @@ export const getFullCampaignDetailsAction =
 
 export const getCampaignCreatedScreensDetailsAction =
   ({ screenIds }) =>
-    async (dispatch) => {
+  async (dispatch) => {
+    dispatch({
+      type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
+      payload: { screenIds },
+    });
+    try {
+      const { data } = await axios.post(
+        `${campaignV2}/campaignCreatedScreensDetails`,
+        { screenIds }
+      );
       dispatch({
-        type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
-        payload: { screenIds },
+        type: GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
+        payload: data,
       });
-      try {
-        const { data } = await axios.post(
-          `${campaignV2}/campaignCreatedScreensDetails`,
-          { screenIds }
-        );
-        dispatch({
-          type: GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
-export const changeCampaignStatusAction = (input) => async (dispatch, getState) => {
-  dispatch({
-    type: CAMPAIGN_STATUS_CHANGE_REQUEST,
-    payload: input,
-  });
-  try {
-    const {
-      auth: { userInfo },
-    } = getState();
-
-    const { data } = await axios.post(
-      `${campaignV2}/changeCampaignStatus`,
-      input,
-      { headers: { authorization: `Bearer ${userInfo.token}` }, }
-    );
+export const changeCampaignStatusAction =
+  (input) => async (dispatch, getState) => {
     dispatch({
-      type: CAMPAIGN_STATUS_CHANGE_SUCCESS,
-      payload: data,
+      type: CAMPAIGN_STATUS_CHANGE_REQUEST,
+      payload: input,
     });
-  } catch (error) {
-    dispatch({
-      type: CAMPAIGN_STATUS_CHANGE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
 
-export const editAllSubCampaignsAction = (input) => async (dispatch, getState) => {
-  dispatch({
-    type: EDIT_ALL_SUB_CAMPAIGNS_REQUEST,
-    payload: input,
-  });
-  try {
+      const { data } = await axios.post(
+        `${campaignV2}/changeCampaignStatus`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({
+        type: CAMPAIGN_STATUS_CHANGE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CAMPAIGN_STATUS_CHANGE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
-    const {
-      auth: { userInfo },
-    } = getState();
+export const editAllSubCampaignsAction =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: EDIT_ALL_SUB_CAMPAIGNS_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
 
-    const { data } = await axios.put(
-      `${campaignV2}/updateCampaignCreationAndItsAllSubCampaigns`,
-      input,
-      { headers: { authorization: `Bearer ${userInfo.token}` }, }
-    );
-    dispatch({
-      type: EDIT_ALL_SUB_CAMPAIGNS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: EDIT_ALL_SUB_CAMPAIGNS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      const { data } = await axios.put(
+        `${campaignV2}/updateCampaignCreationAndItsAllSubCampaigns`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({
+        type: EDIT_ALL_SUB_CAMPAIGNS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: EDIT_ALL_SUB_CAMPAIGNS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const campaignLogsByCampaignIdAction =
   (campaignId) => async (dispatch) => {
@@ -369,63 +376,137 @@ export const campaignLogsByCampaignIdAction =
     }
   };
 
-
 export const getMyCreateCampaignsVendorRequestsList =
-  (input) =>
-    async (dispatch, getState) => {
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const { data } = await axios.post(
+        `${campaignV2}/campaignCreationsScreenVendor`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
       dispatch({
-        type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_REQUEST,
-        payload: input,
+        type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
+        payload: data,
       });
-      try {
-        const {
-          auth: { userInfo },
-        } = getState();
-        const { data } = await axios.post(
-          `${campaignV2}/campaignCreationsScreenVendor`, input,
-          { headers: { authorization: `Bearer ${userInfo.token}` }, }
-        );
-        dispatch({
-          type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
-          payload: {
-            message: error.message,
-            status: error.response?.status,
-            data: error.response?.data,
-          },
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
 
 export const changeCampaignStatusAfterVendorApproval =
-  (input) =>
-    async (dispatch, getState) => {
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const { data } = await axios.post(
+        `${campaignV2}/approveCampaignScreenVendor`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
       dispatch({
-        type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
-        payload: input,
+        type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
+        payload: data,
       });
-      try {
-        const {
-          auth: { userInfo },
-        } = getState();
-        const { data } = await axios.post(`${campaignV2}/approveCampaignScreenVendor`, input,
-          { headers: { authorization: `Bearer ${userInfo.token}` }, });
-        dispatch({
-          type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
-          payload: {
-            message: error.message,
-            status: error.response?.status,
-            data: error.response?.data,
-          },
-        });
-      }
-    };
+    } catch (error) {
+      dispatch({
+        type: CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
+
+// addCampaignMonitoringData
+// getCampaignMonitoringData
+
+export const addCampaignMonitoringDataAction =
+  ({ campaignId, monitoringData }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
+      payload: { campaignId, monitoringData },
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      const { data } = await axios.post(
+        `${campaignV2}/addCampaignMonitoringData`,
+        { campaignId, monitoringData },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+          params: { event: CAMPAIGN_MONITORING_DATA_ADD_CMS },
+        }
+      );
+
+      dispatch({
+        type: ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ADD_CAMPAIGN_MONITORING_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const getCampaignMonitoringDataAction =
+  ({ campaignId }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: GET_CAMPAIGN_MONITORING_DATA_REQUEST,
+      payload: campaignId,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+
+      console.log("getCampaignMonitoringDataAction : ", campaignId);
+
+      const { data } = await axios.get(
+        `${campaignV2}/getCampaignMonitoringData?campaignId=${campaignId}`,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+
+      dispatch({
+        type: GET_CAMPAIGN_MONITORING_DATA_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGN_MONITORING_DATA_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

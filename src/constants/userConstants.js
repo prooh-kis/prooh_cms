@@ -109,6 +109,8 @@ export const CREATIVE_GET_CMS = "creativeGetCms"
 export const CREATIVE_ADD_CMS = "creativeAddCms"
 // coupons
 export const COUPON_ADD_CMS = "couponAddCms";
+// monitoring
+export const CAMPAIGN_MONITORING_DATA_ADD_CMS = "campaignMonitoringDataAddCms";
 
 // not in use as of now
 export const CAMPAIGN_CREATION_CMS = "campaignCreationCms"
