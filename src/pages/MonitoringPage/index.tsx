@@ -257,7 +257,7 @@ export const MonitoringPage: React.FC = () => {
           </Panel>
 
           {/* Campaigns Panel */}
-          <Panel title="Campaign List" className="col-span-2">
+          <Panel title="Campaign List" className="col-span-3">
             <div className="mt-2">
               <SearchInputField
                 placeholder="Brand Name"
@@ -288,7 +288,7 @@ export const MonitoringPage: React.FC = () => {
           {monitoringScreen && monitoringCampaign && (
             <Panel
               title={monitoringCampaign?.name}
-              className="col-span-7"
+              className="col-span-6"
               buttonTitle="Save Monitoring Data"
               isShow={true}
               loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
