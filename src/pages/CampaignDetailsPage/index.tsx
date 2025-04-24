@@ -230,7 +230,7 @@ export const CampaignDetailsPage: React.FC = () => {
     }
 
     if (  successConvertCreativesToRespectiveBitrate){
-      message.success("Campaign Creatives Convertion to respective Bitrate Started");
+      message.success("Campaign Creatives Convertion to respective Bitrate Started . It will get reflected in 5 mins");
       dispatch({
         type: CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
       });
