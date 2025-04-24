@@ -210,7 +210,7 @@ export const CreativeSection = ({
   const renderDownloadIcon = (name: string | undefined, type: string) => {
     if (!name) return null;
 
-    const isDownloaded = downloadedMedia.includes(name);
+    const isDownloaded = downloadedMedia?.includes(name);
     return (
       <Tooltip
         title={`${type} Creative ${
