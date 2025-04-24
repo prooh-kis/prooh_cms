@@ -20,6 +20,7 @@ import {
   convertIntoDateAndTime,
   getCampaignEndingStatus,
 } from "../../utils/dateAndTimeUtils";
+import { useDispatch } from "react-redux";
 
 const CampaignDetailSection = ({
   campaignCreated,
@@ -30,9 +31,11 @@ const CampaignDetailSection = ({
   campaignId,
   setOpenCreateCampaignEndDateChangePopup,
   handleChangeStatusAll,
+  handleConvertCreativeToRespectiveBitrate,
   openCreateCampaignEndDateChangePopup,
 }: any) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="w-full border rounded py-4 bg-white">
       <div className="flex justify-between pb-2 mx-1 border-b">
@@ -80,6 +83,12 @@ const CampaignDetailSection = ({
               <Skeleton active paragraph={{ rows: 1 }} />
             ) : (
               <div className=" flex h-auto gap-4">
+                <Tooltip title="Change Creatives According To Bitrate">
+                  <i
+                    className="fi fi-rr-replace text-gray-500"
+                    onClick={() => handleConvertCreativeToRespectiveBitrate()}
+                  ></i>
+                </Tooltip>
                 <Tooltip title="Get all campaigns logs">
                   <i
                     className="fi fi-rr-document text-gray-500"

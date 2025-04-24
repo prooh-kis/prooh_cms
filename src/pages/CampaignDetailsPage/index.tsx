@@ -6,12 +6,15 @@ import { Loading } from "../../components/Loading";
 
 import {
   changeCampaignStatusAction,
+  convertCreativesToRespectiveBitrate,
   editAllSubCampaignsAction,
   getCampaignCreatedScreensDetailsAction,
   getCampaignDetailsAction,
 } from "../../actions/campaignAction";
 import { confirmData } from "../../utils/champaignStatusUtils";
 import {
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
   CAMPAIGN_STATUS_CHANGE_RESET,
   EDIT_ALL_SUB_CAMPAIGNS_RESET,
 } from "../../constants/campaignConstants";
@@ -25,6 +28,7 @@ import {
   AllCampaignLogsPopup,
 } from "../../components";
 import {
+  CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS,
   CAMPAIGN_CREATION_EDIT_END_DATE_CMS,
   CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS,
 } from "../../constants/userConstants";
@@ -32,6 +36,7 @@ import CampaignCreatives from "./CampaignCreatives";
 import CampaignScreenList from "./CampaignScreenList";
 import { creativeTypeTab } from "../../constants/tabDataConstant";
 import CampaignDetailSection from "./CampaignDetailSection";
+import { stat } from "fs";
 
 export const CampaignDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -124,6 +129,16 @@ export const CampaignDetailsPage: React.FC = () => {
     success: successChange,
   } = changeCampaignCreativeEndDate;
 
+  const convertCreativesToRespectiveBitrates = useSelector(
+    (state : any) => state.convertCreativesToRespectiveBitrates
+  )
+
+  const {
+    loading: loadingConvertCreativesToRespectiveBitrate,
+    error: errorConvertCreativesToRespectiveBitarate,
+    success: successConvertCreativesToRespectiveBitrate,
+  } = convertCreativesToRespectiveBitrates;
+
   const handleEditAllSubCampaigns = (
     campaignCreationId: string,
     endDate: any
@@ -213,7 +228,14 @@ export const CampaignDetailsPage: React.FC = () => {
       });
       window.location.reload();
     }
-  }, [dispatch, successStatusChange, errorStatusChange, successChange]);
+
+    if (  successConvertCreativesToRespectiveBitrate){
+      message.success("Campaign Creatives Convertion to respective Bitrate Started");
+      dispatch({
+        type: CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
+      });
+    }
+  }, [dispatch, successStatusChange, errorStatusChange, successChange , successConvertCreativesToRespectiveBitrate]);
 
   useEffect(() => {
     // if (userInfo && !userInfo?.isMaster) {
@@ -245,6 +267,17 @@ export const CampaignDetailsPage: React.FC = () => {
   const getCampaignIdsToChangeStatus = () => {
     return campaignCreated?.campaigns?.map((campaign: any) => campaign._id);
   };
+
+  const handleConvertCreativeToRespectiveBitrate = () => {
+    if (confirm("Are you sure you want to convert creatives?")) {
+      dispatch(
+        convertCreativesToRespectiveBitrate({
+          id : campaignCreated._id ,
+          event : CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS
+        })
+      );
+    }
+  }
 
   const handleChangeStatusAll = (status: string, event: string) => {
     if (confirm(confirmData[status])) {
@@ -438,6 +471,9 @@ export const CampaignDetailsPage: React.FC = () => {
             handleChangeStatusAll={handleChangeStatusAll}
             openCreateCampaignEndDateChangePopup={
               openCreateCampaignEndDateChangePopup
+            }
+            handleConvertCreativeToRespectiveBitrate={
+              handleConvertCreativeToRespectiveBitrate
             }
             campaignCreated={campaignCreated}
           />

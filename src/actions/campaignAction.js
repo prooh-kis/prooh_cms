@@ -45,6 +45,9 @@ import {
   ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
   ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
   ADD_CAMPAIGN_MONITORING_DATA_FAIL,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_FAIL,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
 } from "../constants/campaignConstants";
 
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
@@ -264,30 +267,30 @@ export const getFullCampaignDetailsAction =
 
 export const getCampaignCreatedScreensDetailsAction =
   ({ screenIds }) =>
-  async (dispatch) => {
-    dispatch({
-      type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
-      payload: { screenIds },
-    });
-    try {
-      const { data } = await axios.post(
-        `${campaignV2}/campaignCreatedScreensDetails`,
-        { screenIds }
-      );
+    async (dispatch) => {
       dispatch({
-        type: GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
-        payload: data,
+        type: GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
+        payload: { screenIds },
       });
-    } catch (error) {
-      dispatch({
-        type: GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      try {
+        const { data } = await axios.post(
+          `${campaignV2}/campaignCreatedScreensDetails`,
+          { screenIds }
+        );
+        dispatch({
+          type: GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const changeCampaignStatusAction =
   (input) => async (dispatch, getState) => {
@@ -443,70 +446,101 @@ export const changeCampaignStatusAfterVendorApproval =
 
 export const addCampaignMonitoringDataAction =
   ({ campaignId, monitoringData }) =>
-  async (dispatch, getState) => {
-    dispatch({
-      type: ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
-      payload: { campaignId, monitoringData },
-    });
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-
-      const { data } = await axios.post(
-        `${campaignV2}/addCampaignMonitoringData`,
-        { campaignId, monitoringData },
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-          params: { event: CAMPAIGN_MONITORING_DATA_ADD_CMS },
-        }
-      );
-
+    async (dispatch, getState) => {
       dispatch({
-        type: ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
-        payload: data,
+        type: ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
+        payload: { campaignId, monitoringData },
       });
-    } catch (error) {
-      dispatch({
-        type: ADD_CAMPAIGN_MONITORING_DATA_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      try {
+        const {
+          auth: { userInfo },
+        } = getState();
+
+        const { data } = await axios.post(
+          `${campaignV2}/addCampaignMonitoringData`,
+          { campaignId, monitoringData },
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+            params: { event: CAMPAIGN_MONITORING_DATA_ADD_CMS },
+          }
+        );
+
+        dispatch({
+          type: ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: ADD_CAMPAIGN_MONITORING_DATA_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
 
 export const getCampaignMonitoringDataAction =
   ({ campaignId }) =>
-  async (dispatch, getState) => {
+    async (dispatch, getState) => {
+      dispatch({
+        type: GET_CAMPAIGN_MONITORING_DATA_REQUEST,
+        payload: campaignId,
+      });
+      try {
+        const {
+          auth: { userInfo },
+        } = getState();
+
+        console.log("getCampaignMonitoringDataAction : ", campaignId);
+
+        const { data } = await axios.get(
+          `${campaignV2}/getCampaignMonitoringData?campaignId=${campaignId}`,
+          { headers: { authorization: `Bearer ${userInfo.token}` } }
+        );
+
+        dispatch({
+          type: GET_CAMPAIGN_MONITORING_DATA_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_CAMPAIGN_MONITORING_DATA_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };
+
+export const convertCreativesToRespectiveBitrate = (input) => async (dispatch, getState) => {
+  dispatch({
+    type: CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
+    payload: input,
+  });
+  try {
+    const {
+      auth: { userInfo },
+    } = getState();
+
+    const { data } = await axios.post(
+      `${campaignV2}/convertCreativesToRespectiveBitrate`,
+      input,
+      { headers: { authorization: `Bearer ${userInfo.token}` } }
+    );
+
     dispatch({
-      type: GET_CAMPAIGN_MONITORING_DATA_REQUEST,
-      payload: campaignId,
+      type: CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
+      payload: data,
     });
-    try {
-      const {
-        auth: { userInfo },
-      } = getState();
-
-      console.log("getCampaignMonitoringDataAction : ", campaignId);
-
-      const { data } = await axios.get(
-        `${campaignV2}/getCampaignMonitoringData?campaignId=${campaignId}`,
-        { headers: { authorization: `Bearer ${userInfo.token}` } }
-      );
-
-      dispatch({
-        type: GET_CAMPAIGN_MONITORING_DATA_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: GET_CAMPAIGN_MONITORING_DATA_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+  } catch (error) {
+    dispatch({
+      type: CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

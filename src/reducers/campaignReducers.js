@@ -4,6 +4,10 @@ import {
   ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
   ADD_CAMPAIGN_MONITORING_DATA_RESET,
   ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_FAIL,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
+  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
   CAMPAIGN_STATUS_CHANGE_FAIL,
   CAMPAIGN_STATUS_CHANGE_REQUEST,
   CAMPAIGN_STATUS_CHANGE_RESET,
@@ -354,6 +358,29 @@ export function addCampaignMonitoringDataReducer(state = [], action) {
         success: false,
       };
     case ADD_CAMPAIGN_MONITORING_DATA_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function convertCreativesToRespectiveBitrateReducer ( state = [] , action ){
+  switch (action.type) {
+    case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST :
+      return { loading: true };
+    case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET:
       return {};
     default:
       return state;
