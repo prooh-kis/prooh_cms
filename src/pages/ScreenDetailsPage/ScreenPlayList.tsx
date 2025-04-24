@@ -71,8 +71,8 @@ const ScreenPlayList: React.FC<ScreenPlayListProps> = ({
 
   const filteredCampaigns = campaigns?.filter(
     (campaign) =>
-      campaign.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      campaign.brandName.toLowerCase().includes(searchQuery.toLowerCase())
+      campaign?.name?.toLowerCase()?.includes(searchQuery.toLowerCase()) ||
+      campaign?.brandName?.toLowerCase()?.includes(searchQuery.toLowerCase())
   );
 
   const showDurationCounter = ["1", "2"].includes(currentTab);

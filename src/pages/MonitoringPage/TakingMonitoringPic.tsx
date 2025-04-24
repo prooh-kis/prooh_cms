@@ -4,14 +4,14 @@ import { FileUpload } from "../../components/atoms/FileUpload";
 import { Loading } from "../../components/Loading";
 import RadioGroupInput from "../../components/atoms/RadioGroupInput";
 import { MonitoringData, MonitoringUrlData } from "../../types/monitoringTypes";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ShowUploadedCard } from "./MonitoringReUsableComp";
 
 interface DummyDataItem {
   label: string;
   value: string;
   count: number;
-  icon: JSX.Element;
+  iconType: string;
 }
 
 export const TakingMonitoringPic = ({
@@ -29,7 +29,7 @@ export const TakingMonitoringPic = ({
   currentTab: string;
   setCurrentTab: (value: string) => void;
 }) => {
-  const getColorCode = useCallback(() => {
+  const colorCode = useMemo(() => {
     return currentTab === "startDate"
       ? "text-[#5AAF69]"
       : currentTab === "midDate"
@@ -40,7 +40,7 @@ export const TakingMonitoringPic = ({
   const [monitoringType, setMonitoringType] = useState<string>("dayShot");
   const [uploadedFiles, setUploadedFiles] = useState<MonitoringUrlData[]>([]);
 
-  // Initialize dummyData structure without colors
+  // Initialize dummyData structure with icon types only
   const [dummyDataBase] = useState([
     { label: "Day Shots", value: "dayShot", iconType: "fi-rs-brightness" },
     {
@@ -61,30 +61,13 @@ export const TakingMonitoringPic = ({
     { label: "Night Shots", value: "nightShot", iconType: "fi-ss-moon" },
   ]);
 
-  // Generate dummyData with current colors
+  // Generate dummyData without full icon elements
   const [dummyData, setDummyData] = useState<DummyDataItem[]>(() =>
     dummyDataBase.map((item) => ({
       ...item,
       count: 0,
-      icon: <i className={`fi ${item.iconType} ${getColorCode()}`}></i>,
     }))
   );
-
-  // Update colors when tab changes
-  useEffect(() => {
-    setDummyData((prev) =>
-      prev.map((item) => ({
-        ...item,
-        icon: (
-          <i
-            className={`fi ${
-              item.icon.props.className.split(" ")[1]
-            } ${getColorCode()}`}
-          ></i>
-        ),
-      }))
-    );
-  }, [getColorCode]);
 
   const getCurrentData = (): MonitoringData => {
     return (
@@ -202,18 +185,46 @@ export const TakingMonitoringPic = ({
     );
   };
 
+  const tabOrder = ["startDate", "midDate", "endDate"] as const;
+  const availableDateTypes = (result || [])
+    .map((d: MonitoringData) => d.dateType)
+    .filter((value): value is string => value != "");
+
+  const getTabData = () => {
+    const labelMap = {
+      startDate: "Start Date",
+      midDate: "Mid Date",
+      endDate: "End Date",
+    } as const;
+
+    return tabOrder
+      .filter((key) => availableDateTypes.includes(key))
+      .map((key) => ({
+        label: labelMap[key],
+        id: key,
+      }));
+  };
+
+  // Memoize the radio group items with current color
+  const radioGroupItems = useMemo(() => {
+    return dummyData.map((item) => ({
+      ...item,
+      icon: <i className={`fi ${item.iconType} ${colorCode}`}></i>,
+    }));
+  }, [dummyData, colorCode]);
+
   return (
     <div>
       {pageLoading ? (
         <Loading />
+      ) : availableDateTypes?.length === 0 ? (
+        <h1 className="py-2 px-8 text-[#FF0000] text-[16px]">
+          Monitoring data not selected
+        </h1>
       ) : (
         <div>
           <MyTab
-            tabData={[
-              { label: "Start Date", id: "startDate" },
-              { label: "Mid Date", id: "midDate" },
-              { label: "End Date", id: "endDate" },
-            ]}
+            tabData={getTabData()}
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}
           />
@@ -229,7 +240,7 @@ export const TakingMonitoringPic = ({
           </div>
 
           <RadioGroupInput
-            initialValues={dummyData}
+            initialValues={radioGroupItems}
             value={monitoringType}
             setValue={setMonitoringType}
           />
@@ -249,12 +260,7 @@ export const TakingMonitoringPic = ({
               <h3 className="font-medium mb-2">
                 Uploaded Files{" "}
                 <span className="text-gray-500 text-[12px]">
-                  (
-                  {
-                    dummyData?.find((d: any) => d?.value === monitoringType)
-                      ?.count
-                  }
-                  )
+                  ({dummyData.find((d) => d.value === monitoringType)?.count})
                 </span>
               </h3>
               <div className="grid grid-cols-3 gap-4 h-[30vh] overflow-auto">
@@ -264,7 +270,7 @@ export const TakingMonitoringPic = ({
                     fileData={fileData}
                     handleRemoveFile={handleRemoveFile}
                     index={index}
-                    dummyData={dummyData}
+                    dummyData={radioGroupItems}
                     monitoringType={monitoringType}
                   />
                 ))}

@@ -51,8 +51,6 @@ export const MonitoringPage: React.FC = () => {
     data: campaigns,
   } = screenCampaignsDetailsGet;
 
-  // console.log("camp : ", campaigns);
-
   const getCampaignMonitoring = useSelector(
     (state: any) => state.getCampaignMonitoring
   );
@@ -62,8 +60,6 @@ export const MonitoringPage: React.FC = () => {
     success: successGetCampaignMonitoring,
     data: monitoringData,
   } = getCampaignMonitoring;
-
-  console.log("monitoringData : ", monitoringData);
 
   const addCampaignMonitoring = useSelector(
     (state: any) => state.addCampaignMonitoring
@@ -218,6 +214,11 @@ export const MonitoringPage: React.FC = () => {
     }
   };
 
+  const labels =
+    result
+      ?.map((d: MonitoringData) => d.dateType)
+      ?.filter((value) => value != "") || [];
+
   return (
     <div className="w-full">
       <div className="w-full">
@@ -290,7 +291,7 @@ export const MonitoringPage: React.FC = () => {
               title={monitoringCampaign?.name}
               className="col-span-6"
               buttonTitle="Save Monitoring Data"
-              isShow={true}
+              isShow={labels?.length > 0 ? true : false}
               loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
               onClick={handleSave}
             >
