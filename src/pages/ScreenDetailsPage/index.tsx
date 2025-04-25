@@ -291,12 +291,12 @@ export const ScreenDetailsPage: React.FC = () => {
 
   const getDurationCount = () => {
     return campaigns?.reduce((total: number, campaign: any) => {
-      return Math.round(
+      return (
         total +
           (campaign?.creatives?.creativeDuration || 10) *
             (campaign?.atIndex?.length || 1)
       );
-    }, 0);
+    }, 0).toFixed(2);
   };
 
   const handleDeleteCreative = (input: any) => {
