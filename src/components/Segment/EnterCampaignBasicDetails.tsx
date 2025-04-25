@@ -22,16 +22,18 @@ import {
 } from "../../actions/campaignAction";
 import {
   CAMPAIGN_STATUS_ACTIVE,
+  CONTINUOUS_SOV,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
+  ORDERED_SOV,
+  RANDOM_SOV,
+  SOV_TYPE_ARRAY,
 } from "../../constants/campaignConstants";
 import {
   DropdownInput,
   EnterTimeTriggerPopup,
-  MultiSelectInput,
   ReloadButton,
   SearchableSelect,
   SuggestionInput,
-  SwitchInput,
 } from "../../components";
 import { getAllBrandAndNetworkAction } from "../../actions/creativeAction";
 import { SelectScreensViaNetwork } from "../../components/molecules/SelectScreensViaNetwork";
@@ -39,13 +41,13 @@ import {
   addClientAgencyDetails,
   getAllClientAgencyNames,
 } from "../../actions/clientAgencyAction";
-import { ADD_CLIENT_AGENCY_DETAILS_RESET } from "../../constants/clientAgencyConstants";
 import {
   CAMPAIGN_CREATION_CMS,
   CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
   CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
   SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS,
 } from "../../constants/userConstants";
+import { RadioInput } from "../../components/atoms/RadioInput";
 
 interface EnterCampaignBasicDetailsProps {
   userInfo?: any;
@@ -60,9 +62,23 @@ interface EnterCampaignBasicDetailsProps {
   purpose?: string;
 }
 
-const allIndex = [1, 2, 3, 6 , 18].map((value) => {
+const allIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map((value) => {
   return {
     label: value.toString(),
+    value: value,
+  };
+});
+
+const allIndexOrderedSov = [1, 2, 3, 6, 18].map((value) => {
+  return {
+    label: value.toString(),
+    value: value,
+  };
+});
+
+const sovTypeArrayDropdown = SOV_TYPE_ARRAY.map((value) => {
+  return {
+    label: value,
     value: value,
   };
 });
@@ -93,15 +109,16 @@ export const EnterCampaignBasicDetails = ({
   const [industry, setIndustry] = useState<any>("");
   const [screenIds, setScreenIds] = useState<any>([]);
   const [atIndex, setAtIndex] = useState<any>([0]);
+  const [selectedSovType, setSelectedSovType] = useState<any>(CONTINUOUS_SOV);
 
   const [sov, setSov] = useState<number>(1);
 
   const [startDate, setStartDate] = useState<any>(new Date()
-  ?.toISOString()
-  ?.slice(0, 10));
+    ?.toISOString()
+    ?.slice(0, 10));
   const [endDate, setEndDate] = useState<any>(new Date()
-  ?.toISOString()
-  ?.slice(0, 10));
+    ?.toISOString()
+    ?.slice(0, 10));
 
   const [duration, setDuration] = useState<any>("30");
 
@@ -230,6 +247,7 @@ export const EnterCampaignBasicDetails = ({
       campaignManagerId: userInfo?.primaryUserId,
       campaignManagerEmail: userInfo?.primaryUserEmail,
       sov: sov,
+      sovType: selectedSovType,
       atIndex,
       screenIds: screenIds,
       creatives: campaignsCreated?.creatives || [],
@@ -296,7 +314,7 @@ export const EnterCampaignBasicDetails = ({
         getAllCampaignsDetailsAction({
           userId: userInfo?.primaryUserId,
           status: CAMPAIGN_STATUS_ACTIVE,
-          event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
+          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
         })
       );
       setStep(2);
@@ -328,22 +346,22 @@ export const EnterCampaignBasicDetails = ({
       setStartDate(new Date(details?.startDate)?.toISOString()?.slice(0, 16));
       setEndDate(new Date(details?.endDate)?.toISOString()?.slice(0, 16));
       setDuration(details?.duration);
-    // } else {
-    //   console.log("2", brandName);
-    //   console.log("2", getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
-    
-    //   setCampaignName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name);
-    //   setBrandName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
-    //   setClientName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.clientName);
-    //   setIndustry(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.industry);
-    //   setScreenIds(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds);
-    //   setAtIndex(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex);
-    //   setSov(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov);
-    //   setStartDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate))
-    //   setEndDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate));
-    //   setDuration(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.duration);
+      // } else {
+      //   console.log("2", brandName);
+      //   console.log("2", getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
+
+      //   setCampaignName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.name);
+      //   setBrandName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.brandName);
+      //   setClientName(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.clientName);
+      //   setIndustry(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.industry);
+      //   setScreenIds(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.screenIds);
+      //   setAtIndex(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.atIndex);
+      //   setSov(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.sov);
+      //   setStartDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.startDate))
+      //   setEndDate(parseValidDate(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.endDate));
+      //   setDuration(getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.duration);
     }
-  },[successDetails, campaignId, details]);
+  }, [successDetails, campaignId, details]);
 
   useEffect(() => {
     if (getDataFromLocalStorage(ALL_BRAND_LIST)) {
@@ -356,7 +374,7 @@ export const EnterCampaignBasicDetails = ({
       !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
     ) {
       dispatch(getAllScreensForScreenOwnerCampaignCreationAction({
-        event : SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
+        event: SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
       }));
     }
   }, [dispatch, allScreens]);
@@ -491,45 +509,7 @@ export const EnterCampaignBasicDetails = ({
                 />
               </div>
             </div>
-            {/* priority and screens */}
-            <div className="grid grid-cols-2 gap-8 pt-2">
-              <div className="col-span-1 py-1">
-                <label className="block text-secondaryText text-[14px] mb-2">
-                  Screens
-                </label>
-
-                {loadingAllScreens ? (
-                  <h1>Loading Screens</h1>
-                ) : (
-                  <SelectScreensViaNetwork
-                    screenList={
-                      getDataFromLocalStorage(
-                        ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-                      )?.screensList || []
-                    }
-                    setSelectedOptions={handleScreenSelection}
-                    selectedOptions={screenIds}
-                    placeHolder="Select screens"
-                    networkWithScreens={
-                      getDataFromLocalStorage(
-                        ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
-                      )?.networkWithScreens || []
-                    }
-                  />
-                )}
-              </div>
-              <div className="col-span-1 py-1">
-                <label className="block text-secondaryText text-[14px] mb-2">
-                  SOV
-                </label>
-                <DropdownInput
-                  options={allIndex}
-                  selectedOptions={sov}
-                  placeHolder="Select SOV"
-                  setSelectedOption={setSov}
-                />
-              </div>
-            </div>
+            {/* start Date & End Date */}
             <div className="grid grid-cols-2 gap-8 pt-2">
               <div className="col-span-1 py-1">
                 <label className="block text-secondaryText text-[14px] mb-2">
@@ -538,9 +518,9 @@ export const EnterCampaignBasicDetails = ({
                 {purpose === "Edit" ? (
                   <div
                     className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                    // onClick={() => {
-                    //   alert("You can't edit start date");
-                    // }}
+                  // onClick={() => {
+                  //   alert("You can't edit start date");
+                  // }}
                   >
                     <h1 className="text-[14px]">
                       {new Date(startDate).toLocaleDateString()}
@@ -587,6 +567,31 @@ export const EnterCampaignBasicDetails = ({
               </div>
             </div>
             <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  Screens
+                </label>
+
+                {loadingAllScreens ? (
+                  <h1>Loading Screens</h1>
+                ) : (
+                  <SelectScreensViaNetwork
+                    screenList={
+                      getDataFromLocalStorage(
+                        ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                      )?.screensList || []
+                    }
+                    setSelectedOptions={handleScreenSelection}
+                    selectedOptions={screenIds}
+                    placeHolder="Select screens"
+                    networkWithScreens={
+                      getDataFromLocalStorage(
+                        ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
+                      )?.networkWithScreens || []
+                    }
+                  />
+                )}
+              </div>
               <div className="col-span-1 py-1 text-[14px]">
                 <label className="block text-secondaryText  mb-2">
                   Schedule Time{" "}
@@ -599,7 +604,30 @@ export const EnterCampaignBasicDetails = ({
                   <h1>Set Ad Play Time</h1>
                 </div>
               </div>
-              <div className="col-span-1 py-1"></div>
+            </div>
+            <div className="grid grid-cols-2 gap-8 pt-2">
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  SOV Type
+                </label>
+                <DropdownInput
+                  options={sovTypeArrayDropdown}
+                  selectedOptions={selectedSovType}
+                  placeHolder="Select SOV Type"
+                  setSelectedOption={setSelectedSovType}
+                />
+              </div>
+              <div className="col-span-1 py-1">
+                <label className="block text-secondaryText text-[14px] mb-2">
+                  SOV
+                </label>
+                <DropdownInput
+                  options={selectedSovType == ORDERED_SOV ? allIndexOrderedSov : allIndex}
+                  selectedOptions={sov}
+                  placeHolder="Select SOV"
+                  setSelectedOption={setSov}
+                />
+              </div>
             </div>
             <div className="flex py-4">
               {!loadingCampaignsCreations && (

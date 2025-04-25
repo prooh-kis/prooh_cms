@@ -152,3 +152,9 @@ export const CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR =
   "CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_ERROR";
 export const CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_RESET =
   "CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_RESET";
+
+// sov constants
+export const CONTINUOUS_SOV = "continuous"
+export const ORDERED_SOV = "ordered"
+export const RANDOM_SOV = "random"
+export const SOV_TYPE_ARRAY = ["Select SOV Type" , "ordered", "continuous", "random"]
