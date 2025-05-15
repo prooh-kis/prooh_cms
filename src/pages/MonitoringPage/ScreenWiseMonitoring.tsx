@@ -255,7 +255,7 @@ export const ScreenWiseMonitoring: React.FC = () => {
       <Panel title="Campaign List" className="col-span-3">
         <div className="mt-2">
           <SearchInputField
-            placeholder="Brand Name"
+            placeholder="Campaign Name"
             value={searchQueryForCampaign}
             onChange={setSearchQueryForCampaign}
             height="h-8"
@@ -263,7 +263,7 @@ export const ScreenWiseMonitoring: React.FC = () => {
         </div>
         <List
           items={campaigns?.filter((campaign: any) =>
-            campaign?.brandName.toLowerCase().includes(searchQueryForCampaign)
+            campaign?.name.toLowerCase().includes(searchQueryForCampaign)
           )}
           loading={loadingCampaigns}
           renderItem={(campaign: any, index: number) => (
@@ -272,8 +272,8 @@ export const ScreenWiseMonitoring: React.FC = () => {
               item={campaign}
               isActive={monitoringCampaign?._id === campaign?._id}
               onClick={() => handleCampaignClick({ campaign: campaign })}
-              icon="brand"
-              text={campaign.brandName}
+              icon="megaphone"
+              text={campaign.name}
             />
           )}
         />

@@ -122,7 +122,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
   const handleSaveMonitoringData = (monitoringData: MonitoringData[]) => {
     dispatch(
       addCampaignMonitoringDataAction({
-        campaignId: monitoringCampaign?._id,
+        campaignId: monitoringScreen?._id,
         monitoringData,
       })
     );
