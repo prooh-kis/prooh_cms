@@ -2,7 +2,7 @@ import { message } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { downloadExcel } from "../../utils/ExcelUtils";
-import { analyticsV1 } from "../../constants/urlConsent";
+import { analyticsV1 } from "../../constants/urlConstants";
 import SearchInputField from "../../components/molecules/SearchInputField";
 import { Loading } from "../../components/Loading";
 import ButtonInput from "../../components/atoms/ButtonInput";

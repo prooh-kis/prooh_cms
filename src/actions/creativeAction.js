@@ -11,7 +11,7 @@ import {
   UPLOAD_CREATIVES_SUCCESS,
 } from "../constants/creativeConstants";
 
-import { screenV2, creativeV2 } from "../constants/urlConsent";
+import { screenV2, creativeV2 } from "../constants/urlConstants";
 import { CREATIVE_GET_CMS } from "../constants/userConstants";
 
 export const uploadCreativesMediaAction =

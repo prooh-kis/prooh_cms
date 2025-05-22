@@ -51,7 +51,7 @@ import {
   PLAY_HOLD_CAMPAIGNS_SUCCESS,
   PLAY_HOLD_CAMPAIGNS_FAIL,
 } from "../constants/screenConstants";
-import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
+import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConstants";
 
 export const getAllScreensDetailsAction =
   (input) => async (dispatch, getState) => {

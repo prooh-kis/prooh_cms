@@ -67,6 +67,7 @@ import {
   toggleStatusCouponReducer,
   updateCouponReducer,
 } from "../reducers/couponReducers";
+import { changeContactQueryStatusReducer, getAllContactQueriesReducer } from "../reducers/queriesReducer";
 
 const initialState = {
   userSignin: {
@@ -152,15 +153,18 @@ const store = configureStore({
     deleteCoupon: deleteCouponReducer,
     toggleStatusCoupon: toggleStatusCouponReducer,
 
-    // MONETORING
+    // Monitoring
     addCampaignMonitoring: addCampaignMonitoringDataReducer,
     getCampaignMonitoring: getCampaignMonitoringDataReducer,
+
+    // Landing
+    getAllContactQueries : getAllContactQueriesReducer,
+    changeContactQueryStatus : changeContactQueryStatusReducer
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"
       ? [require("redux-immutable-state-invariant").default(), thunk]
       : [thunk],
-  // devTools: process.env.NODE_ENV !== 'production'
 });
 
 store.subscribe(() => {

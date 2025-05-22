@@ -95,3 +95,26 @@ export const campaignCreationTypeTabs = [
     value: "Completed",
   },
 ];
+
+export const queriesTypeTabs = [
+  {
+    id: "1",
+    label: "All",
+    value: "All",
+  },
+  {
+    id: "2",
+    label: "Unread",
+    value: "unread",
+  },
+  {
+    id: "3",
+    label: "Read",
+    value: "read",
+  },
+  {
+    id: "4",
+    label: "Resolved",
+    value: "resolved",
+  },
+];

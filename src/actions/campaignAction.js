@@ -50,7 +50,7 @@ import {
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
 } from "../constants/campaignConstants";
 
-import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConsent";
+import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConstants";
 import { CAMPAIGN_MONITORING_DATA_ADD_CMS } from "../constants/userConstants";
 
 export const createCampaignCreationByScreenOwnerAction =

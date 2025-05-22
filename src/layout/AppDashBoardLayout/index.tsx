@@ -6,6 +6,7 @@ import {
   MY_COUPONS,
   MY_CREATIVES,
   MY_REQUESTS,
+  QUERIES,
   SCREEN_CAMPAIGN_MONITORING,
   SCREENS_LIST,
   SCREENS_LIST_FOR_SECONDARY_USER,
@@ -88,6 +89,12 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       path: USERS,
       icon: "fi fi-sr-users-alt ",
       option: "Users",
+    },
+    {
+      value: "Queries",
+      path: QUERIES,
+      icon: "fi fi-sr-person-circle-question",
+      option: "Queries",
     },
   ];
 

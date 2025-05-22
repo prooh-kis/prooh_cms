@@ -37,6 +37,7 @@ import {
   PLAY_LIVE_URL,
   MY_REQUESTS,
   MY_COUPONS,
+  QUERIES,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
@@ -46,6 +47,7 @@ import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
 import { MyUsers } from "../pages/MyUser";
 import { PlayLiveUrl } from "../pages/PageNotFound/PlayLiveUrl";
+import ContactQueries from "../pages/contactQueries";
 
 const Routers: React.FC = () => {
   return (
@@ -202,6 +204,15 @@ const Routers: React.FC = () => {
             <PublicRoute>
               <ScreensPage />
             </PublicRoute>
+          }
+        />
+
+        <Route
+          path={QUERIES}
+          element={
+            <AppDashBoardLayout value="Queries">
+              <ContactQueries />
+            </AppDashBoardLayout>
           }
         />
 

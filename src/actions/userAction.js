@@ -39,7 +39,7 @@ import { login, logout } from "../store/authSlice";
 import { removeDispatchData } from "../utils/dispatchUtils";
 import { removeAllKeyFromLocalStorage } from "../utils/localStorageUtils";
 
-import { userV1 } from "../constants/urlConsent";
+import { userV1 } from "../constants/urlConstants";
 
 export const signup = (reqBody) => async (dispatch) => {
   dispatch({
