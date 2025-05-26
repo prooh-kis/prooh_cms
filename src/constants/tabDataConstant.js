@@ -1,3 +1,14 @@
+import {
+  CAMPAIGNS_LIST,
+  MY_COUPONS,
+  MY_CREATIVES,
+  MY_REQUESTS,
+  QUERIES,
+  SCREEN_CAMPAIGN_MONITORING,
+  SCREENS_LIST,
+  USERS,
+} from "../routes/routes";
+
 export const campaignMonitoringTab = [
   {
     id: "1",
@@ -118,3 +129,141 @@ export const queriesTypeTabs = [
     value: "resolved",
   },
 ];
+
+export const menuItemsAdmin = [
+  {
+    value: "My Screens",
+    path: SCREENS_LIST,
+    icon: "fi fi-sr-screen ",
+    option: "Screens",
+  },
+  {
+    value: "Campaigns",
+    path: CAMPAIGNS_LIST,
+    icon: "fi fi-sr-megaphone ",
+    option: "Campaigns",
+  },
+  {
+    value: "Creatives",
+    path: MY_CREATIVES,
+    icon: "fi fi-sr-photo-video ",
+    option: "Creatives",
+  },
+  {
+    value: "Monitoring",
+    path: SCREEN_CAMPAIGN_MONITORING,
+    icon: "fi fi-br-camera-movie ",
+    option: "Monitoring",
+  },
+  {
+    value: "Requests",
+    path: MY_REQUESTS,
+    icon: "fi fi-ss-bell-notification-social-media",
+    option: "Requests",
+  },
+  {
+    value: "Coupons",
+    path: MY_COUPONS,
+    icon: "fi fi-bs-ticket",
+    option: "Coupons",
+  },
+  {
+    value: "Users",
+    path: USERS,
+    icon: "fi fi-sr-users-alt ",
+    option: "Users",
+  },
+  {
+    value: "Queries",
+    path: QUERIES,
+    icon: "fi fi-sr-person-circle-question",
+    option: "Queries",
+  }
+]
+
+export const menuItemsScreenOwner = [
+  {
+    value: "My Screens",
+    path: SCREENS_LIST,
+    icon: "fi fi-sr-screen ",
+    option: "Screens",
+  },
+  {
+    value: "Campaigns",
+    path: CAMPAIGNS_LIST,
+    icon: "fi fi-sr-megaphone ",
+    option: "Campaigns",
+  },
+  {
+    value: "Creatives",
+    path: MY_CREATIVES,
+    icon: "fi fi-sr-photo-video ",
+    option: "Creatives",
+  },
+  {
+    value: "Monitoring",
+    path: SCREEN_CAMPAIGN_MONITORING,
+    icon: "fi fi-br-camera-movie ",
+    option: "Monitoring",
+  },
+  {
+    value: "Requests",
+    path: MY_REQUESTS,
+    icon: "fi fi-ss-bell-notification-social-media",
+    option: "Requests",
+  },
+  {
+    value: "Users",
+    path: USERS,
+    icon: "fi fi-sr-users-alt ",
+    option: "Users",
+  }
+]
+
+export const menuItemsScreenManager = [
+  {
+    value: "My Screens",
+    path: SCREENS_LIST,
+    icon: "fi fi-sr-screen ",
+    option: "Screens",
+  },
+  {
+    value: "Campaigns",
+    path: CAMPAIGNS_LIST,
+    icon: "fi fi-sr-megaphone ",
+    option: "Campaigns",
+  },
+  {
+    value: "Creatives",
+    path: MY_CREATIVES,
+    icon: "fi fi-sr-photo-video ",
+    option: "Creatives",
+  },
+  {
+    value: "Monitoring",
+    path: SCREEN_CAMPAIGN_MONITORING,
+    icon: "fi fi-br-camera-movie ",
+    option: "Monitoring",
+  },
+  {
+    value: "Requests",
+    path: MY_REQUESTS,
+    icon: "fi fi-ss-bell-notification-social-media",
+    option: "Requests",
+  }
+]
+
+export const menuItemsScreenMonitoring = [
+  {
+    value: "My Screens",
+    path: SCREENS_LIST,
+    icon: "fi fi-sr-screen ",
+    option: "Screens",
+  },
+  {
+    value: "Monitoring",
+    path: SCREEN_CAMPAIGN_MONITORING,
+    icon: "fi fi-br-camera-movie ",
+    option: "Monitoring",
+  }
+]

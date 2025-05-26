@@ -15,9 +15,13 @@ import {
 } from "../../routes/routes";
 
 import { signout } from "../../actions/userAction";
-import { SCREEN_MONITORING_USER } from "../../constants/userConstants";
+import { SCREEN_ADMIN, SCREEN_MANAGER, SCREEN_MONITORING_USER, SCREEN_OWNER } from "../../constants/userConstants";
 import { Header } from "../../components/header";
 import { Tooltip } from "antd";
+import {
+  menuItemsAdmin, menuItemsScreenManager,
+  menuItemsScreenMonitoring, menuItemsScreenOwner
+} from "../../constants/tabDataConstant";
 
 interface AppDashBoardLayoutProps {
   children: React.ReactNode;
@@ -34,6 +38,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
   const navigate = useNavigate();
   const [current, setCurrent] = useState<string>(value);
   const [showFull, setShowFull] = useState<any>(false);
+  const [menuItems, setMenuItems] = useState<any[]>([])
 
   useEffect(() => {
     setCurrent(value);
@@ -45,58 +50,19 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
     } else if (userInfo?.userRole === SCREEN_MONITORING_USER) {
       navigate(SCREENS_LIST_FOR_SECONDARY_USER);
     }
-  }, [userInfo, navigate]);
 
-  const menuItems = [
-    {
-      value: "My Screens",
-      path: SCREENS_LIST,
-      icon: "fi fi-sr-screen ",
-      option: "Screens",
-    },
-    {
-      value: "Campaigns",
-      path: CAMPAIGNS_LIST,
-      icon: "fi fi-sr-megaphone ",
-      option: "Campaigns",
-    },
-    {
-      value: "Creatives",
-      path: MY_CREATIVES,
-      icon: "fi fi-sr-photo-video ",
-      option: "Creatives",
-    },
-    {
-      value: "Monitoring",
-      path: SCREEN_CAMPAIGN_MONITORING,
-      icon: "fi fi-br-camera-movie ",
-      option: "Monitoring",
-    },
-    {
-      value: "Requests",
-      path: MY_REQUESTS,
-      icon: "fi fi-ss-bell-notification-social-media",
-      option: "Requests",
-    },
-    {
-      value: "Coupons",
-      path: MY_COUPONS,
-      icon: "fi fi-bs-ticket",
-      option: "Coupons",
-    },
-    {
-      value: "Users",
-      path: USERS,
-      icon: "fi fi-sr-users-alt ",
-      option: "Users",
-    },
-    {
-      value: "Queries",
-      path: QUERIES,
-      icon: "fi fi-sr-person-circle-question",
-      option: "Queries",
-    },
-  ];
+    switch (userInfo?.userRole) {
+      case SCREEN_ADMIN: setMenuItems(menuItemsAdmin)
+        break;
+      case SCREEN_OWNER: setMenuItems(menuItemsScreenOwner)
+        break;
+      case SCREEN_MANAGER: setMenuItems(menuItemsScreenManager)
+        break;
+      case SCREEN_MONITORING_USER: setMenuItems(menuItemsScreenMonitoring)
+        break;
+    }
+
+  }, [userInfo, navigate]);
 
   const handleMenuClick = (index: number) => {
     setCurrent(menuItems[index].option);
@@ -116,9 +82,8 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       <div className="flex gap-1 h-full">
         {/* Sidebar */}
         <div
-          className={`h-[92vh] min-w-[5vw] ${
-            showFull ? "w-[15vw]" : "w-[5vw]"
-          } mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}
+          className={`h-[92vh] min-w-[5vw] ${showFull ? "w-[15vw]" : "w-[5vw]"
+            } mt-1 ml-0 bg-white rounded-[4px] overflow-y-auto flex flex-col`}
         >
           <div className="flex flex-col justify-between h-full pt-2 px-2">
             {/* Menu Items */}
@@ -138,11 +103,10 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
                 <div
                   key={index}
                   onClick={() => handleMenuClick(index)}
-                  className={`flex justify-start items-center gap-2 py-2 px-4 rounded cursor-pointer ${
-                    current === item.option
-                      ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
-                      : "text-[#8D9DA7] font-semibold"
-                  }`}
+                  className={`flex justify-start items-center gap-2 py-2 px-4 rounded cursor-pointer ${current === item.option
+                    ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
+                    : "text-[#8D9DA7] font-semibold"
+                    }`}
                 >
                   <div className={`flex items-center`}>
                     <Tooltip title={item.option}>
@@ -161,13 +125,11 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
             <div className="py-12 flex justify-between truncate">
               <div
                 onClick={handleSignOut}
-                className={`flex truncate ${
-                  !showFull ? "border border-red-200" : "border border-red-200"
-                } justify-start items-center gap-2 py-2 rounded cursor-pointer ${
-                  current === "Log Out"
+                className={`flex truncate ${!showFull ? "border border-red-200" : "border border-red-200"
+                  } justify-start items-center gap-2 py-2 rounded cursor-pointer ${current === "Log Out"
                     ? "text-[#129BFF] font-bold bg-[#ECF7FF] border-l-2 border-[#129BFF]"
                     : "text-[#8D9DA7] font-semibold"
-                } px-4`}
+                  } px-4`}
               >
                 <div className={`flex items-center`}>
                   <i className="fi fi-br-power flex items-center justify-center"></i>
