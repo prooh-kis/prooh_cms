@@ -6,6 +6,16 @@ export interface MonitoringUrlData {
     uploadedDate: string;
 }
 
+export interface MonitoringUrlData2 {
+    url?: string;
+    awsUrl?: string;
+    file?: File;
+    fileType: string;
+    uploadedDate: string;
+    monitoringType: string;
+    campaignId: string;
+}
+
 export interface MonitoringTypeWiseData {
     monitoringType: string;
     monitoringUrls: MonitoringUrlData[];

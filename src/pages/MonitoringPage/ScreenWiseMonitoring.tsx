@@ -13,16 +13,19 @@ import {
   SCREEN_GET_SCREEN_CAMPAIGN_DETAILS_CMS,
 } from "../../constants/userConstants";
 import { List, ListItem, Panel } from "./MonitoringReUsableComp";
-import { TakingMonitoringPic } from "./TakingMonitoringPic";
 import {
   getCampaignMonitoringDataAction,
   addCampaignMonitoringDataAction,
-} from "../../actions/campaignAction";
-import { MonitoringData } from "../../types/monitoringTypes";
+} from "../../actions/monitoringAction.";
+import {
+  MonitoringData,
+  MonitoringUrlData2,
+} from "../../types/monitoringTypes";
 import { message } from "antd";
 import { notification } from "antd";
-import { ADD_CAMPAIGN_MONITORING_DATA_RESET } from "../../constants/campaignConstants";
+import { ADD_CAMPAIGN_MONITORING_DATA_RESET } from "../../constants/monitoringConstants";
 import { getAWSUrlToUploadFile, saveFileOnAWS } from "../../utils/awsUtils";
+import { TakingMonitoringPicV2 } from "./TakingMonitoringPicV2";
 
 export const ScreenWiseMonitoring: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -33,6 +36,9 @@ export const ScreenWiseMonitoring: React.FC = () => {
   const [monitoringScreen, setMonitoringScreen] = useState<any>(null);
   const [monitoringCampaign, setMonitoringCampaign] = useState<any>(null);
   const [loadingSaveOnAWS, setLoading] = useState<boolean>(false);
+  const [uploadedMonitoringPic, setUploadedMonitoringPic] = useState<
+    MonitoringUrlData2[]
+  >([]);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
@@ -70,6 +76,17 @@ export const ScreenWiseMonitoring: React.FC = () => {
     success: successAddCampaignMonitoring,
     data: monitoringData3,
   } = addCampaignMonitoring;
+
+  useEffect(() => {
+    if (successGetCampaignMonitoring) {
+      console.log("monitoringData ", monitoringData);
+      setResult(
+        Array.isArray(monitoringData?.monitoringData)
+          ? monitoringData.monitoringData
+          : []
+      );
+    }
+  }, [successGetCampaignMonitoring, monitoringData?.monitoringData]);
 
   useEffect(() => {
     if (errorAddCampaignMonitoring) {
@@ -282,18 +299,21 @@ export const ScreenWiseMonitoring: React.FC = () => {
         <Panel
           title={monitoringCampaign?.name}
           className="col-span-6"
-          buttonTitle="Save Monitoring Data"
+          buttonTitle="Save"
           isShow={labels?.length > 0 ? true : false}
           loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
           onClick={handleSave}
         >
-          <TakingMonitoringPic
-            data={monitoringData?.monitoringData || []}
+          <TakingMonitoringPicV2
             pageLoading={loadingGetCampaignMonitoring}
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}
             result={result}
             setResult={setResult}
+            uploadedMonitoringPic={uploadedMonitoringPic}
+            setUploadedMonitoringPic={setUploadedMonitoringPic}
+            campaignList={campaigns}
+            handleOk={() => {}}
           />
         </Panel>
       )}

@@ -1,51 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchInputField } from "../../components";
 import { GET_SCREEN_CAMPAIGN_MONITORING_RESET } from "../../constants/screenConstants";
-import {
-  CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
-  CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS,
-} from "../../constants/userConstants";
+import { MONITORING_GET_CAMPAIGN_DETAILS } from "../../constants/userConstants";
 import { List, ListItem, Panel } from "./MonitoringReUsableComp";
-import { TakingMonitoringPic } from "./TakingMonitoringPic";
 import {
   getCampaignMonitoringDataAction,
   addCampaignMonitoringDataAction,
-  getAllCampaignsDetailsAction,
-  getCampaignDetailsAction,
-} from "../../actions/campaignAction";
-import { MonitoringData } from "../../types/monitoringTypes";
-import { message } from "antd";
-import { notification } from "antd";
-import { ADD_CAMPAIGN_MONITORING_DATA_RESET } from "../../constants/campaignConstants";
-import { getAWSUrlToUploadFile, saveFileOnAWS } from "../../utils/awsUtils";
+  getCampaignDetailsListForMonitoring,
+} from "../../actions/monitoringAction.";
+import {
+  MonitoringData,
+  MonitoringUrlData2,
+} from "../../types/monitoringTypes";
+import { message, notification } from "antd";
+import { ADD_CAMPAIGN_MONITORING_DATA_RESET } from "../../constants/monitoringConstants";
+import { getAWSUrl } from "../../utils/awsUtils";
+import { TakingMonitoringPicV2 } from "./TakingMonitoringPicV2";
+
+interface Screen {
+  _id: string;
+  screenName: string;
+  // Add other screen properties as needed
+}
+interface Campaign {
+  _id: string;
+  name: string;
+  brandName: string;
+  campaignScreens: Screen[];
+  // Add other campaign properties as needed
+}
 
 export const CampaignWiseMonitoring: React.FC = () => {
   const dispatch = useDispatch<any>();
   const [result, setResult] = useState<MonitoringData[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("startDate");
-  const [searchQuery, setSearchQuery] = useState<any>("");
-  const [searchQueryForCampaign, setSearchQueryForCampaign] = useState<any>("");
-  const [monitoringScreen, setMonitoringScreen] = useState<any>(null);
-  const [monitoringCampaign, setMonitoringCampaign] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filterCampaignType, setFilterCampaignType] =
+    useState<string>("Active");
+  const [searchQueryForCampaign, setSearchQueryForCampaign] =
+    useState<string>("");
+  const [monitoringScreen, setMonitoringScreen] = useState<Screen | null>(null);
+  const [monitoringCampaign, setMonitoringCampaign] = useState<Campaign | null>(
+    null
+  );
+
+  const [uploadedMonitoringPic, setUploadedMonitoringPic] = useState<
+    MonitoringUrlData2[]
+  >([]);
+
+  const [monitoringScreens, setMonitoringScreens] = useState<Screen[]>([]);
+
   const [loadingSaveOnAWS, setLoading] = useState<boolean>(false);
 
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  const allCampaignsDataGet = useSelector(
-    (state: any) => state.allCampaignsDataGet
-  );
-  const { loading, error, data: allCampaigns } = allCampaignsDataGet;
-
-  const campaignDetailsGet = useSelector(
-    (state: any) => state.campaignDetailsGet
+  const activeCampaignListForMonitoring = useSelector(
+    (state: any) => state.activeCampaignListForMonitoring
   );
   const {
-    loading: loadingCampaignDetails,
-    error: errorCampaignDetails,
-    data: campaignCreated,
-  } = campaignDetailsGet;
+    loading,
+    error,
+    data: allCampaigns,
+  } = activeCampaignListForMonitoring;
 
   const getCampaignMonitoring = useSelector(
     (state: any) => state.getCampaignMonitoring
@@ -64,9 +82,19 @@ export const CampaignWiseMonitoring: React.FC = () => {
     loading: loadingAddCampaignMonitoring,
     error: errorAddCampaignMonitoring,
     success: successAddCampaignMonitoring,
-    data: monitoringData3,
   } = addCampaignMonitoring;
 
+  useEffect(() => {
+    if (successGetCampaignMonitoring) {
+      setResult(
+        Array.isArray(monitoringData?.monitoringData)
+          ? monitoringData.monitoringData
+          : []
+      );
+    }
+  }, [successGetCampaignMonitoring, monitoringData?.monitoringData]);
+
+  // Notification handler
   useEffect(() => {
     if (errorAddCampaignMonitoring) {
       notification.error({
@@ -83,153 +111,182 @@ export const CampaignWiseMonitoring: React.FC = () => {
       });
       dispatch({ type: ADD_CAMPAIGN_MONITORING_DATA_RESET });
     }
-  }, [successAddCampaignMonitoring, errorAddCampaignMonitoring]);
+  }, [successAddCampaignMonitoring, errorAddCampaignMonitoring, dispatch]);
 
+  // Initial data loading
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
       // message.error("Not a screen owner!!!");
     }
     dispatch(
-      getAllCampaignsDetailsAction({
-        userId: userInfo?._id,
-        status: "Active",
-        event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+      getCampaignDetailsListForMonitoring({
+        type: filterCampaignType,
+        event: MONITORING_GET_CAMPAIGN_DETAILS,
       })
     );
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo?._id]);
 
-  const handleScreenClick = ({ screen }: any) => {
-    setMonitoringScreen(screen);
-    dispatch({ type: GET_SCREEN_CAMPAIGN_MONITORING_RESET });
+  const handleScreenClick = useCallback(
+    ({ screen }: { screen: Screen }) => {
+      setMonitoringScreen(screen);
+      dispatch({ type: GET_SCREEN_CAMPAIGN_MONITORING_RESET });
+      dispatch(
+        getCampaignMonitoringDataAction({
+          campaignId: screen?._id,
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  const handleCampaignClick = useCallback(
+    ({ campaignCreated }: { campaignCreated: Campaign }) => {
+      setMonitoringCampaign(campaignCreated);
+      setMonitoringScreens(campaignCreated?.campaignScreens);
+    },
+    [dispatch]
+  );
+
+  const handleSaveMonitoringData = useCallback(
+    (monitoringData: MonitoringData[]) => {
+      if (!monitoringScreen?._id) return Promise.reject("No screen selected");
+
+      return dispatch(
+        addCampaignMonitoringDataAction({
+          campaignId: monitoringScreen._id,
+          monitoringData,
+        })
+      );
+    },
+    [dispatch, monitoringScreen?._id]
+  );
+
+  const filterResult = allCampaigns?.filter(
+    (campaign: Campaign) =>
+      campaign?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleRadioChange = (value: string) => {
     dispatch(
-      getCampaignMonitoringDataAction({
-        campaignId: screen?._id,
+      getCampaignDetailsListForMonitoring({
+        type: value,
+        event: MONITORING_GET_CAMPAIGN_DETAILS,
       })
     );
+    setFilterCampaignType(value);
   };
 
-  const handleCampaignClick = ({ campaignCreated }: any) => {
-    setMonitoringCampaign(campaignCreated);
-    setMonitoringScreen(null);
-    dispatch(
-      getCampaignDetailsAction({
-        campaignId: campaignCreated?._id,
-        event: CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS,
-      })
-    );
-  };
+  const handleOk = async () => {
+    if (!confirm("Do you want to save monitoring data?")) return;
 
-  const handleSaveMonitoringData = (monitoringData: MonitoringData[]) => {
-    dispatch(
-      addCampaignMonitoringDataAction({
-        campaignId: monitoringScreen?._id,
-        monitoringData,
-      })
-    );
-    return Promise.resolve();
-  };
+    setLoading(true);
 
-  const handleSave = async () => {
-    if (confirm("Do you want to save monitoring data?")) {
-      setLoading(true);
+    try {
+      const updatedMonitoringPic = [...uploadedMonitoringPic];
+      const monitoringTypeWiseData: any = [];
 
-      try {
-        // Create a deep copy of the current result state
-        const updatedResult = structuredClone(result);
+      // Process files sequentially to maintain order
+      for (const file of updatedMonitoringPic) {
+        try {
+          if (!file.file) continue;
 
-        // Find the current tab data
-        const currentTabData = updatedResult.find(
-          (data) => data.dateType === currentTab
-        );
+          const awsUrl = await getAWSUrl(file.file);
+          file.awsUrl = awsUrl;
 
-        if (!currentTabData) {
-          throw new Error("Current tab data not found");
-        }
-
-        // Process each monitoring type in the current tab
-        for (const monitoringTypeData of currentTabData.monitoringTypeWiseData) {
-          // Filter only URLs that need processing (has file but no awsUrl)
-          const urlsToProcess = monitoringTypeData.monitoringUrls.filter(
-            (urlData) => urlData.awsUrl === "" && urlData.file instanceof File
+          // Find existing monitoring type or create new entry
+          const existingTypeIndex = monitoringTypeWiseData.findIndex(
+            (item: any) => item.monitoringType === file.monitoringType
           );
 
-          // Process files in parallel for better performance
-          await Promise.all(
-            urlsToProcess.map(async (urlData) => {
-              try {
-                if (!urlData.file) {
-                  console.warn("File object is missing for URL data:", urlData);
-                  return;
-                }
-
-                // Get AWS upload URL
-                const awsResponse = await getAWSUrlToUploadFile({
-                  contentType: urlData.file.type,
-                  name: urlData.file.name,
-                });
-
-                if (!awsResponse?.url) {
-                  throw new Error("Failed to get AWS upload URL");
-                }
-
-                // Upload file to AWS
-                await saveFileOnAWS(awsResponse.url, urlData.file);
-
-                // Update the URL data
-                urlData.awsUrl = awsResponse.awsURL;
-                urlData.url = awsResponse.awsURL;
-
-                // Clean up - remove file object and revoke blob URL if it exists
-                if (urlData.url && urlData.url.startsWith("blob:")) {
-                  URL.revokeObjectURL(urlData.url);
-                }
-                delete urlData.file;
-              } catch (error) {
-                console.error(
-                  `Error uploading file ${urlData.file?.name}:`,
-                  error
-                );
-              }
-            })
-          );
+          if (existingTypeIndex >= 0) {
+            // Add to existing monitoring type
+            monitoringTypeWiseData[existingTypeIndex].monitoringUrls.push({
+              awsUrl,
+              url: awsUrl,
+              fileType: file.fileType,
+              uploadedDate: new Date().toISOString(),
+            });
+          } else {
+            // Create new monitoring type entry
+            monitoringTypeWiseData.push({
+              monitoringType: file.monitoringType,
+              monitoringUrls: [
+                {
+                  awsUrl,
+                  url: awsUrl,
+                  fileType: file.fileType,
+                  uploadedDate: new Date().toISOString(),
+                },
+              ],
+            });
+          }
+        } catch (error) {
+          console.error(`Error processing file ${file.file?.name}:`, error);
+          throw error;
         }
-        setResult(updatedResult);
-
-        // Call the parent save function
-        await handleSaveMonitoringData(updatedResult);
-      } catch (error) {
-        console.error("Error saving monitoring data:", error);
-        message.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to save monitoring data"
-        );
-      } finally {
-        setLoading(false);
       }
+
+      const prevResult = [...result];
+
+      // Update result state
+      const currentTabData = prevResult.find(
+        (data) => data.dateType === currentTab
+      ) || {
+        date: new Date().toISOString(),
+        dateType: currentTab,
+        monitoringTypeWiseData: [],
+      };
+
+      // Merge new data with existing monitoring types
+      const mergedMonitoringTypes = [
+        ...currentTabData.monitoringTypeWiseData.filter(
+          (existingType) =>
+            !monitoringTypeWiseData.some(
+              (newType: any) =>
+                newType.monitoringType === existingType.monitoringType
+            )
+        ),
+        ...monitoringTypeWiseData,
+      ];
+
+      const updatedCurrentTabData = {
+        ...currentTabData,
+        monitoringTypeWiseData: mergedMonitoringTypes,
+      };
+
+      const updatedResult = [
+        ...prevResult.filter((data) => data.dateType !== currentTab),
+        updatedCurrentTabData,
+      ];
+
+      await handleSaveMonitoringData(updatedResult);
+      setResult(updatedResult);
+      setUploadedMonitoringPic([]);
+
+      message.success("Monitoring data saved successfully!");
+    } catch (error) {
+      console.error("Error saving monitoring data:", error);
+      message.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to save monitoring data"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
-  const labels =
-    result
-      ?.map((d: MonitoringData) => d.dateType)
-      ?.filter((value) => value != "") || [];
-
-  const filterResult = allCampaigns?.filter(
-    (campaign: any) =>
-      campaign?.campaignName
-        ?.toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
-      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      campaign?.campaignName
-        ?.toUpperCase()
-        .includes(searchQuery.toLowerCase()) ||
-      campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
-  );
-
   return (
     <div className="grid grid-cols-12 gap-1 mt-1">
-      <Panel title="Campaign List" className="col-span-3">
+      <Panel
+        title="Campaign List"
+        className="col-span-3"
+        isShowRadio={true}
+        isForCampaignType={true}
+        filterCampaignType={filterCampaignType}
+        setFilterCampaignType={handleRadioChange}
+      >
         <div className="mt-2">
           <SearchInputField
             placeholder="Brand, Campaign Name"
@@ -241,21 +298,20 @@ export const CampaignWiseMonitoring: React.FC = () => {
         <List
           items={filterResult}
           loading={loading}
-          renderItem={(data: any, index: number) => (
+          renderItem={(data: Campaign, index: number) => (
             <ListItem
               key={index}
               item={data}
               isActive={monitoringCampaign?._id === data?._id}
               onClick={() => handleCampaignClick({ campaignCreated: data })}
               icon="megaphone"
-              text={`${data?.campaignName}`}
+              text={`${data?.name}`}
             />
           )}
         />
       </Panel>
 
-      {/* Campaigns Panel */}
-      <Panel title="Screens List" className="col-span-3">
+      <Panel title="Screens List" className="col-span-3" isShowRadio={false}>
         <div className="mt-2">
           <SearchInputField
             placeholder="Screen Name"
@@ -265,38 +321,45 @@ export const CampaignWiseMonitoring: React.FC = () => {
           />
         </div>
         <List
-          items={campaignCreated?.campaigns?.filter((screen: any) =>
-            screen?.screenName.toLowerCase().includes(searchQueryForCampaign)
+          items={monitoringScreens?.filter((screen: Screen) =>
+            screen?.screenName
+              .toLowerCase()
+              .includes(searchQueryForCampaign.toLowerCase())
           )}
-          loading={loadingCampaignDetails}
-          renderItem={(screen: any, index: number) => (
+          loading={false}
+          renderItem={(screen: Screen, index: number) => (
             <ListItem
               key={index}
               item={screen}
               isActive={monitoringScreen?._id === screen?._id}
-              onClick={() => handleScreenClick({ screen: screen })}
+              onClick={() => handleScreenClick({ screen })}
               icon="screen"
               text={screen.screenName}
             />
           )}
         />
       </Panel>
+
       {monitoringScreen && monitoringCampaign && (
         <Panel
           title={monitoringScreen?.screenName}
           className="col-span-6"
           buttonTitle="Save Monitoring Data"
-          isShow={labels?.length > 0 ? true : false}
+          // isShow={labels?.length > 0 ? true : false}
+          isShow={false}
           loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
-          onClick={handleSave}
+          isShowRadio={false}
         >
-          <TakingMonitoringPic
-            data={monitoringData?.monitoringData || []}
+          <TakingMonitoringPicV2
             pageLoading={loadingGetCampaignMonitoring}
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}
             result={result}
             setResult={setResult}
+            uploadedMonitoringPic={uploadedMonitoringPic}
+            setUploadedMonitoringPic={setUploadedMonitoringPic}
+            campaignList={monitoringScreens}
+            handleOk={handleOk}
           />
         </Panel>
       )}

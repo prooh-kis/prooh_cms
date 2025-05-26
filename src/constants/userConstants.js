@@ -116,3 +116,4 @@ export const CAMPAIGN_MONITORING_DATA_ADD_CMS = "campaignMonitoringDataAddCms";
 
 // not in use as of now
 export const CAMPAIGN_CREATION_CMS = "campaignCreationCms"
+export const MONITORING_GET_CAMPAIGN_DETAILS = "MonitoringGetCampaignDetails";

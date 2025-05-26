@@ -1,9 +1,5 @@
 import { saveDataOnLocalStorage } from "../utils/localStorageUtils";
 import {
-  ADD_CAMPAIGN_MONITORING_DATA_FAIL,
-  ADD_CAMPAIGN_MONITORING_DATA_REQUEST,
-  ADD_CAMPAIGN_MONITORING_DATA_RESET,
-  ADD_CAMPAIGN_MONITORING_DATA_SUCCESS,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_FAIL,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
@@ -38,10 +34,6 @@ import {
   GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_REQUEST,
   GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_RESET,
   GET_CAMPAIGN_LOGS_BY_CAMPAIGN_ID_SUCCESS,
-  GET_CAMPAIGN_MONITORING_DATA_FAIL,
-  GET_CAMPAIGN_MONITORING_DATA_REQUEST,
-  GET_CAMPAIGN_MONITORING_DATA_RESET,
-  GET_CAMPAIGN_MONITORING_DATA_SUCCESS,
   GET_CAMPAIGNCREATED_SCREENS_DATA_FAIL,
   GET_CAMPAIGNCREATED_SCREENS_DATA_REQUEST,
   GET_CAMPAIGNCREATED_SCREENS_DATA_SUCCESS,
@@ -318,55 +310,9 @@ export function campaignStatusChangeAfterVendorApprovalReducer(
   }
 }
 
-export function getCampaignMonitoringDataReducer(state = [], action) {
+export function convertCreativesToRespectiveBitrateReducer(state = [], action) {
   switch (action.type) {
-    case GET_CAMPAIGN_MONITORING_DATA_REQUEST:
-      return { loading: true };
-    case GET_CAMPAIGN_MONITORING_DATA_SUCCESS:
-      return {
-        loading: false,
-        data: action.payload,
-        success: true,
-      };
-    case GET_CAMPAIGN_MONITORING_DATA_FAIL:
-      return {
-        success: true,
-        loading: false,
-        error: action.payload,
-      };
-    case GET_CAMPAIGN_MONITORING_DATA_RESET:
-      return {};
-    default:
-      return state;
-  }
-}
-
-export function addCampaignMonitoringDataReducer(state = [], action) {
-  switch (action.type) {
-    case ADD_CAMPAIGN_MONITORING_DATA_REQUEST:
-      return { loading: true };
-    case ADD_CAMPAIGN_MONITORING_DATA_SUCCESS:
-      return {
-        loading: false,
-        data: action.payload,
-        success: true,
-      };
-    case ADD_CAMPAIGN_MONITORING_DATA_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-        success: false,
-      };
-    case ADD_CAMPAIGN_MONITORING_DATA_RESET:
-      return {};
-    default:
-      return state;
-  }
-}
-
-export function convertCreativesToRespectiveBitrateReducer ( state = [] , action ){
-  switch (action.type) {
-    case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST :
+    case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST:
       return { loading: true };
     case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS:
       return {

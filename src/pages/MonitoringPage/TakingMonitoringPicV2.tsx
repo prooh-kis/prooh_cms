@@ -2,9 +2,12 @@ import { format } from "date-fns";
 import { MyTab } from "../../components/molecules/MyTab";
 import { FileUpload } from "../../components/atoms/FileUpload";
 import { Loading } from "../../components/Loading";
-import RadioGroupInput from "../../components/atoms/RadioGroupInput";
-import { MonitoringData, MonitoringUrlData } from "../../types/monitoringTypes";
+import {
+  MonitoringData,
+  MonitoringUrlData2,
+} from "../../types/monitoringTypes";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { UploadedMonitoringPicsPopup } from "./UploadedMonitoringPicsPopup";
 import { ShowUploadedCard } from "./MonitoringReUsableComp";
 
 interface DummyDataItem {
@@ -14,19 +17,28 @@ interface DummyDataItem {
   iconType: string;
 }
 
-export const TakingMonitoringPic = ({
-  pageLoading,
-  result,
-  setResult,
-  currentTab,
-  setCurrentTab,
-}: {
+interface Props {
+  uploadedMonitoringPic: MonitoringUrlData2[];
+  setUploadedMonitoringPic: (value: MonitoringUrlData2[]) => void;
   pageLoading: boolean;
   result: MonitoringData[];
   setResult: (value: MonitoringData[]) => void;
   currentTab: string;
   setCurrentTab: (value: string) => void;
-}) => {
+  campaignList: any[];
+  handleOk: () => void;
+}
+export const TakingMonitoringPicV2 = ({
+  pageLoading,
+  result,
+  setResult,
+  currentTab,
+  setCurrentTab,
+  uploadedMonitoringPic,
+  setUploadedMonitoringPic,
+  handleOk,
+  campaignList,
+}: Props) => {
   const colorCode = useMemo(() => {
     return currentTab === "startDate"
       ? "text-[#5AAF69]"
@@ -34,9 +46,6 @@ export const TakingMonitoringPic = ({
       ? "text-[#FF8D22]"
       : "text-[#E43535]";
   }, [currentTab]);
-
-  const [monitoringType, setMonitoringType] = useState<string>("dayShot");
-  const [uploadedFiles, setUploadedFiles] = useState<MonitoringUrlData[]>([]);
 
   // Initialize dummyData structure with icon types only
   const [dummyDataBase] = useState([
@@ -66,6 +75,8 @@ export const TakingMonitoringPic = ({
       count: 0,
     }))
   );
+
+  const [open, setOpen] = useState<boolean>(false);
 
   const getCurrentData = (): MonitoringData => {
     return (
@@ -98,84 +109,30 @@ export const TakingMonitoringPic = ({
     updateDummyDataCounts();
   }, [result, currentTab, updateDummyDataCounts]);
 
-  const handleFilesChange = (newFiles: File[]) => {
-    const newUrls: MonitoringUrlData[] = newFiles.map((file) => ({
+  const handleFilesChange = useCallback((newFiles: File[]) => {
+    // Create new URL objects for each file
+    const newUrls: MonitoringUrlData2[] = newFiles.map((file) => ({
       url: URL.createObjectURL(file),
       awsUrl: "",
       file,
       fileType: file.type,
       uploadedDate: new Date().toISOString(),
+      monitoringType: "dayShot", // Consider making this configurable
+      campaignId: "",
     }));
 
-    const prevResult = [...result];
-    const currentTabData = prevResult.find(
-      (data) => data.dateType === currentTab
-    ) || {
-      date: new Date().toISOString(),
-      dateType: currentTab,
-      monitoringTypeWiseData: [],
-    };
+    // Update state while cleaning up previous object URLs
+    setUploadedMonitoringPic([...uploadedMonitoringPic, ...newUrls]);
+    setOpen(true);
+  }, []);
 
-    const monitoringTypeData = currentTabData.monitoringTypeWiseData.find(
-      (item) => item.monitoringType === monitoringType
-    ) || { monitoringType, monitoringUrls: [] };
-
-    const updatedMonitoringTypeData = {
-      ...monitoringTypeData,
-      monitoringUrls: [...monitoringTypeData.monitoringUrls, ...newUrls],
-    };
-
-    const updatedCurrentTabData = {
-      ...currentTabData,
-      monitoringTypeWiseData: [
-        ...currentTabData.monitoringTypeWiseData.filter(
-          (item) => item.monitoringType !== monitoringType
-        ),
-        updatedMonitoringTypeData,
-      ],
-    };
-
-    setResult([
-      ...prevResult.filter((data) => data.dateType !== currentTab),
-      updatedCurrentTabData,
-    ]);
-  };
-
-  const handleRemoveFile = (index: number) => {
-    const currentData = getCurrentData();
-    const existingTypeData = currentData.monitoringTypeWiseData.find(
-      (item) => item.monitoringType === monitoringType
-    ) || { monitoringType, monitoringUrls: [] };
-
-    const updatedMonitoringUrls = [...existingTypeData.monitoringUrls];
-    updatedMonitoringUrls.splice(index, 1);
-
-    const updatedData = [
-      ...result?.filter((item) => item.dateType !== currentTab),
-      {
-        ...currentData,
-        monitoringTypeWiseData: [
-          ...currentData.monitoringTypeWiseData.filter(
-            (item) => item.monitoringType !== monitoringType
-          ),
-          { ...existingTypeData, monitoringUrls: updatedMonitoringUrls },
-        ],
-      },
-    ];
-
-    setResult(updatedData);
-    setUploadedFiles(updatedMonitoringUrls);
-  };
-
-  const getFiles = () => {
-    const currentData = result?.find((data) => data.dateType === currentTab);
-    if (!currentData) return [];
-    return (
-      currentData.monitoringTypeWiseData.find(
-        (d) => d.monitoringType === monitoringType
-      )?.monitoringUrls || []
-    );
-  };
+  // Memoize the radio group items with current color
+  const radioGroupItems = useMemo(() => {
+    return dummyData.map((item) => ({
+      ...item,
+      icon: <i className={`fi ${item.iconType} ${colorCode}`}></i>,
+    }));
+  }, [dummyData, colorCode]);
 
   const tabOrder = ["startDate", "midDate", "endDate"] as const;
 
@@ -198,13 +155,18 @@ export const TakingMonitoringPic = ({
       }));
   };
 
-  // Memoize the radio group items with current color
-  const radioGroupItems = useMemo(() => {
-    return dummyData.map((item) => ({
-      ...item,
-      icon: <i className={`fi ${item.iconType} ${colorCode}`}></i>,
-    }));
-  }, [dummyData, colorCode]);
+  const getAllFilesFromCurrentTab = (): MonitoringUrlData2[] => {
+    const currentTabData = result?.find((data) => data.dateType === currentTab);
+    if (!currentTabData) return [];
+
+    return currentTabData.monitoringTypeWiseData.flatMap((typeData) =>
+      typeData.monitoringUrls.map((urlData) => ({
+        ...urlData,
+        monitoringType: typeData.monitoringType,
+        campaignId: "", // Provide default value if undefined
+      }))
+    );
+  };
 
   return (
     <div>
@@ -216,6 +178,19 @@ export const TakingMonitoringPic = ({
         </h1>
       ) : (
         <div>
+          {open && (
+            <UploadedMonitoringPicsPopup
+              open={open}
+              onClose={() => setOpen(false)}
+              mediaFile={uploadedMonitoringPic}
+              setUploadedMonitoringPic={setUploadedMonitoringPic}
+              campaignList={campaignList}
+              handleOk={() => {
+                setOpen(false);
+                handleOk();
+              }}
+            />
+          )}
           <MyTab
             tabData={getTabData()}
             currentTab={currentTab}
@@ -223,7 +198,7 @@ export const TakingMonitoringPic = ({
           />
 
           <div className="flex justify-between items-center py-2">
-            <h1 className="text-lg font-medium">Select Type</h1>
+            <h1 className="text-lg font-medium">Upload Monitoring Pic</h1>
             <div className="flex items-center gap-1">
               <i className="fi fi-rr-calendar-days"></i>
               <span className="text-gray-600">
@@ -231,12 +206,6 @@ export const TakingMonitoringPic = ({
               </span>
             </div>
           </div>
-
-          <RadioGroupInput
-            initialValues={radioGroupItems}
-            value={monitoringType}
-            setValue={setMonitoringType}
-          />
 
           <div className="mt-4">
             <FileUpload
@@ -247,24 +216,23 @@ export const TakingMonitoringPic = ({
               maxSize={100}
             />
           </div>
-
-          {getFiles().length > 0 && (
+          {getAllFilesFromCurrentTab().length > 0 && (
             <div className="mt-4">
               <h3 className="font-medium mb-2">
                 Uploaded Files{" "}
                 <span className="text-gray-500 text-[12px]">
-                  ({dummyData.find((d) => d.value === monitoringType)?.count})
+                  (Total: {getAllFilesFromCurrentTab().length})
                 </span>
               </h3>
-              <div className="grid grid-cols-3 gap-4 h-[30vh] overflow-auto">
-                {getFiles().map((fileData, index) => (
+              <div className="grid grid-cols-3 gap-4 h-[40vh] overflow-y-auto">
+                {getAllFilesFromCurrentTab().map((fileData, index) => (
                   <ShowUploadedCard
-                    key={index}
+                    key={`${fileData.url}-${index}`}
                     fileData={fileData}
-                    handleRemoveFile={handleRemoveFile}
+                    handleRemoveFile={() => {}}
                     index={index}
                     dummyData={radioGroupItems}
-                    monitoringType={monitoringType}
+                    monitoringType={fileData.monitoringType}
                   />
                 ))}
               </div>
