@@ -18,10 +18,11 @@ export const MonitoringPage: React.FC = () => {
             }
           >
             {" "}
-            <SwitchInput
+            {/* <SwitchInput
               onToggle={(value) => setOption(value)}
               isEnabled={options}
-            />
+              
+            /> */}
           </Tooltip>
         </div>
         {options ? <CampaignWiseMonitoring /> : <ScreenWiseMonitoring />}

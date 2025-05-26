@@ -18,7 +18,7 @@ const RadioGroupInput: React.FC<RadioGroupInputProps> = ({
   value,
   setValue,
   initialValues,
-  className = "grid grid-cols-3 gap-2 mt-2 truncate",
+  className = "grid grid-cols-3 gap-2 truncate",
 }) => {
   return (
     <Radio.Group
@@ -28,7 +28,8 @@ const RadioGroupInput: React.FC<RadioGroupInputProps> = ({
     >
       {initialValues.map((data) => (
         <Radio value={data.value} key={data.value}>
-          {`${data.label} (${data?.count})`}
+          {data.label}
+          {typeof data.count === "number" && ` (${data.count})`}
         </Radio>
       ))}
     </Radio.Group>

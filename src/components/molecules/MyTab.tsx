@@ -29,8 +29,8 @@ export function MyTab({ tabData, currentTab, setCurrentTab }: any) {
           <h1
             className={
               currentTab === tab.id
-                ? "text-[#129BFF] truncate"
-                : "text-gray-500 truncate"
+                ? "text-[#129BFF] truncate cursor-pointer"
+                : "text-gray-500 truncate cursor-pointer"
             }
           >
             {tab.label}

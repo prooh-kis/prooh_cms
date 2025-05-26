@@ -15,7 +15,6 @@ import {
   userUpdatePasswordReducer,
 } from "../reducers/userReducers";
 import {
-  addCampaignMonitoringDataReducer,
   allCampaignsDataGetReducer,
   campaignCreatedScreensDetailsGetReducer,
   campaignDetailsGetReducer,
@@ -28,7 +27,6 @@ import {
   editAllSubCampaignsReducer,
   editCampaignCreationByScreenOwnerReducer,
   getAllScreensForScreenOwnerCampaignCreationReducer,
-  getCampaignMonitoringDataReducer,
   myCreateCampaignsVendorRequestsListGetReducer,
   screenDataUploadCreativeGetReducer,
 } from "../reducers/campaignReducers";
@@ -67,7 +65,16 @@ import {
   toggleStatusCouponReducer,
   updateCouponReducer,
 } from "../reducers/couponReducers";
-import { changeContactQueryStatusReducer, getAllContactQueriesReducer } from "../reducers/queriesReducer";
+import {
+  changeContactQueryStatusReducer,
+  getAllContactQueriesReducer,
+} from "../reducers/queriesReducer";
+import {
+  addCampaignMonitoringDataReducer,
+  getCampaignMonitoringDataReducer,
+  getActiveCampaignListForMonitoringReducer,
+  getActiveCampaignListScreenWiseForMonitoringReducer,
+} from "../reducers/monitoringReducers";
 
 const initialState = {
   userSignin: {
@@ -115,7 +122,8 @@ const store = configureStore({
       campaignStatusChangeAfterVendorApprovalReducer,
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
-    convertCreativesToRespectiveBitrates : convertCreativesToRespectiveBitrateReducer,
+    convertCreativesToRespectiveBitrates:
+      convertCreativesToRespectiveBitrateReducer,
 
     // creative
     creativesMediaUpload: creativesMediaUploadReducer,
@@ -156,10 +164,12 @@ const store = configureStore({
     // Monitoring
     addCampaignMonitoring: addCampaignMonitoringDataReducer,
     getCampaignMonitoring: getCampaignMonitoringDataReducer,
-
+    activeCampaignListForMonitoring: getActiveCampaignListForMonitoringReducer,
+    activeCampaignListScreenWiseForMonitoring:
+      getActiveCampaignListScreenWiseForMonitoringReducer,
     // Landing
-    getAllContactQueries : getAllContactQueriesReducer,
-    changeContactQueryStatus : changeContactQueryStatusReducer
+    getAllContactQueries: getAllContactQueriesReducer,
+    changeContactQueryStatus: changeContactQueryStatusReducer,
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"
