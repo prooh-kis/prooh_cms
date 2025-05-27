@@ -192,6 +192,7 @@ export function UploadedMonitoringPicsPopup({
                       key={typeIndex}
                     >
                       <input
+                        title="d"
                         type="radio"
                         className="h-6 w-6 mt-1"
                         name={`monitoringType-${index}`}
