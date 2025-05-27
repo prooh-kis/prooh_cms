@@ -128,29 +128,33 @@ const ContactQueries = () => {
     }
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Ticket Request</h2>
-
-            <div className="flex items-center border-b pb-2 mb-4 text-sm font-medium text-gray-600">
-                <TabWithoutIcon
-                    currentTab={currentTab}
-                    setCurrentTab={setCurrentTab}
-                    tabData={queriesTypeTabs}
-                />
-                <div className="ml-auto">
-                    <input
-                        type="text"
-                        placeholder="Search By Name Or Company"
-                        className="border px-3 py-1 rounded-md text-sm w-64"
-                        onChange={(event) => {
-                            setSearchQuery(event.target.value)
-                        }}
+        <div className="font-custom">
+            <div className="bg-white rounded-lg shadow-sm">
+                <div className="p-4 border-b">
+                    <h2 className="text-xl font-semibold">Ticket Request</h2>
+                </div>
+                <div className="px-4 flex items-center text-sm font-medium text-gray-600">
+                    <TabWithoutIcon
+                        currentTab={currentTab}
+                        setCurrentTab={setCurrentTab}
+                        tabData={queriesTypeTabs?.map((type: any) => ({...type, param: type.value}))}
                     />
+                    <div className="ml-auto">
+                        <input
+                            type="text"
+                            placeholder="Search By Name Or Company"
+                            className="border px-3 py-1 rounded-md text-sm w-64"
+                            onChange={(event) => {
+                                setSearchQuery(event.target.value)
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
+            
 
             {filteredResults.map((ticket: any, index) => (
-                <div key={index} className="border rounded-md mb-3">
+                <div key={index} className="bg-white rounded-lg shadow-sm my-1">
                     <div
                         className="flex items-center justify-between px-4 py-3 cursor-pointer"
                         onClick={() => toggleExpand(index)}
@@ -175,7 +179,7 @@ const ContactQueries = () => {
                         </div>
                     </div>
                     {expandedId === index && (
-                        <div className="bg-gray-50 px-6 pb-4 text-sm text-gray-700">
+                        <div className="px-6 pb-4 text-sm text-gray-700">
                             {ticket.subjects && (
                                 <div className="font-semibold mb-2">{ticket.subjects[0]}</div>
                             )}
