@@ -8,7 +8,7 @@ import {
 } from "../../types/monitoringTypes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { UploadedMonitoringPicsPopup } from "./UploadedMonitoringPicsPopup";
-import { ShowUploadedCard } from "./MonitoringReUsableComp";
+import { ShowUploadedCard, ShowUploadedCardV2 } from "./MonitoringReUsableComp";
 
 interface DummyDataItem {
   label: string;
@@ -27,6 +27,8 @@ interface Props {
   setCurrentTab: (value: string) => void;
   campaignList: any[];
   handleOk: () => void;
+  handleClearAll?: () => void;
+  handleSingleRemove?: (value: any) => void;
 }
 export const TakingMonitoringPicV2 = ({
   pageLoading,
@@ -38,6 +40,8 @@ export const TakingMonitoringPicV2 = ({
   setUploadedMonitoringPic,
   handleOk,
   campaignList,
+  handleClearAll,
+  handleSingleRemove,
 }: Props) => {
   const colorCode = useMemo(() => {
     return currentTab === "startDate"
@@ -218,19 +222,29 @@ export const TakingMonitoringPicV2 = ({
           </div>
           {getAllFilesFromCurrentTab().length > 0 && (
             <div className="mt-4">
-              <h3 className="font-medium mb-2">
-                Uploaded Files{" "}
-                <span className="text-gray-500 text-[12px]">
-                  (Total: {getAllFilesFromCurrentTab().length})
-                </span>
-              </h3>
+              <div className="flex justify-between">
+                <h3 className="font-medium mb-2">
+                  Uploaded Files{" "}
+                  <span className="text-gray-500 text-[12px]">
+                    (Total: {getAllFilesFromCurrentTab().length})
+                  </span>
+                </h3>
+                {getAllFilesFromCurrentTab().length > 0 && (
+                  <button
+                    className="text-[#000000] opacity-[80%] text-[14px] font-normal hover:text-[#129BFF] cursor-pointer"
+                    onClick={handleClearAll}
+                  >
+                    Remove All
+                  </button>
+                )}
+              </div>
+
               <div className="grid grid-cols-3 gap-4 h-[40vh] overflow-y-auto">
                 {getAllFilesFromCurrentTab().map((fileData, index) => (
-                  <ShowUploadedCard
+                  <ShowUploadedCardV2
                     key={`${fileData.url}-${index}`}
                     fileData={fileData}
-                    handleRemoveFile={() => {}}
-                    index={index}
+                    handleRemoveFile={handleSingleRemove}
                     dummyData={radioGroupItems}
                     monitoringType={fileData.monitoringType}
                   />

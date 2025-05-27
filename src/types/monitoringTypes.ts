@@ -4,6 +4,7 @@ export interface MonitoringUrlData {
     file?: File;
     fileType: string;
     uploadedDate: string;
+    _id?: string;
 }
 
 export interface MonitoringUrlData2 {
@@ -14,6 +15,7 @@ export interface MonitoringUrlData2 {
     uploadedDate: string;
     monitoringType: string;
     campaignId: string;
+    _id?: string;
 }
 
 export interface MonitoringTypeWiseData {

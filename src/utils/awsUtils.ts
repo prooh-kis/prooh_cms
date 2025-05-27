@@ -35,7 +35,7 @@ export const saveFileOnAWS = async (url: string, file: File) => {
 };
 
 export const getAWSUrl = async (file: any) => {
-  console.log("getAWSUrl : ", file);
+  // console.log("getAWSUrl : ", file);
   try {
     const aws = await getAWSUrlToUploadFile(
       {

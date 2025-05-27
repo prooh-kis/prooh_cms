@@ -94,8 +94,6 @@ export function UploadedMonitoringPicsPopup({
     { label: "Night Shots", value: "nightShot", iconType: "fi-ss-moon" },
   ]);
 
-  console.log("mediaFile  : ", mediaFile);
-
   const handleCampaignChange = (fileIndex: number, campaignId: string) => {
     const updated = [...mediaFile]; // Use mediaFile prop instead of prev
     updated[fileIndex] = {

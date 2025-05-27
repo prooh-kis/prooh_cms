@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SearchInputField } from "../../components";
+import { Loading, SearchInputField } from "../../components";
 import { GET_SCREEN_CAMPAIGN_MONITORING_RESET } from "../../constants/screenConstants";
 import { MONITORING_GET_CAMPAIGN_DETAILS } from "../../constants/userConstants";
 import { List, ListItem, Panel } from "./MonitoringReUsableComp";
@@ -11,6 +11,7 @@ import {
 } from "../../actions/monitoringAction.";
 import {
   MonitoringData,
+  MonitoringTypeWiseData,
   MonitoringUrlData2,
 } from "../../types/monitoringTypes";
 import { message, notification } from "antd";
@@ -116,7 +117,6 @@ export const CampaignWiseMonitoring: React.FC = () => {
   // Initial data loading
   useEffect(() => {
     if (userInfo && !userInfo?.isMaster) {
-      // message.error("Not a screen owner!!!");
     }
     dispatch(
       getCampaignDetailsListForMonitoring({
@@ -153,7 +153,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
 
       return dispatch(
         addCampaignMonitoringDataAction({
-          campaignId: monitoringScreen._id,
+          campaignId: monitoringScreen?._id,
           monitoringData,
         })
       );
@@ -263,8 +263,6 @@ export const CampaignWiseMonitoring: React.FC = () => {
       await handleSaveMonitoringData(updatedResult);
       setResult(updatedResult);
       setUploadedMonitoringPic([]);
-
-      message.success("Monitoring data saved successfully!");
     } catch (error) {
       console.error("Error saving monitoring data:", error);
       message.error(
@@ -277,91 +275,183 @@ export const CampaignWiseMonitoring: React.FC = () => {
     }
   };
 
+  const handleClearAll = () => {
+    if (
+      window.confirm("Do you really want to delete all monitoring pictures?")
+    ) {
+      try {
+        const updatedResult = result.map((data) => {
+          if (data.dateType === currentTab) {
+            return {
+              ...data,
+              monitoringTypeWiseData: [],
+            };
+          }
+          return data;
+        });
+        setResult(updatedResult);
+        dispatch(
+          addCampaignMonitoringDataAction({
+            campaignId: monitoringScreen?._id,
+            monitoringData: updatedResult,
+          })
+        );
+      } catch (error) {
+        console.error("Error clearing monitoring pictures:", error);
+        message.error("Failed to clear monitoring pictures");
+      }
+    }
+  };
+
+  const handleSingleRemove = async (fileToRemove: MonitoringUrlData2) => {
+    if (
+      !window.confirm(
+        "Are you sure you want to remove this monitoring picture?"
+      )
+    )
+      return;
+
+    try {
+      // Create a deep copy of the current result
+      const updatedResult = [...result].map((data) => ({ ...data }));
+
+      // Find the current tab data
+      const currentTabIndex = updatedResult.findIndex(
+        (data) => data.dateType === currentTab
+      );
+
+      if (currentTabIndex >= 0) {
+        // Filter out the file to be removed
+        updatedResult[currentTabIndex] = {
+          ...updatedResult[currentTabIndex],
+          monitoringTypeWiseData: updatedResult[
+            currentTabIndex
+          ].monitoringTypeWiseData
+            .map((typeData) => ({
+              ...typeData,
+              monitoringUrls: typeData.monitoringUrls.filter(
+                (urlData) => urlData.awsUrl !== fileToRemove.awsUrl
+              ),
+            }))
+            .filter((typeData) => typeData.monitoringUrls.length > 0), // Remove empty types
+        };
+
+        // Update local state
+        setResult(updatedResult);
+
+        // Update on the server
+        await dispatch(
+          addCampaignMonitoringDataAction({
+            campaignId: monitoringScreen?._id,
+            monitoringData: updatedResult,
+          })
+        );
+      } else {
+        message.error("Could not find current tab data");
+      }
+    } catch (error) {
+      console.error("Error removing monitoring picture:", error);
+      message.error("Failed to remove monitoring picture");
+    }
+  };
+
   return (
-    <div className="grid grid-cols-12 gap-1 mt-1">
-      <Panel
-        title="Campaign List"
-        className="col-span-3"
-        isShowRadio={true}
-        isForCampaignType={true}
-        filterCampaignType={filterCampaignType}
-        setFilterCampaignType={handleRadioChange}
-      >
-        <div className="mt-2">
-          <SearchInputField
-            placeholder="Brand, Campaign Name"
-            value={searchQuery}
-            onChange={setSearchQuery}
-            height="h-8"
-          />
-        </div>
-        <List
-          items={filterResult}
-          loading={loading}
-          renderItem={(data: Campaign, index: number) => (
-            <ListItem
-              key={index}
-              item={data}
-              isActive={monitoringCampaign?._id === data?._id}
-              onClick={() => handleCampaignClick({ campaignCreated: data })}
-              icon="megaphone"
-              text={`${data?.name}`}
+    <div className="">
+      {loadingAddCampaignMonitoring ? (
+        <Loading />
+      ) : (
+        <div className="grid grid-cols-12 gap-1 mt-1">
+          <Panel
+            title="Campaign List"
+            className="col-span-3"
+            isShowRadio={true}
+            isForCampaignType={true}
+            filterCampaignType={filterCampaignType}
+            setFilterCampaignType={handleRadioChange}
+          >
+            <div className="mt-2">
+              <SearchInputField
+                placeholder="Brand, Campaign Name"
+                value={searchQuery}
+                onChange={setSearchQuery}
+                height="h-8"
+              />
+            </div>
+            <List
+              items={filterResult}
+              loading={loading}
+              renderItem={(data: Campaign, index: number) => (
+                <ListItem
+                  key={index}
+                  item={data}
+                  isActive={monitoringCampaign?._id === data?._id}
+                  onClick={() => handleCampaignClick({ campaignCreated: data })}
+                  icon="megaphone"
+                  text={`${data?.name}`}
+                />
+              )}
             />
-          )}
-        />
-      </Panel>
+          </Panel>
 
-      <Panel title="Screens List" className="col-span-3" isShowRadio={false}>
-        <div className="mt-2">
-          <SearchInputField
-            placeholder="Screen Name"
-            value={searchQueryForCampaign}
-            onChange={setSearchQueryForCampaign}
-            height="h-8"
-          />
-        </div>
-        <List
-          items={monitoringScreens?.filter((screen: Screen) =>
-            screen?.screenName
-              .toLowerCase()
-              .includes(searchQueryForCampaign.toLowerCase())
-          )}
-          loading={false}
-          renderItem={(screen: Screen, index: number) => (
-            <ListItem
-              key={index}
-              item={screen}
-              isActive={monitoringScreen?._id === screen?._id}
-              onClick={() => handleScreenClick({ screen })}
-              icon="screen"
-              text={screen.screenName}
+          <Panel
+            title="Screens List"
+            className="col-span-3"
+            isShowRadio={false}
+          >
+            <div className="mt-2">
+              <SearchInputField
+                placeholder="Screen Name"
+                value={searchQueryForCampaign}
+                onChange={setSearchQueryForCampaign}
+                height="h-8"
+              />
+            </div>
+            <List
+              items={monitoringScreens?.filter((screen: Screen) =>
+                screen?.screenName
+                  .toLowerCase()
+                  .includes(searchQueryForCampaign.toLowerCase())
+              )}
+              loading={false}
+              renderItem={(screen: Screen, index: number) => (
+                <ListItem
+                  key={index}
+                  item={screen}
+                  isActive={monitoringScreen?._id === screen?._id}
+                  onClick={() => handleScreenClick({ screen })}
+                  icon="screen"
+                  text={screen.screenName}
+                />
+              )}
             />
-          )}
-        />
-      </Panel>
+          </Panel>
 
-      {monitoringScreen && monitoringCampaign && (
-        <Panel
-          title={monitoringScreen?.screenName}
-          className="col-span-6"
-          buttonTitle="Save Monitoring Data"
-          // isShow={labels?.length > 0 ? true : false}
-          isShow={false}
-          loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
-          isShowRadio={false}
-        >
-          <TakingMonitoringPicV2
-            pageLoading={loadingGetCampaignMonitoring}
-            currentTab={currentTab}
-            setCurrentTab={setCurrentTab}
-            result={result}
-            setResult={setResult}
-            uploadedMonitoringPic={uploadedMonitoringPic}
-            setUploadedMonitoringPic={setUploadedMonitoringPic}
-            campaignList={monitoringScreens}
-            handleOk={handleOk}
-          />
-        </Panel>
+          {monitoringScreen && monitoringCampaign && (
+            <Panel
+              title={monitoringScreen?.screenName}
+              className="col-span-6"
+              buttonTitle="Save Monitoring Data"
+              // isShow={labels?.length > 0 ? true : false}
+              isShow={false}
+              loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
+              isShowRadio={false}
+            >
+              <TakingMonitoringPicV2
+                pageLoading={loadingGetCampaignMonitoring}
+                currentTab={currentTab}
+                setCurrentTab={setCurrentTab}
+                result={result}
+                setResult={setResult}
+                uploadedMonitoringPic={uploadedMonitoringPic}
+                setUploadedMonitoringPic={setUploadedMonitoringPic}
+                campaignList={monitoringScreens}
+                handleOk={handleOk}
+                handleClearAll={handleClearAll}
+                handleSingleRemove={handleSingleRemove}
+              />
+            </Panel>
+          )}
+        </div>
       )}
     </div>
   );

@@ -203,7 +203,7 @@ export const ShowUploadedCardV2 = ({
             className="fi fi-rr-cross-circle cursor-pointer text-[#FF0000]"
             onClick={(e) => {
               e.stopPropagation();
-              handleRemoveFile(index);
+              handleRemoveFile(fileData);
             }}
           ></i>
         </div>
