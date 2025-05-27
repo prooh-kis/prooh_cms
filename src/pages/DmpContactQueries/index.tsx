@@ -315,4 +315,4 @@ const DmpContactQueries = () => {
     );
 };
 
-export default DmpContactQueries;
+export {DmpContactQueries};

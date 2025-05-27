@@ -23,3 +23,6 @@ export { EditCampaign } from "./EditCampaign";
 
 export { MyRequests } from "./MyRequests";
 export { Coupons } from "./Coupons";
+
+export { ContactQueries } from "./ContactQueries"
+export { DmpContactQueries } from "./DmpContactQueries"

@@ -15,6 +15,8 @@ import {
   ScreensPage,
   UpdatePassword,
   VerifyEmail,
+  ContactQueries,
+  DmpContactQueries
 } from "../pages";
 
 import {
@@ -48,8 +50,6 @@ import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
 import { MyUsers } from "../pages/MyUser";
 import { PlayLiveUrl } from "../pages/PageNotFound/PlayLiveUrl";
-import ContactQueries from "../pages/ContactQueries";
-import DmpContactQueries from "../pages/DmpContactQueries";
 
 const Routers: React.FC = () => {
   return (

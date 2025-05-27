@@ -137,7 +137,7 @@ const ContactQueries = () => {
                     <TabWithoutIcon
                         currentTab={currentTab}
                         setCurrentTab={setCurrentTab}
-                        tabData={queriesTypeTabs?.map((type: any) => ({...type, param: type.value}))}
+                        tabData={queriesTypeTabs?.map((type: any) => ({ ...type, param: type.value }))}
                     />
                     <div className="ml-auto">
                         <input
@@ -151,7 +151,7 @@ const ContactQueries = () => {
                     </div>
                 </div>
             </div>
-            
+
 
             {filteredResults.map((ticket: any, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-sm my-1">
@@ -226,4 +226,4 @@ const ContactQueries = () => {
     );
 };
 
-export default ContactQueries;
+export { ContactQueries };
