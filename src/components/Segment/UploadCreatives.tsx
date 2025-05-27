@@ -16,7 +16,7 @@ import {
   createCampaignCreationByScreenOwnerAction,
   getAllCampaignsDetailsAction,
   getScreenDataUploadCreativeAction,
-} from "../../actions/campaignAction";
+} from "../../actions/campaignAction.js";
 import { CheckboxInput } from "../atoms/CheckboxInput";
 import { UploadCreativesTable } from "../tables/UploadCreativesTable";
 import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS, SCREEN_ADMIN, SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";

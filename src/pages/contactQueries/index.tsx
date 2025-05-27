@@ -105,7 +105,10 @@ const ContactQueries = () => {
     }, [contactQueriesSuccess, contactQueriesError, changeContactQuerySuccess, changeContactQueryError, searchQuery]);
 
     const toggleExpand = (id: number) => {
-        setExpandedId(id);
+        if (expandedId === id)
+            setExpandedId(-1)
+        else
+            setExpandedId(id);
     };
 
     const ChevronDown = (
@@ -167,7 +170,7 @@ const ContactQueries = () => {
                             </div>
                         </div>
                         <div className="text-sm text-gray-500 flex items-center">
-                            <span className="mr-2">Date - {new Date(ticket.date).toLocaleDateString('en-US')}</span>
+                            <span className="mr-2">📅 Date - {new Date(ticket.date).toLocaleDateString('en-US')}</span>
                             {expandedId === index ? ChevronUp : ChevronDown}
                         </div>
                     </div>

@@ -14,6 +14,7 @@ export const SCREENS_LIST_FOR_SECONDARY_USER = "/screens-list-secondary";
 export const ADD_NEW_USER = "/users/add-new";
 export const USERS = "/users";
 export const QUERIES = "/queries";
+export const DMP_QUERIES = "/dmpQueries";
 
 export const SCREENS_DETAILS = "/screens-details/:id?";
 

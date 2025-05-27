@@ -66,8 +66,10 @@ import {
   updateCouponReducer,
 } from "../reducers/couponReducers";
 import {
+  approveDataHeroAccountReducer,
   changeContactQueryStatusReducer,
   getAllContactQueriesReducer,
+  getAllDmpContactQueriesReducer,
 } from "../reducers/queriesReducer";
 import {
   addCampaignMonitoringDataReducer,
@@ -170,6 +172,8 @@ const store = configureStore({
     // Landing
     getAllContactQueries: getAllContactQueriesReducer,
     changeContactQueryStatus: changeContactQueryStatusReducer,
+    getAllDmpContactQueries: getAllDmpContactQueriesReducer,
+    approveDataHeroAccount : approveDataHeroAccountReducer
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"

@@ -38,6 +38,7 @@ import {
   MY_REQUESTS,
   MY_COUPONS,
   QUERIES,
+  DMP_QUERIES,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
@@ -47,7 +48,8 @@ import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
 import { MyUsers } from "../pages/MyUser";
 import { PlayLiveUrl } from "../pages/PageNotFound/PlayLiveUrl";
-import ContactQueries from "../pages/contactQueries";
+import ContactQueries from "../pages/ContactQueries";
+import DmpContactQueries from "../pages/DmpContactQueries";
 
 const Routers: React.FC = () => {
   return (
@@ -212,6 +214,15 @@ const Routers: React.FC = () => {
           element={
             <AppDashBoardLayout value="Queries">
               <ContactQueries />
+            </AppDashBoardLayout>
+          }
+        />
+
+        <Route
+          path={DMP_QUERIES}
+          element={
+            <AppDashBoardLayout value="DmpQueries">
+              <DmpContactQueries />
             </AppDashBoardLayout>
           }
         />

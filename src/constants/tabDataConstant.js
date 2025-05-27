@@ -1,5 +1,6 @@
 import {
   CAMPAIGNS_LIST,
+  DMP_QUERIES,
   MY_COUPONS,
   MY_CREATIVES,
   MY_REQUESTS,
@@ -130,6 +131,24 @@ export const queriesTypeTabs = [
   },
 ];
 
+export const dmpQueriesTypeTabs = [
+  {
+    id: "1",
+    label: "All",
+    value: "All",
+  },
+  {
+    id: "2",
+    label: "Verified",
+    value: "verified",
+  },
+  {
+    id: "3",
+    label: "Unverified",
+    value: "unverified",
+  }
+];
+
 export const menuItemsAdmin = [
   {
     value: "My Screens",
@@ -178,7 +197,13 @@ export const menuItemsAdmin = [
     path: QUERIES,
     icon: "fi fi-sr-person-circle-question",
     option: "Queries",
-  }
+  },
+  {
+    value: "Dmp Queries",
+    path: DMP_QUERIES,
+    icon: "fi fi-sr-code-pull-request-closed",
+    option: "Dmp Queries",
+  },
 ]
 
 export const menuItemsScreenOwner = [
