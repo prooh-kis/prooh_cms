@@ -11,7 +11,6 @@ import {
 } from "../../actions/monitoringAction.";
 import {
   MonitoringData,
-  MonitoringTypeWiseData,
   MonitoringUrlData2,
 } from "../../types/monitoringTypes";
 import { message, notification } from "antd";
@@ -259,9 +258,9 @@ export const CampaignWiseMonitoring: React.FC = () => {
         ...prevResult.filter((data) => data.dateType !== currentTab),
         updatedCurrentTabData,
       ];
-
-      await handleSaveMonitoringData(updatedResult);
       setResult(updatedResult);
+
+      handleSaveMonitoringData(updatedResult);
       setUploadedMonitoringPic([]);
     } catch (error) {
       console.error("Error saving monitoring data:", error);
@@ -290,12 +289,8 @@ export const CampaignWiseMonitoring: React.FC = () => {
           return data;
         });
         setResult(updatedResult);
-        dispatch(
-          addCampaignMonitoringDataAction({
-            campaignId: monitoringScreen?._id,
-            monitoringData: updatedResult,
-          })
-        );
+        handleSaveMonitoringData(updatedResult);
+        setUploadedMonitoringPic([]);
       } catch (error) {
         console.error("Error clearing monitoring pictures:", error);
         message.error("Failed to clear monitoring pictures");
@@ -337,15 +332,11 @@ export const CampaignWiseMonitoring: React.FC = () => {
         };
 
         // Update local state
+
         setResult(updatedResult);
 
-        // Update on the server
-        await dispatch(
-          addCampaignMonitoringDataAction({
-            campaignId: monitoringScreen?._id,
-            monitoringData: updatedResult,
-          })
-        );
+        handleSaveMonitoringData(updatedResult);
+        setUploadedMonitoringPic([]);
       } else {
         message.error("Could not find current tab data");
       }
