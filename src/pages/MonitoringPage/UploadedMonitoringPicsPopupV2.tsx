@@ -44,7 +44,7 @@ export const ShowFileData = ({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <div className="relative group h-[200px] bg-gray-100 rounded-t-lg">
+    <div className="h-[200px] bg-gray-100 rounded-t-lg">
       {fileData?.fileType?.includes("image") ? (
         <img
           src={fileData?.url || fileData?.awsUrl}
@@ -59,15 +59,6 @@ export const ShowFileData = ({
           />
         </video>
       )}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <i
-          className="fi fi-rr-cross-circle cursor-pointer text-[#FF0000]"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleRemoveFile(index);
-          }}
-        ></i>
-      </div>
     </div>
   );
 };
@@ -188,9 +179,9 @@ export function UploadedMonitoringPicsPopupV2({
           <div className="col-span-10 grid grid-cols-3 h-[70vh] overflow-y-auto scrollbar-minimal pr-2 px-8 py-4 gap-4 border-r">
             {mediaFile?.map((file, index) => (
               <div key={index} className="relative group h-[240px]">
-                <div className="flex-1">
+                <div className="flex-1 relative">
                   {/* Add overlay div for the hover effect */}
-                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-lg z-10"></div>
+                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-lg"></div>
 
                   <ShowFileData
                     fileData={file}
@@ -200,7 +191,7 @@ export function UploadedMonitoringPicsPopupV2({
                   />
 
                   <div
-                    className={`flex gap-2 p-2  text-[#FFFFFF] rounded-b-lg ${
+                    className={`flex gap-2 p-2 text-[#FFFFFF] rounded-b-lg ${
                       file.monitoringType ? `bg-[#3A9868]` : `bg-[#FF9047]`
                     }`}
                   >
@@ -219,7 +210,26 @@ export function UploadedMonitoringPicsPopupV2({
                   </div>
                 </div>
 
-                <div className="absolute inset-x-0 bottom-[50px] p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                {/* Cross button - moved outside the flex-1 div and increased z-index */}
+                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-30 flex items-center gap-4 rounded-full px-4 bg-[#ffffff]">
+                  <Tooltip title="Expand">
+                    <i
+                      onClick={() => window.open(file?.url || file?.awsUrl)}
+                      className="fi fi-rs-expand-arrows flex-items-center"
+                    ></i>
+                  </Tooltip>
+                  <Tooltip title="Remove">
+                    <i
+                      className="fi fi-sr-trash cursor-pointer text-[#FF0000] text-xl hover:text-[#cc0000] transition-colors flex-items-center"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveFile(index);
+                      }}
+                    ></i>
+                  </Tooltip>
+                </div>
+
+                <div className="absolute inset-x-0 bottom-[40px] p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
                   <div className="flex justify-between w-full items-center rounded-full p-2 border bg-[#FFFFFF]">
                     {monitoringTypes.map((type, typeIndex) => (
                       <Tooltip key={typeIndex} title={type.label}>
@@ -227,7 +237,7 @@ export function UploadedMonitoringPicsPopupV2({
                           onClick={() =>
                             handleMonitoringTypeChange(index, type.value)
                           }
-                          className={`h-8 w-8 rounded-full flex justify-center items-center cursor-pointer ${
+                          className={`h-8 w-8 rounded-full flex justify-center items-center cursor-pointer hover:bg-[#ADB7BF40] ${
                             file.monitoringType === type.value
                               ? `bg-[#129BFF] text-[#FFFFFF]`
                               : "text-[#ADB7BF]"
