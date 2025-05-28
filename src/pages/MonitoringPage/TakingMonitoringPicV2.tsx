@@ -7,8 +7,9 @@ import {
   MonitoringUrlData2,
 } from "../../types/monitoringTypes";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { UploadedMonitoringPicsPopup } from "./UploadedMonitoringPicsPopup";
-import { ShowUploadedCard, ShowUploadedCardV2 } from "./MonitoringReUsableComp";
+// import { UploadedMonitoringPicsPopup } from "./UploadedMonitoringPicsPopup";
+import { ShowUploadedCardV2 } from "./MonitoringReUsableComp";
+import { UploadedMonitoringPicsPopupV2 } from "./UploadedMonitoringPicsPopupV2";
 
 interface DummyDataItem {
   label: string;
@@ -29,6 +30,7 @@ interface Props {
   handleOk: () => void;
   handleClearAll?: () => void;
   handleSingleRemove?: (value: any) => void;
+  screenName?: string;
 }
 export const TakingMonitoringPicV2 = ({
   pageLoading,
@@ -42,6 +44,7 @@ export const TakingMonitoringPicV2 = ({
   campaignList,
   handleClearAll,
   handleSingleRemove,
+  screenName,
 }: Props) => {
   const colorCode = useMemo(() => {
     return currentTab === "startDate"
@@ -121,7 +124,7 @@ export const TakingMonitoringPicV2 = ({
       file,
       fileType: file.type,
       uploadedDate: new Date().toISOString(),
-      monitoringType: "dayShot", // Consider making this configurable
+      monitoringType: "", // Consider making this configurable
       campaignId: "",
     }));
 
@@ -183,7 +186,7 @@ export const TakingMonitoringPicV2 = ({
       ) : (
         <div>
           {open && (
-            <UploadedMonitoringPicsPopup
+            <UploadedMonitoringPicsPopupV2
               open={open}
               onClose={() => setOpen(false)}
               mediaFile={uploadedMonitoringPic}
@@ -193,6 +196,8 @@ export const TakingMonitoringPicV2 = ({
                 setOpen(false);
                 handleOk();
               }}
+              currentTab={currentTab}
+              screenName={screenName || ""}
             />
           )}
           <MyTab

@@ -439,6 +439,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
                 handleOk={handleOk}
                 handleClearAll={handleClearAll}
                 handleSingleRemove={handleSingleRemove}
+                screenName={monitoringScreen?.screenName || ""}
               />
             </Panel>
           )}

@@ -10,3 +10,11 @@ export function formatNumber(num) {
   }
   return num.toString();
 }
+
+export function camelToTitleCase(camelStr) {
+  // Insert space before capitals and trim
+  const spacedStr = camelStr.replace(/([A-Z])/g, " $1").trim();
+
+  // Capitalize first letter of each word
+  return spacedStr.replace(/\b\w/g, (char) => char.toUpperCase());
+}
