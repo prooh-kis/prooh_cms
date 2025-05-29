@@ -353,7 +353,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
       ) : (
         <div className="grid grid-cols-12 gap-1 mt-1">
           <Panel
-            title="Campaign List"
+            title="Campaigns"
             className="col-span-3"
             isShowRadio={true}
             isForCampaignType={true}
