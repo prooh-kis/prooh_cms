@@ -183,49 +183,6 @@ export const CampaignWiseMonitoring: React.FC = () => {
 
     try {
       const updatedMonitoringPic = [...uploadedMonitoringPic];
-      const monitoringTypeWiseData: any = [];
-
-      // Process files sequentially to maintain order
-      for (const file of updatedMonitoringPic) {
-        try {
-          if (!file.file) continue;
-
-          const awsUrl = await getAWSUrl(file.file);
-          file.awsUrl = awsUrl;
-
-          // Find existing monitoring type or create new entry
-          const existingTypeIndex = monitoringTypeWiseData.findIndex(
-            (item: any) => item.monitoringType === file.monitoringType
-          );
-
-          if (existingTypeIndex >= 0) {
-            // Add to existing monitoring type
-            monitoringTypeWiseData[existingTypeIndex].monitoringUrls.push({
-              awsUrl,
-              url: awsUrl,
-              fileType: file.fileType,
-              uploadedDate: new Date().toISOString(),
-            });
-          } else {
-            // Create new monitoring type entry
-            monitoringTypeWiseData.push({
-              monitoringType: file.monitoringType,
-              monitoringUrls: [
-                {
-                  awsUrl,
-                  url: awsUrl,
-                  fileType: file.fileType,
-                  uploadedDate: new Date().toISOString(),
-                },
-              ],
-            });
-          }
-        } catch (error) {
-          console.error(`Error processing file ${file.file?.name}:`, error);
-          throw error;
-        }
-      }
-
       const prevResult = [...result];
 
       // Update result state
@@ -237,21 +194,71 @@ export const CampaignWiseMonitoring: React.FC = () => {
         monitoringTypeWiseData: [],
       };
 
-      // Merge new data with existing monitoring types
-      const mergedMonitoringTypes = [
-        ...currentTabData.monitoringTypeWiseData.filter(
-          (existingType) =>
-            !monitoringTypeWiseData.some(
-              (newType: any) =>
-                newType.monitoringType === existingType.monitoringType
-            )
-        ),
-        ...monitoringTypeWiseData,
+      // Create a new array for monitoringTypeWiseData to avoid mutations
+      let monitoringTypeWiseData: any = [
+        ...currentTabData.monitoringTypeWiseData,
       ];
+
+      // Process files sequentially to maintain order
+      for (const file of updatedMonitoringPic) {
+        try {
+          if (!file.file) continue;
+
+          const awsUrl = await getAWSUrl(file.file);
+          file.awsUrl = awsUrl;
+
+          // Find existing monitoring type index
+          const existingTypeIndex = monitoringTypeWiseData.findIndex(
+            (item: any) => item.monitoringType === file.monitoringType
+          );
+
+          if (existingTypeIndex >= 0) {
+            // Create new array with updated monitoringUrls
+            monitoringTypeWiseData = monitoringTypeWiseData.map(
+              (item: any, index: number) => {
+                if (index === existingTypeIndex) {
+                  return {
+                    ...item,
+                    monitoringUrls: [
+                      ...item.monitoringUrls,
+                      {
+                        awsUrl,
+                        url: awsUrl,
+                        fileType: file.fileType,
+                        uploadedDate: new Date().toISOString(),
+                      },
+                    ],
+                  };
+                }
+                return item;
+              }
+            );
+          } else {
+            // Create new monitoring type entry by creating new array
+            monitoringTypeWiseData = [
+              ...monitoringTypeWiseData,
+              {
+                monitoringType: file.monitoringType,
+                monitoringUrls: [
+                  {
+                    awsUrl,
+                    url: awsUrl,
+                    fileType: file.fileType,
+                    uploadedDate: new Date().toISOString(),
+                  },
+                ],
+              },
+            ];
+          }
+        } catch (error) {
+          console.error(`Error processing file ${file.file?.name}:`, error);
+          throw error;
+        }
+      }
 
       const updatedCurrentTabData = {
         ...currentTabData,
-        monitoringTypeWiseData: mergedMonitoringTypes,
+        monitoringTypeWiseData: monitoringTypeWiseData,
       };
 
       const updatedResult = [
