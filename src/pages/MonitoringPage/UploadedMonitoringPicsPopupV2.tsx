@@ -7,9 +7,6 @@ import { camelToTitleCase } from "../../utils/formatValue";
 
 interface ShowFileDataProps {
   fileData: MonitoringUrlData2;
-  handleRemoveFile: (index: number) => void;
-  index: number;
-  setUploadedMonitoringPic: (value: MonitoringUrlData2[]) => void;
 }
 
 interface MonitoringType {
@@ -35,12 +32,7 @@ interface UploadedMonitoringPicsPopupProps {
   screenName: string;
 }
 
-export const ShowFileData = ({
-  fileData,
-  handleRemoveFile,
-  index,
-  setUploadedMonitoringPic,
-}: ShowFileDataProps) => {
+export const ShowFileData = ({ fileData }: ShowFileDataProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
@@ -183,12 +175,7 @@ export function UploadedMonitoringPicsPopupV2({
                   {/* Add overlay div for the hover effect */}
                   <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-lg"></div>
 
-                  <ShowFileData
-                    fileData={file}
-                    handleRemoveFile={handleRemoveFile}
-                    index={index}
-                    setUploadedMonitoringPic={setUploadedMonitoringPic}
-                  />
+                  <ShowFileData fileData={file} />
 
                   <div
                     className={`flex gap-2 p-2 text-[#FFFFFF] rounded-b-lg ${

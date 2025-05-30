@@ -3,6 +3,7 @@ import ButtonInput from "../../components/atoms/ButtonInput";
 import { NoDataView } from "../../components/index";
 import { Loading } from "../../components/Loading";
 import RadioGroupInput from "../../components/atoms/RadioGroupInput";
+import { useRef } from "react";
 
 // Reusable Panel Component
 export const Panel = ({
@@ -43,7 +44,7 @@ export const Panel = ({
             initialValues={[
               { label: "Active", value: "Active" },
               { label: "All", value: "All" },
-              { label: "Completed", value: "Completed" }
+              { label: "Completed", value: "Completed" },
             ]}
             value={isForCampaignType ? filterCampaignType : filterScreenType}
             setValue={(value) => {
@@ -108,8 +109,9 @@ export const ListItem = ({
 }) => (
   <div
     onClick={() => onClick(item)}
-    className={`flex gap-2 border-b border-gray-100 py-2 px-2 text-[16px]  hover:text-[#129BFF90] cursor-pointer rounded-lg ${isActive ? "text-[#129BFF] bg-[#E7F5FF]" : "text-[##363636]"
-      }`}
+    className={`flex gap-2 border-b border-gray-100 py-2 px-2 text-[16px]  hover:text-[#129BFF90] cursor-pointer rounded-lg ${
+      isActive ? "text-[#129BFF] bg-[#E7F5FF]" : "text-[##363636]"
+    }`}
   >
     <i className={`fi fi-rr-${icon} flex items-center`}></i>
     <h1>{text}</h1>
@@ -176,6 +178,8 @@ export const ShowUploadedCardV2 = ({
   index,
   dummyData,
 }: any) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   return (
     <div className="relative border rounded-lg shadow-sm hover:shadow-md transition-shadow max-h-[180px]">
       <div className="relative group h-32 bg-gray-100 rounded-lg">
@@ -183,24 +187,19 @@ export const ShowUploadedCardV2 = ({
           <img
             src={fileData?.url || fileData?.awsUrl}
             alt={fileData?.file?.name}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-t-lg"
           />
         ) : (
-          <>
-            <video
+          <video ref={videoRef} className="h-full w-full rounded-t-lg" controls>
+            <source
               src={fileData?.url || fileData?.awsUrl}
-              className="w-full h-full object-cover rounded-lg"
+              type={fileData.fileType}
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black/30 rounded-full p-2">
-                <i className="fi fi-sr-play-circle text-white text-xl"></i>
-              </div>
-            </div>
-          </>
+          </video>
         )}
         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <i
-            className="fi fi-rr-cross-circle cursor-pointer text-[#FF0000]"
+            className="fi fi-sr-trash cursor-pointer text-[#FF0000] text-xl hover:text-[#cc0000] transition-colors flex-items-center"
             onClick={(e) => {
               e.stopPropagation();
               handleRemoveFile(fileData);
