@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu } from "./Menu";
 
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { removeAllKeyFromLocalStorage, removeDataFromLocalStorage, saveDataOnLocalStorage } from "../../utils/localStorageUtils";
-// import { ADD_SCREEN_CODE_RESET } from "../../../constants/screenDataConstant";
+import { removeDataFromLocalStorage } from "../../utils/localStorageUtils";
 import userImage from "../../assets/userImage.png";
-import { PrimaryButton } from "../../components/atoms/PrimaryButton";
-import { SIGN_IN } from "../../routes/routes";
 import { ConformationModel } from "../../components/popup/ConformationModel";
 import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { GET_FULL_CAMPAIGN_DATA_RESET } from "../../constants/campaignConstants";
-
-// import { getCreatives } from "../../../actions/creativeAction";
-// import { USER_ROLE_PRIMARY } from "../../../constants/userConstants";
+import ButtonInput from "../../components/atoms/ButtonInput";
+import { SIGN_IN } from "../../routes/routes";
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +26,14 @@ export const Header: React.FC = () => {
     setOpen(!open);
   };
 
+  const handleClick = () => {
+    if (userInfo) {
+      navigate("/");
+    } else {
+      navigate("/home");
+    }
+  };
+
   return (
     <div className="w-full h-16 bg-white flex items-center justify-between z-50">
       <div className="flex items-center mx-10">
@@ -38,7 +42,7 @@ export const Header: React.FC = () => {
 
         <div
           className="flex flex-col mb-2 -space-y-1 pt-2 cursor-pointer"
-          onClick={() => navigate("/")}
+          onClick={handleClick}
         >
           <h1 className="text-xl font-black">PROOH.AI</h1>
         </div>
@@ -49,12 +53,13 @@ export const Header: React.FC = () => {
             type="button"
             onClick={() => {
               dispatch({
-                type: GET_FULL_CAMPAIGN_DATA_RESET
+                type: GET_FULL_CAMPAIGN_DATA_RESET,
               });
               removeDataFromLocalStorage(FULL_CAMPAIGN_PLAN);
               toggleOpen();
             }}
-            className="w-full h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4 cursor-pointer">
+            className="w-full h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4 cursor-pointer"
+          >
             Quick Upload
           </button>
           <div className="h-10 w-full flex items-center space-x-2 ">
@@ -72,7 +77,13 @@ export const Header: React.FC = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="flex items-center  pr-16">
+          <ButtonInput onClick={() => navigate(SIGN_IN)} rounded="full">
+            Login
+          </ButtonInput>
+        </div>
+      )}
     </div>
   );
 };

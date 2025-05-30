@@ -16,7 +16,8 @@ import {
   UpdatePassword,
   VerifyEmail,
   ContactQueries,
-  DmpContactQueries
+  DmpContactQueries,
+  Landing,
 } from "../pages";
 
 import {
@@ -41,6 +42,7 @@ import {
   MY_COUPONS,
   QUERIES,
   DMP_QUERIES,
+  ROUTE,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
@@ -162,6 +164,15 @@ const Routers: React.FC = () => {
           element={
             <PublicRoute>
               <EditCampaign />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path={ROUTE}
+          element={
+            <PublicRoute>
+              <Landing />
             </PublicRoute>
           }
         />

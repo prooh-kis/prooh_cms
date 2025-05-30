@@ -18,7 +18,7 @@ export const Menu = (props: any) => {
   const signOutHandler = () => {
     toggleDropdown();
     dispatch(signout());
-    navigate(SIGN_IN);
+    navigate("/home");
   };
 
   const arr =

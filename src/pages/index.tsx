@@ -26,3 +26,5 @@ export { Coupons } from "./Coupons";
 
 export { ContactQueries } from "./ContactQueries";
 export { DmpContactQueries } from "./DmpContactQueries";
+
+export { Landing } from "./Landing";

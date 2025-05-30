@@ -72,7 +72,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
   const handleSignOut = () => {
     if (window.confirm("Do you want to log out?")) {
       dispatch(signout());
-      navigate(SIGN_IN);
+      navigate("/home");
     }
   };
 
