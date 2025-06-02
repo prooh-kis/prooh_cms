@@ -10,13 +10,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { deleteUser, getUserList } from "../../actions/userAction";
 import { AddUserDetails } from "../../components/popup/AddUserDetails";
-import { PrimaryButton } from "../../components/index";
+import {
+  Loading,
+  NoDataView,
+  PrimaryButton,
+  ReloadButton,
+  SearchInputField,
+} from "../../components/index";
 import userImage from "../../assets/userImage.png";
 import { Tooltip } from "antd";
+import ButtonInput from "../../components/atoms/ButtonInput";
 
 export const MyUsers = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
+  const [searchQuery, setSearchQuery] = useState<any>("");
 
   const userList = useSelector((state: any) => state.userList);
   const { loading, error, data: users } = userList;
@@ -54,19 +62,19 @@ export const MyUsers = (props: any) => {
   const auth = useSelector((state: any) => state.auth);
   const { userInfo } = auth;
 
-  const roleList = [
-    "screenManager",
-    "screenMonitoring"
-  ]
+  const roleList = ["screenManager", "screenMonitoring"];
   if (userInfo?.userRole == SCREEN_ADMIN) {
-    roleList.push("screenOwner")
+    roleList.push("screenOwner");
   }
 
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
     } else {
-      if (userInfo?.userRole != SCREEN_ADMIN && userInfo?.userRole != SCREEN_OWNER) {
+      if (
+        userInfo?.userRole != SCREEN_ADMIN &&
+        userInfo?.userRole != SCREEN_OWNER
+      ) {
         alert("You have no access to this page");
         navigate(-1);
       } else {
@@ -75,100 +83,152 @@ export const MyUsers = (props: any) => {
     }
   }, [userInfo]);
 
+  const reset = () => {
+    dispatch(getUserList({ event: USERS_GET_CMS }));
+  };
+
+  const filterUsers = users
+    ?.filter((u: any) => u._id != userInfo?._id)
+    ?.filter((user: any) => user.name.toLowerCase().includes(searchQuery));
+
   return (
-    <div className="w-full h-full">
-      {open && <AddUserDetails open={open} onClose={toggleOpen} roleList={roleList} />}
-      <div className="flex flex-row justify-between border rounded p-4 w-full bg-white">
-        <h1 className="text-[16px] font-semibold">Users</h1>
-        <div className="flex items-center w-50">
-          <PrimaryButton
-            action={toggleOpen}
-            title="+ Add User"
-            rounded="rounded-lg"
-            height="h-8"
-            width="w-32"
-            textSize="text-[12px] font-semibold"
-            reverse={true}
-            loading={false}
-            loadingText="Saving..."
-          />
+    <div className="w-full">
+      {open && <AddUserDetails open={open} onClose={toggleOpen} />}
+
+      <div className="bg-white rounded-[4px] mr-2 shadow-sm">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border-b border-gray-200">
+          {/* Left section - Title and controls */}
+          <div className="flex items-center gap-4 mb-4 md:mb-0 w-full md:w-auto">
+            <div className="flex items-center gap-3">
+              <i className="fi fi-sr-users-alt text-[#8B5CF6] flex items-center text-lg flex-shrink-0"></i>
+              <h1 className="text-base font-semibold text-gray-900">
+                Users
+                <span className="text-sm font-normal text-gray-500 ml-1">
+                  ({filterUsers?.length || 0})
+                </span>
+              </h1>
+            </div>
+            <ReloadButton
+              onClick={reset}
+              aria-label="Refresh users list"
+              className="hover:bg-gray-100 rounded-full p-1"
+            />
+          </div>
+
+          {/* Right section - Search and Add button */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-[40%]">
+            <div className="flex-grow">
+              <SearchInputField
+                value={searchQuery}
+                onChange={(value: string) =>
+                  setSearchQuery(value?.toLowerCase())
+                }
+                placeholder="Search by name"
+                aria-label="Search users by name"
+                className="w-full"
+              />
+            </div>
+            <ButtonInput
+              onClick={toggleOpen}
+              className="whitespace-nowrap"
+              aria-label="Add new user"
+            >
+              + Add User
+            </ButtonInput>
+          </div>
         </div>
       </div>
-
-      <div className="w-full h-[85vh] overflow-scroll mt-1">
-        <table className="w-full ">
-          <thead className="bg-[#EBF6FF]">
-            <tr>
-              <th className="py-2 px-1">
-                <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
-                  Sl No.
-                </div>
-              </th>
-              <th className="py-2 px-1">
-                <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[#129BFF]">
-                  User Name
-                </div>
-              </th>
-              <th className="py-2 px-1">
-                <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[#129BFF]">
-                  User Role
-                </div>
-              </th>
-              <th className="py-2 px-1">
-                <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[#129BFF]">
-                  User Email
-                </div>
-              </th>
-              {userInfo?.userRole != SCREEN_ADMIN ? null : 
-                <th className="py-2 px-1">
-                  <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
-                    Action
-                  </div>
-                </th>
-              }
-            </tr>
-          </thead>
-          <tbody className="bg-white">
-            {users
-              ?.map((s: any, i: number) => (
-                <tr key={i} className="border-b hover:bg-gray-200">
-                  <td className="py-2 px-1">
-                    <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
-                      {i+1}
+      <div className="mt-2">
+        {loading ? (
+          <Loading />
+        ) : filterUsers?.length === 0 ? (
+          <NoDataView />
+        ) : (
+          <div className="w-full h-[80vh] overflow-auto mt-1 rounded-lg border border-gray-200 shadow-sm">
+            <table className="w-full divide-y divide-gray-200">
+              <thead className="bg-[#EBF6FF] sticky top-0 z-10">
+                <tr>
+                  <th className="py-3 px-4 text-left text-sm font-semibold text-[#129BFF] uppercase tracking-wider">
+                    <div className="flex items-center justify-center">
+                      Sl No.
                     </div>
-                  </td>
-                  <td className="py-2 px-1">
-                    <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
-                      {s.name}
-                    </div>
-                  </td>
-                  <td className="py-2 px-1">
-                    <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
-                      {s.userRole}
-                    </div>
-                  </td>
-                  <td className="py-2 px-1">
-                    <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
-                      {s.email}
-                    </div>
-                  </td>
-                  {userInfo?.userRole != SCREEN_ADMIN ? null : 
-                    <td className="py-2 px-1">
-                      <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]">
-                        <i
-                          className="fi fi-rs-trash text-red-500"
-                          title="delete user"
-                          onClick={() => handleDeleteUser(s?._id)}
-                        ></i>
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-semibold text-[#129BFF] uppercase tracking-wider">
+                    User Name
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-semibold text-[#129BFF] uppercase tracking-wider">
+                    User Role
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm font-semibold text-[#129BFF] uppercase tracking-wider">
+                    User Email
+                  </th>
+                  {userInfo?.userRole !== SCREEN_ADMIN ? null : (
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-[#129BFF] uppercase tracking-wider">
+                      <div className="flex items-center justify-center">
+                        Actions
                       </div>
-                    </td>
-                  }
+                    </th>
+                  )}
                 </tr>
-              ))}
-          </tbody>
-        </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {users
+                  ?.filter((u: any) => u._id !== userInfo?._id)
+                  ?.map((user: any, index: number) => (
+                    <tr
+                      key={user._id}
+                      className="hover:bg-gray-50 transition-colors duration-150"
+                    >
+                      <td className="py-3 px-4 whitespace-nowrap text-sm text-center text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="py-3 px-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <div className="flex items-center">
+                          {user.avatar && (
+                            <img
+                              src={user.avatar}
+                              alt={user.name}
+                              className="w-8 h-8 rounded-full mr-2 object-cover"
+                            />
+                          )}
+                          {user.name}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-500">
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            user.userRole === "ADMIN"
+                              ? "bg-[#E9D5FF] text-[#5B21B6]" // ADMIN - Light purple/dark purple
+                              : user.userRole === "MANAGER"
+                              ? "bg-[#EFF6FF] text-[#1D4ED8]" // MANAGER - Light blue/dark blue
+                              : "bg-[#ECFDF5] text-[#047857]" // Others - Light green/dark green
+                          }`}
+                        >
+                          {user.userRole}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.email}
+                      </td>
+                      {userInfo?.userRole === SCREEN_ADMIN && (
+                        <td className="py-3 px-4 whitespace-nowrap text-sm text-center text-gray-500">
+                          <button
+                            onClick={() => handleDeleteUser(user._id)}
+                            className="text-red-500 hover:text-red-700 transition-colors duration-150"
+                            aria-label={`Delete user ${user.name}`}
+                            title="Delete user"
+                          >
+                            <i className="fi fi-rs-trash text-lg"></i>
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-
     </div>
   );
 };

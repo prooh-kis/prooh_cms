@@ -22,8 +22,8 @@ export function TabWithoutIcon({ tabData, currentTab, setCurrentTab }: any) {
           }}
           className={
             currentTab === tab.id
-              ? "px-1 flex gap-4 items-center text-[14px] border-b-2 border-[#129BFF] py-2 truncate"
-              : "px-1 flex gap-1 items-center text-[14px] py-1 px-2 truncate"
+              ? "px-1 flex gap-4 items-center text-[14px] border-b-2 border-[#129BFF] py-2 truncate cursor-pointer"
+              : "px-1 flex gap-1 items-center text-[14px] py-1 px-2 truncate cursor-pointer"
           }
         >
           <h1

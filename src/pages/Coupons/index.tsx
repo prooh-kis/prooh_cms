@@ -178,7 +178,7 @@ export const Coupons = () => {
           </ButtonInput>
         </div>
       </div>
-      <div className="px-2 py-2 h-[80vh]">
+      <div className="px-1 py-2 h-[80vh]">
         <CouponTable
           coupons={filterCoupons || []}
           onEdit={handleEdit}

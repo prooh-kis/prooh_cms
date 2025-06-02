@@ -146,7 +146,7 @@ export const dmpQueriesTypeTabs = [
     id: "3",
     label: "Unverified",
     value: "unverified",
-  }
+  },
 ];
 
 export const menuItemsAdmin = [
@@ -202,9 +202,9 @@ export const menuItemsAdmin = [
     value: "Dmp Queries",
     path: DMP_QUERIES,
     icon: "fi fi-sr-code-pull-request-closed",
-    option: "Dmp Queries",
+    option: "DmpQueries",
   },
-]
+];
 
 export const menuItemsScreenOwner = [
   {
@@ -242,8 +242,8 @@ export const menuItemsScreenOwner = [
     path: USERS,
     icon: "fi fi-sr-users-alt ",
     option: "Users",
-  }
-]
+  },
+];
 
 export const menuItemsScreenManager = [
   {
@@ -275,8 +275,8 @@ export const menuItemsScreenManager = [
     path: MY_REQUESTS,
     icon: "fi fi-ss-bell-notification-social-media",
     option: "Requests",
-  }
-]
+  },
+];
 
 export const menuItemsScreenMonitoring = [
   {
@@ -290,5 +290,5 @@ export const menuItemsScreenMonitoring = [
     path: SCREEN_CAMPAIGN_MONITORING,
     icon: "fi fi-br-camera-movie ",
     option: "Monitoring",
-  }
-]
+  },
+];
