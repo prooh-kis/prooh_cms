@@ -12,6 +12,7 @@ import { FULL_CAMPAIGN_PLAN } from "../../constants/localStorageConstants";
 import { GET_FULL_CAMPAIGN_DATA_RESET } from "../../constants/campaignConstants";
 import ButtonInput from "../../components/atoms/ButtonInput";
 import { SIGN_IN } from "../../routes/routes";
+import { Fly } from "../../assets";
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -40,11 +41,15 @@ export const Header: React.FC = () => {
         <ToastContainer />
         <ConformationModel open={open} onClose={toggleOpen} />
 
-        <div
-          className="flex flex-col mb-2 -space-y-1 pt-2 cursor-pointer"
-          onClick={handleClick}
-        >
-          <h1 className="text-xl font-black">PROOH.AI</h1>
+        <div className="flex items-center gap-2" onClick={handleClick}>
+          {/* <h1 className="text-xl font-black">PROOH.AI</h1> */}
+          <img src={Fly} className="h-8 w-8" alt="Media owner" />
+          <div className="">
+            <h1 className="text-[16px] text-[#1E376E] font-black">Fly</h1>
+            <p className="text-[10px] text-[#6F7F8E]">
+              powered by <span className="italic">PROOH.AI</span>
+            </p>
+          </div>
         </div>
       </div>
       {userInfo ? (

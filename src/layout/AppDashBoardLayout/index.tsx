@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  CAMPAIGNS_LIST,
-  MY_COUPONS,
-  MY_CREATIVES,
-  MY_REQUESTS,
-  QUERIES,
-  SCREEN_CAMPAIGN_MONITORING,
-  SCREENS_LIST,
-  SCREENS_LIST_FOR_SECONDARY_USER,
-  SIGN_IN,
-  USERS,
-} from "../../routes/routes";
+import { SCREENS_LIST_FOR_SECONDARY_USER, SIGN_IN } from "../../routes/routes";
 
 import { signout } from "../../actions/userAction";
 import {
@@ -22,7 +11,7 @@ import {
   SCREEN_OWNER,
 } from "../../constants/userConstants";
 import { Header } from "../../components/header";
-import { Tooltip } from "antd";
+import { notification, Tooltip } from "antd";
 import {
   menuItemsAdmin,
   menuItemsScreenManager,
@@ -71,6 +60,12 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
       case SCREEN_MONITORING_USER:
         setMenuItems(menuItemsScreenMonitoring);
         break;
+      default:
+        notification.error({
+          message: "Error",
+          description: "You have no access for media",
+        });
+        dispatch(signout());
     }
   }, [userInfo, navigate]);
 
