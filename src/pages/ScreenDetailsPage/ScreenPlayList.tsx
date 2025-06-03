@@ -13,6 +13,7 @@ import {
 import {
   CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
   SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS,
+  SCREEN_MONITORING_USER,
 } from "../../constants/userConstants";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 import { Loading } from "../../components/Loading";
@@ -38,6 +39,7 @@ const ScreenPlayList: React.FC<ScreenPlayListProps> = ({
   setSelectedCampaign,
   setCampaignIds,
   screen,
+  userRole
 }) => {
   const dispatch = useDispatch<any>();
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -96,7 +98,7 @@ const ScreenPlayList: React.FC<ScreenPlayListProps> = ({
           )}
         </div>
 
-        <div className="flex gap-4 items-center">
+        {userRole !== SCREEN_MONITORING_USER && <div className="flex gap-4 items-center">
           {isActiveTab && !autoLoopValue && (
             <LoopSettingButton onClick={handleLoopSettingClick} />
           )}
@@ -133,7 +135,7 @@ const ScreenPlayList: React.FC<ScreenPlayListProps> = ({
               })
             }
           />
-        </div>
+        </div>}
       </div>
 
       {/* Tab Section */}

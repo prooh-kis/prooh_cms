@@ -11,6 +11,7 @@ import { ScreenPlayListProps } from "../../types/ScreenPlayList";
 import {
   CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS,
   CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS,
+  SCREEN_MONITORING_USER,
 } from "../../constants/userConstants";
 
 interface Campaign {
@@ -43,6 +44,7 @@ export const ScreenHeader = ({
   onPlayHoldCampaigns,
   isDefaultIncluded,
   changeDefaultIncludedAction,
+  userRole
 }: any) => (
   <div className="w-full bg-white rounded-[4px] flex justify-between py-8">
     <div className="flex gap-1">
@@ -74,42 +76,45 @@ export const ScreenHeader = ({
     </div>
     <div>
       <div className="px-4 flex h-auto gap-4">
-        <Tooltip title="Refresh Data">
-          <i
-            className="fi fi-br-refresh text-gray-500 cursor-pointer"
-            onClick={onRefresh}
-          />
-        </Tooltip>
-        <Tooltip title="Update screen playlist database">
-          <i
-            className="fi fi-rr-back-up text-gray-500 cursor-pointer"
-            onClick={onUpdateRedis}
-          />
-        </Tooltip>
         <Tooltip title="View Screen logs">
           <i
             className="fi fi-rr-file-medical-alt text-gray-500 cursor-pointer"
             onClick={onViewLogs}
           />
         </Tooltip>
-        <Tooltip title="Play Hold Campaigns">
-          <i
-            className="fi fi-tr-play-circle cursor-pointer"
-            onClick={onPlayHoldCampaigns}
-          />
-        </Tooltip>
+        {userRole !== SCREEN_MONITORING_USER &&
+          <div className="flex h-auto gap-4">
+            <Tooltip title="Refresh Data">
+              <i
+                className="fi fi-br-refresh text-gray-500 cursor-pointer"
+                onClick={onRefresh}
+              />
+            </Tooltip>
+            <Tooltip title="Update screen playlist database">
+              <i
+                className="fi fi-rr-back-up text-gray-500 cursor-pointer"
+                onClick={onUpdateRedis}
+              />
+            </Tooltip>
+            <Tooltip title="Play Hold Campaigns">
+              <i
+                className="fi fi-tr-play-circle cursor-pointer"
+                onClick={onPlayHoldCampaigns}
+              />
+            </Tooltip>
+          </div>}
       </div>
       <h1 className="flex justify-center items-bottom text-[12px] text-gray-500">
         {screen?.screenCode}
       </h1>
-      <div className="mt-4" title="Change Default Video Included Status">
+      {userRole !== SCREEN_MONITORING_USER && <div className="mt-4" title="Change Default Video Included Status">
         <SwitchInputCenter
           isEnabled={isDefaultIncluded}
           onToggle={changeDefaultIncludedAction}
           onColor="bg-[#348730]"
           offColor="bg-red-500"
         />
-      </div>
+      </div>}
     </div>
   </div>
 );
@@ -130,11 +135,10 @@ export const CampaignActions = ({
       }
     >
       <i
-        className={`fi ${
-          currentTab === "1" || currentTab === "2"
-            ? "fi-sr-pause-circle"
-            : "fi-sr-play-circle"
-        } text-gray-500 hover:text-[#129BFF] cursor-pointer`}
+        className={`fi ${currentTab === "1" || currentTab === "2"
+          ? "fi-sr-pause-circle"
+          : "fi-sr-play-circle"
+          } text-gray-500 hover:text-[#129BFF] cursor-pointer`}
         onClick={onPause}
       />
     </Tooltip>
@@ -213,14 +217,12 @@ export const CreativeSection = ({
     const isDownloaded = downloadedMedia?.includes(name);
     return (
       <Tooltip
-        title={`${type} Creative ${
-          isDownloaded ? "Downloaded" : "Not Downloaded"
-        }`}
+        title={`${type} Creative ${isDownloaded ? "Downloaded" : "Not Downloaded"
+          }`}
       >
         <i
-          className={`fi fi-sr-folder-download ${
-            isDownloaded ? "text-[#22C55E]" : "text-[#EF4444]"
-          } flex items-center justify-center`}
+          className={`fi fi-sr-folder-download ${isDownloaded ? "text-[#22C55E]" : "text-[#EF4444]"
+            } flex items-center justify-center`}
         />
       </Tooltip>
     );
@@ -337,20 +339,20 @@ export const CampaignItem: React.FC<{
   onClick,
   onDoubleClick,
 }) => (
-  <div className="px-2" onClick={onClick} onDoubleClick={onDoubleClick}>
-    <BrandCampaignScreenDetails
-      campaignIds={campaignIds}
-      brandName={campaign.brandName}
-      campaign={campaign}
-      campaigns={campaigns}
-      showIcons={true}
-      showTimer={showTimer}
-      downloadedMedia={downloadedMedia}
-      index={index}
-      currentTab={currentTab}
-    />
-  </div>
-);
+    <div className="px-2" onClick={onClick} onDoubleClick={onDoubleClick}>
+      <BrandCampaignScreenDetails
+        campaignIds={campaignIds}
+        brandName={campaign.brandName}
+        campaign={campaign}
+        campaigns={campaigns}
+        showIcons={true}
+        showTimer={showTimer}
+        downloadedMedia={downloadedMedia}
+        index={index}
+        currentTab={currentTab}
+      />
+    </div>
+  );
 
 // Helper function for status change
 export const changeCampaignStatus = (

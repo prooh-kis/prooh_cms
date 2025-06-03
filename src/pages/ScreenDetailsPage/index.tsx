@@ -373,6 +373,7 @@ export const ScreenDetailsPage: React.FC = () => {
 
           <div className="col-span-8">
             <ScreenHeader
+              userRole={userInfo?.userRole}
               screen={screen}
               onBack={() => navigate(-1)}
               isDefaultIncluded={isDefaultIncluded}
@@ -446,6 +447,7 @@ export const ScreenDetailsPage: React.FC = () => {
               setSelectedCampaign={setSelectedCampaign}
               setCampaignIds={setCampaignIds}
               screen={screen}
+              userRole={userInfo?.userRole}
             />
             {/* <div className="my-1">
               <CampaignMonitoring
@@ -470,6 +472,7 @@ export const ScreenDetailsPage: React.FC = () => {
               handleDeleteCreative={handleDeleteCreative}
               handleCreativeEdit={handleCreativeEdit}
               downloadedMedia={screen?.downloadedMedia}
+              userRole = {userInfo?.userRole}
             />
           ) : null}
         </div>

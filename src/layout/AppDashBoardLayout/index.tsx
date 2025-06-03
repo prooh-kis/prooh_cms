@@ -43,9 +43,7 @@ export const AppDashBoardLayout: React.FC<AppDashBoardLayoutProps> = ({
   useEffect(() => {
     if (!userInfo) {
       navigate(SIGN_IN);
-    } else if (userInfo?.userRole === SCREEN_MONITORING_USER) {
-      navigate(SCREENS_LIST_FOR_SECONDARY_USER);
-    }
+    } 
 
     switch (userInfo?.userRole) {
       case SCREEN_ADMIN:

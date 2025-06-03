@@ -4,6 +4,7 @@ import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstan
 import {
   CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
   SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
+  SCREEN_MONITORING_USER,
 } from "../../constants/userConstants";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -20,6 +21,7 @@ const CampaignCreativeList = ({
   handleDeleteCreative,
   handleCreativeEdit,
   downloadedMedia,
+  userRole
 }: any) => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ const CampaignCreativeList = ({
           <h1 className="text-[16px] font-semibold mt-4">
             {currentCampaign?.name}
           </h1>
-          <div className="flex gap-1">
+          {userRole !== SCREEN_MONITORING_USER && <div className="flex gap-1">
             <div
               className="text-gray-500 hover:text-[#348730]"
               onClick={() => {
@@ -79,7 +81,7 @@ const CampaignCreativeList = ({
                 <i className="fi fi-sr-eye"></i>
               </div>
             )}
-          </div>
+          </div>}
         </div>
         <div>
           <h1 className="text-[14px] mt-1">{currentCampaign?.brandName}</h1>
@@ -92,7 +94,7 @@ const CampaignCreativeList = ({
         <h1 className="text-[16px] font-semibold">Creatives</h1>
         {currentCampaign?.creatives?.standardDayTimeCreatives?.length === 0 &&
           currentCampaign?.creatives?.standardNightTimeCreatives?.length ===
-            0 &&
+          0 &&
           currentCampaign?.creatives?.triggerCreatives?.length === 0 && (
             <div className="p-1 relative  h-32 z-100">
               <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
@@ -114,7 +116,7 @@ const CampaignCreativeList = ({
           title="Day Creatives"
           creatives={currentCampaign?.creatives.standardDayTimeCreatives}
           campaign={currentCampaign}
-          showIcons={true}
+          showIcons={userRole !== SCREEN_MONITORING_USER}
           handleDelete={handleDeleteCreative}
           downloadedMedia={downloadedMedia}
         />
@@ -124,7 +126,7 @@ const CampaignCreativeList = ({
           creatives={currentCampaign?.creatives.standardNightTimeCreatives}
           campaign={currentCampaign}
           downloadedMedia={downloadedMedia}
-          showIcons={true}
+          showIcons={userRole !== SCREEN_MONITORING_USER}
           handleDelete={handleDeleteCreative}
         />
 
@@ -133,7 +135,7 @@ const CampaignCreativeList = ({
           creatives={currentCampaign?.creatives.triggerCreatives}
           campaign={currentCampaign}
           downloadedMedia={downloadedMedia}
-          showIcons={true}
+          showIcons={userRole !== SCREEN_MONITORING_USER}
           handleDelete={handleDeleteCreative}
         />
       </div>

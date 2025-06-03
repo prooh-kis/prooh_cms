@@ -32,4 +32,5 @@ export interface ScreenPlayListProps {
   setSelectedCampaign: (id: string) => void;
   setCampaignIds: (ids: string[] | ((prev: string[]) => string[])) => void;
   screen: ScreenPlayListScreen;
+  userRole : String;
 }

@@ -270,12 +270,6 @@ export const menuItemsScreenManager = [
     icon: "fi fi-br-camera-movie ",
     option: "Monitoring",
   },
-  {
-    value: "Requests",
-    path: MY_REQUESTS,
-    icon: "fi fi-ss-bell-notification-social-media",
-    option: "Requests",
-  },
 ];
 
 export const menuItemsScreenMonitoring = [
@@ -284,11 +278,5 @@ export const menuItemsScreenMonitoring = [
     path: SCREENS_LIST,
     icon: "fi fi-sr-screen ",
     option: "Screens",
-  },
-  {
-    value: "Monitoring",
-    path: SCREEN_CAMPAIGN_MONITORING,
-    icon: "fi fi-br-camera-movie ",
-    option: "Monitoring",
   },
 ];

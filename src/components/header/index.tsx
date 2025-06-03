@@ -13,6 +13,7 @@ import { GET_FULL_CAMPAIGN_DATA_RESET } from "../../constants/campaignConstants"
 import ButtonInput from "../../components/atoms/ButtonInput";
 import { SIGN_IN } from "../../routes/routes";
 import { Fly } from "../../assets";
+import { SCREEN_MONITORING_USER } from "../../constants/userConstants";
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export const Header: React.FC = () => {
       </div>
       {userInfo ? (
         <div className="flex gap-4 items-center justify-end pr-10">
-          <button
+          {userInfo?.userRole !== SCREEN_MONITORING_USER && <button
             type="button"
             onClick={() => {
               dispatch({
@@ -66,7 +67,7 @@ export const Header: React.FC = () => {
             className="w-full h-8 text-[12px] font-semibold hover:bg-[#129BFF] text-[#129BFF] border-2 border-[#129BFF] rounded-full hover:text-white px-4 cursor-pointer"
           >
             Quick Upload
-          </button>
+          </button>}
           <div className="h-10 w-full flex items-center space-x-2 ">
             <div className="h-10 flex items-center gap-1">
               <img src={userImage} alt="userImage" className="h-8" />
