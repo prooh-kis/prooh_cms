@@ -38,13 +38,13 @@ export const Panel = ({
   <div className={`bg-white h-[85vh] ${className}`}>
     <div className="w-full px-4 mb-2">
       <div className="flex justify-between items-center border-b">
-        <h1 className="text-[16px] font-semibold py-4 ">{title}</h1>
+        <h1 className="text-[16px] font-semibold py-4 pr-2">{title}</h1>
         {isShowRadio && (
           <RadioGroupInput
             initialValues={[
-              { label: "Active", value: "Active" },
-              { label: "All", value: "All" },
-              { label: "Completed", value: "Completed" },
+              { label: "Today", value: "Active" },
+              { label: "Active", value: "All" },
+              { label: "Ended", value: "Completed" },
             ]}
             value={isForCampaignType ? filterCampaignType : filterScreenType}
             setValue={(value) => {
@@ -54,7 +54,7 @@ export const Panel = ({
                 setFilterScreenType(value);
               }
             }}
-            className="flex items-center gap-2"
+            className="flex items-center gap-0"
           ></RadioGroupInput>
         )}
         {isShow && (
