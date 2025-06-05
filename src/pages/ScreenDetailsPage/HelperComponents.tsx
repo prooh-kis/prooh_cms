@@ -34,7 +34,11 @@ const getScreenClassName = (screen: any) => {
     else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
   } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
 };
-
+// const operationalDurationSchema = new Schema({
+//   totalDuration: { type: String, required: false, default: 0 },
+//   onTime: { type: String, required: false, default: "" },
+//   offTime: { type: String, required: false, default: "" },
+// });
 export const ScreenHeader = ({
   screen,
   onBack,
@@ -44,77 +48,110 @@ export const ScreenHeader = ({
   onPlayHoldCampaigns,
   isDefaultIncluded,
   changeDefaultIncludedAction,
-  userRole
+  userRole,
 }: any) => (
-  <div className="w-full bg-white rounded-[4px] flex justify-between py-8">
-    <div className="flex gap-1">
-      <i
-        className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center cursor-pointer"
-        onClick={onBack}
-      />
-      <div className="flex justify-center items-center">
-        <img
-          className="h-16 rounded"
-          src={screen?.images[0]}
-          alt={screen?._id}
+  <div className="w-full bg-white rounded-[4px] pt-4">
+    <div className="flex justify-between">
+      <div className="flex gap-1">
+        <i
+          className="fi fi-sr-angle-small-left text-[#7C8E9B] px-1 flex items-center cursor-pointer"
+          onClick={onBack}
         />
-        <div className="h-full flex justify-end items-end ml-[-8px]">
-          <div className={getScreenClassName(screen)} />
+        <div className="flex justify-center items-center">
+          <img
+            className="h-16 rounded"
+            src={screen?.images[0]}
+            alt={screen?._id}
+          />
+          {/* <div className="h-full flex justify-end items-end ml-[-8px]">
+            <div className={getScreenClassName(screen)} />
+          </div> */}
+        </div>
+        <div className="px-2 pb-1 flex flex-col justify-start">
+          <h1 className="text-[20px] font-semibold">{screen?.screenName}</h1>
+          <h2 className="text-[14px]">
+            {screen?.location}, {screen?.city}
+          </h2>
         </div>
       </div>
-      <div className="px-2 pb-1 flex flex-col justify-between">
-        <h1 className="text-[20px] font-semibold">{screen?.screenName}</h1>
-        <h2 className="text-[12px]">
-          {screen?.location}, {screen?.city}
-        </h2>
-        <p className="text-[12px]">
+      <div>
+        <div className="px-4 flex h-auto gap-4">
+          <Tooltip title="View Screen logs">
+            <i
+              className="fi fi-rr-file-medical-alt text-gray-500 cursor-pointer"
+              onClick={onViewLogs}
+            />
+          </Tooltip>
+          {userRole !== SCREEN_MONITORING_USER && (
+            <div className="flex h-auto gap-4">
+              <Tooltip title="Refresh Data">
+                <i
+                  className="fi fi-br-refresh text-gray-500 cursor-pointer"
+                  onClick={onRefresh}
+                />
+              </Tooltip>
+              <Tooltip title="Update screen playlist database">
+                <i
+                  className="fi fi-rr-back-up text-gray-500 cursor-pointer"
+                  onClick={onUpdateRedis}
+                />
+              </Tooltip>
+              <Tooltip title="Play Hold Campaigns">
+                <i
+                  className="fi fi-tr-play-circle cursor-pointer"
+                  onClick={onPlayHoldCampaigns}
+                />
+              </Tooltip>
+            </div>
+          )}
+        </div>
+        <h1 className="flex justify-center items-bottom text-[12px] text-gray-500">
+          {screen?.screenCode}
+        </h1>
+        {userRole !== SCREEN_MONITORING_USER && (
+          <div className="mt-4" title="Change Default Video Included Status">
+            <SwitchInputCenter
+              isEnabled={isDefaultIncluded}
+              onToggle={changeDefaultIncludedAction}
+              onColor="bg-[#348730]"
+              offColor="bg-red-500"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+    <div className="border-t mt-2 grid grid-cols-2 px-4 flex items-center">
+      <div className="flex items-center gap-1">
+        <div className={getScreenClassName(screen)} />
+        <p className="text-[13px] py-2 m-0">
           Last Active: {getTimeDifferenceInMin(screen?.lastActive)} minutes ago{" "}
           {", "}
           {convertIntoDateAndTime(screen?.lastActive) || "Not available"}
         </p>
       </div>
-    </div>
-    <div>
-      <div className="px-4 flex h-auto gap-4">
-        <Tooltip title="View Screen logs">
-          <i
-            className="fi fi-rr-file-medical-alt text-gray-500 cursor-pointer"
-            onClick={onViewLogs}
-          />
+
+      <div className="border-l px-4 py-2 text-[14px] flex justify-between">
+        <div className="flex  items-center gap-4">
+          <Tooltip title="Screen On time">
+            <div className="flex gap-2">
+              <i className="fi fi-br-power text-[#348730] flex  items-center"></i>
+              <p>{screen?.operationalDuration?.onTime} AM</p>
+            </div>
+          </Tooltip>
+          <Tooltip title="Screen Off time">
+            <div className="flex gap-2">
+              <i className="fi fi-br-power text-[#FB0505] flex  items-center"></i>
+              <p>{screen?.operationalDuration?.offTime} PM</p>
+            </div>
+          </Tooltip>
+        </div>
+        <Tooltip title="Screen operational hours">
+          <div className="flex gap-2 bg-[#348730] text-white p-1 px-2 m-0 rounded-md  flex items-center">
+            <i className="fi fi-sr-duration-alt flex  items-center"></i>
+            <p>{screen?.operationalDuration?.totalDuration} Hr.</p>
+          </div>
         </Tooltip>
-        {userRole !== SCREEN_MONITORING_USER &&
-          <div className="flex h-auto gap-4">
-            <Tooltip title="Refresh Data">
-              <i
-                className="fi fi-br-refresh text-gray-500 cursor-pointer"
-                onClick={onRefresh}
-              />
-            </Tooltip>
-            <Tooltip title="Update screen playlist database">
-              <i
-                className="fi fi-rr-back-up text-gray-500 cursor-pointer"
-                onClick={onUpdateRedis}
-              />
-            </Tooltip>
-            <Tooltip title="Play Hold Campaigns">
-              <i
-                className="fi fi-tr-play-circle cursor-pointer"
-                onClick={onPlayHoldCampaigns}
-              />
-            </Tooltip>
-          </div>}
       </div>
-      <h1 className="flex justify-center items-bottom text-[12px] text-gray-500">
-        {screen?.screenCode}
-      </h1>
-      {userRole !== SCREEN_MONITORING_USER && <div className="mt-4" title="Change Default Video Included Status">
-        <SwitchInputCenter
-          isEnabled={isDefaultIncluded}
-          onToggle={changeDefaultIncludedAction}
-          onColor="bg-[#348730]"
-          offColor="bg-red-500"
-        />
-      </div>}
     </div>
   </div>
 );
@@ -135,10 +172,11 @@ export const CampaignActions = ({
       }
     >
       <i
-        className={`fi ${currentTab === "1" || currentTab === "2"
-          ? "fi-sr-pause-circle"
-          : "fi-sr-play-circle"
-          } text-gray-500 hover:text-[#129BFF] cursor-pointer`}
+        className={`fi ${
+          currentTab === "1" || currentTab === "2"
+            ? "fi-sr-pause-circle"
+            : "fi-sr-play-circle"
+        } text-gray-500 hover:text-[#129BFF] cursor-pointer`}
         onClick={onPause}
       />
     </Tooltip>
@@ -217,12 +255,14 @@ export const CreativeSection = ({
     const isDownloaded = downloadedMedia?.includes(name);
     return (
       <Tooltip
-        title={`${type} Creative ${isDownloaded ? "Downloaded" : "Not Downloaded"
-          }`}
+        title={`${type} Creative ${
+          isDownloaded ? "Downloaded" : "Not Downloaded"
+        }`}
       >
         <i
-          className={`fi fi-sr-folder-download ${isDownloaded ? "text-[#22C55E]" : "text-[#EF4444]"
-            } flex items-center justify-center`}
+          className={`fi fi-sr-folder-download ${
+            isDownloaded ? "text-[#22C55E]" : "text-[#EF4444]"
+          } flex items-center justify-center`}
         />
       </Tooltip>
     );
@@ -339,20 +379,20 @@ export const CampaignItem: React.FC<{
   onClick,
   onDoubleClick,
 }) => (
-    <div className="px-2" onClick={onClick} onDoubleClick={onDoubleClick}>
-      <BrandCampaignScreenDetails
-        campaignIds={campaignIds}
-        brandName={campaign.brandName}
-        campaign={campaign}
-        campaigns={campaigns}
-        showIcons={true}
-        showTimer={showTimer}
-        downloadedMedia={downloadedMedia}
-        index={index}
-        currentTab={currentTab}
-      />
-    </div>
-  );
+  <div className="px-2" onClick={onClick} onDoubleClick={onDoubleClick}>
+    <BrandCampaignScreenDetails
+      campaignIds={campaignIds}
+      brandName={campaign.brandName}
+      campaign={campaign}
+      campaigns={campaigns}
+      showIcons={true}
+      showTimer={showTimer}
+      downloadedMedia={downloadedMedia}
+      index={index}
+      currentTab={currentTab}
+    />
+  </div>
+);
 
 // Helper function for status change
 export const changeCampaignStatus = (

@@ -290,13 +290,15 @@ export const ScreenDetailsPage: React.FC = () => {
   };
 
   const getDurationCount = () => {
-    return campaigns?.reduce((total: number, campaign: any) => {
-      return (
-        total +
+    return campaigns
+      ?.reduce((total: number, campaign: any) => {
+        return (
+          total +
           (campaign?.creatives?.creativeDuration || 10) *
             (campaign?.atIndex?.length || 1)
-      );
-    }, 0).toFixed(2);
+        );
+      }, 0)
+      .toFixed(2);
   };
 
   const handleDeleteCreative = (input: any) => {
@@ -327,6 +329,8 @@ export const ScreenDetailsPage: React.FC = () => {
       message.info("Started removing,it will take some time, please wait");
     }
   };
+
+  console.log("screen : ", screen);
 
   return (
     <div className="">
@@ -472,7 +476,7 @@ export const ScreenDetailsPage: React.FC = () => {
               handleDeleteCreative={handleDeleteCreative}
               handleCreativeEdit={handleCreativeEdit}
               downloadedMedia={screen?.downloadedMedia}
-              userRole = {userInfo?.userRole}
+              userRole={userInfo?.userRole}
             />
           ) : null}
         </div>
