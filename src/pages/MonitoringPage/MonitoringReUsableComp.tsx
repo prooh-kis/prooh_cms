@@ -1,9 +1,8 @@
 import { convertIntoDateAndTime } from "../../utils/dateAndTimeUtils";
-import ButtonInput from "../../components/atoms/ButtonInput";
 import { NoDataView } from "../../components/index";
 import { Loading } from "../../components/Loading";
-import RadioGroupInput from "../../components/atoms/RadioGroupInput";
 import { useRef } from "react";
+import { FirstCharForBrandName } from "../../components/molecules/FirstCharForBrandName";
 
 // Reusable Panel Component
 export const Panel = ({
@@ -14,12 +13,10 @@ export const Panel = ({
   onClick,
   buttonTitle = "Save",
   loading = false,
-  isShowRadio = false,
-  filterScreenType = "All",
-  setFilterScreenType,
-  filterCampaignType = "All",
-  setFilterCampaignType,
-  isForCampaignType = true,
+  isShowCount = false,
+  countLength = 0,
+  screenData,
+  isShowScreenData = false,
 }: {
   title: string;
   children: React.ReactNode;
@@ -28,43 +25,53 @@ export const Panel = ({
   onClick?: () => void;
   isShow?: boolean;
   loading?: boolean;
-  isForCampaignType?: boolean;
-  isShowRadio?: boolean;
-  filterScreenType?: string;
-  setFilterScreenType?: (value: string) => void;
-  filterCampaignType?: string;
-  setFilterCampaignType?: (value: string) => void;
+  isShowCount?: boolean;
+  countLength?: number;
+  isShowScreenData?: boolean;
+  screenData?: any;
 }) => (
-  <div className={`bg-white h-[85vh] ${className}`}>
+  <div className={`bg-white h-[78vh] ${className}`}>
     <div className="w-full px-4 mb-2">
       <div className="flex justify-between items-center border-b">
-        <h1 className="text-[16px] font-semibold py-4 pr-2">{title}</h1>
-        {isShowRadio && (
-          <RadioGroupInput
-            initialValues={[
-              { label: "Today", value: "Active" },
-              { label: "Active", value: "All" },
-              { label: "Ended", value: "Completed" },
-            ]}
-            value={isForCampaignType ? filterCampaignType : filterScreenType}
-            setValue={(value) => {
-              if (isForCampaignType && setFilterCampaignType) {
-                setFilterCampaignType(value);
-              } else if (!isForCampaignType && setFilterScreenType) {
-                setFilterScreenType(value);
-              }
-            }}
-            className="flex items-center gap-0"
-          ></RadioGroupInput>
-        )}
-        {isShow && (
-          <ButtonInput loading={loading} onClick={onClick}>
-            {loading ? "Uploading..." : buttonTitle}
-          </ButtonInput>
+        {isShowScreenData ? (
+          <div className="flex gap-2 py-2">
+            <img
+              src={screenData?.images?.[0]}
+              alt="screen Image"
+              className="h-28 w-40 rounded-md"
+            />
+            <div className="flex flex-col gap-1">
+              <h1 className="text-[20px] font-semibold pr-2">
+                {title}
+                {isShowCount && (
+                  <span className="text-[14px] text-[#68879C] pl-1 ">
+                    ({countLength})
+                  </span>
+                )}
+              </h1>
+              <h1 className="text-[14px] text-gray-500 truncate">
+                {screenData?.location?.address}, {screenData?.location?.city}
+              </h1>
+            </div>
+          </div>
+        ) : (
+          <h1 className="text-[16px] font-semibold py-4 pr-2">
+            {title}
+            {isShowCount && (
+              <span className="text-[14px] text-[#68879C] pl-1 ">
+                ({countLength})
+              </span>
+            )}
+          </h1>
         )}
       </div>
       {children}
     </div>
+    {/* {isShow && (
+      <ButtonInput loading={loading} onClick={onClick}>
+        {loading ? "Uploading..." : buttonTitle}
+      </ButtonInput>
+    )} */}
   </div>
 );
 
@@ -86,7 +93,7 @@ export const List = ({
 
   return (
     <div
-      className={`p-1 overflow-y-auto scrollbar-minimal h-[70vh] bg-white ${className}`}
+      className={`p-1 overflow-y-auto h-[64vh] scrollbar-minimal bg-white ${className}`}
     >
       {items?.length > 0 ? items.map(renderItem) : emptyView}
     </div>
@@ -109,12 +116,12 @@ export const ListItem = ({
 }) => (
   <div
     onClick={() => onClick(item)}
-    className={`flex gap-2 border-b border-gray-100 py-2 px-2 text-[16px]  hover:text-[#129BFF90] cursor-pointer rounded-lg ${
+    className={`flex items-center gap-2 border-b border-gray-100 py-2 px-2 text-[16px]  hover:text-[#129BFF90] cursor-pointer rounded-lg truncate ${
       isActive ? "text-[#129BFF] bg-[#E7F5FF]" : "text-[##363636]"
     }`}
   >
-    <i className={`fi fi-rr-${icon} flex items-center`}></i>
-    <h1>{text}</h1>
+    <FirstCharForBrandName brandName={text} size="xs" className="rounded-md" />
+    <h1 className="truncate">{text}</h1>
   </div>
 );
 

@@ -29,7 +29,7 @@ export const addCampaignMonitoringDataAction =
       } = getState();
 
       const { data } = await axios.post(
-        `${campaignV2}/addCampaignMonitoringData`,
+        `${monitoringV2}/addCampaignMonitoringData`,
         { campaignId, monitoringData },
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
@@ -65,7 +65,7 @@ export const getCampaignMonitoringDataAction =
       } = getState();
 
       const { data } = await axios.get(
-        `${campaignV2}/getCampaignMonitoringData?campaignId=${campaignId}`,
+        `${monitoringV2}/getCampaignMonitoringData?campaignId=${campaignId}`,
         { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
 

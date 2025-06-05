@@ -14,9 +14,13 @@ import {
   MonitoringUrlData2,
 } from "../../types/monitoringTypes";
 import { message, notification } from "antd";
-import { ADD_CAMPAIGN_MONITORING_DATA_RESET } from "../../constants/monitoringConstants";
+import {
+  ADD_CAMPAIGN_MONITORING_DATA_RESET,
+  GET_CAMPAIGN_MONITORING_DATA_RESET,
+} from "../../constants/monitoringConstants";
 import { getAWSUrl } from "../../utils/awsUtils";
 import { TakingMonitoringPicV2 } from "./TakingMonitoringPicV2";
+import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
 
 interface Screen {
   _id: string;
@@ -74,6 +78,9 @@ export const CampaignWiseMonitoring: React.FC = () => {
     success: successGetCampaignMonitoring,
     data: monitoringData,
   } = getCampaignMonitoring;
+  // console.log("monitoringData : ", monitoringData);
+
+  // console.log("monitoringData 1 : ", monitoringData?.monitoringData);
 
   const addCampaignMonitoring = useSelector(
     (state: any) => state.addCampaignMonitoring
@@ -123,7 +130,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
         event: MONITORING_GET_CAMPAIGN_DETAILS,
       })
     );
-  }, [dispatch, userInfo?._id]);
+  }, [dispatch, userInfo?._id, filterCampaignType]);
 
   const handleScreenClick = useCallback(
     ({ screen }: { screen: Screen }) => {
@@ -142,6 +149,8 @@ export const CampaignWiseMonitoring: React.FC = () => {
     ({ campaignCreated }: { campaignCreated: Campaign }) => {
       setMonitoringCampaign(campaignCreated);
       setMonitoringScreens(campaignCreated?.campaignScreens);
+      setMonitoringScreen(null);
+      dispatch({ type: GET_CAMPAIGN_MONITORING_DATA_RESET });
     },
     [dispatch]
   );
@@ -160,21 +169,17 @@ export const CampaignWiseMonitoring: React.FC = () => {
     [dispatch, monitoringScreen?._id]
   );
 
-  const filterResult = allCampaigns?.filter(
+  const filterCampaignList = allCampaigns?.filter(
     (campaign: Campaign) =>
       campaign?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleRadioChange = (value: string) => {
-    dispatch(
-      getCampaignDetailsListForMonitoring({
-        type: value,
-        event: MONITORING_GET_CAMPAIGN_DETAILS,
-      })
-    );
-    setFilterCampaignType(value);
-  };
+  const filterScreenListList = monitoringScreens?.filter((screen: Screen) =>
+    screen?.screenName
+      .toLowerCase()
+      .includes(searchQueryForCampaign.toLowerCase())
+  );
 
   const handleOk = async () => {
     if (!confirm("Do you want to save monitoring data?")) return;
@@ -358,98 +363,109 @@ export const CampaignWiseMonitoring: React.FC = () => {
       {loadingAddCampaignMonitoring ? (
         <Loading />
       ) : (
-        <div className="grid grid-cols-12 gap-1 mt-1">
-          <Panel
-            title="Campaigns"
-            className="col-span-3"
-            isShowRadio={true}
-            isForCampaignType={true}
-            filterCampaignType={filterCampaignType}
-            setFilterCampaignType={handleRadioChange}
-          >
-            <div className="mt-2">
-              <SearchInputField
-                placeholder="Brand, Campaign Name"
-                value={searchQuery}
-                onChange={setSearchQuery}
-                height="h-8"
-              />
-            </div>
-            <List
-              items={filterResult}
-              loading={loading}
-              renderItem={(data: Campaign, index: number) => (
-                <ListItem
-                  key={index}
-                  item={data}
-                  isActive={monitoringCampaign?._id === data?._id}
-                  onClick={() => handleCampaignClick({ campaignCreated: data })}
-                  icon="megaphone"
-                  text={`${data?.name}`}
-                />
-              )}
+        <div className="">
+          <div className="px-4 w-full bg-white flex gap-8 mt-1">
+            <TabWithoutIcon
+              tabData={[
+                { label: "Today", id: "Active" },
+                { label: "Active", id: "All" },
+                { label: "Ended", id: "Completed" },
+              ]}
+              currentTab={filterCampaignType}
+              setCurrentTab={(value: string) => {
+                setFilterCampaignType(value);
+              }}
             />
-          </Panel>
-
-          <Panel
-            title="Screens List"
-            className="col-span-3"
-            isShowRadio={false}
-          >
-            <div className="mt-2">
-              <SearchInputField
-                placeholder="Screen Name"
-                value={searchQueryForCampaign}
-                onChange={setSearchQueryForCampaign}
-                height="h-8"
-              />
-            </div>
-            <List
-              items={monitoringScreens?.filter((screen: Screen) =>
-                screen?.screenName
-                  .toLowerCase()
-                  .includes(searchQueryForCampaign.toLowerCase())
-              )}
-              loading={false}
-              renderItem={(screen: Screen, index: number) => (
-                <ListItem
-                  key={index}
-                  item={screen}
-                  isActive={monitoringScreen?._id === screen?._id}
-                  onClick={() => handleScreenClick({ screen })}
-                  icon="screen"
-                  text={screen.screenName}
-                />
-              )}
-            />
-          </Panel>
-
-          {monitoringScreen && monitoringCampaign && (
+          </div>
+          <div className="grid grid-cols-12 gap-1 mt-1">
             <Panel
-              title={monitoringScreen?.screenName}
-              className="col-span-6"
-              buttonTitle="Save Monitoring Data"
-              // isShow={labels?.length > 0 ? true : false}
-              isShow={false}
-              loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
-              isShowRadio={false}
+              title="Campaigns"
+              className="col-span-3"
+              isShowCount={true}
+              countLength={filterCampaignList?.length}
             >
-              <TakingMonitoringPicV2
-                pageLoading={loadingGetCampaignMonitoring}
-                currentTab={currentTab}
-                setCurrentTab={setCurrentTab}
-                result={result}
-                setResult={setResult}
-                uploadedMonitoringPic={uploadedMonitoringPic}
-                setUploadedMonitoringPic={setUploadedMonitoringPic}
-                campaignList={monitoringScreens}
-                handleOk={handleOk}
-                handleClearAll={handleClearAll}
-                handleSingleRemove={handleSingleRemove}
-                screenName={monitoringScreen?.screenName || ""}
+              <div className="my-2">
+                <SearchInputField
+                  placeholder="Brand, Campaign Name"
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  height="h-8"
+                />
+              </div>
+              <List
+                items={filterCampaignList}
+                loading={loading}
+                renderItem={(data: Campaign, index: number) => (
+                  <ListItem
+                    key={index}
+                    item={data}
+                    isActive={monitoringCampaign?._id === data?._id}
+                    onClick={() =>
+                      handleCampaignClick({ campaignCreated: data })
+                    }
+                    icon="megaphone"
+                    text={`${data?.name}`}
+                  />
+                )}
               />
             </Panel>
-          )}
+
+            <Panel
+              title="Screens List"
+              className="col-span-3"
+              isShowCount={true}
+              countLength={filterScreenListList?.length}
+            >
+              <div className="my-2">
+                <SearchInputField
+                  placeholder="Screen Name"
+                  value={searchQueryForCampaign}
+                  onChange={setSearchQueryForCampaign}
+                  height="h-8"
+                />
+              </div>
+              <List
+                items={filterScreenListList}
+                loading={false}
+                renderItem={(screen: Screen, index: number) => (
+                  <ListItem
+                    key={index}
+                    item={screen}
+                    isActive={monitoringScreen?._id === screen?._id}
+                    onClick={() => handleScreenClick({ screen })}
+                    icon="screen"
+                    text={screen.screenName}
+                  />
+                )}
+              />
+            </Panel>
+
+            {monitoringScreen && monitoringCampaign && (
+              <Panel
+                title={monitoringScreen?.screenName}
+                className="col-span-6"
+                buttonTitle="Save Monitoring Data"
+                screenData={monitoringData?.screenData}
+                isShowScreenData={true}
+                loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
+              >
+                <TakingMonitoringPicV2
+                  pageLoading={loadingGetCampaignMonitoring}
+                  currentTab={currentTab}
+                  setCurrentTab={setCurrentTab}
+                  result={result}
+                  setResult={setResult}
+                  uploadedMonitoringPic={uploadedMonitoringPic}
+                  setUploadedMonitoringPic={setUploadedMonitoringPic}
+                  campaignList={monitoringScreens}
+                  handleOk={handleOk}
+                  handleClearAll={handleClearAll}
+                  handleSingleRemove={handleSingleRemove}
+                  screenName={monitoringScreen?.screenName || ""}
+                />
+              </Panel>
+            )}
+          </div>
         </div>
       )}
     </div>
