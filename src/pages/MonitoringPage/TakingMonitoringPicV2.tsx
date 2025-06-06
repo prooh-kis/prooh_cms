@@ -244,7 +244,7 @@ export const TakingMonitoringPicV2 = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-3 gap-4 h-[40vh] overflow-y-auto">
+              <div className="grid grid-cols-3 gap-4 h-[22vh] overflow-y-auto">
                 {getAllFilesFromCurrentTab().map((fileData, index) => (
                   <ShowUploadedCardV2
                     key={`${fileData.url}-${index}`}
