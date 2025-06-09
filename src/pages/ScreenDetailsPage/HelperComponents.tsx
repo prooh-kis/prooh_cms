@@ -3,6 +3,7 @@ import { SwitchInputCenter } from "../../components/atoms/SwitchInput";
 import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import {
   convertIntoDateAndTime,
+  formatTimeToAM_PM,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
 import { Tooltip } from "antd";
@@ -131,23 +132,23 @@ export const ScreenHeader = ({
       </div>
 
       <div className="border-l px-4 py-2 text-[14px] flex justify-between">
-        <div className="flex  items-center gap-4">
+        <div className="flex items-center gap-4">
           <Tooltip title="Screen On time">
             <div className="flex gap-2">
-              <i className="fi fi-br-power text-[#348730] flex  items-center"></i>
-              <p>{screen?.operationalDuration?.onTime} AM</p>
+              <i className="fi fi-br-power text-[#348730] flex items-center"></i>
+              <p>{formatTimeToAM_PM(screen?.operationalDuration?.onTime)}</p>
             </div>
           </Tooltip>
           <Tooltip title="Screen Off time">
             <div className="flex gap-2">
-              <i className="fi fi-br-power text-[#FB0505] flex  items-center"></i>
-              <p>{screen?.operationalDuration?.offTime} PM</p>
+              <i className="fi fi-br-power text-[#FB0505] flex items-center"></i>
+              <p>{formatTimeToAM_PM(screen?.operationalDuration?.offTime)}</p>
             </div>
           </Tooltip>
         </div>
         <Tooltip title="Screen operational hours">
-          <div className="flex gap-2 bg-[#348730] text-white p-1 px-2 m-0 rounded-md  flex items-center">
-            <i className="fi fi-sr-duration-alt flex  items-center"></i>
+          <div className="flex gap-2 bg-[#348730] text-white p-1 px-2 m-0 rounded-md flex items-center">
+            <i className="fi fi-sr-duration-alt flex items-center"></i>
             <p>{screen?.operationalDuration?.totalDuration} Hr.</p>
           </div>
         </Tooltip>

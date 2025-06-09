@@ -330,7 +330,7 @@ export const ScreenDetailsPage: React.FC = () => {
     }
   };
 
-  console.log("screen : ", screen);
+  // console.log("screen : ", JSON.stringify(screen?.operationalDuration));
 
   return (
     <div className="">
