@@ -4,6 +4,7 @@ import { ShowMediaFile } from "../../components/molecules/ShowMediaFIle";
 import {
   convertIntoDateAndTime,
   formatTimeToAM_PM,
+  getTimeAgo,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
 import { Tooltip } from "antd";
@@ -30,10 +31,10 @@ interface Screen {
 
 const getScreenClassName = (screen: any) => {
   if (screen?.screenCode) {
-    if (getTimeDifferenceInMin(screen?.lastActive) < 10)
+    if (getTimeDifferenceInMin(screen?.lastActive) < 15)
       return "border w-3 h-3 bg-[#348730] rounded-full justify-end";
-    else return "border w-3 h-3 bg-yellow-500 rounded-full justify-end";
-  } else return "border w-3 h-3 bg-red-500 rounded-full justify-end";
+    else return "border w-3 h-3 bg-[#EAB308] rounded-full justify-end";
+  } else return "border w-3 h-3 bg-[#dc2626] rounded-full justify-end";
 };
 // const operationalDurationSchema = new Schema({
 //   totalDuration: { type: String, required: false, default: 0 },
@@ -115,7 +116,7 @@ export const ScreenHeader = ({
               isEnabled={isDefaultIncluded}
               onToggle={changeDefaultIncludedAction}
               onColor="bg-[#348730]"
-              offColor="bg-red-500"
+              offColor="bg-[#dc2626]"
             />
           </div>
         )}
@@ -125,8 +126,7 @@ export const ScreenHeader = ({
       <div className="flex items-center gap-1">
         <div className={getScreenClassName(screen)} />
         <p className="text-[13px] py-2 m-0">
-          Last Active: {getTimeDifferenceInMin(screen?.lastActive)} minutes ago{" "}
-          {", "}
+          Last Active: {getTimeAgo(screen?.lastActive)} {", "}
           {convertIntoDateAndTime(screen?.lastActive) || "Not available"}
         </p>
       </div>
@@ -354,7 +354,7 @@ export const AutoLoopSwitch: React.FC<{
       isEnabled={isEnabled}
       onToggle={onToggle}
       onColor="bg-[#348730]"
-      offColor="bg-red-500"
+      offColor="bg-[#dc2626]"
     />
   </div>
 );

@@ -1,5 +1,6 @@
 import {
   convertIntoDateAndTime,
+  getTimeAgo,
   getTimeDifferenceInMin,
 } from "../../utils/dateAndTimeUtils";
 import clsx from "clsx";
@@ -85,7 +86,8 @@ export const ScreenListThumbnail = ({
         <div className="flex flex-row gap-1 items-center text-[12px] text-secondaryText">
           <div className={getScreenClassName(data)} />
           <h1 className="truncate">
-            {getTimeDifferenceInMin(data?.lastActive)} min ago{", "}
+            {getTimeAgo(data?.lastActive)}
+            {", "}
             {convertIntoDateAndTime(data?.lastActive) || "Not available"}
           </h1>
         </div>
