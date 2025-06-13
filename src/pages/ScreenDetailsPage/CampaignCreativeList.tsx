@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CreativeSection } from "./HelperComponents";
 import { getCampaignEndingStatus } from "../../utils/dateAndTimeUtils";
+import moment from "moment";
 
 const CampaignCreativeList = ({
   currentCampaign,
@@ -21,10 +22,14 @@ const CampaignCreativeList = ({
   handleDeleteCreative,
   handleCreativeEdit,
   downloadedMedia,
-  userRole
+  userRole,
 }: any) => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+  const formattedDate = (date: any) =>
+    date
+      ? moment(date, "DD-MM-YYYY HH:mm").format("MMMM Do YYYY, h:mm a")
+      : "No end date";
   return (
     <div className="col-span-4 bg-white p-4 rounded-[4px] mr-2">
       <div className="border-b-2 pb-10">
@@ -32,59 +37,72 @@ const CampaignCreativeList = ({
           <h1 className="text-[16px] font-semibold mt-4">
             {currentCampaign?.name}
           </h1>
-          {userRole !== SCREEN_MONITORING_USER && <div className="flex gap-1">
-            <div
-              className="text-gray-500 hover:text-[#348730]"
-              onClick={() => {
-                if (confirm(`Are you sure you want to edit the campaign???`)) {
-                  saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
-                    [currentCampaign?.campaignCreationId]:
-                      currentCampaign.creatives.standardDayTimeCreatives,
-                  });
-                  dispatch(
-                    getScreenDataUploadCreativeAction({
-                      id: currentCampaign?.campaignCreationId,
-                      event: SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
-                    })
-                  );
-                  setOpenCreativeEndDateChangePopup(true);
-                }
-              }}
-            >
-              <i className="fi fi-sr-file-edit"></i>
-            </div>
-            {currentTab != "7" && (
+          {userRole !== SCREEN_MONITORING_USER && (
+            <div className="flex gap-1">
               <div
-                className="text-gray-500 hover:text-red-500"
+                className="text-gray-500 hover:text-[#348730]"
                 onClick={() => {
-                  if (confirm(`Are you sure you want delete the campaign???`)) {
-                    changeCampaignStatusHandler({
-                      campaignIds: campaignIds,
-                      status: "Deleted",
-                      event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
+                  if (
+                    confirm(`Are you sure you want to edit the campaign???`)
+                  ) {
+                    saveDataOnLocalStorage(UPLOAD_CREATIVE_SCREEN_DATA, {
+                      [currentCampaign?.campaignCreationId]:
+                        currentCampaign.creatives.standardDayTimeCreatives,
                     });
+                    dispatch(
+                      getScreenDataUploadCreativeAction({
+                        id: currentCampaign?.campaignCreationId,
+                        event: SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
+                      })
+                    );
+                    setOpenCreativeEndDateChangePopup(true);
                   }
                 }}
               >
-                <i className="fi fi-sr-trash"></i>
+                <i className="fi fi-sr-file-edit"></i>
               </div>
-            )}
-            {currentTab != "7" && (
-              <div
-                className="text-gray-500 hover:text-[#348730]"
-                onClick={() =>
-                  navigate(
-                    `/campaigns-details/${currentCampaign?.campaignCreationId}`
-                  )
-                }
-              >
-                <i className="fi fi-sr-eye"></i>
-              </div>
-            )}
-          </div>}
+              {currentTab != "7" && (
+                <div
+                  className="text-gray-500 hover:text-red-500"
+                  onClick={() => {
+                    if (
+                      confirm(`Are you sure you want delete the campaign???`)
+                    ) {
+                      changeCampaignStatusHandler({
+                        campaignIds: campaignIds,
+                        status: "Deleted",
+                        event: CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS,
+                      });
+                    }
+                  }}
+                >
+                  <i className="fi fi-sr-trash"></i>
+                </div>
+              )}
+              {/* {currentTab != "7" && (
+                <div
+                  className="text-gray-500 hover:text-[#348730]"
+                  onClick={() =>
+                    navigate(`/campaigns-details/${currentCampaign?._id}`)
+                  }
+                >
+                  <i className="fi fi-sr-eye"></i>
+                </div>
+              )} */}
+            </div>
+          )}
         </div>
         <div>
           <h1 className="text-[14px] mt-1">{currentCampaign?.brandName}</h1>
+          <h1 className="text-[12px] mt-1">
+            <span className="text-green-800">
+              {formattedDate(currentCampaign?.startDate)}
+            </span>{" "}
+            -{" "}
+            <span className="text-red-800">
+              {formattedDate(currentCampaign?.endDate)}
+            </span>
+          </h1>
           <h1 className="text-[12px] mt-1">
             {getCampaignEndingStatus(currentCampaign?.endDate)}
           </h1>
@@ -94,7 +112,7 @@ const CampaignCreativeList = ({
         <h1 className="text-[16px] font-semibold">Creatives</h1>
         {currentCampaign?.creatives?.standardDayTimeCreatives?.length === 0 &&
           currentCampaign?.creatives?.standardNightTimeCreatives?.length ===
-          0 &&
+            0 &&
           currentCampaign?.creatives?.triggerCreatives?.length === 0 && (
             <div className="p-1 relative  h-32 z-100">
               <div className="absolute top-0 right-1 flex justify-end mt-[20px]">
