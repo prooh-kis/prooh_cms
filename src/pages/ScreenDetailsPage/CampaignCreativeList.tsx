@@ -27,9 +27,7 @@ const CampaignCreativeList = ({
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const formattedDate = (date: any) =>
-    date
-      ? moment(date, "DD-MM-YYYY HH:mm").format("MMMM Do YYYY, h:mm a")
-      : "No end date";
+    date ? moment(date).format("MMMM Do YYYY, h:mm a") : "No end date";
   return (
     <div className="col-span-4 bg-white p-4 rounded-[4px] mr-2">
       <div className="border-b-2 pb-10">
