@@ -8,7 +8,7 @@ interface ShowMediaPopupProps {
   onClose?: any;
   screenName: string;
   removeAddedCreativeFromCampaign?: any;
-  showDelete?: any
+  showDelete?: any;
 }
 
 export function ShowMediaPopup({
@@ -17,7 +17,7 @@ export function ShowMediaPopup({
   onClose,
   screenName,
   removeAddedCreativeFromCampaign,
-  showDelete=true
+  showDelete = true,
 }: ShowMediaPopupProps) {
   useEffect(() => {
     if (openShowMedia) {
@@ -36,21 +36,27 @@ export function ShowMediaPopup({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-      <div className="border bg-white rounded-[10px] h-3/4 w-3/4 p-2">
+      <div className="border bg-white rounded-[10px] h-[90vh] w-3/4 p-4">
         <div
           className="relative inset-0 flex items-center justify-end gap-4"
           onClick={() => onClose()}
         >
           <i className="fi fi-rr-cross-small"></i>
         </div>
-        <h1 className="pb-4"> Screen : {screenName}</h1>
+        <div className="flex justify-between w-full">
+          <h1 className="text-[18px] font-semibold">Screen : {screenName}</h1>
+          <h1 className="text-[18px] font-semibold pr-8">
+            Total creatives : {media?.length}
+          </h1>
+        </div>
+
         {media?.length === 0 && <NoDataView />}
 
-        <div className="grid grid-cols-2 flex p-2 justify-center gap-4 w-full h-full">
+        <div className="grid grid-cols-3 flex justify-center gap-4 w-full h-[80vh]  overflow-y-auto bg-gray-100 p-2 ">
           {media?.map((l: any, index: any) => (
             <div
               key={index}
-              className="col-span-1 p-1 h-40 w-auto"
+              className="col-span-1 p-1 h-[180px] w-auto bg-white rounded-lg"
               // onClick={() => removeAddedCreativeFromCampaign(l)}
             >
               <ShowMediaFile
@@ -72,7 +78,6 @@ export function ShowMediaPopup({
                   <h1>Delete</h1>
                 </div>
               )}
-              
             </div>
           ))}
         </div>

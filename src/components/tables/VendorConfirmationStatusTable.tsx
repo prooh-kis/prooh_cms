@@ -37,15 +37,17 @@ export const VendorConfirmationStatusTable = ({
   const handleHeaderRowCheckBoxChange = (e: boolean) => {
     for (const campaign of campaignsList) {
       if (campaign?.campaignCreationId === campaignCreationStatusTableData?._id)
-        handleRowCheckboxChange(e, campaign?._id.toString())
+        handleRowCheckboxChange(e, campaign?._id.toString());
     }
-  }
+  };
 
   useEffect(() => {
-    var campaignIds: any = []
+    var campaignIds: any = [];
     for (const campaign of campaignsList) {
-      if (campaign?.campaignCreationId === campaignCreationStatusTableData?._id) {
-        campaignIds.push(campaign?._id.toString())
+      if (
+        campaign?.campaignCreationId === campaignCreationStatusTableData?._id
+      ) {
+        campaignIds.push(campaign?._id.toString());
       }
     }
 
@@ -71,7 +73,6 @@ export const VendorConfirmationStatusTable = ({
           ...(item.standardDayTimeCreatives || []),
           ...(item.standardNightTimeCreatives || []),
           ...(item.triggerCreatives || []),
-
         ])}
       />
       <table className="w-full ">
@@ -84,10 +85,19 @@ export const VendorConfirmationStatusTable = ({
                   textSize="12px"
                   color="#129BFF"
                   onChange={(e) => handleHeaderRowCheckBoxChange(e)}
-                  checked={selectedCampaignIds?.length === campaignCreationStatusTableData?.screenWiseSlotDetails?.filter((screen: any) => {
-                    return campaignCreationStatusTableData?.screenIds.includes(screen.screenId)
-                  })?.length ? true : false}
-                // disabled={loading}
+                  checked={
+                    selectedCampaignIds?.length ===
+                    campaignCreationStatusTableData?.screenWiseSlotDetails?.filter(
+                      (screen: any) => {
+                        return campaignCreationStatusTableData?.screenIds.includes(
+                          screen.screenId
+                        );
+                      }
+                    )?.length
+                      ? true
+                      : false
+                  }
+                  // disabled={loading}
                 />
               </div>
             </th>
@@ -146,13 +156,27 @@ export const VendorConfirmationStatusTable = ({
           </tr>
         </thead>
         <tbody className="bg-white">
-          {campaignCreationStatusTableData?.screenWiseSlotDetails?.filter((screen: any) => {
-            return campaignCreationStatusTableData?.screenIds.includes(screen.screenId)
-          })
+          {campaignCreationStatusTableData?.screenWiseSlotDetails
+            ?.filter((screen: any) => {
+              return campaignCreationStatusTableData?.screenIds.includes(
+                screen.screenId
+              );
+            })
             ?.map((status: any, i: number) => (
-              <tr key={i} className={`border-b hover:bg-gray-200 
-              ${status.slotAvailable >= campaignCreationStatusTableData?.sov * Math.ceil(campaignCreationStatusTableData?.creatives[0]?.creativeDuration / 10)
-                  ? "bg-[#20AA7010]" : "bg-[#FF525210]"}`}>
+              <tr
+                key={i}
+                className={`border-b hover:bg-gray-200 
+              ${
+                status.slotAvailable >=
+                campaignCreationStatusTableData?.sov *
+                  Math.ceil(
+                    campaignCreationStatusTableData?.creatives[0]
+                      ?.creativeDuration / 10
+                  )
+                  ? "bg-[#20AA7010]"
+                  : "bg-[#FF525210]"
+              }`}
+              >
                 <td>
                   <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[#129BFF]">
                     <CheckboxInput
@@ -160,11 +184,35 @@ export const VendorConfirmationStatusTable = ({
                       textSize="12px"
                       color="#129BFF"
                       onChange={(e) => {
-                        console.log(selectedCampaignIds?.includes(campaignsList?.filter((c: any) => c.campaignCreationId == campaignCreationStatusTableData?._id && c.screenId == status.screenId)[0]?._id))
-                        handleRowCheckboxChange(e, campaignsList?.filter((c: any) => c.campaignCreationId == campaignCreationStatusTableData?._id && c.screenId == status.screenId)[0]?._id);
+                        console.log(
+                          selectedCampaignIds?.includes(
+                            campaignsList?.filter(
+                              (c: any) =>
+                                c.campaignCreationId ==
+                                  campaignCreationStatusTableData?._id &&
+                                c.screenId == status.screenId
+                            )[0]?._id
+                          )
+                        );
+                        handleRowCheckboxChange(
+                          e,
+                          campaignsList?.filter(
+                            (c: any) =>
+                              c.campaignCreationId ==
+                                campaignCreationStatusTableData?._id &&
+                              c.screenId == status.screenId
+                          )[0]?._id
+                        );
                       }}
                       checked={
-                        selectedCampaignIds?.includes(campaignsList?.filter((c: any) => c.campaignCreationId == campaignCreationStatusTableData?._id && c.screenId == status.screenId)[0]?._id)
+                        selectedCampaignIds?.includes(
+                          campaignsList?.filter(
+                            (c: any) =>
+                              c.campaignCreationId ==
+                                campaignCreationStatusTableData?._id &&
+                              c.screenId == status.screenId
+                          )[0]?._id
+                        )
                           ? true
                           : false
                       }
@@ -188,7 +236,12 @@ export const VendorConfirmationStatusTable = ({
                 </td>
                 <td className="py-2 px-1">
                   <div className="flex items-center justify-start gap-1 truncate text-[12px] text-[]">
-                    &#8377;{Number(status.pricePerSlot * status.slotsPerDay * campaignCreationStatusTableData?.duration).toFixed(0)}
+                    &#8377;
+                    {Number(
+                      status.pricePerSlot *
+                        status.slotsPerDay *
+                        campaignCreationStatusTableData?.duration
+                    ).toFixed(0)}
                   </div>
                 </td>
                 <td className="py-2 px-1">
@@ -197,20 +250,37 @@ export const VendorConfirmationStatusTable = ({
                   </div>
                 </td>
                 <td className="py-2 px-1">
-                  <div className={`flex items-center justify-center gap-1 truncate text-[12px] 
-                    ${status.slotAvailable >= campaignCreationStatusTableData?.sov * Math.ceil(campaignCreationStatusTableData?.creatives[0]?.creativeDuration / 10)
-                      ? "text-[#20AA70]" : "text-[#FF5252]"}`}>
-                    {status.slotAvailable >= 0 ? Number(status.slotAvailable) : "Not Available"}
+                  <div
+                    className={`flex items-center justify-center gap-1 truncate text-[12px] 
+                    ${
+                      status.slotAvailable >=
+                      campaignCreationStatusTableData?.sov *
+                        Math.ceil(
+                          campaignCreationStatusTableData?.creatives[0]
+                            ?.creativeDuration / 10
+                        )
+                        ? "text-[#20AA70]"
+                        : "text-[#FF5252]"
+                    }`}
+                  >
+                    {status.slotAvailable >= 0
+                      ? `${Number(status.slotAvailable)} slots`
+                      : "Not Available"}
                   </div>
                 </td>
                 <td className="py-2 px-1">
-                  <div className="flex items-center justify-center gap-1 truncate text-[12px] text-[]"
+                  <div
+                    className="flex items-center justify-center gap-1 truncate text-[12px] text-[]"
                     onClick={() => {
                       console.log(campaignCreationStatusTableData);
                       setCreativesToShow({
                         screenName: status.screenName,
                         screenId: status.screenId,
-                        creatives: campaignCreationStatusTableData.creatives,
+                        creatives:
+                          campaignCreationStatusTableData.creatives?.filter(
+                            (data: any) =>
+                              data.screenIds.includes(status.screenId)
+                          ),
                       });
                       setOpenShowMediaPopup(true);
                     }}
@@ -224,24 +294,30 @@ export const VendorConfirmationStatusTable = ({
                       {status.campaignStatus === "PleaRequestBudgetSent"
                         ? "Budget Approval Pending"
                         : status.campaignStatus === "PleaRequestBudgetAccepted"
-                          ? "Budget Approved"
-                          : status.campaignStatus === "PleaRequestBudgetRejected"
-                            ? "Budget Rejected"
-                            : status.campaignStatus === "PleaRequestScreenApprovalSent"
-                              ? "Screen Pending"
-                              : status.campaignStatus === "PleaRequestScreenApprovalAccepted"
-                                ? "Screen Approved"
-                                : status.campaignStatus === "PleaRequestScreenApprovalRejected"
-                                  ? "Screen Rejected"
-                                  : status.campaignStatus === "PleaRequestFinalApprovalSent"
-                                    ? "Final Pending"
-                                    : status.campaignStatus === "PleaRequestFinalApprovalAccepted"
-                                      ? "Final Approved"
-                                      : status.campaignStatus === "PleaRequestFinalApprovalRejected"
-                                        ? "Final Rejected"
-                                        : status.campaignStatus === "Pending"
-                                          ? "Approved"
-                                          : "Pending"}
+                        ? "Budget Approved"
+                        : status.campaignStatus === "PleaRequestBudgetRejected"
+                        ? "Budget Rejected"
+                        : status.campaignStatus ===
+                          "PleaRequestScreenApprovalSent"
+                        ? "Screen Pending"
+                        : status.campaignStatus ===
+                          "PleaRequestScreenApprovalAccepted"
+                        ? "Screen Approved"
+                        : status.campaignStatus ===
+                          "PleaRequestScreenApprovalRejected"
+                        ? "Screen Rejected"
+                        : status.campaignStatus ===
+                          "PleaRequestFinalApprovalSent"
+                        ? "Final Pending"
+                        : status.campaignStatus ===
+                          "PleaRequestFinalApprovalAccepted"
+                        ? "Final Approved"
+                        : status.campaignStatus ===
+                          "PleaRequestFinalApprovalRejected"
+                        ? "Final Rejected"
+                        : status.campaignStatus === "Pending"
+                        ? "Approved"
+                        : "Pending"}
                     </h1>
                   </div>
                 </td>
