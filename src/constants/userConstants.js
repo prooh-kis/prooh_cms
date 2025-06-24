@@ -69,51 +69,70 @@ export const SEND_EMAIL_FOR_VENDOR_CONFIRMATION_ERROR =
 export const SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET =
   "SEND_EMAIL_FOR_VENDOR_CONFIRMATION_RESET";
 
-export const SCREEN_ADMIN = "screenAdmin"
-export const SCREEN_OWNER = "screenOwner"
-export const SCREEN_MANAGER = "screenManager"
-export const SCREEN_MONITORING_USER = "screenMonitoring"
+export const CAMPAIGN_PLANNER = "campaignPlanner";
+export const CAMPAIGN_MANAGER = "campaignManager";
+export const CLIENT_POC_USER = "clientPocUser";
+export const SCREEN_ADMIN = "screenAdmin";
+export const SCREEN_OWNER = "screenOwner";
+export const SCREEN_MANAGER = "screenManager";
+export const SCREEN_MONITORING_USER = "screenMonitoring";
 
-export const CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS = "campaignStatusChangedToActiveCms"
-export const CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS = "campaignStatusChangedToPausedCms"
-export const CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS = "campaignStatusChangedToDeletedCms"
-export const CAMPAIGN_MONITORING_DATA_CMS = "campaignMonitoringDataCms"
-export const CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS = "campaignChangeDateAndCreativeCms"
+export const CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS =
+  "campaignStatusChangedToActiveCms";
+export const CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS =
+  "campaignStatusChangedToPausedCms";
+export const CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS =
+  "campaignStatusChangedToDeletedCms";
+export const CAMPAIGN_MONITORING_DATA_CMS = "campaignMonitoringDataCms";
+export const CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS =
+  "campaignChangeDateAndCreativeCms";
 
-export const SCREEN_LOOP_CHANGED_CMS = "screenLoopChangedCms"
-export const SCREEN_RESTARTED_CMS = "screenRestartedCms"
-export const SCREEN_CODE_UPDATE_CMS = "screenCodeUpdateCms"
-export const SCREEN_REDIS_UPDATE_CMS = "screenRedisUpdateCms"
-export const SCREEN_PLAY_HOLD_CAMPAIGNS_CMS = "screenPlayHoldCampaignsCms"
-export const SCREEN_CHANGE_DEFAULT_MEDIA_CMS = "screenChangeDefaultMediaCms"
-export const SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS = "screenChangeDefaultIncludedStatusCms"
-export const SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS = "screenChangeAutoLoopValueCms"
-export const SCREEN_GET_ALL_SCREEN_DATA_CMS = "screenGetAllScreenDataCms"
-export const SCREEN_GET_SCREEN_DETAILS_CMS = "screenGetScreenDetailsCms"
-export const SCREEN_GET_SCREEN_CAMPAIGN_DETAILS_CMS = "screenGetScreenCampaignDetailsCms"
-export const SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS = "screenGetUploadCreativeDetailsCms"
-export const SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS = "screenGetAllScreensScreenOwnerCms"
+export const SCREEN_LOOP_CHANGED_CMS = "screenLoopChangedCms";
+export const SCREEN_RESTARTED_CMS = "screenRestartedCms";
+export const SCREEN_CODE_UPDATE_CMS = "screenCodeUpdateCms";
+export const SCREEN_REDIS_UPDATE_CMS = "screenRedisUpdateCms";
+export const SCREEN_PLAY_HOLD_CAMPAIGNS_CMS = "screenPlayHoldCampaignsCms";
+export const SCREEN_CHANGE_DEFAULT_MEDIA_CMS = "screenChangeDefaultMediaCms";
+export const SCREEN_CHANGE_DEFAULT_INCLUDED_STATUS_CMS =
+  "screenChangeDefaultIncludedStatusCms";
+export const SCREEN_CHANGE_AUTO_LOOP_VALUE_CMS = "screenChangeAutoLoopValueCms";
+export const SCREEN_GET_ALL_SCREEN_DATA_CMS = "screenGetAllScreenDataCms";
+export const SCREEN_GET_SCREEN_DETAILS_CMS = "screenGetScreenDetailsCms";
+export const SCREEN_GET_SCREEN_CAMPAIGN_DETAILS_CMS =
+  "screenGetScreenCampaignDetailsCms";
+export const SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS =
+  "screenGetUploadCreativeDetailsCms";
+export const SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS =
+  "screenGetAllScreensScreenOwnerCms";
 
-export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS = "campaignCreationEditCreativeCms"
-export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS = "campaignCreationEditEndDateCms"
-export const CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS = "campaignCreationGetAllCampaignDataCms"
-export const CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS = "campaignCreationGetCampaignDetailsCms"
-export const CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS = "campaignCreationGetVendorRequestListCms"
-export const CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS = "campaignCreationApproveCampaignCms"
-export const CAMPAIGN_CREATION_CREATE_CLONE_CMS = "campaignCreationCreateCloneCms"
-export const CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS = "campaignCreationConvertCreativeToBitrateCms"
+export const CAMPAIGN_CREATION_EDIT_CREATIVE_CMS =
+  "campaignCreationEditCreativeCms";
+export const CAMPAIGN_CREATION_EDIT_END_DATE_CMS =
+  "campaignCreationEditEndDateCms";
+export const CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS =
+  "campaignCreationGetAllCampaignDataCms";
+export const CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS =
+  "campaignCreationGetCampaignDetailsCms";
+export const CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS =
+  "campaignCreationGetVendorRequestListCms";
+export const CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS =
+  "campaignCreationApproveCampaignCms";
+export const CAMPAIGN_CREATION_CREATE_CLONE_CMS =
+  "campaignCreationCreateCloneCms";
+export const CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS =
+  "campaignCreationConvertCreativeToBitrateCms";
 
-export const USERS_GET_CMS = "usersGetCms"
-export const USERS_DELETE_CMS = "usersDeleteCms"
+export const USERS_GET_CMS = "usersGetCms";
+export const USERS_DELETE_CMS = "usersDeleteCms";
 export const USERS_ADD_CMS = "usersAddCms";
 
-export const CREATIVE_GET_CMS = "creativeGetCms"
-export const CREATIVE_ADD_CMS = "creativeAddCms"
+export const CREATIVE_GET_CMS = "creativeGetCms";
+export const CREATIVE_ADD_CMS = "creativeAddCms";
 // coupons
 export const COUPON_ADD_CMS = "couponAddCms";
 // monitoring
 export const CAMPAIGN_MONITORING_DATA_ADD_CMS = "campaignMonitoringDataAddCms";
 
 // not in use as of now
-export const CAMPAIGN_CREATION_CMS = "campaignCreationCms"
+export const CAMPAIGN_CREATION_CMS = "campaignCreationCms";
 export const MONITORING_GET_CAMPAIGN_DETAILS = "MonitoringGetCampaignDetails";

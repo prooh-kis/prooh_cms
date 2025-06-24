@@ -62,9 +62,7 @@ const CampaignDetailSection = ({
               <h1
                 className="text-[18px] font-semibold cursor-pointer"
                 onClick={() =>
-                  window.open(
-                    `https://plan.prooh.ai/campaignDetails/${campaignCreated?._id}`
-                  )
+                  navigate(`/campaignDashboard/${campaignCreated?._id}`)
                 }
               >
                 {campaignCreated?.name || "Campaign Name"}

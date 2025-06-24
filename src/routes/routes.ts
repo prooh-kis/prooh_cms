@@ -13,6 +13,8 @@ export const SCREENS_LIST = "/screens-list";
 export const SCREENS_LIST_FOR_SECONDARY_USER = "/screens-list-secondary";
 
 export const ADD_NEW_USER = "/users/add-new";
+export const NEW_DASHBOARD = "/campaignDashboard/:id?/:clicked";
+
 export const USERS = "/users";
 export const QUERIES = "/queries";
 export const DMP_QUERIES = "/dmpQueries";

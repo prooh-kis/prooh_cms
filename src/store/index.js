@@ -20,6 +20,7 @@ import {
   campaignDetailsGetReducer,
   campaignFullDetailsGetReducer,
   campaignLogsByCampaignIdReducer,
+  campaignLogsGetReducer,
   campaignStatusChangeAfterVendorApprovalReducer,
   campaignStatusChangeReducer,
   convertCreativesToRespectiveBitrateReducer,
@@ -71,12 +72,9 @@ import {
   getAllContactQueriesReducer,
   getAllDmpContactQueriesReducer,
 } from "../reducers/queriesReducer";
-import {
-  addCampaignMonitoringDataReducer,
-  getCampaignMonitoringDataReducer,
-  getActiveCampaignListForMonitoringReducer,
-  getActiveCampaignListScreenWiseForMonitoringReducer,
-} from "../reducers/monitoringReducers";
+
+import * as dashboardReducers from "../reducers/dashboardReducers";
+import * as monitoringReducers from "../reducers/monitoringReducers";
 
 const initialState = {
   userSignin: {
@@ -122,6 +120,8 @@ const store = configureStore({
       myCreateCampaignsVendorRequestsListGetReducer,
     campaignStatusChangeAfterVendorApproval:
       campaignStatusChangeAfterVendorApprovalReducer,
+    campaignLogsGet: campaignLogsGetReducer,
+
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
     convertCreativesToRespectiveBitrates:
@@ -164,16 +164,52 @@ const store = configureStore({
     toggleStatusCoupon: toggleStatusCouponReducer,
 
     // Monitoring
-    addCampaignMonitoring: addCampaignMonitoringDataReducer,
-    getCampaignMonitoring: getCampaignMonitoringDataReducer,
-    activeCampaignListForMonitoring: getActiveCampaignListForMonitoringReducer,
+    addCampaignMonitoring: monitoringReducers.addCampaignMonitoringDataReducer,
+    getCampaignMonitoring: monitoringReducers.getCampaignMonitoringDataReducer,
+    activeCampaignListForMonitoring:
+      monitoringReducers.getActiveCampaignListForMonitoringReducer,
     activeCampaignListScreenWiseForMonitoring:
-      getActiveCampaignListScreenWiseForMonitoringReducer,
+      monitoringReducers.getActiveCampaignListScreenWiseForMonitoringReducer,
+    campaignMonitoringPicsGet:
+      monitoringReducers.campaignMonitoringPicsGetReducer,
+    generateMonitoringPpt: monitoringReducers.generateMonitoringPptReducer,
+    getMonitoringPptJobStatus:
+      monitoringReducers.getMonitoringPptJobStatusReducer,
     // Landing
     getAllContactQueries: getAllContactQueriesReducer,
     changeContactQueryStatus: changeContactQueryStatusReducer,
     getAllDmpContactQueries: getAllDmpContactQueriesReducer,
-    approveDataHeroAccount : approveDataHeroAccountReducer
+    approveDataHeroAccount: approveDataHeroAccountReducer,
+
+    //dashboard
+    // Dashboard
+    basicDataForPlannerDashboard:
+      dashboardReducers.getBasicDataForPlannerDashboardReducer,
+    slotDeliveryGraphDateWiseForPlannerDashboard:
+      dashboardReducers.getSlotDeliveryGraphDateWiseForPlannerDashboardReducer,
+    audienceDataForPlannerDashboard:
+      dashboardReducers.getAudienceDataForPlannerDashboardReducer,
+    hardwarePerformanceDataForPlannerDashboard:
+      dashboardReducers.getHardwarePerformanceDataForPlannerDashboardReducer,
+    spotDeliveryDataForPlannerDashboard:
+      dashboardReducers.getSpotDeliveryDataForPlannerDashboardReducer,
+    costDataForPlannerDashboard:
+      dashboardReducers.getCostDataForPlannerDashboardReducer,
+    siteLevelPerformanceForPlannerDashboard:
+      dashboardReducers.getSiteLevelPerformanceForPlannerDashboardReducer,
+    siteLevelPerformanceTabWiseForPlannerDashboard:
+      dashboardReducers.getSiteLevelPerformanceTabWiseForPlannerDashboardReducer,
+    sitesDataMapViewForPlannerDashboard:
+      dashboardReducers.getSitesDataMapViewForPlannerDashboardReducer,
+    siteMonitoringPicsPercentage:
+      dashboardReducers.getSiteMonitoringPicsPercentageReducer,
+    allSitesMonitoringData: dashboardReducers.getAllSitesMonitoringDataReducer,
+    siteBasedDataOnLogsPage:
+      dashboardReducers.getSiteBasedDataOnLogsPageReducer,
+    getFiltersAndDataForAllLogsPopup:
+      dashboardReducers.getFiltersAndDataForAllLogsPopupReducer,
+    campaignCreationsDetailsGet:
+      dashboardReducers.campaignCreationsDetailsGetReducer,
   },
   middleware: () =>
     process.env.NODE_ENV !== "production"

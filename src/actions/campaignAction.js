@@ -41,6 +41,9 @@ import {
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_FAIL,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
+  CAMPAIGN_LOGS_REQUEST,
+  CAMPAIGN_LOGS_SUCCESS,
+  CAMPAIGN_LOGS_FAIL,
 } from "../constants/campaignConstants";
 
 import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConstants";
@@ -461,6 +464,35 @@ export const convertCreativesToRespectiveBitrate =
           error.response && error.response.data.message
             ? error.response.data.message
             : error.message,
+      });
+    }
+  };
+
+
+
+export const GetCampaignLogsAction =
+  ({ campaignId, date }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: CAMPAIGN_LOGS_REQUEST,
+      payload: { campaignId, date },
+    });
+    try {
+      const { data } = await axios.get(
+        `${analyticsURL}/getCampaignLogsDateWise?campaignId=${campaignId}&date=${date}`
+      );
+      dispatch({
+        type: CAMPAIGN_LOGS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CAMPAIGN_LOGS_FAIL,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
       });
     }
   };
