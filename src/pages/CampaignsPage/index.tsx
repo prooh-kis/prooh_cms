@@ -40,6 +40,7 @@ export const CampaignsPage: React.FC = () => {
           userId: userInfo?._id,
           status: CAMPAIGN_STATUS_ACTIVE,
           event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+          plannerId: [],
         })
       );
     }
@@ -59,6 +60,7 @@ export const CampaignsPage: React.FC = () => {
             (tab: any) => tab.id === status
           )[0]?.value,
           event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+          plannerId: [],
         })
       );
     },
@@ -71,6 +73,7 @@ export const CampaignsPage: React.FC = () => {
         userId: userInfo?._id,
         status: CAMPAIGN_STATUS_ACTIVE,
         event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+        plannerId: [],
       })
     );
   };
@@ -96,17 +99,13 @@ export const CampaignsPage: React.FC = () => {
     }
   }, [currentTab, handleGetCampaignByStatus]);
 
-  const filterResult = allCampaigns?.filter(
+  const filterResult = allCampaigns?.result?.filter(
     (campaign: any) =>
-      campaign?.campaignName
-        ?.toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
+      campaign?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      campaign?.campaignName
-        ?.toUpperCase()
-        .includes(searchQuery.toLowerCase()) ||
-      campaign?.brandName?.toUpperCase().includes(searchQuery.toUpperCase())
+      campaign?.clientName?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   return (
     <div className="w-full">
       <div className="bg-white w-auto rounded-[4px]">
@@ -124,7 +123,7 @@ export const CampaignsPage: React.FC = () => {
             <SearchInputField
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Search Campaign by campaign name or brand"
+              placeholder="Search by name, client, brand"
             />
           </div>
         </div>
@@ -149,7 +148,7 @@ export const CampaignsPage: React.FC = () => {
             </div>
           )}
           <div
-            className="h-[80vh] overflow-y-auto scrollbar-minimal mt-1 mr-2"
+            className="h-[77vh] overflow-y-auto scrollbar-minimal mt-1 mr-2"
             ref={targetDivRef}
           >
             {filterResult?.map((data: any, index: any) => (
