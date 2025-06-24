@@ -62,7 +62,9 @@ interface EnterCampaignBasicDetailsProps {
   purpose?: string;
 }
 
-const allIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map((value) => {
+const allIndex = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+].map((value) => {
   return {
     label: value.toString(),
     value: value,
@@ -113,12 +115,12 @@ export const EnterCampaignBasicDetails = ({
 
   const [sov, setSov] = useState<number>(1);
 
-  const [startDate, setStartDate] = useState<any>(new Date()
-    ?.toISOString()
-    ?.slice(0, 10));
-  const [endDate, setEndDate] = useState<any>(new Date()
-    ?.toISOString()
-    ?.slice(0, 10));
+  const [startDate, setStartDate] = useState<any>(
+    new Date()?.toISOString()?.slice(0, 10)
+  );
+  const [endDate, setEndDate] = useState<any>(
+    new Date()?.toISOString()?.slice(0, 10)
+  );
 
   const [duration, setDuration] = useState<any>("30");
 
@@ -152,9 +154,15 @@ export const EnterCampaignBasicDetails = ({
     data: dataAdd,
   } = clientAgencyDetailsAdd;
 
-  const getCampaignFullDetails = useSelector((state: any) => state.getCampaignFullDetails);
-  const { loading: loadingDetails, success: successDetails, error: errorDetails, data: details } = getCampaignFullDetails;
-
+  const getCampaignFullDetails = useSelector(
+    (state: any) => state.getCampaignFullDetails
+  );
+  const {
+    loading: loadingDetails,
+    success: successDetails,
+    error: errorDetails,
+    data: details,
+  } = getCampaignFullDetails;
 
   // console.log("clientAgencyNamesList : ", clientAgencyNamesList);
 
@@ -290,7 +298,7 @@ export const EnterCampaignBasicDetails = ({
     startDate,
     endDate,
     timeTriggers,
-    userInfo
+    userInfo,
   ]);
 
   useEffect(() => {
@@ -314,7 +322,8 @@ export const EnterCampaignBasicDetails = ({
         getAllCampaignsDetailsAction({
           userId: userInfo?.primaryUserId,
           status: CAMPAIGN_STATUS_ACTIVE,
-          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
+          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+          plannerId: [],
         })
       );
       setStep(2);
@@ -331,7 +340,7 @@ export const EnterCampaignBasicDetails = ({
     step,
     purpose,
     userInfo,
-    successDetails
+    successDetails,
   ]);
 
   useEffect(() => {
@@ -373,9 +382,11 @@ export const EnterCampaignBasicDetails = ({
       !allScreens &&
       !getDataFromLocalStorage(ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER)
     ) {
-      dispatch(getAllScreensForScreenOwnerCampaignCreationAction({
-        event: SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
-      }));
+      dispatch(
+        getAllScreensForScreenOwnerCampaignCreationAction({
+          event: SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS,
+        })
+      );
     }
   }, [dispatch, allScreens]);
 
@@ -518,9 +529,9 @@ export const EnterCampaignBasicDetails = ({
                 {purpose === "Edit" ? (
                   <div
                     className="flex items-center justify-start h-[48px] w-full border  px-4 focus:outline-none focus:ring-2 focus:ring-[#129BFF] hover:bg-gray-100 active:bg-blue-100 transition-colors"
-                  // onClick={() => {
-                  //   alert("You can't edit start date");
-                  // }}
+                    // onClick={() => {
+                    //   alert("You can't edit start date");
+                    // }}
                   >
                     <h1 className="text-[14px]">
                       {new Date(startDate).toLocaleDateString()}
@@ -622,7 +633,11 @@ export const EnterCampaignBasicDetails = ({
                   SOV
                 </label>
                 <DropdownInput
-                  options={selectedSovType == ORDERED_SOV ? allIndexOrderedSov : allIndex}
+                  options={
+                    selectedSovType == ORDERED_SOV
+                      ? allIndexOrderedSov
+                      : allIndex
+                  }
                   selectedOptions={sov}
                   placeHolder="Select SOV"
                   setSelectedOption={setSov}
@@ -665,7 +680,9 @@ export const EnterCampaignBasicDetails = ({
                 {getDataFromLocalStorage(
                   ALL_SCREENS_FOR_CAMPAIGN_CREATION_SCREEN_OWNER
                 )
-                  ?.screensList?.filter((s: any) => screenIds?.includes(s.value))
+                  ?.screensList?.filter((s: any) =>
+                    screenIds?.includes(s.value)
+                  )
                   ?.map((screen: any, i: any) => (
                     <div
                       key={i}

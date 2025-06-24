@@ -18,6 +18,7 @@ import {
   ContactQueries,
   DmpContactQueries,
   Landing,
+  NewDashBoard
 } from "../pages";
 
 import {
@@ -43,11 +44,11 @@ import {
   QUERIES,
   DMP_QUERIES,
   ROUTE,
+  NEW_DASHBOARD,
 } from "./routes";
 // layout
 import { AppDashBoardLayout } from "../layout/AppDashBoardLayout";
 import { PublicRoute } from "../layout/PublicRoute";
-
 import { SignIn } from "../pages/AuthPage/SignIn";
 import { SignUp } from "../pages/AuthPage/SignUp";
 import { MyUsers } from "../pages/MyUser";
@@ -99,6 +100,16 @@ const Routers: React.FC = () => {
             </PublicRoute>
           }
         />
+
+        <Route
+          path={NEW_DASHBOARD}
+          element={
+            <PublicRoute>
+              <NewDashBoard />
+            </PublicRoute>
+          }
+        />
+
         <Route
           path={USERS}
           element={

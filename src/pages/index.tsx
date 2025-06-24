@@ -28,3 +28,4 @@ export { ContactQueries } from "./ContactQueries";
 export { DmpContactQueries } from "./DmpContactQueries";
 
 export { Landing } from "./Landing";
+export { NewDashBoard } from  "./NewDashBoard"

@@ -19,7 +19,14 @@ import {
 } from "../../actions/campaignAction.js";
 import { CheckboxInput } from "../atoms/CheckboxInput";
 import { UploadCreativesTable } from "../tables/UploadCreativesTable";
-import { CAMPAIGN_CREATION_EDIT_CREATIVE_CMS, CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS, SCREEN_ADMIN, SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS, SCREEN_MANAGER, SCREEN_OWNER } from "../../constants/userConstants";
+import {
+  CAMPAIGN_CREATION_EDIT_CREATIVE_CMS,
+  CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+  SCREEN_ADMIN,
+  SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
+  SCREEN_MANAGER,
+  SCREEN_OWNER,
+} from "../../constants/userConstants";
 import { UploadCreativesFromBucketPopup } from "../popup/UploadCreativesFromBucketPopup";
 import { Loading } from "../Loading";
 // import { getCreativesMediaAction } from "../../actions/creativeAction";
@@ -121,7 +128,11 @@ export const UploadCreatives = ({
   };
 
   const handleSetOpenBucketModel = () => {
-    if (userInfo?.userRole === SCREEN_ADMIN || userInfo?.userRole === SCREEN_OWNER || userInfo?.userRole === SCREEN_MANAGER) {
+    if (
+      userInfo?.userRole === SCREEN_ADMIN ||
+      userInfo?.userRole === SCREEN_OWNER ||
+      userInfo?.userRole === SCREEN_MANAGER
+    ) {
       setIsBucketPopupOpen(true);
     } else {
       message.error("You have no access");
@@ -180,13 +191,16 @@ export const UploadCreatives = ({
       dispatch({
         type: CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
       });
-      message.success("Campaign saved successfully . It would get live in about 4-5 mins");
+      message.success(
+        "Campaign saved successfully . It would get live in about 4-5 mins"
+      );
       // navigate(`/campaigns-list`);
       dispatch(
         getAllCampaignsDetailsAction({
           userId: userInfo?.primaryUserId,
           status: CAMPAIGN_STATUS_ACTIVE,
-          event : CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS
+          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
+          plannerId: [],
         })
       );
     }
@@ -205,10 +219,23 @@ export const UploadCreatives = ({
       saveDataOnLocalStorage(FULL_CAMPAIGN_PLAN, data);
     }
     //
-  }, [dispatch, campaignId, clearCreatives, userInfo, successCampaignsCreations, successCampaignsEdit, navigate]);
+  }, [
+    dispatch,
+    campaignId,
+    clearCreatives,
+    userInfo,
+    successCampaignsCreations,
+    successCampaignsEdit,
+    navigate,
+  ]);
 
   useEffect(() => {
-    dispatch(getScreenDataUploadCreativeAction({ id: campaignId , event : SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS }));
+    dispatch(
+      getScreenDataUploadCreativeAction({
+        id: campaignId,
+        event: SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
+      })
+    );
     dispatch(getCreativesMediaAction({ userId: userInfo?._id }));
   }, [dispatch, userInfo, campaignId]);
 
@@ -281,7 +308,7 @@ export const UploadCreatives = ({
               )
               ?.flatMap((c: any) => c.standardDayTimeCreatives)}
             removeAddedCreativeFromCampaign={removeAddedCreativeFromCampaign}
-          // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
+            // media={getDataFromLocalStorage(FULL_CAMPAIGN_PLAN)?.[campaignId]?.creatives?.flatMap((c: any) => c.standardDayTimeCreatives)}
           />
         </div>
       )}

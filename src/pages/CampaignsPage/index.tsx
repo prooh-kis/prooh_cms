@@ -106,6 +106,9 @@ export const CampaignsPage: React.FC = () => {
       campaign?.clientName?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // const filteredPlanners = allCampaigns?.plannerData?.filter((planner: any) =>
+  //   planner.name.toLowerCase().includes(plannerSearch.toLowerCase())
+  // );
   return (
     <div className="w-full">
       <div className="bg-white w-auto rounded-[4px]">

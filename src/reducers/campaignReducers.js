@@ -4,6 +4,9 @@ import {
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
+  CAMPAIGN_LOGS_FAIL,
+  CAMPAIGN_LOGS_REQUEST,
+  CAMPAIGN_LOGS_SUCCESS,
   CAMPAIGN_STATUS_CHANGE_FAIL,
   CAMPAIGN_STATUS_CHANGE_REQUEST,
   CAMPAIGN_STATUS_CHANGE_RESET,
@@ -328,6 +331,28 @@ export function convertCreativesToRespectiveBitrateReducer(state = [], action) {
       };
     case CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET:
       return {};
+    default:
+      return state;
+  }
+}
+
+
+export function campaignLogsGetReducer(state = [], action) {
+  switch (action.type) {
+    case CAMPAIGN_LOGS_REQUEST:
+      return { loading: true, data: [] };
+    case CAMPAIGN_LOGS_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case CAMPAIGN_LOGS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
     default:
       return state;
   }
