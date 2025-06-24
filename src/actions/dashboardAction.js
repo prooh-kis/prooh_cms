@@ -43,7 +43,7 @@ import {
   GET_SPOT_DELIVERY_DATA_FOR_PLANNER_DASHBOARD_REQUEST,
   GET_SPOT_DELIVERY_DATA_FOR_PLANNER_DASHBOARD_SUCCESS,
 } from "../constants/dashboardConstant";
-import { dashboardURL } from "../constants/urlConstants";
+import { campaignV2, dashboardURL } from "../constants/urlConstants";
 
 export const getBasicDataForPlannerDashboard =
   (input) => async (dispatch, getState) => {

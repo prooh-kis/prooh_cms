@@ -46,7 +46,7 @@ import {
   CAMPAIGN_LOGS_FAIL,
 } from "../constants/campaignConstants";
 
-import { campaignV2, screenV2, analyticsV1 } from "../constants/urlConstants";
+import { campaignV2, screenV2, analyticsV1, analyticsURL } from "../constants/urlConstants";
 
 export const createCampaignCreationByScreenOwnerAction =
   (input) => async (dispatch, getState) => {

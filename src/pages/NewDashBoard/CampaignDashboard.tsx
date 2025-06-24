@@ -318,7 +318,7 @@ export const CampaignDashboard = ({
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 ">
+        {/* <div className="flex items-center justify-end gap-2 ">
           <div
             className="border border-gray-300 rounded-lg flex justify-center items-center h-[38px] w-[38px] cursor-pointer"
             onClick={() => navigate(`/campaignDetails/${campaignDetails?._id}`)}
@@ -334,7 +334,7 @@ export const CampaignDashboard = ({
             <i className="fi fi-rs-calculator-bill text-[14px] flex items-center justify-center text-[#129BFF]"></i>
             <p className="text-[16px] text-[#0E212E]">Invoice</p>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="absolute top-20 left-2 z-50 w-[300px]">
         {showMenu && <DashBoardMenu campaignDetails={campaignDetails} />}
