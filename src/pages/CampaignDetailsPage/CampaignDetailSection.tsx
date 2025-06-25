@@ -21,10 +21,10 @@ import {
   getCampaignEndingStatus,
 } from "../../utils/dateAndTimeUtils";
 import { useDispatch } from "react-redux";
+import { FirstCharForBrandName } from "../../components/molecules/FirstCharForBrandName";
 
 const CampaignDetailSection = ({
   campaignCreated,
-  getBgColors,
   userInfo,
   loadingStatusChange,
   handleToggleOpenAllCampaignLogsPopup,
@@ -44,19 +44,7 @@ const CampaignDetailSection = ({
             className="fi fi-sr-angle-small-left text-[#7C8E9B] flex items-center"
             onClick={() => navigate(-1)}
           ></i>
-          <div
-            className={
-              campaignCreated
-                ? `rounded  ${getBgColors(
-                    campaignCreated?.brandName?.split(" ")[0]?.split("").length
-                  )}`
-                : `rounded bg-gray-100`
-            }
-          >
-            <h1 className="text-[40px] text-white font-bold px-4">
-              {campaignCreated?.brandName.split("")[0]}
-            </h1>
-          </div>
+          <FirstCharForBrandName brandName={campaignCreated?.brandName} />
           <div className="flex flex-col gap-1">
             <Tooltip title="View Dashboard">
               <h1

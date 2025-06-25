@@ -16,9 +16,13 @@ import { Loading } from "../../components/Loading";
 import { LoopSettingPopup } from "../../components/popup/LoopSettingPopup";
 import {
   changeCampaignStatusAction,
+  convertCreativesToRespectiveBitrateForScreen,
   getScreenDataUploadCreativeAction,
 } from "../../actions/campaignAction";
-import { CAMPAIGN_STATUS_CHANGE_RESET } from "../../constants/campaignConstants";
+import {
+  CAMPAIGN_STATUS_CHANGE_RESET,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
+} from "../../constants/campaignConstants";
 import {
   EDIT_CAMPAIGN_CREATIVE_END_DATE_RESET,
   PLAY_HOLD_CAMPAIGNS_RESET,
@@ -29,7 +33,6 @@ import { getCreativesMediaAction } from "../../actions/creativeAction";
 import { saveDataOnLocalStorage } from "../../utils/localStorageUtils";
 import { UPLOAD_CREATIVE_SCREEN_DATA } from "../../constants/localStorageConstants";
 import { ScreenLogReportPopup } from "../../components/popup/ScreenLogReportPopup";
-import { CampaignMonitoring } from "../../components/index";
 import { campaignTypeTabs } from "../../constants/tabDataConstant";
 import {
   CAMPAIGN_CHANGE_DATE_AND_CREATIVE_CMS,
@@ -145,6 +148,28 @@ export const ScreenDetailsPage: React.FC = () => {
     error: errorScreenLogs,
     data: screenLogs,
   } = useSelector((state: any) => state.screenLogsGet);
+
+  const {
+    loading: loadingConvertCreativesToRespectiveBitrate,
+    error: errorConvertCreativesToRespectiveBitrate,
+    success: successConvertCreativesToRespectiveBitrate,
+  } = useSelector(
+    (state: any) => state.convertCreativesToRespectiveBitrateForCampaignV2
+  );
+
+  useEffect(() => {
+    if (errorConvertCreativesToRespectiveBitrate) {
+      message.error(errorConvertCreativesToRespectiveBitrate);
+      return;
+    }
+    if (successConvertCreativesToRespectiveBitrate) {
+      message.success("Successfully Reduce creative size and auto assigned");
+      dispatch({ type: CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET });
+    }
+  }, [
+    successConvertCreativesToRespectiveBitrate,
+    errorConvertCreativesToRespectiveBitrate,
+  ]);
 
   useEffect(() => {
     if (campaigns && campaigns?.length > 0) {
@@ -330,6 +355,13 @@ export const ScreenDetailsPage: React.FC = () => {
     }
   };
 
+  const convertCreativesToRespectiveBitrate = (campaignV2Id: string) => {
+    dispatch(
+      convertCreativesToRespectiveBitrateForScreen({ id: campaignV2Id })
+    );
+    message.info("Sending request to reduce creative size..., please wait");
+  };
+
   // console.log("screen : ", JSON.stringify(screen?.operationalDuration));
 
   return (
@@ -453,12 +485,6 @@ export const ScreenDetailsPage: React.FC = () => {
               screen={screen}
               userRole={userInfo?.userRole}
             />
-            {/* <div className="my-1">
-              <CampaignMonitoring
-                campaign={currentCampaign}
-                screenId={screenId}
-              />
-            </div> */}
           </div>
           {loadingCampaigns ? (
             <div className="col-span-4 border rounded">
@@ -477,6 +503,9 @@ export const ScreenDetailsPage: React.FC = () => {
               handleCreativeEdit={handleCreativeEdit}
               downloadedMedia={screen?.downloadedMedia}
               userRole={userInfo?.userRole}
+              convertCreativesToRespectiveBitrate={
+                convertCreativesToRespectiveBitrate
+              }
             />
           ) : null}
         </div>

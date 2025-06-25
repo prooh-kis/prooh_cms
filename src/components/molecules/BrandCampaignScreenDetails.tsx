@@ -1,5 +1,5 @@
 import { Tooltip } from "antd";
-import { generateColorFromAlphabet } from "../../utils/colorUtils";
+import { FirstCharForBrandName } from "./FirstCharForBrandName";
 
 export function BrandCampaignScreenDetails({
   showIcons,
@@ -44,29 +44,6 @@ export function BrandCampaignScreenDetails({
       </Tooltip>
     );
   };
-  const getBgColors = (index: any) => {
-    const colors = [
-      "bg-[#EF444450]",
-      "bg-[#F59E0B50]",
-      "bg-[#EAB30850]",
-      "bg-[#22C55E50]",
-      "bg-[#06B6D450]",
-      "bg-[#3B82F650]",
-      "bg-[#6366F150]",
-      "bg-[#8B5CF650]",
-      "bg-[#78DCCA50]",
-      "bg-[#FF77E950]",
-      "bg-[#3AB7BF50]",
-      "bg-[#3F3CBB50]",
-      "bg-[#22C55E50]",
-      "bg-[#06B6D450]",
-      "bg-[#3B82F650]",
-      "bg-[#6366F150]",
-      "bg-[#EF444450]",
-      "bg-[#F59E0B50]",
-    ];
-    return colors[index];
-  };
 
   return (
     <div className="group relative my-1">
@@ -79,15 +56,7 @@ export function BrandCampaignScreenDetails({
             : ""
         } flex p-2 gap-4 hover:bg-gray-100 hover:rounded`}
       >
-        <div
-          className={`rounded flex justify-center items-center w-20 ${getBgColors(
-            campaign?.brandName?.split(" ")[0]?.split("")?.length
-          )}`}
-        >
-          <h1 className="text-[32px] text-white font-black">
-            {brandName.split("")[0]}
-          </h1>
-        </div>
+        <FirstCharForBrandName brandName={brandName} size={"lg"} />
         <div className="truncate flex flex-col gap-1">
           <div className="flex items-center justify-start gap-2">
             <div className="flex items-center gap-2">

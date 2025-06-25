@@ -1,7 +1,7 @@
 import { message } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 
 import {
@@ -14,7 +14,6 @@ import {
 import { confirmData } from "../../utils/champaignStatusUtils";
 import {
   CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
-  CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
   CAMPAIGN_STATUS_CHANGE_RESET,
   EDIT_ALL_SUB_CAMPAIGNS_RESET,
 } from "../../constants/campaignConstants";
@@ -36,12 +35,9 @@ import CampaignCreatives from "./CampaignCreatives";
 import CampaignScreenList from "./CampaignScreenList";
 import { creativeTypeTab } from "../../constants/tabDataConstant";
 import CampaignDetailSection from "./CampaignDetailSection";
-import { stat } from "fs";
 
 export const CampaignDetailsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
-  const navigate = useNavigate();
-  const targetDivRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
   const [currentTab, setCurrentTab] = useState<string>(
     "standardDayTimeCreatives"
@@ -129,15 +125,15 @@ export const CampaignDetailsPage: React.FC = () => {
     success: successChange,
   } = changeCampaignCreativeEndDate;
 
-  const convertCreativesToRespectiveBitrates = useSelector(
-    (state : any) => state.convertCreativesToRespectiveBitrates
-  )
+  const convertCreativesToRespectiveBitrate = useSelector(
+    (state: any) => state.convertCreativesToRespectiveBitrate
+  );
 
   const {
     loading: loadingConvertCreativesToRespectiveBitrate,
-    error: errorConvertCreativesToRespectiveBitarate,
+    error: errorConvertCreativesToRespectiveBitrate,
     success: successConvertCreativesToRespectiveBitrate,
-  } = convertCreativesToRespectiveBitrates;
+  } = convertCreativesToRespectiveBitrate;
 
   const handleEditAllSubCampaigns = (
     campaignCreationId: string,
@@ -229,13 +225,21 @@ export const CampaignDetailsPage: React.FC = () => {
       window.location.reload();
     }
 
-    if (  successConvertCreativesToRespectiveBitrate){
-      message.success("Campaign Creatives Convertion to respective Bitrate Started . It will get reflected in 5 mins");
+    if (successConvertCreativesToRespectiveBitrate) {
+      message.success(
+        "Campaign Creatives Convertion to respective Bitrate Started . It will get reflected in 5 mins"
+      );
       dispatch({
         type: CAMPAIGN_CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
       });
     }
-  }, [dispatch, successStatusChange, errorStatusChange, successChange , successConvertCreativesToRespectiveBitrate]);
+  }, [
+    dispatch,
+    successStatusChange,
+    errorStatusChange,
+    successChange,
+    successConvertCreativesToRespectiveBitrate,
+  ]);
 
   useEffect(() => {
     // if (userInfo && !userInfo?.isMaster) {
@@ -272,12 +276,12 @@ export const CampaignDetailsPage: React.FC = () => {
     if (confirm("Are you sure you want to convert creatives?")) {
       dispatch(
         convertCreativesToRespectiveBitrate({
-          id : campaignCreated._id ,
-          event : CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS
+          id: campaignCreated._id,
+          event: CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS,
         })
       );
     }
-  }
+  };
 
   const handleChangeStatusAll = (status: string, event: string) => {
     if (confirm(confirmData[status])) {
@@ -373,30 +377,6 @@ export const CampaignDetailsPage: React.FC = () => {
     setOpenAllCampaignLogsPopup((pre: boolean) => !pre);
   }, [openAllCampaignLogsPopup]);
 
-  const getBgColors = (index: any) => {
-    const colors = [
-      "bg-[#EF444450]",
-      "bg-[#F59E0B50]",
-      "bg-[#EAB30850]",
-      "bg-[#22C55E50]",
-      "bg-[#06B6D450]",
-      "bg-[#3B82F650]",
-      "bg-[#6366F150]",
-      "bg-[#8B5CF650]",
-      "bg-[#78DCCA50]",
-      "bg-[#FF77E950]",
-      "bg-[#3AB7BF50]",
-      "bg-[#3F3CBB50]",
-      "bg-[#22C55E50]",
-      "bg-[#06B6D450]",
-      "bg-[#3B82F650]",
-      "bg-[#6366F150]",
-      "bg-[#EF444450]",
-      "bg-[#F59E0B50]",
-    ];
-    return colors[index];
-  };
-
   const getAllCreatives = (campaigns: any) => {
     return {
       standardDayTimeCreatives: campaigns?.flatMap(
@@ -458,7 +438,6 @@ export const CampaignDetailsPage: React.FC = () => {
       ) : (
         <div className="col-span-8">
           <CampaignDetailSection
-            getBgColors={getBgColors}
             userInfo={userInfo}
             loadingStatusChange={loadingStatusChange}
             handleToggleOpenAllCampaignLogsPopup={

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generateColorFromAlphabet } from "../../utils/colorUtils";
+import { FirstCharForBrandName } from "./FirstCharForBrandName";
 
 export function CampaignListMonitoringView({ campaign, noImages }: any) {
   const [dropdownVisible, setDropdownVisible] = useState<any>({});
@@ -15,16 +15,7 @@ export function CampaignListMonitoringView({ campaign, noImages }: any) {
     <div className="p-1" key={campaign._id}>
       <div className="flex gap-1 p-2 hover:bg-gray-100 hover:rounded">
         {!noImages && (
-          <div
-            className={`rounded px-6 bg-[${generateColorFromAlphabet(
-              campaign.brandName.split("")[0],
-              0
-            )}]`}
-          >
-            <h1 className="text-[40px] text-gray-400 font-black">
-              {campaign.brandName.split("")[0]}
-            </h1>
-          </div>
+          <FirstCharForBrandName brandName={campaign.brandName} size={"lg"} />
         )}
         <div className="truncate">
           <h1 className="text-[16px] font-semibold truncate">

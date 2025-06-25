@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   approveDataHeroAccount,
-  changeContactQueryStatus,
-  getAllContactQueries,
   getAllDmpContactQueries,
 } from "../../actions/queriesAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
@@ -15,6 +13,7 @@ import {
 } from "../../constants/queriesContants";
 import { message } from "antd";
 import { SearchInputField } from "../../components/index";
+import { FirstCharForBrandName } from "../../components/molecules/FirstCharForBrandName";
 
 const DmpContactQueries = () => {
   const dispatch = useDispatch<any>();
@@ -26,22 +25,6 @@ const DmpContactQueries = () => {
   const [upicopied, setUpiCopied] = useState(false);
   const [emailcopied, setEmailCopied] = useState(false);
   const [phonecopied, setPhoneCopied] = useState(false);
-
-  const getBgColors = (index: any) => {
-    const colors = [
-      "bg-[#EF444450]",
-      "bg-[#F59E0B50]",
-      "bg-[#22C55E50]",
-      "bg-[#06B6D450]",
-      "bg-[#3B82F650]",
-      "bg-[#8B5CF650]",
-      "bg-[#78DCCA50]",
-      "bg-[#FF77E950]",
-      "bg-[#3F3CBB50]",
-      "bg-[#06B6D450]",
-    ];
-    return colors[index];
-  };
 
   const getAllDmpContactQueriesData = useSelector(
     (state: any) => state.getAllDmpContactQueries
@@ -172,13 +155,7 @@ const DmpContactQueries = () => {
               onClick={() => toggleExpand(index)}
             >
               <div className="flex items-center">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold mr-3 ${getBgColors(
-                    index % 10
-                  )}`}
-                >
-                  {ticket.name[0]}
-                </div>
+                <FirstCharForBrandName brandName={ticket.name} />
                 <div>
                   <div className="font-semibold">{ticket.name}</div>
                   <div className="flex flex-row justify-center items-center gap-4">

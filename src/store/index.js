@@ -23,6 +23,7 @@ import {
   campaignLogsGetReducer,
   campaignStatusChangeAfterVendorApprovalReducer,
   campaignStatusChangeReducer,
+  convertCreativesToRespectiveBitrateForScreenReducer,
   convertCreativesToRespectiveBitrateReducer,
   createCampaignCreationByScreenOwnerReducer,
   editAllSubCampaignsReducer,
@@ -121,10 +122,12 @@ const store = configureStore({
     campaignStatusChangeAfterVendorApproval:
       campaignStatusChangeAfterVendorApprovalReducer,
     campaignLogsGet: campaignLogsGetReducer,
+    convertCreativesToRespectiveBitrateForCampaignV2:
+      convertCreativesToRespectiveBitrateForScreenReducer,
 
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
-    convertCreativesToRespectiveBitrates:
+    convertCreativesToRespectiveBitrate:
       convertCreativesToRespectiveBitrateReducer,
 
     // creative

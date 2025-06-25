@@ -15,6 +15,10 @@ import {
   CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_REQUEST,
   CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_RESET,
   CHANGE_CAMPAIGN_STATUS_AFTER_VENDOR_APPROVAL_SUCCESS,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_ERROR,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_FAIL,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_REQUEST,
   CREATE_CAMPAIGN_FOR_SCREEN_OWNER_RESET,
@@ -336,7 +340,6 @@ export function convertCreativesToRespectiveBitrateReducer(state = [], action) {
   }
 }
 
-
 export function campaignLogsGetReducer(state = [], action) {
   switch (action.type) {
     case CAMPAIGN_LOGS_REQUEST:
@@ -353,6 +356,32 @@ export function campaignLogsGetReducer(state = [], action) {
         error: action.payload,
         success: false,
       };
+    default:
+      return state;
+  }
+}
+
+export function convertCreativesToRespectiveBitrateForScreenReducer(
+  state = [],
+  action
+) {
+  switch (action.type) {
+    case CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST:
+      return { loading: true, data: [] };
+    case CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_ERROR:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    case CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET:
+      return state;
     default:
       return state;
   }

@@ -44,9 +44,17 @@ import {
   CAMPAIGN_LOGS_REQUEST,
   CAMPAIGN_LOGS_SUCCESS,
   CAMPAIGN_LOGS_FAIL,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
+  CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_ERROR,
 } from "../constants/campaignConstants";
 
-import { campaignV2, screenV2, analyticsV1, analyticsURL } from "../constants/urlConstants";
+import {
+  campaignV2,
+  screenV2,
+  analyticsV1,
+  analyticsURL,
+} from "../constants/urlConstants";
 
 export const createCampaignCreationByScreenOwnerAction =
   (input) => async (dispatch, getState) => {
@@ -468,8 +476,6 @@ export const convertCreativesToRespectiveBitrate =
     }
   };
 
-
-
 export const GetCampaignLogsAction =
   ({ campaignId, date }) =>
   async (dispatch, getState) => {
@@ -488,6 +494,34 @@ export const GetCampaignLogsAction =
     } catch (error) {
       dispatch({
         type: CAMPAIGN_LOGS_FAIL,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
+
+export const convertCreativesToRespectiveBitrateForScreen =
+  ({ id }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
+      payload: { id },
+    });
+    try {
+      const { data } = await axios.post(
+        `${analyticsURL}/convertCreativesToRespectiveBitrateForScreen`,
+        { id }
+      );
+      dispatch({
+        type: CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_ERROR,
         payload: {
           message: error.message,
           status: error.response?.status,

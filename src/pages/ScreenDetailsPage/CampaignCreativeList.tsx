@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { CreativeSection } from "./HelperComponents";
 import { getCampaignEndingStatus } from "../../utils/dateAndTimeUtils";
 import moment from "moment";
+import { Tooltip } from "antd";
 
 const CampaignCreativeList = ({
   currentCampaign,
@@ -23,6 +24,7 @@ const CampaignCreativeList = ({
   handleCreativeEdit,
   downloadedMedia,
   userRole,
+  convertCreativesToRespectiveBitrate,
 }: any) => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
@@ -36,7 +38,24 @@ const CampaignCreativeList = ({
             {currentCampaign?.name}
           </h1>
           {userRole !== SCREEN_MONITORING_USER && (
-            <div className="flex gap-1">
+            <div className="flex gap-2">
+              <Tooltip title="reduce creative size">
+                <div
+                  className="text-gray-500 hover:text-[#348730]"
+                  onClick={() => {
+                    if (
+                      confirm(
+                        `Are you sure you want to reduce creatives size???`
+                      )
+                    ) {
+                      convertCreativesToRespectiveBitrate(currentCampaign?._id);
+                    }
+                  }}
+                >
+                  <i className="fi fi-ss-lightbulb-on"></i>
+                </div>
+              </Tooltip>
+
               <div
                 className="text-gray-500 hover:text-[#348730]"
                 onClick={() => {
