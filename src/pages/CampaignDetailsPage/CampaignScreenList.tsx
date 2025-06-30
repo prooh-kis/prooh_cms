@@ -22,8 +22,7 @@ const CampaignScreenList = ({
   return (
     <div className="col-span-4 border rounded bg-white p-4">
       <h1 className="text-[16px] font-semibold p-1 py-2">
-        Screens Play{" "}
-        <span className="text-[14px]">({filterScreenList?.length || 0})</span>
+        Screens <span className="text-[14px]">({campaigns?.length || 0})</span>
       </h1>
 
       <div className="my-2 ">
@@ -38,7 +37,7 @@ const CampaignScreenList = ({
         <Loading />
       ) : (
         <div className="h-[70vh] overflow-y-auto no-scrollbar py-2  flex flex-col gap-4">
-          {campaigns?.length === 0 && <NoDataView />}
+          {filterScreenList?.length === 0 && <NoDataView />}
           {filterScreenList?.map((camp: any, k: any) => (
             <div
               key={k}
