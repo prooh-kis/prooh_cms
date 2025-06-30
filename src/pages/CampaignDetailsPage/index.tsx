@@ -463,12 +463,12 @@ export const CampaignDetailsPage: React.FC = () => {
             getAllCreatives={getAllCreatives}
             campaignCreated={campaignCreated}
           />
-          <div className="border rounded my-1">
+          {/* <div className="border rounded my-1">
             <CampaignMonitoring
               campaign={campaign}
               screenId={campaign?.screenId}
             />
-          </div>
+          </div> */}
         </div>
       )}
       {loading ? (

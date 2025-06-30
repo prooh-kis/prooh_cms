@@ -36,7 +36,7 @@ const CampaignScreenList = ({
       {loadingScreens ? (
         <Loading />
       ) : (
-        <div className="h-[79vh] overflow-y-auto no-scrollbar py-2  flex flex-col gap-4">
+        <div className="h-[70vh] overflow-y-auto no-scrollbar py-2  flex flex-col gap-4">
           {campaigns?.length === 0 && <NoDataView />}
           {campaigns
             ?.filter((camp: any) =>

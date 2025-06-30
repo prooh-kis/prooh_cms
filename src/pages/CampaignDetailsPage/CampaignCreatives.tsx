@@ -40,7 +40,7 @@ const CampaignCreatives = ({
           tabData={creativeTypeTab}
         />
       </div>
-      <div className="h-[40vh] w-full overflow-y-auto no-scrollbar pr-2">
+      <div className="h-[50vh] w-full overflow-y-auto no-scrollbar pr-2">
         {Object.entries(
           getAllCreatives(
             campaignCreated?.campaigns?.map((c: any) => c.creatives)

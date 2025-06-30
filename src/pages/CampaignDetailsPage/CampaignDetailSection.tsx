@@ -59,87 +59,6 @@ const CampaignDetailSection = ({
             <h1 className="text-[12px]">
               {campaignCreated?.brandName}, {campaignCreated?.duration} days
             </h1>
-          </div>
-        </div>
-        {(userInfo?.userRole === SCREEN_ADMIN ||
-          userInfo?.userRole === SCREEN_OWNER ||
-          userInfo?.userRole === SCREEN_MANAGER) && (
-          <div className="flex flex-col px-4 justify-center">
-            {loadingStatusChange ? (
-              <Skeleton active paragraph={{ rows: 1 }} />
-            ) : (
-              <div className=" flex h-auto gap-4">
-                <Tooltip title="Change Creatives According To Bitrate">
-                  <i
-                    className="fi fi-rr-replace text-gray-500"
-                    onClick={() => handleConvertCreativeToRespectiveBitrate()}
-                  ></i>
-                </Tooltip>
-                <Tooltip title="Get all campaigns logs">
-                  <i
-                    className="fi fi-rr-document text-gray-500"
-                    onClick={handleToggleOpenAllCampaignLogsPopup}
-                  ></i>
-                </Tooltip>
-                <Tooltip title="Edit creatives for all screens">
-                  <i
-                    className="fi fi-ss-pen-circle text-gray-500"
-                    title="Edit Creatives"
-                    onClick={() => {
-                      saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS, "edit");
-                      navigate(`/edit-campaign/${campaignId}`);
-                    }}
-                  ></i>
-                </Tooltip>
-                <Tooltip title="Edit end date for all screens">
-                  <i
-                    className="fi fi-sr-file-edit text-gray-500"
-                    title="Edit End Date"
-                    onClick={() =>
-                      setOpenCreateCampaignEndDateChangePopup(
-                        !openCreateCampaignEndDateChangePopup
-                      )
-                    }
-                  ></i>
-                </Tooltip>
-                <Tooltip title="Pause for all screens">
-                  <i
-                    className="fi fi-ss-pause-circle text-gray-500"
-                    title="Pause All"
-                    onClick={() =>
-                      handleChangeStatusAll(
-                        CAMPAIGN_STATUS_PAUSE,
-                        CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
-                      )
-                    }
-                  ></i>
-                </Tooltip>
-                <Tooltip title="Activate for all screens">
-                  <i
-                    className="fi fi-sr-play-circle text-gray-500"
-                    title="Active All"
-                    onClick={() =>
-                      handleChangeStatusAll(
-                        CAMPAIGN_STATUS_ACTIVE,
-                        CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
-                      )
-                    }
-                  ></i>
-                </Tooltip>
-                <Tooltip title="Delete for all screens">
-                  <i
-                    className="fi fi-sr-trash text-gray-500"
-                    title="Delete All"
-                    onClick={() =>
-                      handleChangeStatusAll(
-                        CAMPAIGN_STATUS_DELETED,
-                        CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
-                      )
-                    }
-                  ></i>
-                </Tooltip>
-              </div>
-            )}
             <h1
               className={`text-[12px] ${
                 getCampaignEndingStatus(campaignCreated?.endDate).includes(
@@ -151,6 +70,95 @@ const CampaignDetailSection = ({
             >
               {getCampaignEndingStatus(campaignCreated?.endDate)}
             </h1>
+          </div>
+        </div>
+        {(userInfo?.userRole === SCREEN_ADMIN ||
+          userInfo?.userRole === SCREEN_OWNER ||
+          userInfo?.userRole === SCREEN_MANAGER) && (
+          <div className="flex flex-col px-4 justify-start mt-2">
+            {loadingStatusChange ? (
+              <Skeleton active paragraph={{ rows: 1 }} />
+            ) : (
+              <div className="flex h-auto gap-4">
+                <Tooltip title="View Campaign Dashboard">
+                  <i
+                    className="fi fi-rr-dashboard-monitor text-gray-500 flex items-center"
+                    onClick={() =>
+                      navigate(`/campaignDashboard/${campaignCreated?._id}`)
+                    }
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Change Creatives According To Bitrate">
+                  <i
+                    className="fi fi-rr-replace text-gray-500 flex items-center"
+                    onClick={() => handleConvertCreativeToRespectiveBitrate()}
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Get all campaigns logs">
+                  <i
+                    className="fi fi-rr-document text-gray-500 flex items-center"
+                    onClick={handleToggleOpenAllCampaignLogsPopup}
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Edit creatives for all screens">
+                  <i
+                    className="fi fi-ss-pen-circle text-gray-500 flex items-center"
+                    title="Edit Creatives"
+                    onClick={() => {
+                      saveDataOnLocalStorage(CAMPAIGN_CREATION_STATUS, "edit");
+                      navigate(`/edit-campaign/${campaignId}`);
+                    }}
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Edit end date for all screens">
+                  <i
+                    className="fi fi-sr-file-edit text-gray-500 flex items-center"
+                    title="Edit End Date"
+                    onClick={() =>
+                      setOpenCreateCampaignEndDateChangePopup(
+                        !openCreateCampaignEndDateChangePopup
+                      )
+                    }
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Pause for all screens">
+                  <i
+                    className="fi fi-ss-pause-circle text-gray-500 flex items-center"
+                    title="Pause All"
+                    onClick={() =>
+                      handleChangeStatusAll(
+                        CAMPAIGN_STATUS_PAUSE,
+                        CAMPAIGN_STATUS_CHANGED_TO_PAUSED_CMS
+                      )
+                    }
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Activate for all screens">
+                  <i
+                    className="fi fi-sr-play-circle text-gray-500 flex items-center"
+                    title="Active All"
+                    onClick={() =>
+                      handleChangeStatusAll(
+                        CAMPAIGN_STATUS_ACTIVE,
+                        CAMPAIGN_STATUS_CHANGED_TO_ACTIVE_CMS
+                      )
+                    }
+                  ></i>
+                </Tooltip>
+                <Tooltip title="Delete for all screens">
+                  <i
+                    className="fi fi-sr-trash text-gray-500 flex items-center"
+                    title="Delete All"
+                    onClick={() =>
+                      handleChangeStatusAll(
+                        CAMPAIGN_STATUS_DELETED,
+                        CAMPAIGN_STATUS_CHANGED_TO_DELETED_CMS
+                      )
+                    }
+                  ></i>
+                </Tooltip>
+              </div>
+            )}
           </div>
         )}
       </div>
