@@ -49,7 +49,7 @@ export const CampaignDashboard = () => {
       <iframe
         ref={iframeRef}
         className="w-full h-[100vh] border"
-        src={`https://plan.prooh.ai/campaignDetails/${campaignId}?embed=true`}
+        src={`https://plan.prooh.ai/campaignDashboard/${campaignId}?embed=true`}
         title="Campaign Dashboard"
       />
     </div>
