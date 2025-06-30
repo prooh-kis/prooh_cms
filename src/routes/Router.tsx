@@ -18,7 +18,8 @@ import {
   ContactQueries,
   DmpContactQueries,
   Landing,
-  NewDashBoard
+  NewDashBoard,
+  CampaignDashboard
 } from "../pages";
 
 import {
@@ -105,7 +106,7 @@ const Routers: React.FC = () => {
           path={NEW_DASHBOARD}
           element={
             <PublicRoute>
-              <NewDashBoard />
+              <CampaignDashboard />
             </PublicRoute>
           }
         />
