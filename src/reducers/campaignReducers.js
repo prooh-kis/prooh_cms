@@ -34,6 +34,10 @@ import {
   GET_ALL_CAMPAIGNS_DATA_FAIL,
   GET_ALL_CAMPAIGNS_DATA_REQUEST,
   GET_ALL_CAMPAIGNS_DATA_SUCCESS,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_ERROR,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_REQUEST,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_RESET,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
   GET_CAMPAIGN_DATA_FAIL,
   GET_CAMPAIGN_DATA_REQUEST,
   GET_CAMPAIGN_DATA_SUCCESS,
@@ -57,6 +61,18 @@ import {
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_FAIL,
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_REQUEST,
   GET_SCREENS_CAMPAIGN_CREATIONS_FOR_SCREEN_OWNER_SUCCESS,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_REQUEST,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_SUCCESS,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_FAIL,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_RESET,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_REQUEST,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_SUCCESS,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_FAIL,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_RESET,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_REQUEST,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_ERROR,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_RESET,
 } from "../constants/campaignConstants";
 import {
   ALL_CAMPAIGNS_LIST,
@@ -381,6 +397,103 @@ export function convertCreativesToRespectiveBitrateForScreenReducer(
         success: false,
       };
     case CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_RESET:
+      return state;
+    default:
+      return state;
+  }
+}
+
+export function getCampaignCreationDetailsForScreenVendorReducer(
+  state = [],
+  action
+) {
+  switch (action.type) {
+    case GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_REQUEST:
+      return { loading: true, data: [] };
+    case GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_ERROR:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    case GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_RESET:
+      return state;
+    default:
+      return state;
+  }
+}
+
+export function approveCampaignBudgetScreenVendorReducer(state = [], action) {
+  switch (action.type) {
+    case APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_REQUEST:
+      return { loading: true, data: [] };
+    case APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    case APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_RESET:
+      return state;
+    default:
+      return state;
+  }
+}
+
+export function approveCampaignCreativeScreenVendorReducer(state = [], action) {
+  switch (action.type) {
+    case APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_REQUEST:
+      return { loading: true, data: [] };
+    case APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    case APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_RESET:
+      return state;
+    default:
+      return state;
+  }
+}
+export function getCampaignRequestCreativeDetailsForScreenVendorReducer(
+  state = [],
+  action
+) {
+  switch (action.type) {
+    case GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_REQUEST:
+      return { loading: true, data: [] };
+    case GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        success: true,
+      };
+    case GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_ERROR:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    case GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_RESET:
       return state;
     default:
       return state;

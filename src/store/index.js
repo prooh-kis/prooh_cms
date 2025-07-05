@@ -16,6 +16,8 @@ import {
 } from "../reducers/userReducers";
 import {
   allCampaignsDataGetReducer,
+  approveCampaignBudgetScreenVendorReducer,
+  approveCampaignCreativeScreenVendorReducer,
   campaignCreatedScreensDetailsGetReducer,
   campaignDetailsGetReducer,
   campaignFullDetailsGetReducer,
@@ -29,6 +31,8 @@ import {
   editAllSubCampaignsReducer,
   editCampaignCreationByScreenOwnerReducer,
   getAllScreensForScreenOwnerCampaignCreationReducer,
+  getCampaignCreationDetailsForScreenVendorReducer,
+  getCampaignRequestCreativeDetailsForScreenVendorReducer,
   myCreateCampaignsVendorRequestsListGetReducer,
   screenDataUploadCreativeGetReducer,
 } from "../reducers/campaignReducers";
@@ -124,7 +128,13 @@ const store = configureStore({
     campaignLogsGet: campaignLogsGetReducer,
     convertCreativesToRespectiveBitrateForCampaignV2:
       convertCreativesToRespectiveBitrateForScreenReducer,
-
+    campaignCreationDetailsForScreenVendor:
+      getCampaignCreationDetailsForScreenVendorReducer,
+    approveCampaignBudgetScreenWise: approveCampaignBudgetScreenVendorReducer,
+    approveCampaignCreativeScreenWise:
+      approveCampaignCreativeScreenVendorReducer,
+    campaignRequestCreativeDetailsForScreenVendor:
+      getCampaignRequestCreativeDetailsForScreenVendorReducer,
     //Log
     campaignLogsByCampaignId: campaignLogsByCampaignIdReducer,
     convertCreativesToRespectiveBitrate:

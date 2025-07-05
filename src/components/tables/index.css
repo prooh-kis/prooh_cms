@@ -1,0 +1,19 @@
+/* For CHECKED (Rejected) state - Red */
+.reject-radio-checked .ant-radio-checked .ant-radio-inner {
+    border-color: #ef4444 !important;
+}
+
+.reject-radio-checked .ant-radio-checked .ant-radio-inner::after {
+    background-color: #ef4444 !important;
+    /* Inner dot color */
+}
+
+/* For UNCHECKED state - Default gray */
+.reject-radio-unchecked .ant-radio-inner {
+    border-color: #d9d9d9 !important;
+}
+
+/* Hover state - Keep red when checked */
+.reject-radio-checked .ant-radio-wrapper:hover .ant-radio-inner,
+.reject-radio-checked .ant-radio:hover .ant-radio-inner {
+    border-color: #ef4444 !important; }

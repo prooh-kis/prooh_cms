@@ -47,6 +47,18 @@ import {
   CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_REQUEST,
   CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_SUCCESS,
   CONVERT_CREATIVES_TO_RESPECTIVE_BITRATE_ERROR,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_REQUEST,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
+  GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_ERROR,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_REQUEST,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_SUCCESS,
+  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_FAIL,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_REQUEST,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_SUCCESS,
+  APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_FAIL,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_REQUEST,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
+  GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_ERROR,
 } from "../constants/campaignConstants";
 
 import {
@@ -393,7 +405,7 @@ export const getMyCreateCampaignsVendorRequestsList =
         auth: { userInfo },
       } = getState();
       const { data } = await axios.post(
-        `${campaignV2}/campaignCreationsScreenVendor`,
+        `${campaignV2}/getCampaignRequestListForScreenVendor`,
         input,
         { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
@@ -404,6 +416,127 @@ export const getMyCreateCampaignsVendorRequestsList =
     } catch (error) {
       dispatch({
         type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_ERROR,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
+
+export const getCampaignCreationDetailsForScreenVendor =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const { data } = await axios.post(
+        `${campaignV2}/getCampaignRequestBudgetDetailsForScreenVendor`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({
+        type: GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_ERROR,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
+export const getCampaignRequestCreativeDetailsForScreenVendor =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const { data } = await axios.post(
+        `${campaignV2}/getCampaignRequestCreativeDetailsForScreenVendor`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({
+        type: GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_ERROR,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
+export const approveCampaignBudgetScreenVendor =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const { data } = await axios.post(
+        `${campaignV2}/approveCampaignBudgetScreenVendor`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({
+        type: APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_FAIL,
+        payload: {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        },
+      });
+    }
+  };
+export const approveCampaignCreativeScreenVendor =
+  (input) => async (dispatch, getState) => {
+    dispatch({
+      type: APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_REQUEST,
+      payload: input,
+    });
+    try {
+      const {
+        auth: { userInfo },
+      } = getState();
+      const { data } = await axios.post(
+        `${campaignV2}/approveCampaignCreativeScreenVendor`,
+        input,
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({
+        type: APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_FAIL,
         payload: {
           message: error.message,
           status: error.response?.status,

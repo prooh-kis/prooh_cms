@@ -1,78 +1,91 @@
-import React, { useState } from "react";
+import { Tooltip } from "antd";
+import React from "react";
+
 interface TabInterface {
-  params: any;
+  params?: [number, number]; // Tuple for selected and unselected counts
   label: string;
-  id: string;
+  id: string | number;
 }
 
 interface Props {
   tabData: TabInterface[];
-  currentTab: string;
-  setCurrentTab: any;
+  currentTab: string | number;
+  setCurrentTab: (id: string | number) => void; // Update this line
+  textSize?: string;
 }
 
-export function TabWithoutIcon({ tabData, currentTab, setCurrentTab }: any) {
+export const TabWithoutIcon: React.FC<any> = ({
+  tabData,
+  currentTab,
+  setCurrentTab,
+  textSize = "text-[16px]",
+}) => {
+  const getTabClassName = (tabId: string | number) =>
+    `py-2 pr-2 flex gap-4 items-center ${textSize} font-inter ${
+      currentTab === tabId
+        ? "border-b-2 border-primaryButton"
+        : "border-b-2 border-transparent hover:border-gray-200"
+    }`;
+
+  const getLabelClassName = (tabId: string | number) =>
+    `pr-2 truncate ${
+      currentTab === tabId
+        ? "text-primaryButton font-semibold"
+        : "text-gray-500 hover:text-gray-700"
+    }`;
+
+  const getParamClassName = (tabId: string | number, isSelected: boolean) =>
+    `text-[12px] ${
+      currentTab === tabId
+        ? isSelected
+          ? "text-[#358E0B]"
+          : "text-[#FF0808]"
+        : "text-gray-500"
+    }`;
+
   return (
-    <div className="flex items-center gap-2 overflow-y-auto no-scrollbar">
-      {tabData?.map((tab: TabInterface, index: any) => (
+    <div className="inline-flex items-center gap-8 cursor-pointer border-b-2 border-gray-100 w-full overflow-x-auto">
+      {tabData?.map((tab: TabInterface) => (
         <div
-          key={index}
-          onClick={() => {
-            setCurrentTab(tab.id);
-          }}
-          className={
-            currentTab === tab.id
-              ? "px-1 flex gap-4 items-center text-[16px] text-semibold border-b-2 border-[#129BFF] py-2 truncate cursor-pointer"
-              : "px-1 flex gap-1 items-center text-[14px] py-1 px-2 truncate cursor-pointer"
-          }
+          key={tab.id}
+          onClick={() => setCurrentTab(tab.id)}
+          className={`${getTabClassName(tab.id)}`}
         >
-          <h1
-            className={
-              currentTab === tab.id
-                ? "text-[#129BFF] truncate"
-                : "text-gray-500 truncate"
-            }
-          >
-            {tab.label}
-          </h1>
+          <h1 className={`${getLabelClassName(tab.id)}`}>{tab.label}</h1>
+
           {tab.params && (
-            <div className="flex gap-1 items-center">
-              <div className="flex gap-1 items-center">
-                <p
-                  className={
-                    currentTab === tab.id
-                      ? "text-[#348730] text-[12px]"
-                      : "text-gray-500 text-[12px]"
-                  }
-                >
-                  {tab.params[0]}
-                </p>
-                <i
-                  className={`fi fi-br-check flex items-center ${
-                    currentTab === tab.id ? "text-[#348730]" : "text-gray-500"
-                  } text-[12px]`}
-                ></i>
-              </div>
-              <div className="flex gap-1 items-center">
-                <p
-                  className={
-                    currentTab === tab.id
-                      ? "text-red-500 text-[12px]"
-                      : "text-gray-500 text-[12px]"
-                  }
-                >
-                  {tab.params[1]}
-                </p>
-                <i
-                  className={`fi fi-br-cross flex items-center ${
-                    currentTab === tab.id ? "text-red-500" : "text-gray-500"
-                  } text-[10px]`}
-                ></i>
-              </div>
+            <div className="flex gap-2 items-center">
+              <Tooltip title="Selected Screens">
+                <div className="flex gap-1 items-center">
+                  <p className={getParamClassName(tab.id, true)}>
+                    {tab.params[0]}
+                  </p>
+                  <i
+                    className={`fi fi-br-check ${getParamClassName(
+                      tab.id,
+                      true
+                    )}`}
+                  />
+                </div>
+              </Tooltip>
+
+              <Tooltip title="Unselected Screens">
+                <div className="flex gap-1 items-center">
+                  <p className={getParamClassName(tab.id, false)}>
+                    {tab.params[1]}
+                  </p>
+                  <i
+                    className={`fi fi-br-cross ${getParamClassName(
+                      tab.id,
+                      false
+                    )} text-[10px]`}
+                  />
+                </div>
+              </Tooltip>
             </div>
           )}
         </div>
       ))}
     </div>
   );
-}
+};

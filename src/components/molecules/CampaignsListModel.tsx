@@ -2,7 +2,7 @@ import {
   convertDataTimeToLocale,
   getCampaignEndingStatus,
 } from "../../utils/dateAndTimeUtils";
-import { formatNumber } from "../../utils/formatValue";
+import { formattedINR } from "../../utils/formatValue";
 import { FirstCharForBrandName } from "./FirstCharForBrandName";
 
 export const CampaignsListModel = ({ data, index }: any) => {
@@ -30,9 +30,8 @@ export const CampaignsListModel = ({ data, index }: any) => {
             </div>
           </div>
           <h1 className="text-[14px] text-[#276F41] font-semibold">
-            &#8377;
-            {/* {data?.totalCampaignBudget?.toFixed(0)} */}
-            {formatNumber(
+            {formattedINR(data?.totalCampaignBudget?.toFixed(0))}
+            {/* {formatNumber(
               Number(
                 data.screenWiseSlotDetails
                   ?.map((d: any) => {
@@ -40,10 +39,10 @@ export const CampaignsListModel = ({ data, index }: any) => {
                   })
                   ?.reduce((acc: any, val: any) => acc + val, 0)
               ).toFixed(0)
-            )}
+            )} */}
           </h1>
           <h1 className="text-[12px] text-[#276F41] font-semibold">
-            On {data?.screenWiseSlotDetails?.length} Screens
+            On {data?.screenIds?.length} Screens
           </h1>
 
           {/* <div className="flex items-center mt-1">

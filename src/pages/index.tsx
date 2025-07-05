@@ -31,3 +31,4 @@ export { Landing } from "./Landing";
 export { NewDashBoard } from "./NewDashBoard";
 
 export { CampaignDashboard } from "./CampaignDashboard";
+export { CampaignRequestDetailsPage } from "./CampaignRequestDetailsPage";

@@ -1,57 +1,73 @@
-import {
-  convertDateIntoDateMonthYear,
-} from "../../utils/dateAndTimeUtils";
-import { formatNumber } from "../../utils/formatValue";
+import { convertDateIntoDateMonthYear } from "../../utils/dateAndTimeUtils";
 
 export const VendorConfirmationBasicTable = ({
   vendorConfirmationData,
 }: any) => {
   return (
-    <div className="w-full py-1 px-2">
-      <div className="grid grid-cols-2 gap-4">
+    <div className="flex flex-col justify-between rounded p-4 mb-1 w-full bg-white">
+      <h1 className="text-[14px] font-semibold text-[#0E212E] leading-[100%] pb-4">
+        Campaign details
+      </h1>
+      <div className="grid grid-cols-3 gap-4 text-[12px]">
         <div className="col-span-1">
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Campaign Name</h1>
+              <h1 className="">Brand Name</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">{vendorConfirmationData?.name}</h1>
+              <h1 className="">{vendorConfirmationData?.brandName}</h1>
             </div>
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Total Cost</h1>
+              <h1 className="">Start Date</h1>
             </div>
-            <div className="border py-1 px-4">
-              <h1 className="text-[14px]">
-                &#8377;
-                {
-                  formatNumber(Number(vendorConfirmationData.screenWiseSlotDetails?.map((d: any) => {
-                    return d.pricePerSlot * d.slotsPerDay * vendorConfirmationData?.duration
-                  })?.reduce((acc: any, val: any) => acc + val, 0)).toFixed(0))
-                }
-                {/* {formatNumber(
-                  Number(vendorConfirmationData?.totalCampaignBudget)
-                )} */}
+            <div className="border py-1 px-4 truncate">
+              <h1 className="">
+                {convertDateIntoDateMonthYear(
+                  vendorConfirmationData?.startDate
+                )}
               </h1>
             </div>
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Campaign Type</h1>
+              <h1 className="">End Date</h1>
             </div>
-            <div className="border py-1 px-4">
-              <h1 className="text-[14px]">
-                {vendorConfirmationData?.campaignType?.replace(/([A-Z])/g, ' $1').trim()}
+            <div className="border py-1 px-4 truncate">
+              <h1 className="">
+                {convertDateIntoDateMonthYear(vendorConfirmationData?.endDate)}
               </h1>
             </div>
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Trigger</h1>
+              <h1 className="">Duration</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">
+              <h1 className="">{vendorConfirmationData?.duration} Days</h1>
+            </div>
+          </div>
+        </div>
+        <div className="col-span-1">
+          <div className="grid grid-cols-2">
+            <div className="border py-1 px-4 bg-[#F7F7F7]">
+              <h1 className="">Campaign Type</h1>
+            </div>
+            <div className="border py-1 px-4">
+              <h1 className="">
+                {vendorConfirmationData?.campaignType
+                  ?.replace(/([A-Z])/g, " $1")
+                  .trim()}
+              </h1>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="border py-1 px-4 bg-[#F7F7F7]">
+              <h1 className="">Trigger</h1>
+            </div>
+            <div className="border py-1 px-4">
+              <h1 className="">
                 {vendorConfirmationData?.trigger === "weatherTriggers"
                   ? "Weather Trigger"
                   : vendorConfirmationData?.trigger === "sportsTriggers"
@@ -64,63 +80,63 @@ export const VendorConfirmationBasicTable = ({
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Planner Name</h1>
+              <h1 className="">SOV</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">{vendorConfirmationData?.campaignPlannerName == "vinciis" ? "test user" : vendorConfirmationData?.campaignPlannerName?.toUpperCase()}</h1>
+              <h1 className="">{vendorConfirmationData?.sov}</h1>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="border py-1 px-4 bg-[#F7F7F7]">
+              <h1 className="">SOV Type</h1>
+            </div>
+            <div className="border py-1 px-4">
+              <h1 className="">{vendorConfirmationData?.sovType}</h1>
             </div>
           </div>
         </div>
         <div className="col-span-1">
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Start Date</h1>
-            </div>
-            <div className="border py-1 px-4 truncate">
-              <h1 className="text-[14px]">
-                {convertDateIntoDateMonthYear(
-                  vendorConfirmationData?.startDate
-                )}
-              </h1>
-            </div>
-          </div>
-          <div className="grid grid-cols-2">
-            <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">End Date</h1>
-            </div>
-            <div className="border py-1 px-4 truncate">
-              <h1 className="text-[14px]">
-                {convertDateIntoDateMonthYear(vendorConfirmationData?.endDate)}
-              </h1>
-            </div>
-          </div>
-          <div className="grid grid-cols-2">
-            <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Duration</h1>
+              <h1 className="">Total screen selected</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">
-                {vendorConfirmationData?.duration}
+              <h1 className="">{vendorConfirmationData?.screenIds?.length}</h1>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="border py-1 px-4 bg-[#F7F7F7]">
+              <h1 className="">Monitoring Dated</h1>
+            </div>
+            <div className="border py-1 px-4 text-[10px]">
+              <h1 className="">
+                {vendorConfirmationData?.monitoringDates?.length > 0
+                  ? vendorConfirmationData?.monitoringDates?.join(", ")
+                  : "N/A"}
               </h1>
             </div>
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Client Name</h1>
+              <h1 className="">Creative type</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">
-                {vendorConfirmationData?.clientName}
+              <h1 className="">
+                {vendorConfirmationData?.creativeTypes?.length > 0
+                  ? vendorConfirmationData?.creativeTypes?.join(", ")
+                  : "N/A"}
               </h1>
             </div>
           </div>
           <div className="grid grid-cols-2">
             <div className="border py-1 px-4 bg-[#F7F7F7]">
-              <h1 className="text-[14px]">Brand Name</h1>
+              <h1 className="">Planner Name</h1>
             </div>
             <div className="border py-1 px-4">
-              <h1 className="text-[14px]">
-                {vendorConfirmationData?.brandName}
+              <h1 className="">
+                {vendorConfirmationData?.campaignPlannerName == "vinciis"
+                  ? "test user"
+                  : vendorConfirmationData?.campaignPlannerName?.toUpperCase()}
               </h1>
             </div>
           </div>

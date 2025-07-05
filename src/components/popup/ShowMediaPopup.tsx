@@ -49,38 +49,39 @@ export function ShowMediaPopup({
             Total creatives : {media?.length}
           </h1>
         </div>
-
-        {media?.length === 0 && <NoDataView />}
-
-        <div className="grid grid-cols-3 flex justify-center gap-4 w-full h-[80vh]  overflow-y-auto bg-gray-100 p-2 ">
-          {media?.map((l: any, index: any) => (
-            <div
-              key={index}
-              className="col-span-1 p-1 h-[180px] w-auto bg-white rounded-lg"
-              // onClick={() => removeAddedCreativeFromCampaign(l)}
-            >
-              <ShowMediaFile
-                url={l.url}
-                mediaType={l?.type?.split("/")[0]}
+        {media?.length === 0 ? (
+          <NoDataView bg="bg-gray-100" />
+        ) : (
+          <div className="grid grid-cols-3 flex justify-center gap-4 w-full h-[55vh]  overflow-y-auto bg-gray-100 p-2 ">
+            {media?.map((l: any, index: any) => (
+              <div
                 key={index}
-                height="h-full"
-                width="w-full"
-                rounded="rounded-[12px]"
-              />
-              {showDelete && (
-                <div
-                  className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:opacity-[50%] pt-4"
-                  onClick={() => {
-                    removeAddedCreativeFromCampaign(l.url);
-                  }}
-                >
-                  <i className="fi fi-rs-trash"></i>
-                  <h1>Delete</h1>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                className="col-span-1 p-1 h-[180px] w-auto bg-white rounded-lg"
+                // onClick={() => removeAddedCreativeFromCampaign(l)}
+              >
+                <ShowMediaFile
+                  url={l.url}
+                  mediaType={l?.type?.split("/")[0]}
+                  key={index}
+                  height="h-full"
+                  width="w-full"
+                  rounded="rounded-[12px]"
+                />
+                {showDelete && (
+                  <div
+                    className="flex gap-1 text-[#A96767] text-[12px] cursor-pointer hover:opacity-[50%] pt-4"
+                    onClick={() => {
+                      removeAddedCreativeFromCampaign(l.url);
+                    }}
+                  >
+                    <i className="fi fi-rs-trash"></i>
+                    <h1>Delete</h1>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -19,7 +19,8 @@ import {
   DmpContactQueries,
   Landing,
   NewDashBoard,
-  CampaignDashboard
+  CampaignDashboard,
+  CampaignRequestDetailsPage,
 } from "../pages";
 
 import {
@@ -211,6 +212,15 @@ const Routers: React.FC = () => {
           element={
             <AppDashBoardLayout value="Requests">
               <MyRequests />
+            </AppDashBoardLayout>
+          }
+        />
+
+        <Route
+          path={"/my-requests/:id/:index"}
+          element={
+            <AppDashBoardLayout value="Requests">
+              <CampaignRequestDetailsPage />
             </AppDashBoardLayout>
           }
         />

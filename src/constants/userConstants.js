@@ -113,6 +113,7 @@ export const CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS =
   "campaignCreationGetAllCampaignDataCms";
 export const CAMPAIGN_CREATION_GET_CAMPAIGN_DETAILS_CMS =
   "campaignCreationGetCampaignDetailsCms";
+
 export const CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS =
   "campaignCreationGetVendorRequestListCms";
 export const CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CMS =
@@ -121,6 +122,17 @@ export const CAMPAIGN_CREATION_CREATE_CLONE_CMS =
   "campaignCreationCreateCloneCms";
 export const CAMPAIGN_CREATION_CONVERT_CREATIVE_TO_BITRATE_CMS =
   "campaignCreationConvertCreativeToBitrateCms";
+
+export const CAMPAIGN_CREATION_APPROVE_CAMPAIGN_BUDGET_CMS =
+  "campaignCreationApproveCampaignBudgetCms";
+export const CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CREATIVE_CMS =
+  "campaignCreationApproveCampaignCreativeCms";
+export const CAMPAIGN_CREATION_FINAL_APPROVE_CAMPAIGN_CMS =
+  "campaignCreationFinalApproveCampaignCms";
+export const CAMPAIGN_CREATION_GET_CREATIVE_REQUEST_DETAILS_VENDOR_CMS =
+  "campaignCreationGetCreativeRequestDetailsVendorCms";
+export const CAMPAIGN_CREATION_GET_BUDGET_REQUEST_DETAILS_VENDOR_CMS =
+  "campaignCreationGetBudgetRequestDetailsVendorCms";
 
 export const USERS_GET_CMS = "usersGetCms";
 export const USERS_DELETE_CMS = "usersDeleteCms";

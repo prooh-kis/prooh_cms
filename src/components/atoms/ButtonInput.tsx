@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   loading?: boolean;
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "outline"
+    | "ghost"
+    | "danger"
+    | "knowMore"
+    | "custom";
   size?: "small" | "medium" | "large";
   rounded?: "none" | "small" | "medium" | "large" | "full";
   fullWidth?: boolean;
@@ -13,6 +20,8 @@ interface ButtonProps {
   loadingText?: string;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
+  textColor?: string;
+  custom?: any;
 }
 
 const ButtonInput: React.FC<ButtonProps> = ({
@@ -28,6 +37,8 @@ const ButtonInput: React.FC<ButtonProps> = ({
   loadingText = "Please Wait...",
   icon,
   iconPosition = "left",
+  textColor,
+  custom,
 }) => {
   // Base classes
   const baseClasses = `font-semibold transition flex items-center justify-center ${
@@ -36,9 +47,9 @@ const ButtonInput: React.FC<ButtonProps> = ({
 
   // Size classes
   const sizeClasses = {
-    small: `text-sm ${icon ? "pl-3 pr-3" : "px-3"} py-1.5 gap-1.5`,
-    medium: `text-base ${icon ? "pl-5 pr-5" : "px-5"} py-2 gap-2`,
-    large: `text-lg ${icon ? "pl-7 pr-7" : "px-7"} py-3 gap-3`,
+    small: `text-[12px] ${icon ? "pl-3 pr-3" : "px-3"} py-1 gap-1.5`,
+    medium: `text-[16px] ${icon ? "pl-5 pr-5" : "px-5"} py-2 gap-2`,
+    large: `text-[20px] ${icon ? "pl-7 pr-7" : "px-7"} py-3 gap-3`,
   };
 
   // Rounded classes
@@ -58,7 +69,7 @@ const ButtonInput: React.FC<ButtonProps> = ({
     secondary: `text-white bg-gray-600 hover:bg-gray-700 ${
       disabled || loading ? "bg-gray-400" : ""
     }`,
-    outline: `border bg-transparent ${
+    outline: `border-2 bg-transparent ${
       disabled || loading
         ? "border-gray-300 text-gray-400"
         : "border-[#129BFF] text-[#129BFF] hover:bg-[#129BFF] hover:text-white"
@@ -66,17 +77,58 @@ const ButtonInput: React.FC<ButtonProps> = ({
     ghost: `bg-transparent ${
       disabled || loading ? "text-gray-400" : "text-[#129BFF] hover:bg-blue-50"
     }`,
-    danger: `text-white bg-red-500 hover:bg-red-600 ${
+    danger: `hover:bg-[#ef4444] bg-[#FFFFFF] hover:text-[#FFFFFF] text-[#ef4444] border-[#ef4444] border-2 ${
       disabled || loading ? "bg-red-300" : ""
     }`,
+    knowMore: `bg-white hover:bg-gray-100`,
+    custom: custom,
   };
 
   // Icon size classes
   const iconSizeClasses = {
-    small: "h-4 w-4",
-    medium: "h-5 w-5",
-    large: "h-6 w-6",
+    small: "h-4 w-4 p-1 flex items-center",
+    medium: "h-5 w-5 p-1 flex items-center",
+    large: "h-6 w-6 p-1 flex items-center",
   };
+
+  const [showOnlyIcon, setShowOnlyIcon] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !contentRef.current || !icon) {
+      return;
+    }
+
+    const checkWidth = () => {
+      if (!containerRef.current || !contentRef.current) return;
+
+      const containerWidth = containerRef.current.offsetWidth;
+      const contentWidth = contentRef.current.scrollWidth;
+
+      // Add some padding to prevent text from being cut off too early
+      setShowOnlyIcon(containerWidth < contentWidth + 24);
+    };
+
+    // Initial check
+    checkWidth();
+
+    // Store the current ref in a variable to use in cleanup
+    const currentContainer = containerRef.current;
+    const resizeObserver = new ResizeObserver(checkWidth);
+
+    if (currentContainer) {
+      resizeObserver.observe(currentContainer);
+    }
+
+    // Cleanup
+    return () => {
+      if (currentContainer) {
+        resizeObserver.unobserve(currentContainer);
+      }
+      resizeObserver.disconnect();
+    };
+  }, [children, icon]);
 
   const handleClick = (e: React.MouseEvent) => {
     if (!disabled && !loading && onClick) {
@@ -86,20 +138,24 @@ const ButtonInput: React.FC<ButtonProps> = ({
 
   return (
     <div
+      ref={containerRef}
       role="button"
       tabIndex={0}
       aria-disabled={disabled || loading}
+      aria-label={
+        showOnlyIcon && typeof children === "string" ? children : undefined
+      }
       onClick={handleClick}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           handleClick(e as any);
         }
       }}
-      className={`${baseClasses} ${sizeClasses[size]} ${roundedClasses[rounded]} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${sizeClasses[size]} ${roundedClasses[rounded]} ${variantClasses[variant]} ${className} overflow-hidden`}
     >
       {loading ? (
-        <>
-          <svg
+        <div className="flex items-center gap-2 px-1 truncate">
+          {/* <svg
             className={`animate-spin ${iconSizeClasses[size]} mr-2`}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -118,19 +174,27 @@ const ButtonInput: React.FC<ButtonProps> = ({
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
-          </svg>
+          </svg> */}
+          <i
+            className={`fi fi-br-spinner animate-spin ${iconSizeClasses[size]} flex items-center justify-center`}
+          ></i>
+
           {loadingText}
-        </>
+        </div>
       ) : (
-        <>
-          {icon && iconPosition === "left" && (
+        <div className={`flex items-center gap-2 ${textColor}`}>
+          {icon && (iconPosition === "left" || showOnlyIcon) && (
             <span className={iconSizeClasses[size]}>{icon}</span>
           )}
-          {children}
-          {icon && iconPosition === "right" && (
+          {!showOnlyIcon && (
+            <div ref={contentRef} className="whitespace-nowrap">
+              {children}
+            </div>
+          )}
+          {icon && iconPosition === "right" && !showOnlyIcon && (
             <span className={iconSizeClasses[size]}>{icon}</span>
           )}
-        </>
+        </div>
       )}
     </div>
   );

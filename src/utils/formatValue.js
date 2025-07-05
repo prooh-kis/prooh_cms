@@ -18,3 +18,10 @@ export function camelToTitleCase(camelStr) {
   // Capitalize first letter of each word
   return spacedStr.replace(/\b\w/g, (char) => char.toUpperCase());
 }
+
+export const formattedINR = (amount) =>
+  new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0, // Remove decimal places
+  }).format(amount);
