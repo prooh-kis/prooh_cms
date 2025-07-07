@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { SIGN_IN } from "../../routes/routes";
 import {
-  CAMPAIGN_CREATION_GET_VENDOR_REQUEST_LIST_CMS,
   SCREEN_ADMIN,
   SCREEN_OWNER,
   USERS_GET_CMS,
@@ -18,6 +17,7 @@ import { getMyCreateCampaignsVendorRequestsList } from "../../actions/campaignAc
 import {
   CAMPAIGN_STATUS_PLEA_REQUEST_CREATIVE_APPROVAL_SENT,
   CAMPAIGN_STATUS_PLEA_REQUEST_VENDOR_BUDGET_APPROVAL_SENT,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_RESET,
 } from "../../constants/campaignConstants";
 import { message } from "antd";
 import { CampaignsListModel } from "../../components/molecules/CampaignsListModel";
@@ -102,6 +102,7 @@ export const MyRequests = () => {
   useEffect(() => {
     if (errorVendorRequestsList) {
       message.error(errorVendorRequestsList);
+      dispatch({ type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_RESET });
     }
   }, [errorVendorRequestsList]);
 
@@ -145,9 +146,9 @@ export const MyRequests = () => {
           ></i>
           <h1 className="text-[16px] font-semibold">
             My Requests{" "}
-            <span className="text-[14px] text-[#68879C]">
+            {/* <span className="text-[14px] text-[#68879C]">
               ({planRequest.length || 0})
-            </span>
+            </span> */}
           </h1>
           <ReloadButton onClick={reset} />
         </div>

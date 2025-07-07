@@ -1,5 +1,5 @@
 import { VendorConfirmationBasicTable } from "../../components/tables";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message } from "antd";
@@ -69,7 +69,7 @@ export const BudgetApprovalPage = () => {
       dispatch({ type: APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_RESET });
       navigate(-1);
     }
-  }, [errorApproveCampaignBudget, successCampaignBudget]);
+  }, [errorApproveCampaignBudget, successCampaignBudget, navigate, dispatch]);
 
   useEffect(() => {
     if (errorCampaignDetails) {
@@ -90,18 +90,15 @@ export const BudgetApprovalPage = () => {
     }
   }, [errorCampaignDetails, campaignDetails]);
 
-  const getRequestBody = () => {
-    let requestBody: any = [];
-    requestBody = screenList.map((screen: ScreenItem) => ({
+  const getRequestBody = useCallback(() => {
+    return screenList.map((screen: ScreenItem) => ({
       screenId: screen.screenId,
       campaignStatus:
         screen.status === "Approved"
           ? CAMPAIGN_STATUS_PLEA_REQUEST_VENDOR_BUDGET_APPROVAL_ACCEPTED
           : CAMPAIGN_STATUS_PLEA_REQUEST_VENDOR_BUDGET_APPROVAL_REJECTED, // default to Approved if undefined
     }));
-
-    return requestBody;
-  };
+  }, [screenList]);
 
   const handleApprovedClicked = () => {
     let data: any = getRequestBody();
@@ -127,7 +124,7 @@ export const BudgetApprovalPage = () => {
         event: "campaignCreationGetCampaignDetailsCms",
       })
     );
-  }, []);
+  }, [dispatch, campaignId]);
   return (
     <div>
       <Header campaignDetails={campaignDetails} />

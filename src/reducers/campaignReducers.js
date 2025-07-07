@@ -73,6 +73,7 @@ import {
   GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_SUCCESS,
   GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_ERROR,
   GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_RESET,
+  GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_RESET,
 } from "../constants/campaignConstants";
 import {
   ALL_CAMPAIGNS_LIST,
@@ -304,6 +305,8 @@ export function myCreateCampaignsVendorRequestsListGetReducer(
         loading: false,
         error: action.payload,
       };
+    case GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_RESET:
+      return state;
     default:
       return state;
   }

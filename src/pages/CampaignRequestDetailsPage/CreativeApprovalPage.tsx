@@ -1,5 +1,5 @@
 import { VendorConfirmationBasicTable } from "../../components/tables";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message } from "antd";
@@ -8,7 +8,6 @@ import {
   getCampaignRequestCreativeDetailsForScreenVendor,
 } from "../../actions/campaignAction";
 import {
-  APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_RESET,
   APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_RESET,
   CAMPAIGN_STATUS_PLEA_REQUEST_CREATIVE_APPROVAL_ACCEPTED,
   CAMPAIGN_STATUS_PLEA_REQUEST_CREATIVE_APPROVAL_REJECTED,
@@ -66,12 +65,18 @@ export const CreativeApprovalPage = ({
       message.error(errorApproveCampaignCreative);
       dispatch({ type: APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_RESET });
     }
+
     if (successCampaignCreative) {
       message.success("Successfully approved creative of campaign screen wise");
       dispatch({ type: APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_RESET });
       navigate(-1);
     }
-  }, [errorApproveCampaignCreative, successCampaignCreative]);
+  }, [
+    errorApproveCampaignCreative,
+    successCampaignCreative,
+    dispatch,
+    navigate,
+  ]);
 
   useEffect(() => {
     if (errorCampaignDetails) {
@@ -93,23 +98,26 @@ export const CreativeApprovalPage = ({
     }
   }, [errorCampaignDetails, campaignDetails]);
 
-  const getRequestBody = () => {
-    let requestBody: any = [];
+  const handleShowMedia = useCallback(
+    (data: any) => {
+      setOpenShowMediaPopup((pre: boolean) => !pre);
+      setCurrentScreen(data);
+    },
+    [setOpenShowMediaPopup, setCurrentScreen]
+  );
 
-    requestBody = screenList.map((screen: ScreenItem) => ({
+  const getRequestBody = useCallback(() => {
+    return screenList.map((screen: ScreenItem) => ({
       screenId: screen.screenId,
       campaignStatus:
         screen.status === "Approved"
           ? CAMPAIGN_STATUS_PLEA_REQUEST_CREATIVE_APPROVAL_ACCEPTED
-          : CAMPAIGN_STATUS_PLEA_REQUEST_CREATIVE_APPROVAL_REJECTED, // default to Approved if undefined
+          : CAMPAIGN_STATUS_PLEA_REQUEST_CREATIVE_APPROVAL_REJECTED,
     }));
-
-    return requestBody;
-  };
+  }, [screenList]);
 
   const handleApprovedClicked = () => {
     let data: any = getRequestBody();
-
     if (
       window.confirm(
         "Do you want to approve creative for this campaign screen wise?"
@@ -131,7 +139,7 @@ export const CreativeApprovalPage = ({
         event: CAMPAIGN_CREATION_GET_CREATIVE_REQUEST_DETAILS_VENDOR_CMS,
       })
     );
-  }, []);
+  }, [dispatch, campaignId]);
   return (
     <div>
       <Header campaignDetails={campaignDetails} />
@@ -139,11 +147,7 @@ export const CreativeApprovalPage = ({
       <VendorConfirmationScreensLevelCreativeTable
         screenList={screenList}
         setScreenList={setScreenList}
-        handleOpenCreationModel={(data: any) => {
-          console.log("data  ", data);
-          setOpenShowMediaPopup((pre: boolean) => !pre);
-          setCurrentScreen(data);
-        }}
+        handleOpenCreationModel={handleShowMedia}
       />
       <div className="flex flex-row justify-end gap-4 rounded p-4  w-full bg-white">
         <ButtonInput
