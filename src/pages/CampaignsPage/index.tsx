@@ -1,123 +1,138 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CampaignListView } from "../../components/molecules/CampaignListView";
+import { message } from "antd";
 import { Loading } from "../../components/Loading";
 import { getAllCampaignsDetailsAction } from "../../actions/campaignAction";
 import { TabWithoutIcon } from "../../components/molecules/TabWithoutIcon";
-import {
-  NoDataView,
-  ReloadButton,
-  SearchInputField,
-} from "../../components/index";
+import { NoDataView, ReloadButton, SearchInputField } from "../../components";
 import { campaignCreationTypeTabs } from "../../constants/tabDataConstant";
 import { CAMPAIGN_STATUS_ACTIVE } from "../../constants/campaignConstants";
 import { CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS } from "../../constants/userConstants";
+import { CampaignListView } from "../../components/molecules/CampaignListView";
+
+interface Campaign {
+  _id: string;
+  name: string;
+  brandName: string;
+  clientName: string;
+  // Add other properties as needed
+}
 
 export const CampaignsPage: React.FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const targetDivRef = useRef<HTMLDivElement>(null);
 
-  const [currentTab, setCurrentTab] = useState<any>("1");
-  const [searchQuery, setSearchQuery] = useState<any>("");
-  const [selectedCard, setSelectedCard] = useState<any>(null);
+  const [currentTab, setCurrentTab] = useState<string>("1");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
-  const auth = useSelector((state: any) => state.auth);
-  const { userInfo } = auth;
+  const { userInfo } = useSelector((state: any) => state.auth);
+  const {
+    loading,
+    error,
+    data: allCampaigns,
+  } = useSelector((state: any) => state.allCampaignsDataGet);
 
-  const allCampaignsDataGet = useSelector(
-    (state: any) => state.allCampaignsDataGet
-  );
-  const { loading, error, data: allCampaigns } = allCampaignsDataGet;
-
-  useEffect(() => {
-    if (userInfo && !userInfo?.isMaster) {
-      // message.error("Not a screen owner!!!");
-    } else if (!allCampaigns) {
+  const fetchCampaigns = useCallback(
+    (status: string) => {
       dispatch(
         getAllCampaignsDetailsAction({
           userId: userInfo?._id,
-          status: CAMPAIGN_STATUS_ACTIVE,
-          event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
-          plannerId: [],
-        })
-      );
-    }
-  }, [dispatch, userInfo]);
-
-  const handleCardClick = (id: any) => {
-    setSelectedCard(id);
-  };
-
-  const handleGetCampaignByStatus = useCallback(
-    (status: any) => {
-      setCurrentTab(status);
-      dispatch(
-        getAllCampaignsDetailsAction({
-          userId: userInfo?._id,
-          status: campaignCreationTypeTabs?.filter(
-            (tab: any) => tab.id === status
-          )[0]?.value,
+          status,
           event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
           plannerId: [],
         })
       );
     },
-    [dispatch, userInfo]
+    [dispatch, userInfo?._id]
   );
 
-  const reset = () => {
-    dispatch(
-      getAllCampaignsDetailsAction({
-        userId: userInfo?._id,
-        status: CAMPAIGN_STATUS_ACTIVE,
-        event: CAMPAIGN_CREATION_GET_ALL_CAMPAIGN_DATA_CMS,
-        plannerId: [],
-      })
-    );
-  };
+  // Initial data fetch
+  useEffect(() => {
+    if (userInfo?.isMaster && !allCampaigns) {
+      fetchCampaigns(CAMPAIGN_STATUS_ACTIVE);
+    }
+  }, [dispatch, userInfo]);
 
-  const handleDoubleClick = (id: string) => {
-    // Save the current scroll position
-    if (targetDivRef.current) {
+  const handleGetCampaignByStatus = useCallback(
+    (status: string) => {
+      if (loading) {
+        message.warning("Please wait, data is loading");
+        return;
+      }
+
+      const selectedTab = campaignCreationTypeTabs.find(
+        (tab: { id: string; value: string }) => tab.id === status
+      );
+
+      if (!selectedTab) return;
+
+      setCurrentTab(status);
+      fetchCampaigns(selectedTab.value);
+    },
+    [loading, fetchCampaigns]
+  );
+
+  const reset = useCallback(() => {
+    const selectedTab = campaignCreationTypeTabs.find(
+      (tab: { id: string; value: string }) => tab.id === currentTab
+    );
+    fetchCampaigns(selectedTab?.value || CAMPAIGN_STATUS_ACTIVE);
+  }, [fetchCampaigns]);
+
+  const handleDoubleClick = useCallback(
+    (id: string) => {
       sessionStorage.setItem(
         "campaignsScrollPosition",
-        targetDivRef.current.scrollTop.toString()
+        targetDivRef.current?.scrollTop?.toString() || "0"
       );
-    }
-    navigate(`/campaigns-details/${id}`);
-  };
+      navigate(`/campaigns-details/${id}`);
+    },
+    [navigate]
+  );
 
+  // Restore scroll position
   useEffect(() => {
-    handleGetCampaignByStatus(currentTab);
-    // Restore scroll position when coming back to this page
     const savedScrollPosition =
       sessionStorage.getItem("campaignsScrollPosition") || "0";
     if (targetDivRef.current) {
       targetDivRef.current.scrollTop = parseInt(savedScrollPosition, 10);
     }
-  }, [currentTab, handleGetCampaignByStatus]);
+  }, [currentTab]);
 
-  const filterResult = allCampaigns?.result?.filter(
-    (campaign: any) =>
-      campaign?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      campaign?.brandName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      campaign?.clientName?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Memoized filtered results
+  const filteredResults = useMemo(() => {
+    if (!allCampaigns?.result) return [];
 
-  // const filteredPlanners = allCampaigns?.plannerData?.filter((planner: any) =>
-  //   planner.name.toLowerCase().includes(plannerSearch.toLowerCase())
-  // );
+    const query = searchQuery.toLowerCase();
+    return allCampaigns.result.filter((campaign: Campaign) =>
+      [campaign.name, campaign.brandName, campaign.clientName].some((field) =>
+        field?.toLowerCase().includes(query)
+      )
+    );
+  }, [allCampaigns, searchQuery]);
+
+  const handleCardClick = useCallback((id: string) => {
+    setSelectedCard((prev) => (prev === id ? null : id));
+  }, []);
+
   return (
     <div className="w-full">
-      <div className="bg-white w-auto rounded-[4px]">
+      <div className="bg-white rounded-[4px]">
         <div className="flex justify-between pr-8 border-b">
-          <div className="flex gap-4 items-center p-4 ">
+          <div className="flex gap-4 items-center p-4">
             <h1 className="text-[16px] font-semibold">
               My Campaigns{" "}
-              <span className="text-[14px] text-[#68879C] ">
-                ({filterResult?.length})
+              <span className="text-[14px] text-[#68879C]">
+                ({filteredResults.length})
               </span>
             </h1>
             <ReloadButton onClick={reset} />
@@ -139,32 +154,29 @@ export const CampaignsPage: React.FC = () => {
           />
         </div>
       </div>
+
       {loading ? (
-        <div className="w-full">
-          <Loading />
-        </div>
+        <Loading />
       ) : (
         <div className="mt-1">
-          {allCampaigns?.length === 0 && (
+          {!filteredResults.length && (
             <div className="pt-4">
               <NoDataView />
             </div>
           )}
+
           <div
             className="h-[77vh] overflow-y-auto scrollbar-minimal mt-1 mr-2"
             ref={targetDivRef}
           >
-            {filterResult?.map((data: any, index: any) => (
-              <div key={index} className="h-auto">
-                <CampaignListView
-                  isSelected={data?._id === selectedCard}
-                  color={""}
-                  handleCardClick={() => handleCardClick(data._id)}
-                  onDoubleClick={() => handleDoubleClick(data._id)}
-                  data={data}
-                  index={index}
-                />
-              </div>
+            {filteredResults.map((data: Campaign) => (
+              <CampaignListView
+                key={data._id}
+                isSelected={data._id === selectedCard}
+                handleCardClick={() => handleCardClick(data._id)}
+                onDoubleClick={() => handleDoubleClick(data._id)}
+                data={data}
+              />
             ))}
           </div>
         </div>

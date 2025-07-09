@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { FirstCharForBrandName } from "./FirstCharForBrandName";
 
 interface ScreenListThumbnailProps {
-  color: string;
   isSelected?: boolean;
   handleCardClick: () => void;
   onDoubleClick?: any;
@@ -14,7 +13,6 @@ interface ScreenListThumbnailProps {
 export const CampaignListView = ({
   onDoubleClick,
   data,
-  color,
   isSelected,
   handleCardClick,
   index,
