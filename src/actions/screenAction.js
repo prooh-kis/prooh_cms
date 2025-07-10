@@ -330,8 +330,10 @@ export const screenRefreshAction = (input) => async (dispatch, getState) => {
       auth: { userInfo },
     } = getState();
 
-    const { data } = await axios.post(`${screenV2}/restartScreen`, input,
-      { headers: { authorization: `Bearer ${userInfo.token}` }, }
+    const { data } = await axios.post(
+      `https://api.justmonad.com/api/v2/screens/restartScreen`,
+      input,
+      { headers: { authorization: `Bearer ${userInfo.token}` } }
     );
     dispatch({
       type: SCREEN_REFRESH_SUCCESS,
