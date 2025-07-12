@@ -32,8 +32,8 @@ export const BudgetApprovalPage = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const campaignId = pathname.split("/")[2] || "";
-  const index = pathname.split("/")[3];
+  const campaignId = useMemo(() => pathname.split("/")[2] || "", [pathname]);
+  const index = useMemo(() => pathname.split("/")[3], [pathname]);
 
   const [screenList, setScreenList] = useState<ScreenItem[]>([]);
 
@@ -55,10 +55,10 @@ export const BudgetApprovalPage = () => {
   const {
     loading: loadingApproveCampaignBudget,
     error: errorApproveCampaignBudget,
-    data: approveCampaignBudget,
     success: successCampaignBudget,
   } = approveCampaignBudgetScreenWise;
 
+  // Handle approval success/error messages
   useEffect(() => {
     if (errorApproveCampaignBudget) {
       message.error(errorApproveCampaignBudget);
@@ -69,8 +69,9 @@ export const BudgetApprovalPage = () => {
       dispatch({ type: APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_RESET });
       navigate(-1);
     }
-  }, [errorApproveCampaignBudget, successCampaignBudget, navigate, dispatch]);
+  }, [errorApproveCampaignBudget, successCampaignBudget, dispatch, navigate]);
 
+  // Handle campaign details and error messages
   useEffect(() => {
     if (errorCampaignDetails) {
       message.error(errorCampaignDetails);
@@ -78,45 +79,48 @@ export const BudgetApprovalPage = () => {
         type: GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_RESET,
       });
     }
-    if (campaignDetails && campaignDetails?.screenWiseSlotDetails?.length > 0) {
+  }, [errorCampaignDetails, dispatch]);
+
+  // Update screen list when campaign details change
+  useEffect(() => {
+    if (campaignDetails?.screenWiseSlotDetails?.length > 0) {
       setScreenList(
-        campaignDetails?.screenWiseSlotDetails?.map((data: any) => {
-          return {
-            ...data,
-            status: "Approved",
-          };
-        })
+        campaignDetails.screenWiseSlotDetails.map((data: any) => ({
+          ...data,
+          status: "Approved", // Default status
+        }))
       );
     }
-  }, [errorCampaignDetails, campaignDetails]);
+  }, [campaignDetails]);
 
-  const getRequestBody = useCallback(() => {
+  // Memoized request body calculation
+  const requestBody = useMemo(() => {
     return screenList.map((screen: ScreenItem) => ({
       screenId: screen.screenId,
       campaignStatus:
         screen.status === "Approved"
           ? CAMPAIGN_STATUS_PLEA_REQUEST_VENDOR_BUDGET_APPROVAL_ACCEPTED
-          : CAMPAIGN_STATUS_PLEA_REQUEST_VENDOR_BUDGET_APPROVAL_REJECTED, // default to Approved if undefined
+          : CAMPAIGN_STATUS_PLEA_REQUEST_VENDOR_BUDGET_APPROVAL_REJECTED,
     }));
   }, [screenList]);
 
-  const handleApprovedClicked = () => {
-    let data: any = getRequestBody();
-    console.log("requestBody  : ", screenList, data);
+  const handleApprovedClicked = useCallback(() => {
     if (
       window.confirm(
         "Do you want to approve budget for this campaign screen wise?"
       )
-    )
+    ) {
       dispatch(
         approveCampaignBudgetScreenVendor({
           id: campaignId,
-          data,
+          data: requestBody,
           event: CAMPAIGN_CREATION_APPROVE_CAMPAIGN_BUDGET_CMS,
         })
       );
-  };
+    }
+  }, [dispatch, campaignId, requestBody]);
 
+  // Fetch campaign details on mount
   useEffect(() => {
     dispatch(
       getCampaignCreationDetailsForScreenVendor({
@@ -124,7 +128,15 @@ export const BudgetApprovalPage = () => {
         event: "campaignCreationGetCampaignDetailsCms",
       })
     );
+
+    return () => {
+      dispatch({
+        type: GET_CAMPAIGN_REQUEST_BUDGET_DETAILS_FOR_SCREEN_VENDOR_RESET,
+      });
+      dispatch({ type: APPROVE_CAMPAIGN_BUDGET_SCREEN_VENDOR_RESET });
+    };
   }, [dispatch, campaignId]);
+
   return (
     <div>
       <Header campaignDetails={campaignDetails} />
@@ -133,7 +145,7 @@ export const BudgetApprovalPage = () => {
         screenList={screenList}
         setScreenList={setScreenList}
       />
-      <div className="flex flex-row justify-end gap-4 rounded p-4  w-full bg-white">
+      <div className="flex flex-row justify-end gap-4 rounded p-4 w-full bg-white">
         <ButtonInput
           variant="outline"
           onClick={handleApprovedClicked}

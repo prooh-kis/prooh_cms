@@ -78,9 +78,11 @@ export const MyRequests = () => {
     }
 
     dispatch(getUserList({ event: USERS_GET_CMS }));
-  }, [dispatch, navigate, userInfo]);
+  }, [navigate, userInfo]);
 
   const getRequestList = useCallback(() => {
+    if (!userInfo?._id) return;
+
     dispatch(
       getMyCreateCampaignsVendorRequestsList({
         id: userInfo._id,
@@ -88,15 +90,14 @@ export const MyRequests = () => {
         event: "campaignCreationGetRequestListVendorCms",
       })
     );
-    console.log("getRequestList called!");
-  }, [userInfo, currentTab]);
+  }, [userInfo?._id, currentTab, dispatch]);
 
   // Fetch vendor requests
   useEffect(() => {
     if (userInfo?._id) {
       getRequestList();
     }
-  }, [dispatch, userInfo, currentTab]);
+  }, [userInfo, currentTab]);
 
   // Show error message if any
   useEffect(() => {
@@ -104,7 +105,7 @@ export const MyRequests = () => {
       message.error(errorVendorRequestsList);
       dispatch({ type: GET_MY_CREATE_CAMPAIGNS_VENDOR_REQUESTS_LIST_RESET });
     }
-  }, [errorVendorRequestsList]);
+  }, [errorVendorRequestsList, dispatch]);
 
   // Filter campaigns based on search query
   useEffect(() => {
@@ -179,7 +180,7 @@ export const MyRequests = () => {
       {loadingVendorRequestsList ? (
         <LoadingScreen />
       ) : (
-        <div className="h-[80vh] w-full overflow-y-auto scrollbar-minimal mr-2">
+        <div className="h-[70vh] w-full overflow-y-auto scrollbar-minimal mr-2">
           {planRequest.length === 0 ? (
             <NoDataView />
           ) : (

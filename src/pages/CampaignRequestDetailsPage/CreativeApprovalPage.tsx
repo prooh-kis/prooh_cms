@@ -1,5 +1,5 @@
 import { VendorConfirmationBasicTable } from "../../components/tables";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message } from "antd";
@@ -38,16 +38,19 @@ export const CreativeApprovalPage = ({
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const campaignId = pathname.split("/")[2] || "";
+
+  // Memoized campaignId from pathname
+  const campaignId = useMemo(() => pathname.split("/")[2] || "", [pathname]);
+
   const [screenList, setScreenList] = useState<ScreenItem[]>([]);
 
+  // Selectors
   const approveCampaignCreativeScreenWise = useSelector(
     (state: any) => state.approveCampaignCreativeScreenWise
   );
   const {
     loading: loadingApproveCampaignCreative,
     error: errorApproveCampaignCreative,
-    data: approveCampaignCreative,
     success: successCampaignCreative,
   } = approveCampaignCreativeScreenWise;
 
@@ -60,6 +63,7 @@ export const CreativeApprovalPage = ({
     data: campaignDetails,
   } = campaignRequestCreativeDetailsForScreenVendor;
 
+  // Handle approval success/error messages
   useEffect(() => {
     if (errorApproveCampaignCreative) {
       message.error(errorApproveCampaignCreative);
@@ -78,6 +82,7 @@ export const CreativeApprovalPage = ({
     navigate,
   ]);
 
+  // Handle campaign details error
   useEffect(() => {
     if (errorCampaignDetails) {
       message.error(errorCampaignDetails);
@@ -85,28 +90,22 @@ export const CreativeApprovalPage = ({
         type: GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_RESET,
       });
     }
-    if (campaignDetails && campaignDetails?.screenWiseSlotDetails?.length > 0) {
-      console.log("campaignDetails : ", campaignDetails?.screenWiseSlotDetails);
+  }, [errorCampaignDetails, dispatch]);
+
+  // Update screen list when campaign details change
+  useEffect(() => {
+    if (campaignDetails?.screenWiseSlotDetails?.length > 0) {
       setScreenList(
-        campaignDetails?.screenWiseSlotDetails?.map((data: any) => {
-          return {
-            ...data,
-            status: "Approved",
-          };
-        })
+        campaignDetails.screenWiseSlotDetails.map((data: any) => ({
+          ...data,
+          status: "Approved", // Default status
+        }))
       );
     }
-  }, [errorCampaignDetails, campaignDetails]);
+  }, [campaignDetails]);
 
-  const handleShowMedia = useCallback(
-    (data: any) => {
-      setOpenShowMediaPopup((pre: boolean) => !pre);
-      setCurrentScreen(data);
-    },
-    [setOpenShowMediaPopup, setCurrentScreen]
-  );
-
-  const getRequestBody = useCallback(() => {
+  // Memoized request body calculation
+  const requestBody = useMemo(() => {
     return screenList.map((screen: ScreenItem) => ({
       screenId: screen.screenId,
       campaignStatus:
@@ -116,22 +115,31 @@ export const CreativeApprovalPage = ({
     }));
   }, [screenList]);
 
-  const handleApprovedClicked = () => {
-    let data: any = getRequestBody();
+  const handleShowMedia = useCallback(
+    (data: any) => {
+      setOpenShowMediaPopup((prev: boolean) => !prev);
+      setCurrentScreen(data);
+    },
+    [setOpenShowMediaPopup, setCurrentScreen]
+  );
+
+  const handleApprovedClicked = useCallback(() => {
     if (
       window.confirm(
         "Do you want to approve creative for this campaign screen wise?"
       )
-    )
+    ) {
       dispatch(
         approveCampaignCreativeScreenVendor({
           id: campaignId,
-          data,
+          data: requestBody,
           event: CAMPAIGN_CREATION_APPROVE_CAMPAIGN_CREATIVE_CMS,
         })
       );
-  };
+    }
+  }, [dispatch, campaignId, requestBody]);
 
+  // Fetch campaign details on mount
   useEffect(() => {
     dispatch(
       getCampaignRequestCreativeDetailsForScreenVendor({
@@ -139,7 +147,15 @@ export const CreativeApprovalPage = ({
         event: CAMPAIGN_CREATION_GET_CREATIVE_REQUEST_DETAILS_VENDOR_CMS,
       })
     );
+
+    return () => {
+      dispatch({
+        type: GET_CAMPAIGN_REQUEST_CREATIVE_DETAILS_FOR_SCREEN_VENDOR_RESET,
+      });
+      dispatch({ type: APPROVE_CAMPAIGN_CREATIVE_SCREEN_VENDOR_RESET });
+    };
   }, [dispatch, campaignId]);
+
   return (
     <div>
       <Header campaignDetails={campaignDetails} />
@@ -149,7 +165,7 @@ export const CreativeApprovalPage = ({
         setScreenList={setScreenList}
         handleOpenCreationModel={handleShowMedia}
       />
-      <div className="flex flex-row justify-end gap-4 rounded p-4  w-full bg-white">
+      <div className="flex flex-row justify-end gap-4 rounded p-4 w-full bg-white">
         <ButtonInput
           variant="outline"
           onClick={handleApprovedClicked}
