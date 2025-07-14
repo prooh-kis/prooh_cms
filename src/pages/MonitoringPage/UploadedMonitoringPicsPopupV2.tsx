@@ -30,6 +30,7 @@ interface UploadedMonitoringPicsPopupProps {
   handleOk: () => void;
   currentTab: string;
   screenName: string;
+  loading: boolean;
 }
 
 export const ShowFileData = ({ fileData }: ShowFileDataProps) => {
@@ -64,6 +65,7 @@ export function UploadedMonitoringPicsPopupV2({
   setUploadedMonitoringPic,
   screenName,
   currentTab,
+  loading,
 }: UploadedMonitoringPicsPopupProps) {
   const [monitoringTypes] = useState<MonitoringType[]>([
     {
@@ -95,6 +97,12 @@ export function UploadedMonitoringPicsPopupV2({
       label: "Night Shots",
       value: "nightShot",
       iconType: "fi-ss-moon",
+    },
+    {
+      label2: "High Resolution",
+      label: "High Resolution",
+      value: "highResolution",
+      iconType: "fi-sr-high-definition",
     },
   ]);
 
@@ -156,15 +164,23 @@ export function UploadedMonitoringPicsPopupV2({
           </div>
           <div className="flex gap-2">
             <ButtonInput
-              variant="outline"
+              variant="danger"
               onClick={() => {
                 setUploadedMonitoringPic([]);
                 onClose();
               }}
+              loading={loading}
+              loadingText="Please wait, Saving data"
             >
               Cancel
             </ButtonInput>
-            <ButtonInput onClick={handleSave}>Save</ButtonInput>
+            <ButtonInput
+              onClick={handleSave}
+              loading={loading}
+              loadingText="Please wait, Saving data"
+            >
+              Save
+            </ButtonInput>
           </div>
         </div>
         <div className="grid grid-cols-12">

@@ -314,6 +314,7 @@ export const ScreenWiseMonitoring: React.FC = () => {
             setUploadedMonitoringPic={setUploadedMonitoringPic}
             campaignList={campaigns}
             handleOk={() => {}}
+            loading={false}
           />
         </Panel>
       )}

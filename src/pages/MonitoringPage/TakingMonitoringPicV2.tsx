@@ -7,7 +7,6 @@ import {
   MonitoringUrlData2,
 } from "../../types/monitoringTypes";
 import { useCallback, useEffect, useMemo, useState } from "react";
-// import { UploadedMonitoringPicsPopup } from "./UploadedMonitoringPicsPopup";
 import { ShowUploadedCardV2 } from "./MonitoringReUsableComp";
 import { UploadedMonitoringPicsPopupV2 } from "./UploadedMonitoringPicsPopupV2";
 
@@ -31,6 +30,7 @@ interface Props {
   handleClearAll?: () => void;
   handleSingleRemove?: (value: any) => void;
   screenName?: string;
+  loading: boolean;
 }
 export const TakingMonitoringPicV2 = ({
   pageLoading,
@@ -45,6 +45,7 @@ export const TakingMonitoringPicV2 = ({
   handleClearAll,
   handleSingleRemove,
   screenName,
+  loading,
 }: Props) => {
   const colorCode = useMemo(() => {
     return currentTab === "startDate"
@@ -73,6 +74,11 @@ export const TakingMonitoringPicV2 = ({
       iconType: "fi-sr-video-camera-alt",
     },
     { label: "Night Shots", value: "nightShot", iconType: "fi-ss-moon" },
+    {
+      label: "High Resolution",
+      value: "highResolution",
+      iconType: "fi-sr-high-definition",
+    },
   ]);
 
   // Generate dummyData without full icon elements
@@ -193,11 +199,11 @@ export const TakingMonitoringPicV2 = ({
               setUploadedMonitoringPic={setUploadedMonitoringPic}
               campaignList={campaignList}
               handleOk={() => {
-                setOpen(false);
                 handleOk();
               }}
               currentTab={currentTab}
               screenName={screenName || ""}
+              loading={loading}
             />
           )}
           <MyTab

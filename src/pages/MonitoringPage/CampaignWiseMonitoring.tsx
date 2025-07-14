@@ -457,6 +457,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
                   setResult={setResult}
                   uploadedMonitoringPic={uploadedMonitoringPic}
                   setUploadedMonitoringPic={setUploadedMonitoringPic}
+                  loading={loadingAddCampaignMonitoring || loadingSaveOnAWS}
                   campaignList={monitoringScreens}
                   handleOk={handleOk}
                   handleClearAll={handleClearAll}
