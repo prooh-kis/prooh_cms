@@ -9,6 +9,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ShowUploadedCardV2 } from "./MonitoringReUsableComp";
 import { UploadedMonitoringPicsPopupV2 } from "./UploadedMonitoringPicsPopupV2";
+import { NoDataView } from "../../components/index";
 
 interface DummyDataItem {
   label: string;
@@ -231,7 +232,7 @@ export const TakingMonitoringPicV2 = ({
               maxSize={100}
             />
           </div>
-          {getAllFilesFromCurrentTab().length > 0 && (
+          {getAllFilesFromCurrentTab().length > 0 ? (
             <div className="mt-4">
               <div className="flex justify-between">
                 <h3 className="font-medium mb-2">
@@ -262,6 +263,11 @@ export const TakingMonitoringPicV2 = ({
                 ))}
               </div>
             </div>
+          ) : (
+            <NoDataView
+              title="Monitoring pic not uploaded yet"
+              bg="bg-gray-100"
+            />
           )}
         </div>
       )}

@@ -134,6 +134,7 @@ export const CampaignWiseMonitoring: React.FC = () => {
 
   const handleScreenClick = useCallback(
     ({ screen }: { screen: Screen }) => {
+      setResult([]);
       setMonitoringScreen(screen);
       dispatch({ type: GET_SCREEN_CAMPAIGN_MONITORING_RESET });
       dispatch(
