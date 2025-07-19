@@ -111,6 +111,34 @@ export function UploadedMonitoringPicsPopupV2({
     monitoringType: string
   ) => {
     const updated = [...mediaFile];
+    const data = updated[fileIndex];
+
+    if (monitoringType === "highResolution") {
+      if (
+        updated?.reduce((accum: number, current: any) => {
+          if (current.monitoringType === "highResolution") {
+            accum += 1;
+          }
+          return accum;
+        }, 0) > 0
+      ) {
+        message.error(
+          "You can't add High resolution monitoring pic more then one."
+        );
+        return;
+      }
+    } else if (
+      monitoringType !== "loopVideo" &&
+      data?.file?.size &&
+      data?.file?.size / 1048576 > 5
+    ) {
+      // 5 MB
+      message.error(
+        "File Size greater then 5 MB, please upload file with size less then 5 MB"
+      );
+      return;
+    }
+
     updated[fileIndex] = {
       ...updated[fileIndex],
       monitoringType,
@@ -157,8 +185,8 @@ export function UploadedMonitoringPicsPopupV2({
             <FirstCharForBrandName brandName={screenName} />
             <div className="">
               <h2 className="text-[20px] font-bold">{screenName}</h2>
-              <h6 className="text-md font-normal text-[#6F7F8E]">
-                {camelToTitleCase(currentTab)}
+              <h6 className="text-md font-normal text-[#3A9868] font-medium">
+                {camelToTitleCase(currentTab)} Monitoring
               </h6>
             </div>
           </div>
