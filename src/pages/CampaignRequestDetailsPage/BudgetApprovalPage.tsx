@@ -151,7 +151,7 @@ export const BudgetApprovalPage = () => {
           onClick={handleApprovedClicked}
           loading={loadingApproveCampaignBudget}
         >
-          Approve
+          Save Changes
         </ButtonInput>
       </div>
     </div>

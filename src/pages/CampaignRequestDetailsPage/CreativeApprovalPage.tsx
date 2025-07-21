@@ -171,7 +171,7 @@ export const CreativeApprovalPage = ({
           onClick={handleApprovedClicked}
           loading={loadingApproveCampaignCreative}
         >
-          Approve
+          Save Changes
         </ButtonInput>
       </div>
     </div>

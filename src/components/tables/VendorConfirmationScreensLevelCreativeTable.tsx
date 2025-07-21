@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { MultiColorLinearBar2 } from "../../components/molecules/MultiColorLinearBar2";
 import "./index.css";
 import { CustomRadio } from "../../components/atoms/CustomRadio";
+import { Tooltip } from "antd";
 interface ScreenItem {
   screenId: string;
   screenName: string;
@@ -51,12 +52,42 @@ export const VendorConfirmationScreensLevelCreativeTable = ({
     }, 0);
   }, [screenList]);
 
+  const handleApproveAll = () => {
+    setScreenList(
+      screenList.map((screen) => ({ ...screen, status: "Approved" }))
+    );
+  };
+
+  const handleRejectAll = () => {
+    setScreenList(
+      screenList.map((screen) => ({ ...screen, status: "Rejected" }))
+    );
+  };
+
   return (
     <div className="rounded p-4 mb-1 w-full bg-white">
       <div className="flex flex-row justify-between">
         <h1 className="text-[14px] font-semibold text-[#0E212E] leading-[100%] pb-4">
           Screens for Creative approval
         </h1>
+        <div className="flex gap-4 items-center">
+          <Tooltip title="Select All request as approved">
+            <h1
+              onClick={handleApproveAll}
+              className="text-[#129BFF] font-semibold text-[14px] hover:text-[#16A34A] hover:underline cursor-pointer"
+            >
+              Approve All
+            </h1>
+          </Tooltip>
+          <Tooltip title="Select All request as rejected">
+            <h1
+              onClick={handleRejectAll}
+              className="text-[#ef4444] font-semibold text-[14px] hover:text-[#ef4444] hover:underline cursor-pointer"
+            >
+              Reject All
+            </h1>
+          </Tooltip>
+        </div>
       </div>
       <div className="w-full pb-2">
         <MultiColorLinearBar2
