@@ -271,7 +271,10 @@ export const CreativeSection = ({
 
   return (
     <div className="border-b py-1">
-      <h1 className="text-[12px] mt-1 font-bold">{title}</h1>
+      <h1 className="text-[12px] mt-1 font-bold">
+        {title}{" "}
+        <span className="text-[10px] text-gray-600">({creatives?.length})</span>
+      </h1>
       {creatives?.map((creative, index) => (
         <div
           key={index}

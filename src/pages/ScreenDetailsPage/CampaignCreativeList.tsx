@@ -6,7 +6,7 @@ import {
   SCREEN_GET_UPLOAD_CREATIVE_DETAILS_CMS,
   SCREEN_MONITORING_USER,
 } from "../../constants/userConstants";
-import React from "react";
+import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CreativeSection } from "./HelperComponents";
@@ -30,6 +30,16 @@ const CampaignCreativeList = ({
   const navigate = useNavigate();
   const formattedDate = (date: any) =>
     date ? moment(date).format("MMMM Do YYYY, h:mm a") : "No end date";
+
+  const creativeCount = useMemo(() => {
+    if (currentCampaign?.creatives?.standardDayTimeCreatives?.length) {
+      return (
+        currentCampaign?.creatives?.standardDayTimeCreatives?.length +
+        currentCampaign?.creatives.standardNightTimeCreatives?.length +
+        currentCampaign?.creatives.triggerCreatives?.length
+      );
+    }
+  }, [currentCampaign?.creatives]);
   return (
     <div className="col-span-4 bg-white p-4 rounded-[4px] mr-2">
       <div className="border-b-2 pb-10">
@@ -126,7 +136,10 @@ const CampaignCreativeList = ({
         </div>
       </div>
       <div className="bg-white h-[73vh] overflow-y-auto no-scrollbar mt-2">
-        <h1 className="text-[16px] font-semibold">Creatives</h1>
+        <h1 className="text-[16px] font-semibold">
+          Creatives{" "}
+          <span className="text-[12px] text-gray-600">({creativeCount})</span>
+        </h1>
         {currentCampaign?.creatives?.standardDayTimeCreatives?.length === 0 &&
           currentCampaign?.creatives?.standardNightTimeCreatives?.length ===
             0 &&
