@@ -25,9 +25,11 @@ export const SignIn: React.FC = () => {
 
   useEffect(() => {
     if (success) {
-      dispatch(getAllScreensForScreenOwnerCampaignCreationAction({
-        event : SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS
-      }));
+      dispatch(
+        getAllScreensForScreenOwnerCampaignCreationAction({
+          event: SCREEN_GET_ALL_SCREENS_SCREEN_OWNER_CMS,
+        })
+      );
       navigate("/");
     }
     if (errorSignIn) {
@@ -137,7 +139,7 @@ export const SignIn: React.FC = () => {
                   {loading ? "Please wait..." : "Sign In"}
                 </button>
 
-                <div className="flex gap-4 justify-center">
+                {/* <div className="flex gap-4 justify-center">
                   <h1 className="items-center text-sm font-bold text-[#555555]">
                     {`Don't have an account?`}
                   </h1>
@@ -147,7 +149,7 @@ export const SignIn: React.FC = () => {
                   >
                     Register Now
                   </h1>
-                </div>
+                </div> */}
               </div>
             </Form.Item>
           </Form>
